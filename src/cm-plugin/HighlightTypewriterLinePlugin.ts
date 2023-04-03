@@ -1,9 +1,9 @@
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
-import OnWheelPluginClass from "@/cm-plugin/OnWheelPluginClass";
-import { getOffset } from "@/cm-plugin/TypewriterOffset";
+import getTypewriterOffset from "@/cm-plugin/getTypewriterOffset";
+import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
 
 export default ViewPlugin.fromClass(
-  class extends OnWheelPluginClass {
+  class extends CodeMirrorPluginClass {
     private getTypewriterLine(view: EditorView) {
       return view.contentDOM.querySelector(
         "#plugin-typewriter-mode-typewriter-line"
@@ -25,7 +25,7 @@ export default ViewPlugin.fromClass(
       view: EditorView,
       typewriterLine: HTMLElement
     ) {
-      const offset = getOffset(view);
+      const offset = getTypewriterOffset(view);
 
       const fontSize =
         view.contentDOM
@@ -35,14 +35,8 @@ export default ViewPlugin.fromClass(
         "--header-height"
       );
 
-      typewriterLine.style.display = "block";
       typewriterLine.style.top = `calc(${offset}px + ${headerOffset})`;
       typewriterLine.style.height = fontSize;
-    }
-
-    protected onWheel() {
-      const typewriterLine = this.getTypewriterLine(this.view);
-      if (typewriterLine) typewriterLine.style.display = "none";
     }
 
     override update(update: ViewUpdate) {

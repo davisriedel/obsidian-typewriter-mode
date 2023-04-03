@@ -5,7 +5,11 @@ import {
 import { Plugin } from "obsidian";
 import CMTypewriterScrollSettingTab from "@/TypewriterModeSettingsTab";
 import { Extension } from "@codemirror/state";
-import { codemirrorPlugin } from "@/cm-plugin";
+import TypewriterScrollPaddingPlugin from "@/cm-plugin/TypewriterScrollPaddingPlugin";
+import TypewriterScrollPlugin from "@/cm-plugin/TypewriterScrollPlugin";
+import HighlightTypewriterLinePlugin from "@/cm-plugin/HighlightTypewriterLinePlugin";
+import OnWheelPlugin from "@/cm-plugin/OnWheelPlugin";
+import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
@@ -22,6 +26,8 @@ export default class TypewriterModePlugin extends Plugin {
     if (this.settings.zenEnabled) this.enableZen();
     if (this.settings.highlightTypewriterLineEnabled)
       this.enableHighlightTypewriterLine();
+    if (this.settings.pauseZenWhileScrollingEnabled)
+      this.enablePauseZenWhileScrolling();
 
     this.css = document.createElement("style");
     this.css.id = "plugin-typewriter-scroll";
@@ -52,7 +58,7 @@ export default class TypewriterModePlugin extends Plugin {
   private addCommands() {
     // add the toggle on/off command
     this.addCommand({
-      id: "toggle-typewriter-sroll",
+      id: "toggle-typewriter-scroll",
       name: "Toggle On/Off",
       callback: () => {
         this.toggleTypewriterScroll();
@@ -61,7 +67,7 @@ export default class TypewriterModePlugin extends Plugin {
 
     // toggle zen mode
     this.addCommand({
-      id: "toggle-typewriter-sroll-zen",
+      id: "toggle-typewriter-scroll-zen",
       name: "Toggle Zen Mode On/Off",
       callback: () => {
         this.toggleZen();
@@ -83,14 +89,19 @@ export default class TypewriterModePlugin extends Plugin {
       // remove everything
       this.editorExtensions.splice(0, this.editorExtensions.length);
     }
-    this.editorExtensions.push(
-      codemirrorPlugin({
-        typewriterOffset: this.settings.typewriterOffset,
-        snapTypewriterOnClickEnabled:
-          this.settings.snapTypewriterOnClickEnabled ||
-          this.settings.highlightTypewriterLineEnabled,
-      })
-    );
+    const extensions = [
+      pluginSettingsFacet.of(this.settings),
+      this.settings.enabled
+        ? [TypewriterScrollPaddingPlugin, TypewriterScrollPlugin]
+        : [],
+      this.settings.highlightTypewriterLineEnabled
+        ? HighlightTypewriterLinePlugin
+        : [],
+      this.settings.highlightTypewriterLineEnabled || this.settings.zenEnabled
+        ? OnWheelPlugin
+        : [],
+    ];
+    this.editorExtensions.push(extensions);
     this.app.workspace.updateOptions();
   };
 
@@ -104,7 +115,7 @@ export default class TypewriterModePlugin extends Plugin {
     // if no value is passed in, toggle the existing value
     if (newValue === null) newValue = !this.settings[setting];
     // assign the new value and call the correct enable / disable function
-    (this.settings as any)[setting] = newValue;
+    this.settings[setting] = newValue;
     newValue ? enable() : disable();
     if (requiresReload && this.settings.enabled) this.reloadCodeMirror();
     // save the new settings
@@ -121,15 +132,50 @@ export default class TypewriterModePlugin extends Plugin {
     );
   }
 
+  toggleZen(newValue: boolean = null) {
+    this.toggleSetting(
+      "zenEnabled",
+      newValue,
+      this.enableZen,
+      this.disableZen,
+      true
+    );
+  }
+
+  togglePauseZenWhileScrolling(newValue: boolean = null) {
+    this.toggleSetting(
+      "pauseZenWhileScrollingEnabled",
+      newValue,
+      this.enablePauseZenWhileScrolling,
+      this.disablePauseZenWhileScrolling
+    );
+  }
+
+  toggleHighlightTypewriterLine(newValue: boolean = null) {
+    this.toggleSetting(
+      "highlightTypewriterLineEnabled",
+      newValue,
+      this.enableHighlightTypewriterLine,
+      this.disableHighlightTypewriterLine,
+      true
+    );
+  }
+
+  toggleSnapTypewriterOnClick(newValue: boolean = null) {
+    this.toggleSetting(
+      "snapTypewriterOnClickEnabled",
+      newValue,
+      this.enableSnapTypewriterOnClick,
+      this.disableSnapTypewriterOnClick,
+      true
+    );
+  }
+
   changeTypewriterOffset = (newValue: number) => {
     this.settings.typewriterOffset = newValue;
     if (this.settings.enabled) this.reloadCodeMirror();
     this.saveData(this.settings).then();
   };
-
-  toggleZen(newValue: boolean = null) {
-    this.toggleSetting("zenEnabled", newValue, this.enableZen, this.disableZen);
-  }
 
   changeZenOpacity = (newValue = 0.25) => {
     this.settings.zenOpacity = newValue;
@@ -181,15 +227,6 @@ export default class TypewriterModePlugin extends Plugin {
     document.body.classList.remove("plugin-typewriter-mode-zen");
   };
 
-  togglePauseZenWhileScrolling(newValue: boolean = null) {
-    this.toggleSetting(
-      "pauseZenWhileScrollingEnabled",
-      newValue,
-      this.enablePauseZenWhileScrolling,
-      this.disablePauseZenWhileScrolling
-    );
-  }
-
   private enablePauseZenWhileScrolling = () => {
     // add the class
     document.body.classList.add(
@@ -203,16 +240,6 @@ export default class TypewriterModePlugin extends Plugin {
       "plugin-typewriter-mode-zen-pause-while-scrolling"
     );
   };
-
-  toggleHighlightTypewriterLine(newValue: boolean = null) {
-    this.toggleSetting(
-      "highlightTypewriterLineEnabled",
-      newValue,
-      this.enableHighlightTypewriterLine,
-      this.disableHighlightTypewriterLine,
-      true
-    );
-  }
 
   private enableHighlightTypewriterLine = () => {
     // add the class
@@ -243,14 +270,4 @@ export default class TypewriterModePlugin extends Plugin {
     // remove the class
     document.body.classList.remove("plugin-typewriter-mode-snap-on-click");
   };
-
-  toggleSnapTypewriterOnClick(newValue: boolean = null) {
-    this.toggleSetting(
-      "snapTypewriterOnClickEnabled",
-      newValue,
-      this.enableSnapTypewriterOnClick,
-      this.disableSnapTypewriterOnClick,
-      true
-    );
-  }
 }

@@ -7,6 +7,7 @@ export interface TypewriterModeSettings {
   pauseZenWhileScrollingEnabled: boolean;
   highlightTypewriterLineEnabled: boolean;
   typewriterLineHighlightColor: string;
+  [key: string]: unknown;
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {

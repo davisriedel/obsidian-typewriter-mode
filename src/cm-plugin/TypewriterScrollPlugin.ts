@@ -1,8 +1,8 @@
 import { Transaction } from "@codemirror/state";
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
-import { getOffset } from "@/cm-plugin/TypewriterOffset";
-import { snapTypewriterOnClickEnabled } from "@/cm-plugin/SnapTypewriterOnClick";
+import getTypewriterOffset from "@/cm-plugin/getTypewriterOffset";
+import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
 const allowedUserEvents = /^(select|input|delete|undo|redo)(\..+)?$/;
 const disallowedUserEvents = /^(select.pointer)$/;
@@ -12,14 +12,14 @@ export default ViewPlugin.fromClass(
     private myUpdate = false;
 
     private isUserEventAllowed(view: EditorView, event: string) {
-      const snapOnClick = view.state.facet(snapTypewriterOnClickEnabled);
-      if (snapOnClick) {
-        return allowedUserEvents.test(event);
-      } else {
-        return (
-          allowedUserEvents.test(event) && !disallowedUserEvents.test(event)
-        );
-      }
+      const settings = view.state.facet(pluginSettingsFacet);
+      const snapOnClick =
+        settings.snapTypewriterOnClickEnabled ||
+        settings.highlightTypewriterLineEnabled;
+      return (
+        allowedUserEvents.test(event) &&
+        (snapOnClick || !disallowedUserEvents.test(event))
+      );
     }
 
     override update(update: ViewUpdate) {
@@ -52,7 +52,7 @@ export default ViewPlugin.fromClass(
           // don't bother with this next part if the range (line??) hasn't changed
           if (prevHead != head) {
             // this is the effect that does the centering
-            const offset = getOffset(update.view);
+            const offset = getTypewriterOffset(update.view);
             const effect = EditorView.scrollIntoView(head, {
               y: "start",
               yMargin: offset,

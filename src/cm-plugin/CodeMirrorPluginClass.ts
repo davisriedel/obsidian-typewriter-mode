@@ -5,7 +5,7 @@ import { EditorView, ViewUpdate } from "@codemirror/view";
 export default abstract class CodeMirrorPluginClass {
   constructor(protected view: EditorView) {}
 
-  protected update(update: ViewUpdate) {}
+  update(update: ViewUpdate) {}
 
   destroy() {}
 }

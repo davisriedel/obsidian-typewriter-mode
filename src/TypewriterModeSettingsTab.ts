@@ -67,7 +67,6 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
           .setValue(this.plugin.settings.typewriterLineHighlightColor)
           .onChange((newValue) => {
             this.plugin.changeTypewriterLineHighlightColor(newValue);
-            this.display();
           })
       )
       .setDisabled(

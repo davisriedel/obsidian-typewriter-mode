@@ -26,8 +26,12 @@ body.plugin-typewriter-mode-zen {
   padding-bottom: 2px;
 }
 
-.plugin-typewriter-mode-highlight-line #plugin-typewriter-mode-typewriter-line {
-  display: block;
+.plugin-typewriter-mode-highlight-line {
+  &:not(.plugin-typewriter-mode-wheel) {
+    #plugin-typewriter-mode-typewriter-line {
+      display: block;
+    }
+  }
 }
 
 .typewriter-mode-setting.setting-item.is-disabled {
