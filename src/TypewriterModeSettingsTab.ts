@@ -24,13 +24,14 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName("Center offset")
+      .setName("Typewriter Offset")
       .setDesc(
-        "Positions the typewriter text at the specified percentage of the screen"
+        "Positions the typewriter line at the specified percentage of the screen"
       )
       .addSlider((slider) =>
         slider
           .setLimits(0, 100, 5)
+          .setDynamicTooltip()
           .setValue(this.plugin.settings.typewriterOffset * 100)
           .onChange((newValue) => {
             this.plugin.changeTypewriterOffset(newValue / 100);
@@ -38,10 +39,21 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName("Zen Mode")
+      .setName("Snap Typewriter On Click")
       .setDesc(
-        "Darkens non-active lines in the editor, so you can focus on what you're typing"
+        "By default, clicking in the text will snap the typewriter to the clicked line. If this is disabled, the typewriter will only snap when you start typing."
       )
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.snapTypewriterOnClickEnabled)
+          .onChange((newValue) => {
+            this.plugin.toggleSnapTypewriterOnClick(newValue);
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("Zen Mode")
+      .setDesc("Darkens non-active paragraphs in the editor")
       .addToggle((toggle) =>
         toggle
           .setValue(this.plugin.settings.zenEnabled)
@@ -52,10 +64,11 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Zen Opacity")
-      .setDesc("The opacity of unfocused lines in zen mode")
+      .setDesc("The opacity of unfocused paragraphs in zen mode")
       .addSlider((slider) =>
         slider
           .setLimits(0, 100, 5)
+          .setDynamicTooltip()
           .setValue(this.plugin.settings.zenOpacity * 100)
           .onChange((newValue) => {
             this.plugin.changeZenOpacity(newValue / 100);

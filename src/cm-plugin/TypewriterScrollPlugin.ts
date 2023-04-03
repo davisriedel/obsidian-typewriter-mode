@@ -2,12 +2,25 @@ import { Transaction } from "@codemirror/state";
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
 import { getOffset } from "@/cm-plugin/TypewriterOffset";
+import { snapTypewriterOnClickEnabled } from "@/cm-plugin/SnapTypewriterOnClick";
 
 const allowedUserEvents = /^(select|input|delete|undo|redo)(\..+)?$/;
+const disallowedUserEvents = /^(select.pointer)$/;
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginClass {
     private myUpdate = false;
+
+    private isUserEventAllowed(view: EditorView, event: string) {
+      const snapOnClick = view.state.facet(snapTypewriterOnClickEnabled);
+      if (snapOnClick) {
+        return allowedUserEvents.test(event);
+      } else {
+        return (
+          allowedUserEvents.test(event) && !disallowedUserEvents.test(event)
+        );
+      }
+    }
 
     override update(update: ViewUpdate) {
       if (this.myUpdate) this.myUpdate = false;
@@ -16,7 +29,8 @@ export default ViewPlugin.fromClass(
           tr.annotation(Transaction.userEvent)
         );
         const isAllowed = userEvents.reduce<boolean>(
-          (result, event) => result && allowedUserEvents.test(event),
+          (result, event) =>
+            result && this.isUserEventAllowed(update.view, event),
           userEvents.length > 0
         );
         if (isAllowed) {
