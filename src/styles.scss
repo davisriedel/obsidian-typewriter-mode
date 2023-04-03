@@ -29,3 +29,7 @@ body.plugin-typewriter-mode-zen {
 .plugin-typewriter-mode-highlight-line #plugin-typewriter-mode-typewriter-line {
   display: block;
 }
+
+.typewriter-mode-setting.setting-item.is-disabled {
+  opacity: 0.5;
+}

@@ -87,7 +87,8 @@ export default class TypewriterModePlugin extends Plugin {
       codemirrorPlugin({
         typewriterOffset: this.settings.typewriterOffset,
         snapTypewriterOnClickEnabled:
-          this.settings.snapTypewriterOnClickEnabled,
+          this.settings.snapTypewriterOnClickEnabled ||
+          this.settings.highlightTypewriterLineEnabled,
       })
     );
     this.app.workspace.updateOptions();
@@ -208,7 +209,8 @@ export default class TypewriterModePlugin extends Plugin {
       "highlightTypewriterLineEnabled",
       newValue,
       this.enableHighlightTypewriterLine,
-      this.disableHighlightTypewriterLine
+      this.disableHighlightTypewriterLine,
+      true
     );
   }
 
