@@ -1,0 +1,17 @@
+# npm
+node_modules
+package-lock.json
+package-lock.yml
+
+# build
+main.js
+styles.css
+
+# Obsidian
+data.json
+
+# Jetbrains IDEs
+.idea
+
+# VSCode
+.vscode

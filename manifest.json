@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-typewriter-mode",
+  "name": "Typewriter Mode",
+  "author": "Davis Riedel",
+  "authorUrl": "https://github.com/davisriedel",
+  "description": "Typewriter-style scrolling which keeps the active line at a fixed position.",
+  "isDesktopOnly": false,
+  "version": "0.1.0",
+  "minAppVersion": "0.10.0"
+}

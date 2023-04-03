@@ -1,0 +1,41 @@
+{
+  "name": "obsidian-typewriter-mode",
+  "version": "0.1.0",
+  "description": "An Obsidian plugin for typewriter-style scrolling, which keeps the active line at a fixed position.",
+  "main": "main.js",
+  "scripts": {
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "type-check": "tsc --noEmit",
+    "build": "./build.cjs"
+  },
+  "keywords": [],
+  "author": "Davis Riedel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davisriedel/obsidian-typewriter-mode"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@codemirror/state": "^6.2.0",
+    "@codemirror/view": "^6.9.3",
+    "@types/codemirror": "^5.60.7",
+    "@types/node": "^14.14.16",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "esbuild": "^0.17.15",
+    "esbuild-node-externals": "^1.7.0",
+    "esbuild-sass-plugin": "^2.8.0",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "obsidian": "^0.14.6",
+    "prettier": "^2.8.7",
+    "typescript": "^4.1.3",
+    "tslib": "^2.5.0"
+  },
+  "dependencies": {}
+}
