@@ -5,7 +5,6 @@ import {
 import { Plugin } from "obsidian";
 import CMTypewriterScrollSettingTab from "@/TypewriterModeSettingsTab";
 import { Extension } from "@codemirror/state";
-import TypewriterScrollPaddingPlugin from "@/cm-plugin/TypewriterScrollPaddingPlugin";
 import TypewriterScrollPlugin from "@/cm-plugin/TypewriterScrollPlugin";
 import HighlightTypewriterLinePlugin from "@/cm-plugin/HighlightTypewriterLinePlugin";
 import OnWheelPlugin from "@/cm-plugin/OnWheelPlugin";
@@ -91,9 +90,7 @@ export default class TypewriterModePlugin extends Plugin {
     }
     const extensions = [
       pluginSettingsFacet.of(this.settings),
-      this.settings.enabled
-        ? [TypewriterScrollPaddingPlugin, TypewriterScrollPlugin]
-        : [],
+      this.settings.enabled ? TypewriterScrollPlugin : [],
       this.settings.highlightTypewriterLineEnabled
         ? HighlightTypewriterLinePlugin
         : [],
