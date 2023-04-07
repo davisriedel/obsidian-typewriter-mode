@@ -87,7 +87,12 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
             this.plugin.changeTypewriterLineHighlightStyle(
               newValue as "box" | "underline"
             );
+            this.display();
           })
+      )
+      .setDisabled(
+        !this.plugin.settings.enabled ||
+          !this.plugin.settings.highlightTypewriterLineEnabled
       );
 
     new Setting(containerEl)
@@ -108,7 +113,9 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
           })
       )
       .setDisabled(
-        this.plugin.settings.typewriterLineHighlightStyle !== "underline"
+        !this.plugin.settings.enabled ||
+          !this.plugin.settings.highlightTypewriterLineEnabled ||
+          this.plugin.settings.typewriterLineHighlightStyle !== "underline"
       );
 
     new Setting(containerEl)
