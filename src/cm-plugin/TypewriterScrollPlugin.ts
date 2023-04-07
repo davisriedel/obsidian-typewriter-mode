@@ -19,6 +19,17 @@ export default ViewPlugin.fromClass(
       }, userEvents.length > 0);
     }
 
+    private onExternalEditorChange(head: number, offset: number) {
+      const cmSizer = this.view.dom.getElementsByClassName(
+        "cm-sizer"
+      )[0] as HTMLElement;
+      const clientHeight = this.view.contentDOM.clientHeight;
+      cmSizer.style.padding = `${clientHeight}px 0`;
+      document.body.classList.remove("plugin-typewriter-mode-select");
+      document.body.classList.remove("plugin-typewriter-mode-wheel");
+      this.centerOnHead(head, offset);
+    }
+
     override update(update: ViewUpdate) {
       // Ignore updates that are caused by this plugin
       if (this.myUpdate) {
@@ -32,19 +43,12 @@ export default ViewPlugin.fromClass(
 
       const { offset } = getTypewriterPositionData(update.view);
 
-      const userEvents = update.transactions.map((tr) =>
-        tr.annotation(Transaction.userEvent)
-      );
+      const userEvents = update.transactions
+        .map((tr) => tr.annotation(Transaction.userEvent))
+        .filter((event) => event !== undefined);
       if (userEvents.length == 0) {
         // update was not caused by user interaction, but the size of the editor might have changed
-        const cmSizer = this.view.dom.getElementsByClassName(
-          "cm-sizer"
-        )[0] as HTMLElement;
-        const clientHeight = update.view.dom.clientHeight;
-        cmSizer.style.padding = `${clientHeight}px 0`;
-        document.body.classList.remove("plugin-typewriter-mode-select");
-        document.body.classList.remove("plugin-typewriter-mode-wheel");
-        this.centerOnHead(head, offset);
+        this.onExternalEditorChange(head, offset);
         return;
       }
 
