@@ -13,7 +13,10 @@ export const pluginSettingsFacet = Facet.define<
     return {
       enabled: values[0].enabled,
       zenEnabled: values[0].zenEnabled,
+      zenOnlyInActiveEditorEnabled: values[0].zenOnlyInActiveEditorEnabled,
       highlightTypewriterLineEnabled: values[0].highlightTypewriterLineEnabled,
+      highlightTypewriterLineOnlyInActiveEditorEnabled:
+        values[0].highlightTypewriterLineOnlyInActiveEditorEnabled,
       pauseZenWhileScrollingEnabled: values[0].pauseZenWhileScrollingEnabled,
       pauseZenWhileSelectingEnabled: values[0].pauseZenWhileSelectingEnabled,
 

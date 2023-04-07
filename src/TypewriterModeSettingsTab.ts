@@ -119,6 +119,28 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
+      .setName("Highlight Typewriter Line Only In Active Editor")
+      .setDesc("Highlight the typewriter line only in the active editor")
+      .setClass("typewriter-mode-setting")
+      .addToggle((toggle) =>
+        toggle
+          .setValue(
+            this.plugin.settings
+              .highlightTypewriterLineOnlyInActiveEditorEnabled
+          )
+          .onChange((newValue) => {
+            this.plugin.toggleHighlightTypewriterLineOnlyInActiveEditorEnabled(
+              newValue
+            );
+            this.display();
+          })
+      )
+      .setDisabled(
+        !this.plugin.settings.enabled ||
+          !this.plugin.settings.highlightTypewriterLineEnabled
+      );
+
+    new Setting(containerEl)
       .setName("Zen Mode")
       .setDesc("Darkens non-active paragraphs in the editor")
       .setClass("typewriter-mode-setting")
@@ -145,6 +167,22 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
           })
       )
       .setDisabled(!this.plugin.settings.zenEnabled);
+
+    new Setting(containerEl)
+      .setName("Zen Mode Only In Active Editor")
+      .setDesc("Disable zen mode in unfocused editors")
+      .setClass("typewriter-mode-setting")
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.zenOnlyInActiveEditorEnabled)
+          .onChange((newValue) => {
+            this.plugin.toggleZenOnlyInActiveEditorEnabled(newValue);
+            this.display();
+          })
+      )
+      .setDisabled(
+        !this.plugin.settings.enabled || !this.plugin.settings.zenEnabled
+      );
 
     new Setting(containerEl)
       .setName("Pause Zen Mode While Scrolling")

@@ -1,19 +1,40 @@
 body.plugin-typewriter-mode {
   &.plugin-typewriter-mode-zen {
-    &:not(.plugin-typewriter-mode-zen-pause-while-scrolling, .plugin-typewriter-mode-zen-pause-while-selecting),
-    // prettier-ignore
-    &.plugin-typewriter-mode-zen-pause-while-scrolling:not(.plugin-typewriter-mode-zen-pause-while-selecting) .cm-editor:not(.plugin-typewriter-mode-wheel),
-    // prettier-ignore
-    &.plugin-typewriter-mode-zen-pause-while-selecting:not(.plugin-typewriter-mode-zen-pause-while-scrolling) .cm-editor:not(.plugin-typewriter-mode-select),
-    // prettier-ignore
-    &.plugin-typewriter-mode-zen-pause-while-scrolling.plugin-typewriter-mode-zen-pause-while-selecting .cm-editor:not(.plugin-typewriter-mode-wheel, .plugin-typewriter-mode-select) {
-      // prettier-ignore
-      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline) {
-        opacity: var(--zen-opacity);
-      }
+    &:not(.plugin-typewriter-mode-zen-only-in-active-editor) {
+      &:not(.plugin-typewriter-mode-zen-pause-while-scrolling, .plugin-typewriter-mode-zen-pause-while-selecting) .cm-editor,
+        // prettier-ignore
+      &.plugin-typewriter-mode-zen-pause-while-scrolling:not(.plugin-typewriter-mode-zen-pause-while-selecting) .cm-editor:not(.plugin-typewriter-mode-wheel),
+        // prettier-ignore
+      &.plugin-typewriter-mode-zen-pause-while-selecting:not(.plugin-typewriter-mode-zen-pause-while-scrolling) .cm-editor:not(.plugin-typewriter-mode-select),
+        // prettier-ignore
+      &.plugin-typewriter-mode-zen-pause-while-scrolling.plugin-typewriter-mode-zen-pause-while-selecting .cm-editor:not(.plugin-typewriter-mode-wheel, .plugin-typewriter-mode-select) {
+        // prettier-ignore
+        .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline) {
+          opacity: var(--zen-opacity);
+        }
 
-      .cm-line:not(.cm-active) {
-        opacity: var(--zen-opacity);
+        .cm-line:not(.cm-active) {
+          opacity: var(--zen-opacity);
+        }
+      }
+    }
+
+    &.plugin-typewriter-mode-zen-only-in-active-editor {
+      &:not(.plugin-typewriter-mode-zen-pause-while-scrolling, .plugin-typewriter-mode-zen-pause-while-selecting) .cm-editor.cm-focused,
+        // prettier-ignore
+      &.plugin-typewriter-mode-zen-pause-while-scrolling:not(.plugin-typewriter-mode-zen-pause-while-selecting) .cm-editor.cm-focused:not(.plugin-typewriter-mode-wheel),
+        // prettier-ignore
+      &.plugin-typewriter-mode-zen-pause-while-selecting:not(.plugin-typewriter-mode-zen-pause-while-scrolling) .cm-editor.cm-focused:not(.plugin-typewriter-mode-select),
+        // prettier-ignore
+      &.plugin-typewriter-mode-zen-pause-while-scrolling.plugin-typewriter-mode-zen-pause-while-selecting .cm-editor.cm-focused:not(.plugin-typewriter-mode-wheel, .plugin-typewriter-mode-select) {
+        // prettier-ignore
+        .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline) {
+          opacity: var(--zen-opacity);
+        }
+
+        .cm-line:not(.cm-active) {
+          opacity: var(--zen-opacity);
+        }
       }
     }
   }
@@ -37,12 +58,18 @@ body.plugin-typewriter-mode {
   }
 
   &.plugin-typewriter-mode-highlight-line {
-    .cm-editor:not(
-        .plugin-typewriter-mode-wheel,
-        .plugin-typewriter-mode-select
-      ) {
+    // prettier-ignore
+    .cm-editor:not(.plugin-typewriter-mode-wheel, .plugin-typewriter-mode-select) {
       #plugin-typewriter-mode-typewriter-line {
         display: block;
+      }
+    }
+
+    &.plugin-typewriter-mode-highlight-line-only-in-active-editor {
+      .cm-editor:not(.cm-focused) {
+        #plugin-typewriter-mode-typewriter-line {
+          display: none;
+        }
       }
     }
   }

@@ -16,31 +16,10 @@ export default class TypewriterModePlugin extends Plugin {
   private editorExtensions: Extension[] = [];
 
   override async onload() {
-    this.settings = Object.assign(DEFAULT_SETTINGS, await this.loadData());
-
-    // enable the plugin (based on settings)
-    if (this.settings.enabled) this.enableTypewriterScroll();
-    if (this.settings.zenEnabled) this.enableZen();
-    if (this.settings.highlightTypewriterLineEnabled)
-      this.enableHighlightTypewriterLine();
-    if (this.settings.pauseZenWhileScrollingEnabled)
-      this.enablePauseZenWhileScrolling();
-    if (this.settings.pauseZenWhileSelectingEnabled)
-      this.enablePauseZenWhileSelecting();
-
-    this.css = document.createElement("style");
-    this.css.id = "plugin-typewriter-scroll";
-    this.css.setAttr("type", "text/css");
-    document.getElementsByTagName("head")[0].appendChild(this.css);
-    this.setCSSVariables();
-
-    // add the settings tab
+    this.createCssElement();
+    await this.loadSettings();
     this.addSettingTab(new CMTypewriterScrollSettingTab(this.app, this));
-
-    // add the commands / keyboard shortcuts
     this.addCommands();
-
-    // register the codemirror add on setting
     this.registerEditorExtension(this.editorExtensions);
   }
 
@@ -116,6 +95,32 @@ export default class TypewriterModePlugin extends Plugin {
     this.saveData(this.settings).then();
   }
 
+  private async loadSettings() {
+    this.settings = Object.assign(DEFAULT_SETTINGS, await this.loadData());
+
+    // enable the plugin (based on settings)
+    if (this.settings.enabled) this.enableTypewriterScroll();
+    if (this.settings.zenEnabled) this.enableZen();
+    if (this.settings.zenOnlyInActiveEditorEnabled)
+      this.enableZenOnlyInActiveEditor();
+    if (this.settings.highlightTypewriterLineEnabled)
+      this.enableHighlightTypewriterLine();
+    if (this.settings.highlightTypewriterLineOnlyInActiveEditorEnabled)
+      this.enableHighlightTypewriterLineOnlyInActiveEditor();
+    if (this.settings.pauseZenWhileScrollingEnabled)
+      this.enablePauseZenWhileScrolling();
+    if (this.settings.pauseZenWhileSelectingEnabled)
+      this.enablePauseZenWhileSelecting();
+    this.setCSSVariables();
+  }
+
+  private createCssElement() {
+    this.css = document.createElement("style");
+    this.css.id = "plugin-typewriter-scroll";
+    this.css.setAttr("type", "text/css");
+    document.getElementsByTagName("head")[0].appendChild(this.css);
+  }
+
   private setCSSVariables({
     zenOpacity,
     typewriterLineHighlightColor,
@@ -158,6 +163,16 @@ export default class TypewriterModePlugin extends Plugin {
     );
   }
 
+  toggleZenOnlyInActiveEditorEnabled(newValue: boolean = null) {
+    this.toggleSetting(
+      "zenOnlyInActiveEditorEnabled",
+      newValue,
+      this.enableZenOnlyInActiveEditor.bind(this),
+      this.disableZenOnlyInActiveEditor.bind(this),
+      true
+    );
+  }
+
   togglePauseZenWhileScrolling(newValue: boolean = null) {
     this.toggleSetting(
       "pauseZenWhileScrollingEnabled",
@@ -182,6 +197,18 @@ export default class TypewriterModePlugin extends Plugin {
       newValue,
       this.enableHighlightTypewriterLine.bind(this),
       this.disableHighlightTypewriterLine.bind(this),
+      true
+    );
+  }
+
+  toggleHighlightTypewriterLineOnlyInActiveEditorEnabled(
+    newValue: boolean = null
+  ) {
+    this.toggleSetting(
+      "highlightTypewriterLineOnlyInActiveEditorEnabled",
+      newValue,
+      this.enableHighlightTypewriterLineOnlyInActiveEditor.bind(this),
+      this.disableHighlightTypewriterLineOnlyInActiveEditor.bind(this),
       true
     );
   }
@@ -258,6 +285,20 @@ export default class TypewriterModePlugin extends Plugin {
     document.body.classList.remove("plugin-typewriter-mode-zen");
   }
 
+  private enableZenOnlyInActiveEditor() {
+    // add the class
+    document.body.classList.add(
+      "plugin-typewriter-mode-zen-only-in-active-editor"
+    );
+  }
+
+  private disableZenOnlyInActiveEditor() {
+    // remove the class
+    document.body.classList.remove(
+      "plugin-typewriter-mode-zen-only-in-active-editor"
+    );
+  }
+
   private enablePauseZenWhileScrolling() {
     // add the class
     document.body.classList.add(
@@ -294,5 +335,19 @@ export default class TypewriterModePlugin extends Plugin {
   private disableHighlightTypewriterLine() {
     // remove the class
     document.body.classList.remove("plugin-typewriter-mode-highlight-line");
+  }
+
+  private enableHighlightTypewriterLineOnlyInActiveEditor() {
+    // add the class
+    document.body.classList.add(
+      "plugin-typewriter-mode-highlight-line-only-in-active-editor"
+    );
+  }
+
+  private disableHighlightTypewriterLineOnlyInActiveEditor() {
+    // remove the class
+    document.body.classList.remove(
+      "plugin-typewriter-mode-highlight-line-only-in-active-editor"
+    );
   }
 }
