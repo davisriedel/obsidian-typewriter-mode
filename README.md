@@ -34,10 +34,6 @@ You can activate this plugin within Obsidian by doing the following:
 
 Follow the instructions in the repository of the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat#Quick-Guide-for-using-BRAT) and use this repository's URL: `https://github.com/davisriedel/obsidian-typewriter-mode` to install the plugin.
 
-## Compatibility
-
-Custom plugins are only available for Obsidian v0.9.7+.
-
 ## Derived from
 
 This plugin started as a fork of the incredible [Typewriter Scroll](https://github.com/deathau/cm-typewriter-scroll-obsidian) plugin by [deathau](https://github.com/deathau). It was turned into a separate plugin because the code and tooling was restructured quite a lot and several breaking changes were introduced.
@@ -52,7 +48,7 @@ tweaks, you can do the following:
 
 1. Clone this repo
 2. Install dependencies with `npm i`, `yarn` or `pnpm i`
-3. `npm run build`, `yarn build` or `pnpm build` to compile
+3. Build with `npm run build`, `yarn build` or `pnpm build`
 4. Copy `manifest.json`, `main.js` and `styles.css` to a subfolder of your plugins folder (e.g, `<vault>/.obsidian/plugins/<plugin-name>/`)
 5. Reload obsidian to see changes
 
