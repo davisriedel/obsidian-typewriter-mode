@@ -1,12 +1,12 @@
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
-import getTypewriterOffset from "@/cm-plugin/getTypewriterOffset";
 import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
+import { getTypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginClass {
     private getTypewriterLine(view: EditorView) {
-      return view.contentDOM.querySelector(
+      return view.dom.querySelector(
         "#plugin-typewriter-mode-typewriter-line"
       ) as HTMLElement;
     }
@@ -17,7 +17,7 @@ export default ViewPlugin.fromClass(
         // create the typewriter line
         typewriterLine = document.createElement("div");
         typewriterLine.id = "plugin-typewriter-mode-typewriter-line";
-        view.contentDOM.appendChild(typewriterLine);
+        view.dom.appendChild(typewriterLine);
       }
       const settings = view.state.facet(pluginSettingsFacet);
       typewriterLine.className = `plugin-typewriter-mode-typewriter-line-${settings.typewriterLineHighlightStyle}`;
@@ -28,18 +28,9 @@ export default ViewPlugin.fromClass(
       view: EditorView,
       typewriterLine: HTMLElement
     ) {
-      const offset = getTypewriterOffset(view);
-
-      const fontSize =
-        view.contentDOM
-          .querySelector(".cm-active.cm-line")
-          ?.getCssPropertyValue("font-size") ?? view.defaultLineHeight + "px";
-      const headerOffset = getComputedStyle(document.body).getPropertyValue(
-        "--header-height"
-      );
-
-      typewriterLine.style.top = `calc(${offset}px + ${headerOffset})`;
-      typewriterLine.style.height = fontSize;
+      const { lineHeight, offset } = getTypewriterPositionData(view);
+      typewriterLine.style.height = `${lineHeight}px`;
+      typewriterLine.style.top = `${offset}px`;
     }
 
     override update(update: ViewUpdate) {

@@ -1,7 +1,7 @@
 import { Transaction } from "@codemirror/state";
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
-import getTypewriterOffset from "@/cm-plugin/getTypewriterOffset";
+import { getTypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginClass {
@@ -21,7 +21,7 @@ export default ViewPlugin.fromClass(
     }
 
     override update(update: ViewUpdate) {
-      const offset = getTypewriterOffset(update.view);
+      const { offset } = getTypewriterPositionData(update.view);
 
       // update the padding
       this.topPadding = offset + "px";

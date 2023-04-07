@@ -18,12 +18,10 @@ body.plugin-typewriter-mode {
 
   #plugin-typewriter-mode-typewriter-line {
     display: none;
-    position: fixed;
+    position: absolute;
     left: 0;
     width: 100%;
     box-sizing: content-box;
-    padding-top: 2px;
-    padding-bottom: 2px;
 
     &.plugin-typewriter-mode-typewriter-line-box {
       background-color: var(--typewriter-line-color);
