@@ -15,6 +15,7 @@ export const pluginSettingsFacet = Facet.define<
       zenEnabled: values[0].zenEnabled,
       highlightTypewriterLineEnabled: values[0].highlightTypewriterLineEnabled,
       pauseZenWhileScrollingEnabled: values[0].pauseZenWhileScrollingEnabled,
+      pauseZenWhileSelectingEnabled: values[0].pauseZenWhileSelectingEnabled,
 
       typewriterOffset: Math.min(...values.map((v) => v.typewriterOffset)),
       zenOpacity: Math.min(...values.map((v) => v.zenOpacity)),

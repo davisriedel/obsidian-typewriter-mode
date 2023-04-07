@@ -25,6 +25,8 @@ export default class TypewriterModePlugin extends Plugin {
       this.enableHighlightTypewriterLine();
     if (this.settings.pauseZenWhileScrollingEnabled)
       this.enablePauseZenWhileScrolling();
+    if (this.settings.pauseZenWhileSelectingEnabled)
+      this.enablePauseZenWhileSelecting();
 
     this.css = document.createElement("style");
     this.css.id = "plugin-typewriter-scroll";
@@ -165,6 +167,15 @@ export default class TypewriterModePlugin extends Plugin {
     );
   }
 
+  togglePauseZenWhileSelecting(newValue: boolean = null) {
+    this.toggleSetting(
+      "pauseZenWhileSelectingEnabled",
+      newValue,
+      this.enablePauseZenWhileSelecting.bind(this),
+      this.disablePauseZenWhileSelecting.bind(this)
+    );
+  }
+
   toggleHighlightTypewriterLine(newValue: boolean = null) {
     this.toggleSetting(
       "highlightTypewriterLineEnabled",
@@ -258,6 +269,20 @@ export default class TypewriterModePlugin extends Plugin {
     // remove the class
     document.body.classList.remove(
       "plugin-typewriter-mode-zen-pause-while-scrolling"
+    );
+  }
+
+  private enablePauseZenWhileSelecting() {
+    // add the class
+    document.body.classList.add(
+      "plugin-typewriter-mode-zen-pause-while-selecting"
+    );
+  }
+
+  private disablePauseZenWhileSelecting() {
+    // remove the class
+    document.body.classList.remove(
+      "plugin-typewriter-mode-zen-pause-while-selecting"
     );
   }
 

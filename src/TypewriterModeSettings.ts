@@ -4,6 +4,7 @@ export interface TypewriterModeSettings {
   zenEnabled: boolean;
   zenOpacity: number;
   pauseZenWhileScrollingEnabled: boolean;
+  pauseZenWhileSelectingEnabled: boolean;
   highlightTypewriterLineEnabled: boolean;
   typewriterLineHighlightColor: string;
   typewriterLineHighlightStyle: "box" | "underline";
@@ -16,8 +17,9 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   typewriterOffset: 0.5,
   zenEnabled: false,
   zenOpacity: 0.25,
-  pauseZenWhileScrollingEnabled: false,
-  highlightTypewriterLineEnabled: false,
+  pauseZenWhileScrollingEnabled: true,
+  pauseZenWhileSelectingEnabled: true,
+  highlightTypewriterLineEnabled: true,
   typewriterLineHighlightColor: "#333",
   typewriterLineHighlightStyle: "box",
   typewriterLineHighlightUnderlineThickness: 1,

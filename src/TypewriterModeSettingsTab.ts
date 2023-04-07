@@ -141,15 +141,26 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Pause Zen Mode While Scrolling")
-      .setDesc(
-        "Disables zen mode while scrolling until the text is clicked again"
-      )
+      .setDesc("Disables zen mode while scrolling")
       .setClass("typewriter-mode-setting")
       .addToggle((toggle) =>
         toggle
           .setValue(this.plugin.settings.pauseZenWhileScrollingEnabled)
           .onChange((newValue) => {
             this.plugin.togglePauseZenWhileScrolling(newValue);
+          })
+      )
+      .setDisabled(!this.plugin.settings.zenEnabled);
+
+    new Setting(containerEl)
+      .setName("Pause Zen Mode While Selecting Text")
+      .setDesc("Disables zen mode while selecting text")
+      .setClass("typewriter-mode-setting")
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.pauseZenWhileSelectingEnabled)
+          .onChange((newValue) => {
+            this.plugin.togglePauseZenWhileSelecting(newValue);
           })
       )
       .setDisabled(!this.plugin.settings.zenEnabled);
