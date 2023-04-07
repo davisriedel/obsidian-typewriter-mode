@@ -248,27 +248,12 @@ export default class TypewriterModePlugin extends Plugin {
   private enableTypewriterScroll() {
     // add the class
     document.body.classList.add("plugin-typewriter-mode");
-
-    // register the codemirror add on setting
-    this.registerCodeMirror((cm) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      cm.setOption("typewriterScrolling", true);
-    });
-
     this.reloadCodeMirror();
   }
 
   private disableTypewriterScroll() {
     // remove the class
     document.body.classList.remove("plugin-typewriter-mode");
-
-    // remove the codemirror add on setting
-    this.app.workspace.iterateCodeMirrors((cm) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      cm.setOption("typewriterScrolling", false);
-    });
 
     // clear out the registered extension
     this.editorExtensions.splice(0, this.editorExtensions.length);

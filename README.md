@@ -4,6 +4,10 @@ A plugin for [Obsidian](https://obsidian.md) to enable typewriter-style scrollin
 
 **This plugin is currently in BETA.** _Please feel free to open an issue if you find any bugs._
 
+## Compatibility
+
+This plugin is compatible with Obsidian v0.15.0 and above. It does not support the legacy editor.
+
 ## Installation
 
 To install community plugins make sure `safe mode` is turned off in Obsidian's settings.

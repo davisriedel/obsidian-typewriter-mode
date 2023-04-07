@@ -1,10 +1,10 @@
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
-import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
+import CodeMirrorPluginBaseClass from "@/cm-plugin/CodeMirrorPluginBaseClass";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import { getTypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 
 export default ViewPlugin.fromClass(
-  class extends CodeMirrorPluginClass {
+  class extends CodeMirrorPluginBaseClass {
     private getTypewriterLine(view: EditorView) {
       return view.dom.querySelector(
         "#plugin-typewriter-mode-typewriter-line"
@@ -28,14 +28,27 @@ export default ViewPlugin.fromClass(
       view: EditorView,
       typewriterLine: HTMLElement
     ) {
-      const { lineHeight, offset } = getTypewriterPositionData(view);
-      typewriterLine.style.height = `${lineHeight}px`;
-      typewriterLine.style.top = `${offset}px`;
+      // can't update inside an update, so request the next animation frame
+      window.requestAnimationFrame(() => {
+        const { lineHeight, offset } = getTypewriterPositionData(view);
+        typewriterLine.style.height = `${lineHeight}px`;
+        typewriterLine.style.top = `${offset}px`;
+      });
     }
 
-    override update(update: ViewUpdate) {
-      const typewriterLine = this.getOrAddTypewriterLine(update.view);
-      this.setTypeWriterLinePosition(update.view, typewriterLine);
+    private updateTypewriterLine(view: EditorView) {
+      const typewriterLine = this.getOrAddTypewriterLine(view);
+      this.setTypeWriterLinePosition(view, typewriterLine);
+    }
+
+    protected override onload() {
+      super.onload();
+      this.updateTypewriterLine(this.view);
+    }
+
+    protected override updateAllowedUserEvent(update: ViewUpdate) {
+      super.updateAllowedUserEvent(update);
+      this.updateTypewriterLine(update.view);
     }
   }
 );

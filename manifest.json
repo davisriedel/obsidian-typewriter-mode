@@ -6,5 +6,5 @@
   "description": "Typewriter-style scrolling which keeps the active line at a fixed position.",
   "isDesktopOnly": false,
   "version": "0.0.1",
-  "minAppVersion": "0.10.0"
+  "minAppVersion": "0.15.0"
 }
