@@ -12,7 +12,6 @@ export const pluginSettingsFacet = Facet.define<
     if (values.length === 0) return DEFAULT_SETTINGS;
     return {
       enabled: values[0].enabled,
-      snapTypewriterOnClickEnabled: values[0].snapTypewriterOnClickEnabled,
       zenEnabled: values[0].zenEnabled,
       highlightTypewriterLineEnabled: values[0].highlightTypewriterLineEnabled,
       pauseZenWhileScrollingEnabled: values[0].pauseZenWhileScrollingEnabled,

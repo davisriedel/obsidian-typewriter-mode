@@ -75,25 +75,6 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName("Snap Typewriter On Click")
-      .setDesc(
-        "By default, clicking in the text will snap the typewriter to the clicked line. If this is disabled, the typewriter will only snap when you start typing."
-      )
-      .setClass("typewriter-mode-setting")
-      .addToggle((toggle) =>
-        toggle
-          .setValue(this.plugin.settings.snapTypewriterOnClickEnabled)
-          .onChange((newValue) => {
-            this.plugin.toggleSnapTypewriterOnClick(newValue);
-            this.display();
-          })
-      )
-      .setDisabled(
-        !this.plugin.settings.enabled ||
-          this.plugin.settings.highlightTypewriterLineEnabled
-      );
-
-    new Setting(containerEl)
       .setName("Zen Mode")
       .setDesc("Darkens non-active paragraphs in the editor")
       .setClass("typewriter-mode-setting")

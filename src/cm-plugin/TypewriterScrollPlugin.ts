@@ -1,32 +1,22 @@
-import { EditorState, Transaction } from "@codemirror/state";
+import { Transaction } from "@codemirror/state";
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
 import getTypewriterOffset from "@/cm-plugin/getTypewriterOffset";
-import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
-
-const allowedUserEvents = /^(select|input|delete|undo|redo)(\..+)?$/;
-const disallowedUserEvents = /^(select.pointer)$/;
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginClass {
     private myUpdate = false;
     private topPadding: string = null;
 
-    private isSnapOnClickEnabled(view: EditorView) {
-      const settings = view.state.facet(pluginSettingsFacet);
-      return (
-        settings.snapTypewriterOnClickEnabled ||
-        settings.highlightTypewriterLineEnabled
-      );
+    private userEventAllowed(event: string) {
+      const allowed = /^(select|input|delete|undo|redo)(\..+)?$/;
+      const disallowed = /^(select.pointer)$/;
+      return allowed.test(event) && !disallowed.test(event);
     }
 
-    private userEventsAllowed(userEvents: string[], snapOnClick: boolean) {
+    private userEventsAllowed(userEvents: string[]) {
       return userEvents.reduce<boolean>((result, event) => {
-        if (!result) return false;
-        return (
-          allowedUserEvents.test(event) &&
-          (snapOnClick || !disallowedUserEvents.test(event))
-        );
+        return result && this.userEventAllowed(event);
       }, userEvents.length > 0);
     }
 
@@ -55,37 +45,31 @@ export default ViewPlugin.fromClass(
       );
       if (userEvents.length == 0) {
         // update was not caused by user interaction, the scroll position may have changed
+        document.body.classList.remove("plugin-typewriter-mode-select");
         this.centerOnHead(head, offset);
         return;
       }
 
       // Check if the user interaction is one that should trigger a snap
-      const snapOnClick = this.isSnapOnClickEnabled(update.view);
-      if (!this.userEventsAllowed(userEvents, snapOnClick)) return;
-
-      // The next update to come is from the effect we're about to dispatch
-      this.myUpdate = true;
+      if (!this.userEventsAllowed(userEvents)) {
+        document.body.classList.add("plugin-typewriter-mode-select");
+        return;
+      }
+      document.body.classList.remove("plugin-typewriter-mode-select");
 
       // Only update if the cursor moved
       if (update.state.selection.ranges.length != 1) return;
-      if (!this.hasLineChanged(update)) return;
+      const prevHead = update.startState.selection.main.head;
+      if (head == prevHead) return;
 
       // Place the selection head at the offset
       this.centerOnHead(head, offset);
     }
 
-    private getLineNumber(state: EditorState) {
-      return state.doc.lineAt(state.selection.main.head).number;
-    }
-
-    private hasLineChanged(update: ViewUpdate) {
-      const prevLine = this.getLineNumber(update.startState);
-      const newLine = this.getLineNumber(update.state);
-      return prevLine != newLine;
-    }
-
     private centerOnHead(head: number, offset: number) {
-      console.log("centerOnHead", head, offset);
+      // The next update to come is from the effect we're about to dispatch
+      this.myUpdate = true;
+
       // can't update inside an update, so request the next animation frame
       window.requestAnimationFrame(() => {
         // this is the effect that does the centering

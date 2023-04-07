@@ -20,8 +20,6 @@ export default class TypewriterModePlugin extends Plugin {
 
     // enable the plugin (based on settings)
     if (this.settings.enabled) this.enableTypewriterScroll();
-    if (this.settings.snapTypewriterOnClickEnabled)
-      this.enableSnapTypewriterOnClick();
     if (this.settings.zenEnabled) this.enableZen();
     if (this.settings.highlightTypewriterLineEnabled)
       this.enableHighlightTypewriterLine();
@@ -158,16 +156,6 @@ export default class TypewriterModePlugin extends Plugin {
     );
   }
 
-  toggleSnapTypewriterOnClick(newValue: boolean = null) {
-    this.toggleSetting(
-      "snapTypewriterOnClickEnabled",
-      newValue,
-      this.enableSnapTypewriterOnClick,
-      this.disableSnapTypewriterOnClick,
-      true
-    );
-  }
-
   changeTypewriterOffset = (newValue: number) => {
     this.settings.typewriterOffset = newValue;
     if (this.settings.enabled) this.reloadCodeMirror();
@@ -256,15 +244,5 @@ export default class TypewriterModePlugin extends Plugin {
     }`;
     // save the new settings
     this.saveData(this.settings).then();
-  };
-
-  private enableSnapTypewriterOnClick = () => {
-    // add the class
-    document.body.classList.add("plugin-typewriter-mode-snap-on-click");
-  };
-
-  private disableSnapTypewriterOnClick = () => {
-    // remove the class
-    document.body.classList.remove("plugin-typewriter-mode-snap-on-click");
   };
 }

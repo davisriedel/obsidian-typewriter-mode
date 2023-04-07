@@ -2,14 +2,16 @@ body.plugin-typewriter-mode {
   &.plugin-typewriter-mode-zen {
     &:not(.plugin-typewriter-mode-zen-pause-while-scrolling),
     // prettier-ignore
-    &.plugin-typewriter-mode-zen-pause-while-scrolling:not(.plugin-typewriter-mode-wheel) {
-      // prettier-ignore
-      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline) {
-        opacity: var(--zen-opacity);
-      }
+    &.plugin-typewriter-mode-zen-pause-while-scrolling {
+      &:not(.plugin-typewriter-mode-wheel, .plugin-typewriter-mode-select) {
+        // prettier-ignore
+        .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline) {
+          opacity: var(--zen-opacity);
+        }
 
-      .cm-editor.cm-focused .cm-line:not(.cm-active) {
-        opacity: var(--zen-opacity);
+        .cm-editor.cm-focused .cm-line:not(.cm-active) {
+          opacity: var(--zen-opacity);
+        }
       }
     }
   }
@@ -27,7 +29,7 @@ body.plugin-typewriter-mode {
   }
 
   &.plugin-typewriter-mode-highlight-line {
-    &:not(.plugin-typewriter-mode-wheel) {
+    &:not(.plugin-typewriter-mode-wheel, .plugin-typewriter-mode-select) {
       #plugin-typewriter-mode-typewriter-line {
         display: block;
       }
