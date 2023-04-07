@@ -21,6 +21,9 @@ export const pluginSettingsFacet = Facet.define<
 
       typewriterLineHighlightColor: values[0].typewriterLineHighlightColor,
       typewriterLineHighlightStyle: values[0].typewriterLineHighlightStyle,
+      typewriterLineHighlightUnderlineThickness: Math.min(
+        ...values.map((v) => v.typewriterLineHighlightUnderlineThickness)
+      ),
     };
   },
 });

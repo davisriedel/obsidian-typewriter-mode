@@ -30,10 +30,7 @@ export default class TypewriterModePlugin extends Plugin {
     this.css.id = "plugin-typewriter-scroll";
     this.css.setAttr("type", "text/css");
     document.getElementsByTagName("head")[0].appendChild(this.css);
-    this.css.innerText = `body {
-      --zen-opacity: ${this.settings.zenOpacity};
-      --typewriter-line-color: ${this.settings.typewriterLineHighlightColor};
-    }`;
+    this.setCSSVariables();
 
     // add the settings tab
     this.addSettingTab(new CMTypewriterScrollSettingTab(this.app, this));
@@ -117,6 +114,28 @@ export default class TypewriterModePlugin extends Plugin {
     this.saveData(this.settings).then();
   }
 
+  private setCSSVariables({
+    zenOpacity,
+    typewriterLineHighlightColor,
+    typewriterLineHighlightUnderlineThickness,
+  }: {
+    zenOpacity?: number;
+    typewriterLineHighlightColor?: string;
+    typewriterLineHighlightUnderlineThickness?: number;
+  } = {}) {
+    this.css.innerText = `body {
+      --zen-opacity: ${zenOpacity ?? this.settings.zenOpacity};
+      --typewriter-line-color: ${
+        typewriterLineHighlightColor ??
+        this.settings.typewriterLineHighlightColor
+      };
+      --typewriter-line-underline-thickness: ${
+        typewriterLineHighlightUnderlineThickness ??
+        this.settings.typewriterLineHighlightUnderlineThickness
+      }px;
+    }`;
+  }
+
   toggleTypewriterScroll(newValue: boolean = null) {
     this.toggleSetting(
       "enabled",
@@ -164,27 +183,27 @@ export default class TypewriterModePlugin extends Plugin {
 
   changeZenOpacity(newValue = 0.25) {
     this.settings.zenOpacity = newValue;
-    this.css.innerText = `body {
-      --zen-opacity: ${newValue};
-      --typewriter-line-color: ${this.settings.typewriterLineHighlightColor};
-    }`;
-    // save the new settings
+    this.setCSSVariables({ zenOpacity: newValue });
     this.saveData(this.settings).then();
   }
 
   changeTypewriterLineHighlightColor(newValue: string) {
     this.settings.typewriterLineHighlightColor = newValue;
-    this.css.innerText = `body {
-      --zen-opacity: ${this.settings.zenOpacity};
-      --typewriter-line-color: ${newValue};
-    }`;
-    // save the new settings
+    this.setCSSVariables({ typewriterLineHighlightColor: newValue });
     this.saveData(this.settings).then();
   }
 
   changeTypewriterLineHighlightStyle(newValue: "box" | "underline") {
     this.settings.typewriterLineHighlightStyle = newValue;
     if (this.settings.enabled) this.reloadCodeMirror();
+    this.saveData(this.settings).then();
+  }
+
+  changeTypewriterLineHighlightUnderlineThickness(newValue: number) {
+    this.settings.typewriterLineHighlightUnderlineThickness = newValue;
+    this.setCSSVariables({
+      typewriterLineHighlightUnderlineThickness: newValue,
+    });
     this.saveData(this.settings).then();
   }
 

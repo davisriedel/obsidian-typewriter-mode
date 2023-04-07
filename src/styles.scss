@@ -21,7 +21,6 @@ body.plugin-typewriter-mode {
     position: absolute;
     left: 0;
     width: 100%;
-    box-sizing: content-box;
 
     &.plugin-typewriter-mode-typewriter-line-box {
       background-color: var(--typewriter-line-color);
@@ -29,7 +28,8 @@ body.plugin-typewriter-mode {
     }
 
     &.plugin-typewriter-mode-typewriter-line-underline {
-      border-bottom: 2px solid var(--typewriter-line-color);
+      border-bottom: var(--typewriter-line-underline-thickness) solid
+        var(--typewriter-line-color);
     }
   }
 

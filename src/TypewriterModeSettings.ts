@@ -7,6 +7,7 @@ export interface TypewriterModeSettings {
   highlightTypewriterLineEnabled: boolean;
   typewriterLineHighlightColor: string;
   typewriterLineHighlightStyle: "box" | "underline";
+  typewriterLineHighlightUnderlineThickness: number;
   [key: string]: unknown;
 }
 
@@ -19,4 +20,5 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   highlightTypewriterLineEnabled: false,
   typewriterLineHighlightColor: "#333",
   typewriterLineHighlightStyle: "box",
+  typewriterLineHighlightUnderlineThickness: 1,
 };
