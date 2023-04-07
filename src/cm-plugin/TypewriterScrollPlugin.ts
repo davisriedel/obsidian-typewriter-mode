@@ -25,8 +25,8 @@ export default ViewPlugin.fromClass(
       )[0] as HTMLElement;
       const clientHeight = this.view.contentDOM.clientHeight;
       cmSizer.style.padding = `${clientHeight}px 0`;
-      document.body.classList.remove("plugin-typewriter-mode-select");
-      document.body.classList.remove("plugin-typewriter-mode-wheel");
+      this.view.dom.classList.remove("plugin-typewriter-mode-select");
+      this.view.dom.classList.remove("plugin-typewriter-mode-wheel");
       this.centerOnHead(head, offset);
     }
 
@@ -54,10 +54,10 @@ export default ViewPlugin.fromClass(
 
       // Check if the user interaction is one that should trigger a snap
       if (!this.userEventsAllowed(userEvents)) {
-        document.body.classList.add("plugin-typewriter-mode-select");
+        this.view.dom.classList.add("plugin-typewriter-mode-select");
         return;
       }
-      document.body.classList.remove("plugin-typewriter-mode-select");
+      this.view.dom.classList.remove("plugin-typewriter-mode-select");
 
       // Only update if the cursor moved
       const prevHead = update.startState.selection.main.head;

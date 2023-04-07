@@ -5,16 +5,16 @@ export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginClass {
     constructor(protected override view: EditorView) {
       super(view);
-      view.contentDOM.addEventListener("wheel", this.onWheel);
+      view.contentDOM.addEventListener("wheel", this.onWheel.bind(this));
     }
 
     protected onWheel() {
-      document.body.classList.add("plugin-typewriter-mode-wheel");
+      this.view.dom.classList.add("plugin-typewriter-mode-wheel");
     }
 
     override update(update: ViewUpdate) {
       super.update(update);
-      document.body.classList.remove("plugin-typewriter-mode-wheel");
+      this.view.dom.classList.remove("plugin-typewriter-mode-wheel");
     }
 
     override destroy() {
