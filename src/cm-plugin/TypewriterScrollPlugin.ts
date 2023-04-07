@@ -6,7 +6,6 @@ import { getTypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginClass {
     private myUpdate = false;
-    private topPadding: string = null;
 
     private userEventAllowed(event: string) {
       const allowed = /^(select|input|delete|undo|redo)(\..+)?$/;
@@ -21,31 +20,30 @@ export default ViewPlugin.fromClass(
     }
 
     override update(update: ViewUpdate) {
-      const { offset } = getTypewriterPositionData(update.view);
-
-      // update the padding
-      this.topPadding = offset + "px";
-      if (this.topPadding != this.view.contentDOM.style.paddingTop) {
-        this.view.contentDOM.style.paddingTop = this.topPadding;
-        this.view.contentDOM.style.paddingBottom = `${
-          update.view.dom.clientHeight - offset
-        }px`;
-      }
-
       // Ignore updates that are caused by this plugin
       if (this.myUpdate) {
         this.myUpdate = false;
         return;
       }
 
+      // Only continue if cursor is placed
+      if (update.state.selection.ranges.length != 1) return;
       const head = update.state.selection.main.head;
+
+      const { offset } = getTypewriterPositionData(update.view);
 
       const userEvents = update.transactions.map((tr) =>
         tr.annotation(Transaction.userEvent)
       );
       if (userEvents.length == 0) {
-        // update was not caused by user interaction, the scroll position may have changed
+        // update was not caused by user interaction, but the size of the editor might have changed
+        const cmSizer = this.view.dom.getElementsByClassName(
+          "cm-sizer"
+        )[0] as HTMLElement;
+        const clientHeight = update.view.dom.clientHeight;
+        cmSizer.style.padding = `${clientHeight}px 0`;
         document.body.classList.remove("plugin-typewriter-mode-select");
+        document.body.classList.remove("plugin-typewriter-mode-wheel");
         this.centerOnHead(head, offset);
         return;
       }
@@ -58,7 +56,6 @@ export default ViewPlugin.fromClass(
       document.body.classList.remove("plugin-typewriter-mode-select");
 
       // Only update if the cursor moved
-      if (update.state.selection.ranges.length != 1) return;
       const prevHead = update.startState.selection.main.head;
       if (head == prevHead) return;
 
