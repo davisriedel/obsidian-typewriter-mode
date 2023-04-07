@@ -81,7 +81,7 @@ export default class TypewriterModePlugin extends Plugin {
     });
   }
 
-  private reloadCodeMirror = () => {
+  private reloadCodeMirror() {
     if (this.editorExtensions.length !== 0) {
       // remove everything
       this.editorExtensions.splice(0, this.editorExtensions.length);
@@ -98,7 +98,7 @@ export default class TypewriterModePlugin extends Plugin {
     ];
     this.editorExtensions.push(extensions);
     this.app.workspace.updateOptions();
-  };
+  }
 
   private toggleSetting(
     setting: keyof typeof this.settings,
@@ -121,8 +121,8 @@ export default class TypewriterModePlugin extends Plugin {
     this.toggleSetting(
       "enabled",
       newValue,
-      this.enableTypewriterScroll,
-      this.disableTypewriterScroll,
+      this.enableTypewriterScroll.bind(this),
+      this.disableTypewriterScroll.bind(this),
       true
     );
   }
@@ -131,8 +131,8 @@ export default class TypewriterModePlugin extends Plugin {
     this.toggleSetting(
       "zenEnabled",
       newValue,
-      this.enableZen,
-      this.disableZen,
+      this.enableZen.bind(this),
+      this.disableZen.bind(this),
       true
     );
   }
@@ -141,8 +141,8 @@ export default class TypewriterModePlugin extends Plugin {
     this.toggleSetting(
       "pauseZenWhileScrollingEnabled",
       newValue,
-      this.enablePauseZenWhileScrolling,
-      this.disablePauseZenWhileScrolling
+      this.enablePauseZenWhileScrolling.bind(this),
+      this.disablePauseZenWhileScrolling.bind(this)
     );
   }
 
@@ -150,19 +150,19 @@ export default class TypewriterModePlugin extends Plugin {
     this.toggleSetting(
       "highlightTypewriterLineEnabled",
       newValue,
-      this.enableHighlightTypewriterLine,
-      this.disableHighlightTypewriterLine,
+      this.enableHighlightTypewriterLine.bind(this),
+      this.disableHighlightTypewriterLine.bind(this),
       true
     );
   }
 
-  changeTypewriterOffset = (newValue: number) => {
+  changeTypewriterOffset(newValue: number) {
     this.settings.typewriterOffset = newValue;
     if (this.settings.enabled) this.reloadCodeMirror();
     this.saveData(this.settings).then();
-  };
+  }
 
-  changeZenOpacity = (newValue = 0.25) => {
+  changeZenOpacity(newValue = 0.25) {
     this.settings.zenOpacity = newValue;
     this.css.innerText = `body {
       --zen-opacity: ${newValue};
@@ -170,9 +170,25 @@ export default class TypewriterModePlugin extends Plugin {
     }`;
     // save the new settings
     this.saveData(this.settings).then();
-  };
+  }
 
-  private enableTypewriterScroll = () => {
+  changeTypewriterLineHighlightColor(newValue: string) {
+    this.settings.typewriterLineHighlightColor = newValue;
+    this.css.innerText = `body {
+      --zen-opacity: ${this.settings.zenOpacity};
+      --typewriter-line-color: ${newValue};
+    }`;
+    // save the new settings
+    this.saveData(this.settings).then();
+  }
+
+  changeTypewriterLineHighlightStyle(newValue: "box" | "underline") {
+    this.settings.typewriterLineHighlightStyle = newValue;
+    if (this.settings.enabled) this.reloadCodeMirror();
+    this.saveData(this.settings).then();
+  }
+
+  private enableTypewriterScroll() {
     // add the class
     document.body.classList.add("plugin-typewriter-mode");
 
@@ -184,9 +200,9 @@ export default class TypewriterModePlugin extends Plugin {
     });
 
     this.reloadCodeMirror();
-  };
+  }
 
-  private disableTypewriterScroll = () => {
+  private disableTypewriterScroll() {
     // remove the class
     document.body.classList.remove("plugin-typewriter-mode");
 
@@ -200,49 +216,39 @@ export default class TypewriterModePlugin extends Plugin {
     // clear out the registered extension
     this.editorExtensions.splice(0, this.editorExtensions.length);
     this.app.workspace.updateOptions();
-  };
+  }
 
-  private enableZen = () => {
+  private enableZen() {
     // add the class
     document.body.classList.add("plugin-typewriter-mode-zen");
-  };
+  }
 
-  private disableZen = () => {
+  private disableZen() {
     // remove the class
     document.body.classList.remove("plugin-typewriter-mode-zen");
-  };
+  }
 
-  private enablePauseZenWhileScrolling = () => {
+  private enablePauseZenWhileScrolling() {
     // add the class
     document.body.classList.add(
       "plugin-typewriter-mode-zen-pause-while-scrolling"
     );
-  };
+  }
 
-  private disablePauseZenWhileScrolling = () => {
+  private disablePauseZenWhileScrolling() {
     // remove the class
     document.body.classList.remove(
       "plugin-typewriter-mode-zen-pause-while-scrolling"
     );
-  };
+  }
 
-  private enableHighlightTypewriterLine = () => {
+  private enableHighlightTypewriterLine() {
     // add the class
     document.body.classList.add("plugin-typewriter-mode-highlight-line");
-  };
+  }
 
-  private disableHighlightTypewriterLine = () => {
+  private disableHighlightTypewriterLine() {
     // remove the class
     document.body.classList.remove("plugin-typewriter-mode-highlight-line");
-  };
-
-  changeTypewriterLineHighlightColor = (newValue: string) => {
-    this.settings.typewriterLineHighlightColor = newValue;
-    this.css.innerText = `body {
-      --zen-opacity: ${this.settings.zenOpacity};
-      --typewriter-line-color: ${newValue};
-    }`;
-    // save the new settings
-    this.saveData(this.settings).then();
-  };
+  }
 }

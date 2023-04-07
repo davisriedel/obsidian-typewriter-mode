@@ -75,6 +75,22 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
+      .setName("Typewriter Line Highlight Style")
+      .setDesc("The style of the typewriter line highlight")
+      .setClass("typewriter-mode-setting")
+      .addDropdown((dropdown) =>
+        dropdown
+          .addOption("box", "Box")
+          .addOption("underline", "Underline")
+          .setValue(this.plugin.settings.typewriterLineHighlightStyle)
+          .onChange((newValue) => {
+            this.plugin.changeTypewriterLineHighlightStyle(
+              newValue as "box" | "underline"
+            );
+          })
+      );
+
+    new Setting(containerEl)
       .setName("Zen Mode")
       .setDesc("Darkens non-active paragraphs in the editor")
       .setClass("typewriter-mode-setting")

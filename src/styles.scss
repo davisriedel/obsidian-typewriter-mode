@@ -21,11 +21,18 @@ body.plugin-typewriter-mode {
     position: fixed;
     left: 0;
     width: 100%;
-    background-color: var(--typewriter-line-color);
-    mix-blend-mode: screen;
     box-sizing: content-box;
     padding-top: 2px;
     padding-bottom: 2px;
+
+    &.plugin-typewriter-mode-typewriter-line-box {
+      background-color: var(--typewriter-line-color);
+      mix-blend-mode: screen;
+    }
+
+    &.plugin-typewriter-mode-typewriter-line-underline {
+      border-bottom: 2px solid var(--typewriter-line-color);
+    }
   }
 
   &.plugin-typewriter-mode-highlight-line {

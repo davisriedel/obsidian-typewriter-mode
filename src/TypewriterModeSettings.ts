@@ -6,6 +6,7 @@ export interface TypewriterModeSettings {
   pauseZenWhileScrollingEnabled: boolean;
   highlightTypewriterLineEnabled: boolean;
   typewriterLineHighlightColor: string;
+  typewriterLineHighlightStyle: "box" | "underline";
   [key: string]: unknown;
 }
 
@@ -17,4 +18,5 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   pauseZenWhileScrollingEnabled: false,
   highlightTypewriterLineEnabled: false,
   typewriterLineHighlightColor: "#333",
+  typewriterLineHighlightStyle: "box",
 };

@@ -20,6 +20,7 @@ export const pluginSettingsFacet = Facet.define<
       zenOpacity: Math.min(...values.map((v) => v.zenOpacity)),
 
       typewriterLineHighlightColor: values[0].typewriterLineHighlightColor,
+      typewriterLineHighlightStyle: values[0].typewriterLineHighlightStyle,
     };
   },
 });

@@ -1,6 +1,7 @@
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import getTypewriterOffset from "@/cm-plugin/getTypewriterOffset";
 import CodeMirrorPluginClass from "@/cm-plugin/CodeMirrorPluginClass";
+import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginClass {
@@ -18,6 +19,8 @@ export default ViewPlugin.fromClass(
         typewriterLine.id = "plugin-typewriter-mode-typewriter-line";
         view.contentDOM.appendChild(typewriterLine);
       }
+      const settings = view.state.facet(pluginSettingsFacet);
+      typewriterLine.className = `plugin-typewriter-mode-typewriter-line-${settings.typewriterLineHighlightStyle}`;
       return typewriterLine;
     }
 
