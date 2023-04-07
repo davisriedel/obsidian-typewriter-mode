@@ -56,7 +56,7 @@ export default class TypewriterModePlugin extends Plugin {
     // add the toggle on/off command
     this.addCommand({
       id: "toggle-typewriter-scroll",
-      name: "Toggle On/Off",
+      name: "Toggle Typewriter Mode On/Off",
       callback: () => {
         this.toggleTypewriterScroll();
       },
