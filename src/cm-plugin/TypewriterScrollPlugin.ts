@@ -19,15 +19,22 @@ export default ViewPlugin.fromClass(
       }, userEvents.length > 0);
     }
 
-    private onExternalEditorChange(head: number, offset: number) {
-      const cmSizer = this.view.dom.getElementsByClassName(
-        "cm-sizer"
-      )[0] as HTMLElement;
-      const clientHeight = this.view.contentDOM.clientHeight;
-      cmSizer.style.padding = `${clientHeight}px 0`;
-      this.view.dom.classList.remove("plugin-typewriter-mode-select");
-      this.view.dom.classList.remove("plugin-typewriter-mode-wheel");
-      this.centerOnHead(head, offset);
+    private setPadding() {
+      this.view.requestMeasure({
+        read: (view) => {
+          const cmSizer = view.dom.getElementsByClassName(
+            "cm-sizer"
+          )[0] as HTMLElement;
+          const clientHeight = view.contentDOM.clientHeight;
+          if (clientHeight == 0) return;
+          cmSizer.style.padding = `${clientHeight}px 0`;
+        },
+      });
+    }
+
+    constructor(protected override view: EditorView) {
+      super(view);
+      this.setPadding();
     }
 
     override update(update: ViewUpdate) {
@@ -41,39 +48,38 @@ export default ViewPlugin.fromClass(
       if (update.state.selection.ranges.length != 1) return;
       const head = update.state.selection.main.head;
 
-      const { offset } = getTypewriterPositionData(update.view);
-
+      // Get the user events
       const userEvents = update.transactions
         .map((tr) => tr.annotation(Transaction.userEvent))
         .filter((event) => event !== undefined);
-      if (userEvents.length == 0) {
-        // update was not caused by user interaction, but the size of the editor might have changed
-        this.onExternalEditorChange(head, offset);
+
+      // If the editor geometry changed without user interaction, re-center the cursor
+      if (userEvents.length == 0 && !update.selectionSet) {
+        this.view.dom.classList.remove("plugin-typewriter-mode-select");
+        this.view.dom.classList.remove("plugin-typewriter-mode-wheel");
+        this.centerOnHead(head);
         return;
       }
 
       // Check if the user interaction is one that should trigger a snap
-      if (!this.userEventsAllowed(userEvents)) {
+      if (!this.userEventsAllowed(userEvents) && update.selectionSet) {
         this.view.dom.classList.add("plugin-typewriter-mode-select");
         return;
       }
       this.view.dom.classList.remove("plugin-typewriter-mode-select");
 
-      // Only update if the cursor moved
-      const prevHead = update.startState.selection.main.head;
-      if (head == prevHead) return;
-
       // Place the selection head at the offset
-      this.centerOnHead(head, offset);
+      this.centerOnHead(head);
     }
 
-    private centerOnHead(head: number, offset: number) {
+    private centerOnHead(head: number) {
       // The next update to come is from the effect we're about to dispatch
       this.myUpdate = true;
 
       // can't update inside an update, so request the next animation frame
       window.requestAnimationFrame(() => {
         // this is the effect that does the centering
+        const { offset } = getTypewriterPositionData(this.view);
         const effect = EditorView.scrollIntoView(head, {
           y: "start",
           yMargin: offset,
