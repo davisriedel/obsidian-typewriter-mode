@@ -23,6 +23,7 @@ body.plugin-typewriter-mode {
     position: absolute;
     left: 0;
     width: 100%;
+    pointer-events: none;
 
     &.plugin-typewriter-mode-typewriter-line-box {
       background-color: var(--typewriter-line-color);
