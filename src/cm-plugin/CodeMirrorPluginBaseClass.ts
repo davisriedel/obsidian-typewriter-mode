@@ -5,9 +5,12 @@ import { Transaction } from "@codemirror/state";
 
 export default abstract class CodeMirrorPluginBaseClass {
   private internalUpdate = false;
+  private domResizeObserver: ResizeObserver;
 
   constructor(protected view: EditorView) {
-    this.onload();
+    this.onLoad();
+    this.domResizeObserver = new ResizeObserver(this.onResize.bind(this));
+    this.domResizeObserver.observe(this.view.dom);
   }
 
   private userEventAllowed(event: string) {
@@ -34,7 +37,10 @@ export default abstract class CodeMirrorPluginBaseClass {
     }
 
     const userEventsAllowed = this.userEventsAllowed(update);
-    if (userEventsAllowed === null) return;
+    if (userEventsAllowed === null) {
+      this.updateNonUserEvent(update);
+      return;
+    }
 
     this.internalUpdate = true;
     userEventsAllowed
@@ -42,9 +48,13 @@ export default abstract class CodeMirrorPluginBaseClass {
       : this.updateDisallowedUserEvent(update);
   }
 
-  protected onload() {}
+  protected onLoad() {}
   protected updateAllowedUserEvent(update: ViewUpdate) {}
   protected updateDisallowedUserEvent(update: ViewUpdate) {}
+  protected updateNonUserEvent(update: ViewUpdate) {}
+  protected onResize() {}
 
-  destroy() {}
+  destroy() {
+    this.domResizeObserver.disconnect();
+  }
 }

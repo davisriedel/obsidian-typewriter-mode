@@ -3,7 +3,7 @@ import CodeMirrorPluginBaseClass from "@/cm-plugin/CodeMirrorPluginBaseClass";
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginBaseClass {
-    protected override onload() {
+    protected override onLoad() {
       this.view.contentDOM.addEventListener("wheel", this.onWheel.bind(this));
     }
 

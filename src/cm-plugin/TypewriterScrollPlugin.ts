@@ -16,7 +16,7 @@ export default ViewPlugin.fromClass(
       });
     }
 
-    protected override onload() {
+    protected override onLoad() {
       this.setPadding();
       this.view.dom.classList.remove("plugin-typewriter-mode-select");
       const head = this.view.state.selection.main.head;
@@ -24,6 +24,7 @@ export default ViewPlugin.fromClass(
     }
 
     protected override updateAllowedUserEvent(update: ViewUpdate) {
+      super.updateAllowedUserEvent(update);
       this.view.dom.classList.remove("plugin-typewriter-mode-select");
       if (update.state.selection.ranges.length != 1) return;
       const head = update.state.selection.main.head;
@@ -32,8 +33,15 @@ export default ViewPlugin.fromClass(
       this.centerOnHead(head);
     }
 
-    protected override updateDisallowedUserEvent(_update: ViewUpdate) {
+    protected override updateDisallowedUserEvent(update: ViewUpdate) {
+      super.updateDisallowedUserEvent(update);
       this.view.dom.classList.add("plugin-typewriter-mode-select");
+    }
+
+    protected override onResize() {
+      super.onResize();
+      const head = this.view.state.selection.main.head;
+      this.centerOnHead(head);
     }
 
     private centerOnHead(head: number) {

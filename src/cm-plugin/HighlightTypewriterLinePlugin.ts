@@ -36,19 +36,19 @@ export default ViewPlugin.fromClass(
       });
     }
 
-    private updateTypewriterLine(view: EditorView) {
-      const typewriterLine = this.getOrAddTypewriterLine(view);
-      this.setTypeWriterLinePosition(view, typewriterLine);
+    private updateTypewriterLine() {
+      const typewriterLine = this.getOrAddTypewriterLine(this.view);
+      this.setTypeWriterLinePosition(this.view, typewriterLine);
     }
 
-    protected override onload() {
-      super.onload();
-      this.updateTypewriterLine(this.view);
+    protected override onLoad() {
+      super.onLoad();
+      this.updateTypewriterLine();
     }
 
     protected override updateAllowedUserEvent(update: ViewUpdate) {
       super.updateAllowedUserEvent(update);
-      this.updateTypewriterLine(update.view);
+      this.updateTypewriterLine();
     }
   }
 );
