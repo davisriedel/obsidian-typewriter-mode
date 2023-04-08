@@ -111,6 +111,8 @@ export default class TypewriterModePlugin extends Plugin {
       this.enablePauseZenWhileScrolling();
     if (this.settings.pauseZenWhileSelectingEnabled)
       this.enablePauseZenWhileSelecting();
+    if (this.settings.maxCharsPerLineEnabled) this.enableMaxCharsPerLine();
+
     this.setCSSVariables();
   }
 
@@ -125,10 +127,12 @@ export default class TypewriterModePlugin extends Plugin {
     zenOpacity,
     typewriterLineHighlightColor,
     typewriterLineHighlightUnderlineThickness,
+    maxCharsPerLine,
   }: {
     zenOpacity?: number;
     typewriterLineHighlightColor?: string;
     typewriterLineHighlightUnderlineThickness?: number;
+    maxCharsPerLine?: number;
   } = {}) {
     this.css.innerText = `body {
       --zen-opacity: ${zenOpacity ?? this.settings.zenOpacity};
@@ -140,6 +144,9 @@ export default class TypewriterModePlugin extends Plugin {
         typewriterLineHighlightUnderlineThickness ??
         this.settings.typewriterLineHighlightUnderlineThickness
       }px;
+      --max-chars-per-line: ${
+        maxCharsPerLine ?? this.settings.maxCharsPerLine
+      }ch;
     }`;
   }
 
@@ -211,6 +218,22 @@ export default class TypewriterModePlugin extends Plugin {
       this.disableHighlightTypewriterLineOnlyInActiveEditor.bind(this),
       true
     );
+  }
+
+  toggleMaxCharsPerLine(newValue: boolean = null) {
+    this.toggleSetting(
+      "maxCharsPerLineEnabled",
+      newValue,
+      this.enableMaxCharsPerLine.bind(this),
+      this.disableMaxCharsPerLine.bind(this),
+      true
+    );
+  }
+
+  changeMaxCharsPerLine(newValue: number) {
+    this.settings.maxCharsPerLine = newValue;
+    this.setCSSVariables({ maxCharsPerLine: newValue });
+    this.saveData(this.settings).then();
   }
 
   changeTypewriterOffset(newValue: number) {
@@ -334,5 +357,15 @@ export default class TypewriterModePlugin extends Plugin {
     document.body.classList.remove(
       "plugin-typewriter-mode-highlight-line-only-in-active-editor"
     );
+  }
+
+  private enableMaxCharsPerLine() {
+    // add the class
+    document.body.classList.add("plugin-typewriter-mode-max-chars-per-line");
+  }
+
+  private disableMaxCharsPerLine() {
+    // remove the class
+    document.body.classList.remove("plugin-typewriter-mode-max-chars-per-line");
   }
 }

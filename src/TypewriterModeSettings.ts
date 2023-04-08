@@ -1,6 +1,8 @@
 export interface TypewriterModeSettings {
   enabled: boolean;
   typewriterOffset: number;
+  maxCharsPerLineEnabled: boolean;
+  maxCharsPerLine: number;
   zenEnabled: boolean;
   zenOnlyInActiveEditorEnabled: boolean;
   zenOpacity: number;
@@ -17,6 +19,8 @@ export interface TypewriterModeSettings {
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   enabled: true,
   typewriterOffset: 0.5,
+  maxCharsPerLineEnabled: false,
+  maxCharsPerLine: 64,
   zenEnabled: false,
   zenOnlyInActiveEditorEnabled: false,
   zenOpacity: 0.25,

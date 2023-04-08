@@ -43,6 +43,32 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       .setDisabled(!this.plugin.settings.enabled);
 
     new Setting(containerEl)
+      .setName("Limit Maximum Number of Characters Per Line")
+      .setDesc("Limits the maximum number of characters per line")
+      .setClass("typewriter-mode-setting")
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.maxCharsPerLineEnabled)
+          .onChange((newValue) => {
+            this.plugin.toggleMaxCharsPerLine(newValue);
+            this.display();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName("Maximum Number of Characters Per Line")
+      .setDesc("The maximum number of characters per line")
+      .setClass("typewriter-mode-setting")
+      .addText((text) =>
+        text
+          .setValue(this.plugin.settings.maxCharsPerLine.toString())
+          .onChange((newValue) => {
+            this.plugin.changeMaxCharsPerLine(parseInt(newValue));
+          })
+      )
+      .setDisabled(!this.plugin.settings.maxCharsPerLineEnabled);
+
+    new Setting(containerEl)
       .setName("Highlight Typewriter Line")
       .setDesc(
         "Highlights the line that the typewriter is currently on in the editor"

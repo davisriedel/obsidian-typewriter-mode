@@ -73,6 +73,13 @@ body.plugin-typewriter-mode {
       }
     }
   }
+
+  &.plugin-typewriter-mode-max-chars-per-line {
+    .cm-sizer {
+      max-width: var(--max-chars-per-line);
+      margin: auto;
+    }
+  }
 }
 
 .typewriter-mode-setting.setting-item.is-disabled {
