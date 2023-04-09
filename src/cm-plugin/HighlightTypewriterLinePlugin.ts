@@ -42,15 +42,13 @@ export default ViewPlugin.fromClass(
     protected override onLoad() {
       super.onLoad();
 
+      window.addEventListener(
+        "moveByCommand",
+        this.updateTypewriterLine.bind(this)
+      );
       const { isTypewriterOnlyUseCommandsEnabled } =
         this.view.state.facet(pluginSettingsFacet);
-      if (isTypewriterOnlyUseCommandsEnabled) {
-        window.addEventListener(
-          "moveByCommand",
-          this.updateTypewriterLine.bind(this)
-        );
-        return;
-      }
+      if (isTypewriterOnlyUseCommandsEnabled) return;
 
       this.updateTypewriterLine();
     }
@@ -67,13 +65,10 @@ export default ViewPlugin.fromClass(
 
     override destroy() {
       super.destroy();
-      const { isTypewriterOnlyUseCommandsEnabled } =
-        this.view.state.facet(pluginSettingsFacet);
-      if (isTypewriterOnlyUseCommandsEnabled)
-        window.removeEventListener(
-          "moveByCommand",
-          this.updateTypewriterLine.bind(this)
-        );
+      window.removeEventListener(
+        "moveByCommand",
+        this.updateTypewriterLine.bind(this)
+      );
     }
   }
 );

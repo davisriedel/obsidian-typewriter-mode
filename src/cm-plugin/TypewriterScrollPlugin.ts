@@ -20,12 +20,10 @@ export default ViewPlugin.fromClass(
     protected override onLoad() {
       this.setPadding();
 
+      window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
       const { isTypewriterOnlyUseCommandsEnabled } =
         this.view.state.facet(pluginSettingsFacet);
-      if (isTypewriterOnlyUseCommandsEnabled) {
-        window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
-        return;
-      }
+      if (isTypewriterOnlyUseCommandsEnabled) return;
 
       this.view.dom.classList.remove("ptm-select");
       const head = this.view.state.selection.main.head;
@@ -34,13 +32,10 @@ export default ViewPlugin.fromClass(
 
     override destroy() {
       super.destroy();
-      const { isTypewriterOnlyUseCommandsEnabled } =
-        this.view.state.facet(pluginSettingsFacet);
-      if (isTypewriterOnlyUseCommandsEnabled)
-        window.removeEventListener(
-          "moveByCommand",
-          this.moveByCommand.bind(this)
-        );
+      window.removeEventListener(
+        "moveByCommand",
+        this.moveByCommand.bind(this)
+      );
     }
 
     protected override updateAllowedUserEvent(update: ViewUpdate) {
