@@ -1,8 +1,15 @@
 # Typewriter Mode for Obsidian
 
-A plugin for [Obsidian](https://obsidian.md) to enable typewriter-style scrolling, which keeps the active line at a fixed position.
-
 **This plugin is currently in BETA.** _Please feel free to open an issue if you find any bugs._
+
+## Features
+- **Typewriter scrolling:** While writing, the cursor will stay at a fixed percentage of the screen
+- **Highlight typewriter line:** The typewriter line to which the cursor is fixed can be highlighted
+- **Limit maximum number of characters per line**
+- **Dim unfocused paragraphs**: All paragraphs but the one containing the cursor will be dimmed
+- **Fullscreen writing focus**: Opens the editor in fullscreen, hiding everything but the text
+
+*Each of those features have several settings that allow you to customize them to your needs.*
 
 ## Compatibility
 
@@ -10,7 +17,7 @@ This plugin is compatible with Obsidian v0.15.0 and above. It does not support t
 
 ## Installation
 
-To install community plugins make sure `safe mode` is turned off in Obsidian's settings.
+To install community plugins make sure *safe mode* is turned off in Obsidian's settings.
 
 ### From within Obsidian
 
@@ -29,10 +36,9 @@ You can activate this plugin within Obsidian by doing the following:
 
 #### Manual
 
-- Download the latest Release from the Releases section of the GitHub Repository
-- Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`  
-  Note: On some machines the `.obsidian` folder may be hidden. On macOS you should be able to press `Command+Shift+Dot` to show the folder in Finder.
-- Reload Obsidian
+1. Download the latest Release from the Releases section of the GitHub Repository
+2. Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`. *Note: On some machines the `.obsidian` folder may be hidden. On macOS you should be able to press `Command+Shift+Dot` to show the folder in Finder.*
+3. Reload Obsidian
 
 #### With BRAT
 
@@ -40,8 +46,7 @@ Follow the instructions in the repository of the [BRAT plugin](https://github.co
 
 ## Derived from
 
-This plugin started as a fork of the incredible [Typewriter Scroll](https://github.com/deathau/cm-typewriter-scroll-obsidian) plugin by [deathau](https://github.com/deathau). It was turned into a separate plugin because the code and tooling was restructured quite a lot and several breaking changes were introduced.
-The plugin also contains code adapted from [this repository](https://github.com/azu/codemirror-typewriter-scrolling/blob/b0ac076d72c9445c96182de87d974de2e8cc56e2/typewriter-scrolling.js).
+This plugin started as a fork of the incredible [Typewriter Scroll](https://github.com/deathau/cm-typewriter-scroll-obsidian) plugin by [deathau](https://github.com/deathau). It was turned into a separate plugin because many new features were added, breaking changes were introduced, and the code was completely restructured to make it more extensible.
 
 ## Development
 
