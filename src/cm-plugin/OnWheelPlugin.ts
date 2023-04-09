@@ -8,12 +8,12 @@ export default ViewPlugin.fromClass(
     }
 
     protected onWheel() {
-      this.view.dom.classList.add("plugin-typewriter-mode-wheel");
+      this.view.dom.classList.add("ptm-wheel");
     }
 
     protected override updateAllowedUserEvent(update: ViewUpdate) {
       super.updateAllowedUserEvent(update);
-      this.view.dom.classList.remove("plugin-typewriter-mode-wheel");
+      this.view.dom.classList.remove("ptm-wheel");
     }
 
     override destroy() {

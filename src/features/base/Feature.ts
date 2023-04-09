@@ -1,8 +1,9 @@
 import { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import TypewriterModePlugin from "@/TypewriterModePlugin";
 import { PluginSettingTab } from "obsidian";
+import Loadable from "@/features/base/Loadable";
 
-export abstract class Feature {
+export abstract class Feature implements Loadable {
   protected abstract setting: keyof TypewriterModeSettings;
 
   constructor(protected plugin: TypewriterModePlugin) {}

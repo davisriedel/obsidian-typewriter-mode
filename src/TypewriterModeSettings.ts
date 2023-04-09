@@ -1,34 +1,38 @@
 export interface TypewriterModeSettings {
-  enabled: boolean;
+  isTypewriterScrollEnabled: boolean;
   typewriterOffset: number;
-  maxCharsPerLineEnabled: boolean;
+  isMaxCharsPerLineEnabled: boolean;
   maxCharsPerLine: number;
-  zenEnabled: boolean;
-  zenOnlyInActiveEditorEnabled: boolean;
-  zenOpacity: number;
-  pauseZenWhileScrollingEnabled: boolean;
-  pauseZenWhileSelectingEnabled: boolean;
-  highlightTypewriterLineEnabled: boolean;
-  highlightTypewriterLineOnlyInActiveEditorEnabled: boolean;
+  isDimUnfocusedParagraphsEnabled: boolean;
+  isDimUnfocusedParagraphsOnlyInFocusedEditorEnabled: boolean;
+  dimmedParagraphsOpacity: number;
+  isPauseDimUnfocusedParagraphsWhileScrollingEnabled: boolean;
+  isPauseDimUnfocusedParagraphsWhileSelectingEnabled: boolean;
+  isHighlightTypewriterLineEnabled: boolean;
+  isHighlightTypewriterLineOnlyInFocusedEditorEnabled: boolean;
   typewriterLineHighlightColor: string;
   typewriterLineHighlightStyle: "box" | "underline";
   typewriterLineHighlightUnderlineThickness: number;
+  doesFullscreenWritingFocusShowHeader: boolean;
+  doesFullscreenWritingFocusShowVignette: boolean;
   [key: string]: unknown;
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
-  enabled: true,
+  isTypewriterScrollEnabled: true,
   typewriterOffset: 0.5,
-  maxCharsPerLineEnabled: false,
+  isMaxCharsPerLineEnabled: false,
   maxCharsPerLine: 64,
-  zenEnabled: false,
-  zenOnlyInActiveEditorEnabled: false,
-  zenOpacity: 0.25,
-  pauseZenWhileScrollingEnabled: true,
-  pauseZenWhileSelectingEnabled: true,
-  highlightTypewriterLineEnabled: true,
-  highlightTypewriterLineOnlyInActiveEditorEnabled: false,
+  isDimUnfocusedParagraphsEnabled: false,
+  isDimUnfocusedParagraphsOnlyInFocusedEditorEnabled: false,
+  dimmedParagraphsOpacity: 0.25,
+  isPauseDimUnfocusedParagraphsWhileScrollingEnabled: true,
+  isPauseDimUnfocusedParagraphsWhileSelectingEnabled: true,
+  isHighlightTypewriterLineEnabled: true,
+  isHighlightTypewriterLineOnlyInFocusedEditorEnabled: false,
   typewriterLineHighlightColor: "#333",
   typewriterLineHighlightStyle: "box",
   typewriterLineHighlightUnderlineThickness: 1,
+  doesFullscreenWritingFocusShowHeader: false,
+  doesFullscreenWritingFocusShowVignette: true,
 };

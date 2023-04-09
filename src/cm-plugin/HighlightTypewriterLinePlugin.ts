@@ -6,9 +6,7 @@ import { getTypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginBaseClass {
     private getTypewriterLine(view: EditorView) {
-      return view.dom.querySelector(
-        "#plugin-typewriter-mode-typewriter-line"
-      ) as HTMLElement;
+      return view.dom.querySelector("#ptm-typewriter-line") as HTMLElement;
     }
 
     private getOrAddTypewriterLine(view: EditorView) {
@@ -16,11 +14,11 @@ export default ViewPlugin.fromClass(
       if (typewriterLine == null) {
         // create the typewriter line
         typewriterLine = document.createElement("div");
-        typewriterLine.id = "plugin-typewriter-mode-typewriter-line";
+        typewriterLine.id = "ptm-typewriter-line";
         view.dom.appendChild(typewriterLine);
       }
       const settings = view.state.facet(pluginSettingsFacet);
-      typewriterLine.className = `plugin-typewriter-mode-typewriter-line-${settings.typewriterLineHighlightStyle}`;
+      typewriterLine.className = `ptm-typewriter-line-${settings.typewriterLineHighlightStyle}`;
       return typewriterLine;
     }
 
@@ -48,6 +46,11 @@ export default ViewPlugin.fromClass(
 
     protected override updateAllowedUserEvent(update: ViewUpdate) {
       super.updateAllowedUserEvent(update);
+      this.updateTypewriterLine();
+    }
+
+    protected override onResize() {
+      super.onResize();
       this.updateTypewriterLine();
     }
   }

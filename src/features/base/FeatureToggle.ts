@@ -1,7 +1,8 @@
 import { PluginSettingTab, Setting } from "obsidian";
-import { Feature } from "@/features/Feature";
+import { Feature } from "@/features/base/Feature";
 
 export abstract class FeatureToggle extends Feature {
+  protected toggleClass: string | null = null;
   protected abstract requiresReload: boolean;
   protected abstract hasCommand: boolean;
   protected commandTitle?: string;
@@ -55,10 +56,12 @@ export abstract class FeatureToggle extends Feature {
   }
 
   override enable() {
+    if (this.toggleClass) document.body.classList.add(this.toggleClass);
     this.reloadIfRequired();
   }
 
   override disable() {
+    if (this.toggleClass) document.body.classList.remove(this.toggleClass);
     this.reloadIfRequired();
   }
 

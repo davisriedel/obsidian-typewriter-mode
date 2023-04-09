@@ -10,20 +10,24 @@ import HighlightTypewriterLinePlugin from "@/cm-plugin/HighlightTypewriterLinePl
 import OnWheelPlugin from "@/cm-plugin/OnWheelPlugin";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import HighlightTypewriterLine from "@/features/HighlightTypewriterLine";
-import HighlightTypewriterLineOnlyInActiveEditor from "@/features/HighlightTypewriterLineOnlyInActiveEditor";
+import HighlightTypewriterLineOnlyInFocusedEditor from "@/features/HighlightTypewriterLineOnlyInFocusedEditor";
 import LimitMaxCharsPerLine from "@/features/LimitMaxCharsPerLine";
-import PauseZenWhileScrolling from "@/features/PauseZenWhileScrolling";
-import PauseZenWhileSelecting from "@/features/PauseZenWhileSelecting";
+import PauseDimUnfocusedParagraphsWhileScrolling from "@/features/PauseDimUnfocusedParagraphsWhileScrolling";
+import PauseDimUnfocusedParagraphsWhileSelecting from "@/features/PauseDimUnfocusedParagraphsWhileSelecting";
 import TypewriterScroll from "@/features/TypewriterScroll";
-import Zen from "@/features/Zen";
-import ZenOnlyInActiveEditor from "@/features/ZenOnlyInActiveEditor";
-import { Feature } from "@/features/Feature";
+import DimUnfocusedParagraphs from "@/features/DimUnfocusedParagraphs";
+import DimUnfocusedParagraphsOnlyInFocusedEditor from "@/features/DimUnfocusedParagraphsOnlyInFocusedEditor";
+import { Feature } from "@/features/base/Feature";
 import TypewriterOffset from "@/features/TypewriterOffset";
 import TypewriterLineHighlightColor from "@/features/TypewriterLineHighlightColor";
 import TypewriterLineHighlightStyle from "@/features/TypewriterLineHighlightStyle";
 import TypewriterLineHighlightUnderlineThickness from "@/features/TypewriterLineHighlightUnderlineThickness";
-import ZenOpacity from "@/features/ZenOpacity";
+import DimmedParagraphsOpacity from "@/features/DimmedParagraphsOpacity";
 import MaxCharsPerLine from "@/features/MaxCharsPerLine";
+import { Command } from "@/features/base/Command";
+import { FullscreenWritingFocus } from "@/features/FullscreenWritingFocus";
+import FullscreenWritingFocusShowsHeader from "@/features/FullscreenWritingFocusShowsHeader";
+import FullscreenWritingFocusVignette from "@/features/FullscreenWritingFocusVignette";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
@@ -38,17 +42,22 @@ export default class TypewriterModePlugin extends Plugin {
     new TypewriterLineHighlightColor(this),
     new TypewriterLineHighlightStyle(this),
     new TypewriterLineHighlightUnderlineThickness(this),
-    new HighlightTypewriterLineOnlyInActiveEditor(this),
-    new Zen(this),
-    new ZenOpacity(this),
-    new PauseZenWhileScrolling(this),
-    new PauseZenWhileSelecting(this),
-    new ZenOnlyInActiveEditor(this),
+    new HighlightTypewriterLineOnlyInFocusedEditor(this),
+    new DimUnfocusedParagraphs(this),
+    new DimmedParagraphsOpacity(this),
+    new PauseDimUnfocusedParagraphsWhileScrolling(this),
+    new PauseDimUnfocusedParagraphsWhileSelecting(this),
+    new DimUnfocusedParagraphsOnlyInFocusedEditor(this),
+    new FullscreenWritingFocusShowsHeader(this),
+    new FullscreenWritingFocusVignette(this),
   ];
+
+  readonly commands: Command[] = [new FullscreenWritingFocus(this)];
 
   override async onload() {
     await this.loadSettings();
     this.features.forEach((feature) => feature.load());
+    this.commands.forEach((command) => command.load());
     this.addSettingTab(new TypewriterModeSettingTab(this.app, this));
     this.registerEditorExtension(this.editorExtensions);
   }
@@ -64,11 +73,12 @@ export default class TypewriterModePlugin extends Plugin {
     }
     const extensions = [
       pluginSettingsFacet.of(this.settings),
-      this.settings.enabled ? TypewriterScrollPlugin : [],
-      this.settings.highlightTypewriterLineEnabled
+      this.settings.isTypewriterScrollEnabled ? TypewriterScrollPlugin : [],
+      this.settings.isHighlightTypewriterLineEnabled
         ? HighlightTypewriterLinePlugin
         : [],
-      this.settings.highlightTypewriterLineEnabled || this.settings.zenEnabled
+      this.settings.isHighlightTypewriterLineEnabled ||
+      this.settings.isDimUnfocusedParagraphsEnabled
         ? OnWheelPlugin
         : [],
     ];

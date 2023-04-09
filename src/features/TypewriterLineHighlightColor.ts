@@ -1,4 +1,4 @@
-import { Feature } from "@/features/Feature";
+import { Feature } from "@/features/base/Feature";
 import { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import { PluginSettingTab, Setting } from "obsidian";
 
@@ -19,8 +19,8 @@ export default class TypewriterLineHighlightColor extends Feature {
           })
       )
       .setDisabled(
-        !this.plugin.settings.enabled ||
-          !this.plugin.settings.highlightTypewriterLineEnabled
+        !this.plugin.settings.isTypewriterScrollEnabled ||
+          !this.plugin.settings.isHighlightTypewriterLineEnabled
       );
   }
 

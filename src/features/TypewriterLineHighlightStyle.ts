@@ -1,4 +1,4 @@
-import { Feature } from "@/features/Feature";
+import { Feature } from "@/features/base/Feature";
 import { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import { PluginSettingTab, Setting } from "obsidian";
 
@@ -24,14 +24,15 @@ export default class TypewriterLineHighlightStyle extends Feature {
           })
       )
       .setDisabled(
-        !this.plugin.settings.enabled ||
-          !this.plugin.settings.highlightTypewriterLineEnabled
+        !this.plugin.settings.isTypewriterScrollEnabled ||
+          !this.plugin.settings.isHighlightTypewriterLineEnabled
       );
   }
 
   private changeTypewriterLineHighlightStyle(newValue: "box" | "underline") {
     this.plugin.settings.typewriterLineHighlightStyle = newValue;
-    if (this.plugin.settings.enabled) this.plugin.reloadCodeMirror();
+    if (this.plugin.settings.isTypewriterScrollEnabled)
+      this.plugin.reloadCodeMirror();
     this.plugin.reloadCodeMirror();
   }
 }

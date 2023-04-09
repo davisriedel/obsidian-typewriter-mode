@@ -1,4 +1,4 @@
-import { Feature } from "@/features/Feature";
+import { Feature } from "@/features/base/Feature";
 import { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import { PluginSettingTab, Setting } from "obsidian";
 
@@ -21,12 +21,13 @@ export default class TypewriterOffset extends Feature {
             this.changeTypewriterOffset(newValue / 100);
           })
       )
-      .setDisabled(!this.plugin.settings.enabled);
+      .setDisabled(!this.plugin.settings.isTypewriterScrollEnabled);
   }
 
   private changeTypewriterOffset(newValue: number) {
     this.plugin.settings.typewriterOffset = newValue;
-    if (this.plugin.settings.enabled) this.plugin.reloadCodeMirror();
+    if (this.plugin.settings.isTypewriterScrollEnabled)
+      this.plugin.reloadCodeMirror();
     this.plugin.saveSettings().then();
   }
 }

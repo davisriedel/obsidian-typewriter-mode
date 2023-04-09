@@ -1,4 +1,4 @@
-import { Feature } from "@/features/Feature";
+import { Feature } from "@/features/base/Feature";
 import { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import { PluginSettingTab, Setting } from "obsidian";
 
@@ -17,7 +17,7 @@ export default class MaxCharsPerLine extends Feature {
             this.changeMaxCharsPerLine(parseInt(newValue));
           })
       )
-      .setDisabled(!this.plugin.settings.maxCharsPerLineEnabled);
+      .setDisabled(!this.plugin.settings.isMaxCharsPerLineEnabled);
   }
 
   override load() {

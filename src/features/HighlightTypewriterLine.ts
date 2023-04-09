@@ -1,9 +1,10 @@
-import { FeatureToggle } from "@/features/FeatureToggle";
+import { FeatureToggle } from "@/features/base/FeatureToggle";
 import { TypewriterModeSettings } from "@/TypewriterModeSettings";
 
 export default class HighlightTypewriterLine extends FeatureToggle {
   protected setting: keyof TypewriterModeSettings =
-    "highlightTypewriterLineEnabled";
+    "isHighlightTypewriterLineEnabled";
+  protected override toggleClass = "ptm-highlight-line";
   protected requiresReload = true;
   protected hasCommand = true;
   protected override commandTitle = "Toggle Highlight Typewriter Line On/Off";
@@ -12,16 +13,6 @@ export default class HighlightTypewriterLine extends FeatureToggle {
     "Highlights the line that the typewriter is currently on in the editor";
 
   protected override isSettingEnabled(): boolean {
-    return this.plugin.settings.enabled;
-  }
-
-  override enable(): void {
-    document.body.classList.add("plugin-typewriter-mode-highlight-line");
-    super.enable();
-  }
-
-  override disable(): void {
-    document.body.classList.remove("plugin-typewriter-mode-highlight-line");
-    super.disable();
+    return this.plugin.settings.isTypewriterScrollEnabled;
   }
 }
