@@ -24,10 +24,12 @@ import TypewriterLineHighlightStyle from "@/features/TypewriterLineHighlightStyl
 import TypewriterLineHighlightUnderlineThickness from "@/features/TypewriterLineHighlightUnderlineThickness";
 import DimmedParagraphsOpacity from "@/features/DimmedParagraphsOpacity";
 import MaxCharsPerLine from "@/features/MaxCharsPerLine";
-import { Command } from "@/features/base/Command";
 import { FullscreenWritingFocus } from "@/features/FullscreenWritingFocus";
 import FullscreenWritingFocusShowsHeader from "@/features/FullscreenWritingFocusShowsHeader";
 import FullscreenWritingFocusVignette from "@/features/FullscreenWritingFocusVignette";
+import Loadable from "@/features/base/Loadable";
+import { MoveTypewriter } from "@/features/MoveTypewriter";
+import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
@@ -35,6 +37,7 @@ export default class TypewriterModePlugin extends Plugin {
 
   readonly features: Feature[] = [
     new TypewriterScroll(this),
+    new TypewriterOnlyUseCommands(this),
     new TypewriterOffset(this),
     new LimitMaxCharsPerLine(this),
     new MaxCharsPerLine(this),
@@ -52,7 +55,10 @@ export default class TypewriterModePlugin extends Plugin {
     new FullscreenWritingFocusVignette(this),
   ];
 
-  readonly commands: Command[] = [new FullscreenWritingFocus(this)];
+  readonly commands: Loadable[] = [
+    new FullscreenWritingFocus(this),
+    new MoveTypewriter(this),
+  ];
 
   override async onload() {
     await this.loadSettings();

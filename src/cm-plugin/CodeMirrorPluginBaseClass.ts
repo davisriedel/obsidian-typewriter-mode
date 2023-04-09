@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { EditorView, ViewUpdate } from "@codemirror/view";
 import { Transaction } from "@codemirror/state";
+import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
 export default abstract class CodeMirrorPluginBaseClass {
   private internalUpdate = false;
@@ -14,8 +15,17 @@ export default abstract class CodeMirrorPluginBaseClass {
   }
 
   private userEventAllowed(event: string) {
-    const allowed = /^(select|input|delete|undo|redo)(\..+)?$/;
-    const disallowed = /^(select.pointer)$/;
+    const { isTypewriterOnlyUseCommandsEnabled } =
+      this.view.state.facet(pluginSettingsFacet);
+
+    let allowed = /^(select|input|delete|undo|redo)(\..+)?$/;
+    let disallowed = /^(select.pointer)$/;
+
+    if (isTypewriterOnlyUseCommandsEnabled) {
+      allowed = /^(input|delete|undo|redo)(\..+)?$/;
+      disallowed = /^(select)(\..+)?$/;
+    }
+
     return allowed.test(event) && !disallowed.test(event);
   }
 

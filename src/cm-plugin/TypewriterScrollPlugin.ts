@@ -1,6 +1,7 @@
 import { EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import CodeMirrorPluginBaseClass from "@/cm-plugin/CodeMirrorPluginBaseClass";
 import { getTypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
+import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginBaseClass {
@@ -18,9 +19,28 @@ export default ViewPlugin.fromClass(
 
     protected override onLoad() {
       this.setPadding();
+
+      const { isTypewriterOnlyUseCommandsEnabled } =
+        this.view.state.facet(pluginSettingsFacet);
+      if (isTypewriterOnlyUseCommandsEnabled) {
+        window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
+        return;
+      }
+
       this.view.dom.classList.remove("ptm-select");
       const head = this.view.state.selection.main.head;
       this.centerOnHead(head);
+    }
+
+    override destroy() {
+      super.destroy();
+      const { isTypewriterOnlyUseCommandsEnabled } =
+        this.view.state.facet(pluginSettingsFacet);
+      if (isTypewriterOnlyUseCommandsEnabled)
+        window.removeEventListener(
+          "moveByCommand",
+          this.moveByCommand.bind(this)
+        );
     }
 
     protected override updateAllowedUserEvent(update: ViewUpdate) {
@@ -38,10 +58,19 @@ export default ViewPlugin.fromClass(
       this.view.dom.classList.add("ptm-select");
     }
 
-    protected override onResize() {
-      super.onResize();
+    private moveByCommand() {
+      this.view.dom.classList.remove("ptm-select");
+      this.recenter();
+    }
+
+    private recenter() {
       const head = this.view.state.selection.main.head;
       this.centerOnHead(head);
+    }
+
+    protected override onResize() {
+      super.onResize();
+      this.recenter();
     }
 
     private centerOnHead(head: number) {
