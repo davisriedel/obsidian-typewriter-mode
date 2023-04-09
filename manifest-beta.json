@@ -5,6 +5,6 @@
   "authorUrl": "https://github.com/davisriedel",
   "description": "Typewriter-style scrolling which keeps the active line at a fixed position.",
   "isDesktopOnly": false,
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "minAppVersion": "0.15.0"
 }
