@@ -1,6 +1,7 @@
 import { Feature } from "@/features/base/Feature";
-import { TypewriterModeSettings } from "@/TypewriterModeSettings";
-import { PluginSettingTab, Setting } from "obsidian";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import type { PluginSettingTab } from "obsidian";
+import { Setting } from "obsidian";
 
 export default class DimUnfocusedEditorsBehavior extends Feature {
   protected setting: keyof TypewriterModeSettings =

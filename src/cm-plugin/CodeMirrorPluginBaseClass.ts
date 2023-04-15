@@ -1,6 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { EditorView, ViewUpdate } from "@codemirror/view";
+import type { EditorView, ViewUpdate } from "@codemirror/view";
 import { Transaction } from "@codemirror/state";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
@@ -54,13 +54,13 @@ export default abstract class CodeMirrorPluginBaseClass {
 
     this.internalUpdate = true;
     userEventsAllowed
-      ? this.updateAllowedUserEvent(update)
-      : this.updateDisallowedUserEvent(update);
+      ? this.updateAllowedUserEvent()
+      : this.updateDisallowedUserEvent();
   }
 
   protected onLoad() {}
-  protected updateAllowedUserEvent(update: ViewUpdate) {}
-  protected updateDisallowedUserEvent(update: ViewUpdate) {}
+  protected updateAllowedUserEvent() {}
+  protected updateDisallowedUserEvent() {}
   protected updateNonUserEvent(update: ViewUpdate) {}
   protected onResize() {}
 

@@ -1,4 +1,4 @@
-import { ViewPlugin, ViewUpdate } from "@codemirror/view";
+import { ViewPlugin } from "@codemirror/view";
 import CodeMirrorPluginBaseClass from "@/cm-plugin/CodeMirrorPluginBaseClass";
 
 export default ViewPlugin.fromClass(
@@ -11,8 +11,8 @@ export default ViewPlugin.fromClass(
       this.view.dom.classList.add("ptm-wheel");
     }
 
-    protected override updateAllowedUserEvent(update: ViewUpdate) {
-      super.updateAllowedUserEvent(update);
+    protected override updateAllowedUserEvent() {
+      super.updateAllowedUserEvent();
       this.view.dom.classList.remove("ptm-wheel");
     }
 

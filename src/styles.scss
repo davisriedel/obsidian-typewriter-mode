@@ -62,9 +62,9 @@
   }
 }
 
-.ptm-typewriter-scroll {
+.ptm-highlight-line {
   #ptm-typewriter-line {
-    display: none;
+    display: block;
     position: absolute;
     left: 0;
     width: 100%;
@@ -81,19 +81,10 @@
     }
   }
 
-  &.ptm-highlight-line {
-    // prettier-ignore
-    .cm-editor:not(.ptm-wheel, .ptm-select) {
+  &.ptm-highlight-line-only-in-active-editor {
+    .cm-editor:not(.cm-focused) {
       #ptm-typewriter-line {
-        display: block;
-      }
-    }
-
-    &.ptm-highlight-line-only-in-active-editor {
-      .cm-editor:not(.cm-focused) {
-        #ptm-typewriter-line {
-          display: none;
-        }
+        display: none;
       }
     }
   }

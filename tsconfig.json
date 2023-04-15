@@ -8,6 +8,7 @@
     "allowJs": true,
     "noImplicitAny": true,
     "noImplicitOverride": true,
+    "importsNotUsedAsValues": "error",
     "moduleResolution": "node",
     "importHelpers": true,
     "skipLibCheck": true,

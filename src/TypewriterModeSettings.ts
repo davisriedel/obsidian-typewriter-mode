@@ -1,5 +1,6 @@
 export interface TypewriterModeSettings {
   isTypewriterScrollEnabled: boolean;
+  isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
   isTypewriterOnlyUseCommandsEnabled: boolean;
   typewriterOffset: number;
   isMaxCharsPerLineEnabled: boolean;
@@ -21,6 +22,7 @@ export interface TypewriterModeSettings {
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   isTypewriterScrollEnabled: true,
+  isOnlyMaintainTypewriterOffsetWhenReachedEnabled: false,
   isTypewriterOnlyUseCommandsEnabled: false,
   typewriterOffset: 0.5,
   isMaxCharsPerLineEnabled: false,

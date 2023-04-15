@@ -1,5 +1,6 @@
-import { App, PluginSettingTab } from "obsidian";
-import TypewriterModePlugin from "@/TypewriterModePlugin";
+import type { App } from "obsidian";
+import { PluginSettingTab } from "obsidian";
+import type TypewriterModePlugin from "@/TypewriterModePlugin";
 
 export default class TypewriterModeSettingTab extends PluginSettingTab {
   private plugin: TypewriterModePlugin;

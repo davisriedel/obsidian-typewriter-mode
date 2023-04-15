@@ -1,4 +1,5 @@
-import { PluginSettingTab, Setting } from "obsidian";
+import type { PluginSettingTab } from "obsidian";
+import { Setting } from "obsidian";
 import { Feature } from "@/features/base/Feature";
 
 export abstract class FeatureToggle extends Feature {

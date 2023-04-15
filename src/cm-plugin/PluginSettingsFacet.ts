@@ -1,8 +1,6 @@
 import { Facet } from "@codemirror/state";
-import {
-  DEFAULT_SETTINGS,
-  TypewriterModeSettings,
-} from "@/TypewriterModeSettings";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import { DEFAULT_SETTINGS } from "@/TypewriterModeSettings";
 
 export const pluginSettingsFacet = Facet.define<
   TypewriterModeSettings,

@@ -1,13 +1,9 @@
-import {
-  DEFAULT_SETTINGS,
-  TypewriterModeSettings,
-} from "@/TypewriterModeSettings";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import { DEFAULT_SETTINGS } from "@/TypewriterModeSettings";
 import { Plugin } from "obsidian";
 import TypewriterModeSettingTab from "@/TypewriterModeSettingsTab";
-import { Extension } from "@codemirror/state";
-import TypewriterScrollPlugin from "@/cm-plugin/TypewriterScrollPlugin";
-import HighlightTypewriterLinePlugin from "@/cm-plugin/HighlightTypewriterLinePlugin";
-import OnWheelPlugin from "@/cm-plugin/OnWheelPlugin";
+import type { Extension } from "@codemirror/state";
+import OnWheelPlugin from "@/cm-plugin/CMOnWheelPlugin";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import HighlightTypewriterLine from "@/features/HighlightTypewriterLine";
 import HighlightTypewriterLineOnlyInFocusedEditor from "@/features/HighlightTypewriterLineOnlyInFocusedEditor";
@@ -16,7 +12,6 @@ import PauseDimUnfocusedParagraphsWhileScrolling from "@/features/PauseDimUnfocu
 import PauseDimUnfocusedParagraphsWhileSelecting from "@/features/PauseDimUnfocusedParagraphsWhileSelecting";
 import TypewriterScroll from "@/features/TypewriterScroll";
 import DimUnfocusedParagraphs from "@/features/DimUnfocusedParagraphs";
-import { Feature } from "@/features/base/Feature";
 import TypewriterOffset from "@/features/TypewriterOffset";
 import TypewriterLineHighlightColor from "@/features/TypewriterLineHighlightColor";
 import TypewriterLineHighlightStyle from "@/features/TypewriterLineHighlightStyle";
@@ -26,39 +21,40 @@ import MaxCharsPerLine from "@/features/MaxCharsPerLine";
 import { FullscreenWritingFocus } from "@/features/FullscreenWritingFocus";
 import FullscreenWritingFocusShowsHeader from "@/features/FullscreenWritingFocusShowsHeader";
 import FullscreenWritingFocusVignette from "@/features/FullscreenWritingFocusVignette";
-import Loadable from "@/features/base/Loadable";
 import { MoveTypewriter } from "@/features/MoveTypewriter";
 import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
 import DimUnfocusedEditorsBehavior from "@/features/DimUnfocusedEditorsBehavior";
+import OnlyMaintainTypewriterOffsetWhenReached from "@/features/OnlyMaintainTypewriterOffsetWhenReached";
+import CodeMirrorPlugin from "@/cm-plugin/CMTypewriterModePlugin";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
   private editorExtensions: Extension[] = [];
 
-  readonly features: Feature[] = [
-    new TypewriterScroll(this),
-    new TypewriterOnlyUseCommands(this),
-    new TypewriterOffset(this),
-    new LimitMaxCharsPerLine(this),
-    new MaxCharsPerLine(this),
-    new HighlightTypewriterLine(this),
-    new TypewriterLineHighlightColor(this),
-    new TypewriterLineHighlightStyle(this),
-    new TypewriterLineHighlightUnderlineThickness(this),
-    new HighlightTypewriterLineOnlyInFocusedEditor(this),
-    new DimUnfocusedParagraphs(this),
-    new DimmedParagraphsOpacity(this),
-    new PauseDimUnfocusedParagraphsWhileScrolling(this),
-    new PauseDimUnfocusedParagraphsWhileSelecting(this),
-    new DimUnfocusedEditorsBehavior(this),
-    new FullscreenWritingFocusShowsHeader(this),
-    new FullscreenWritingFocusVignette(this),
-  ];
+  readonly features = [
+    TypewriterScroll,
+    TypewriterOffset,
+    OnlyMaintainTypewriterOffsetWhenReached,
+    TypewriterOnlyUseCommands,
+    HighlightTypewriterLine,
+    TypewriterLineHighlightColor,
+    TypewriterLineHighlightStyle,
+    TypewriterLineHighlightUnderlineThickness,
+    HighlightTypewriterLineOnlyInFocusedEditor,
+    DimUnfocusedParagraphs,
+    DimmedParagraphsOpacity,
+    PauseDimUnfocusedParagraphsWhileScrolling,
+    PauseDimUnfocusedParagraphsWhileSelecting,
+    DimUnfocusedEditorsBehavior,
+    LimitMaxCharsPerLine,
+    MaxCharsPerLine,
+    FullscreenWritingFocusShowsHeader,
+    FullscreenWritingFocusVignette,
+  ].map((f) => new f(this));
 
-  readonly commands: Loadable[] = [
-    new FullscreenWritingFocus(this),
-    new MoveTypewriter(this),
-  ];
+  readonly commands = [FullscreenWritingFocus, MoveTypewriter].map(
+    (c) => new c(this)
+  );
 
   override async onload() {
     await this.loadSettings();
@@ -73,16 +69,10 @@ export default class TypewriterModePlugin extends Plugin {
   }
 
   reloadCodeMirror() {
-    if (this.editorExtensions.length !== 0) {
-      // remove everything
-      this.editorExtensions.splice(0, this.editorExtensions.length);
-    }
+    this.editorExtensions.splice(0, this.editorExtensions.length);
     const extensions = [
       pluginSettingsFacet.of(this.settings),
-      this.settings.isTypewriterScrollEnabled ? TypewriterScrollPlugin : [],
-      this.settings.isHighlightTypewriterLineEnabled
-        ? HighlightTypewriterLinePlugin
-        : [],
+      CodeMirrorPlugin,
       this.settings.isHighlightTypewriterLineEnabled ||
       this.settings.isDimUnfocusedParagraphsEnabled
         ? OnWheelPlugin

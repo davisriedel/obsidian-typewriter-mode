@@ -1,6 +1,7 @@
 import { Feature } from "@/features/base/Feature";
-import { TypewriterModeSettings } from "@/TypewriterModeSettings";
-import { PluginSettingTab, Setting } from "obsidian";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import type { PluginSettingTab } from "obsidian";
+import { Setting } from "obsidian";
 
 export default class TypewriterLineHighlightStyle extends Feature {
   protected setting: keyof TypewriterModeSettings =
@@ -23,10 +24,7 @@ export default class TypewriterLineHighlightStyle extends Feature {
             settingTab.display();
           })
       )
-      .setDisabled(
-        !this.plugin.settings.isTypewriterScrollEnabled ||
-          !this.plugin.settings.isHighlightTypewriterLineEnabled
-      );
+      .setDisabled(!this.plugin.settings.isHighlightTypewriterLineEnabled);
   }
 
   private changeTypewriterLineHighlightStyle(newValue: "box" | "underline") {

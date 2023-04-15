@@ -1,5 +1,5 @@
 import { FeatureToggle } from "@/features/base/FeatureToggle";
-import { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
 
 export default class TypewriterScroll extends FeatureToggle {
   protected setting: keyof TypewriterModeSettings = "isTypewriterScrollEnabled";

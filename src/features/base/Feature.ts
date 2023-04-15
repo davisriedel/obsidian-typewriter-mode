@@ -1,5 +1,5 @@
-import { TypewriterModeSettings } from "@/TypewriterModeSettings";
-import { PluginSettingTab } from "obsidian";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import type { PluginSettingTab } from "obsidian";
 import Loadable from "@/features/base/Loadable";
 
 export abstract class Feature extends Loadable {

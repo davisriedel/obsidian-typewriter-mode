@@ -1,5 +1,5 @@
 import { FeatureToggle } from "@/features/base/FeatureToggle";
-import { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
 
 export default class HighlightTypewriterLineOnlyInFocusedEditor extends FeatureToggle {
   protected setting: keyof TypewriterModeSettings =
@@ -12,9 +12,6 @@ export default class HighlightTypewriterLineOnlyInFocusedEditor extends FeatureT
     "Highlight the typewriter line only in the focused editor";
 
   protected override isSettingEnabled(): boolean {
-    return (
-      this.plugin.settings.isTypewriterScrollEnabled &&
-      this.plugin.settings.isHighlightTypewriterLineEnabled
-    );
+    return this.plugin.settings.isHighlightTypewriterLineEnabled;
   }
 }

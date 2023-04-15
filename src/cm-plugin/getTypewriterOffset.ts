@@ -1,25 +1,75 @@
-import { EditorView } from "@codemirror/view";
+import type { EditorView } from "@codemirror/view";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
-export function getTypewriterPositionData(view: EditorView) {
-  const [fontSize, lineHeight] = ["font-size", "line-height"].map((prop) => {
-    const val = parseFloat(
-      view.contentDOM
-        .querySelector(".cm-active.cm-line")
-        ?.getCssPropertyValue(prop)
-        .replace("px", "")
-    );
-    return isNaN(val) ? view.defaultLineHeight : val;
-  });
+function getActiveLineProp(view: EditorView, prop: string) {
+  return parseFloat(
+    view.contentDOM
+      .querySelector(".cm-active.cm-line")
+      ?.getCssPropertyValue(prop)
+      .replace("px", "")
+  );
+}
 
+function getActiveLineOffset(view: EditorView) {
+  const caretOffset =
+    view.coordsAtPos(view.state.selection.main.head)?.top ?? 0;
+  const containerOffset = view.dom.getBoundingClientRect().top;
+  return caretOffset - containerOffset;
+}
+
+function getTypewriterOffset(view: EditorView, lineHeight: number) {
+  const fontSize = getActiveLineProp(view, "font-size");
   const percentage = view.state.facet(pluginSettingsFacet).typewriterOffset;
   const editorOffset = view.dom.clientHeight * percentage;
   const lineOffset = (lineHeight - fontSize) / 2;
-  const offset = editorOffset - lineOffset;
+  return editorOffset - lineOffset;
+}
+
+function getTypewriterPositionData(view: EditorView) {
+  const lineHeight = getActiveLineProp(view, "line-height");
+  const typewriterOffset = getTypewriterOffset(view, lineHeight);
+
+  const {
+    isTypewriterScrollEnabled,
+    isOnlyMaintainTypewriterOffsetWhenReachedEnabled,
+  } = view.state.facet(pluginSettingsFacet);
+  let scrollOffset;
+  if (isTypewriterScrollEnabled) {
+    scrollOffset = typewriterOffset;
+    if (isOnlyMaintainTypewriterOffsetWhenReachedEnabled) {
+      const activeLineOffset = getActiveLineOffset(view);
+      scrollOffset =
+        view.scrollDOM.scrollTop + activeLineOffset < typewriterOffset
+          ? Math.min(typewriterOffset, activeLineOffset)
+          : typewriterOffset;
+    }
+  } else {
+    scrollOffset = getActiveLineOffset(view);
+  }
 
   return {
-    fontSize,
+    typewriterOffset,
+    scrollOffset,
     lineHeight,
-    offset,
   };
+}
+
+export type TypewriterPositionData = ReturnType<
+  typeof getTypewriterPositionData
+>;
+
+export function measureTypewriterPosition(
+  view: EditorView,
+  key: string,
+  write: (measure: TypewriterPositionData, view: EditorView) => void
+) {
+  view.requestMeasure({
+    key,
+    read: (view: EditorView) => getTypewriterPositionData(view),
+    write: (measure, view) => {
+      window.requestAnimationFrame(() => {
+        write(measure, view);
+      });
+    },
+  });
 }

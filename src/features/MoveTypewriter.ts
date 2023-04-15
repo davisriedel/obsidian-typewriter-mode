@@ -1,4 +1,4 @@
-import { Editor, MarkdownView } from "obsidian";
+import type { Editor, MarkdownView } from "obsidian";
 import { capitalize } from "@/utils/capitalize";
 import Loadable from "@/features/base/Loadable";
 

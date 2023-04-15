@@ -1,5 +1,5 @@
 import { FeatureToggle } from "@/features/base/FeatureToggle";
-import { TypewriterModeSettings } from "@/TypewriterModeSettings";
+import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
 
 export default class HighlightTypewriterLine extends FeatureToggle {
   protected setting: keyof TypewriterModeSettings =
@@ -11,8 +11,4 @@ export default class HighlightTypewriterLine extends FeatureToggle {
   protected settingTitle = "Highlight Typewriter Line";
   protected settingDesc =
     "Highlights the line that the typewriter is currently on in the editor";
-
-  protected override isSettingEnabled(): boolean {
-    return this.plugin.settings.isTypewriterScrollEnabled;
-  }
 }

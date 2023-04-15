@@ -1,5 +1,5 @@
 import { Command } from "@/features/base/Command";
-import { ItemView } from "obsidian";
+import type { ItemView } from "obsidian";
 
 export class FullscreenWritingFocus extends Command {
   protected commandKey = "fullscreen-writing-focus";
