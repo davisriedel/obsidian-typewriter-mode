@@ -16,7 +16,6 @@ import PauseDimUnfocusedParagraphsWhileScrolling from "@/features/PauseDimUnfocu
 import PauseDimUnfocusedParagraphsWhileSelecting from "@/features/PauseDimUnfocusedParagraphsWhileSelecting";
 import TypewriterScroll from "@/features/TypewriterScroll";
 import DimUnfocusedParagraphs from "@/features/DimUnfocusedParagraphs";
-import DimUnfocusedParagraphsOnlyInFocusedEditor from "@/features/DimUnfocusedParagraphsOnlyInFocusedEditor";
 import { Feature } from "@/features/base/Feature";
 import TypewriterOffset from "@/features/TypewriterOffset";
 import TypewriterLineHighlightColor from "@/features/TypewriterLineHighlightColor";
@@ -30,6 +29,7 @@ import FullscreenWritingFocusVignette from "@/features/FullscreenWritingFocusVig
 import Loadable from "@/features/base/Loadable";
 import { MoveTypewriter } from "@/features/MoveTypewriter";
 import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
+import DimUnfocusedEditorsBehavior from "@/features/DimUnfocusedEditorsBehavior";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
@@ -50,7 +50,7 @@ export default class TypewriterModePlugin extends Plugin {
     new DimmedParagraphsOpacity(this),
     new PauseDimUnfocusedParagraphsWhileScrolling(this),
     new PauseDimUnfocusedParagraphsWhileSelecting(this),
-    new DimUnfocusedParagraphsOnlyInFocusedEditor(this),
+    new DimUnfocusedEditorsBehavior(this),
     new FullscreenWritingFocusShowsHeader(this),
     new FullscreenWritingFocusVignette(this),
   ];

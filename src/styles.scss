@@ -1,5 +1,5 @@
 .ptm-dim-unfocused-paragraphs {
-  &:not(.ptm-dim-unfocused-paragraphs-only-in-active-editor) {
+  &[data-ptm-dim-unfocused-editors-behavior="dim"] {
     &:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling, .ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor,
       // prettier-ignore
     &.ptm-dim-unfocused-paragraphs-pause-while-scrolling:not(.ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor:not(.ptm-wheel),
@@ -8,17 +8,14 @@
       // prettier-ignore
     &.ptm-dim-unfocused-paragraphs-pause-while-scrolling.ptm-dim-unfocused-paragraphs-pause-while-selecting .cm-editor:not(.ptm-wheel, .ptm-select) {
       // prettier-ignore
-      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline) {
-        opacity: var(--dimmed-paragraphs-opacity);
-      }
-
-      .cm-line:not(.cm-active) {
+      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), .cm-line:not(.cm-active) {
         opacity: var(--dimmed-paragraphs-opacity);
       }
     }
   }
 
-  &.ptm-dim-unfocused-paragraphs-only-in-active-editor {
+  &[data-ptm-dim-unfocused-editors-behavior="dim-none"],
+  &[data-ptm-dim-unfocused-editors-behavior="dim-all"] {
     &:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling, .ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor.cm-focused,
       // prettier-ignore
     &.ptm-dim-unfocused-paragraphs-pause-while-scrolling:not(.ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-wheel),
@@ -27,13 +24,17 @@
       // prettier-ignore
     &.ptm-dim-unfocused-paragraphs-pause-while-scrolling.ptm-dim-unfocused-paragraphs-pause-while-selecting .cm-editor.cm-focused:not(.ptm-wheel, .ptm-select) {
       // prettier-ignore
-      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline) {
+      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), .cm-line:not(.cm-active) {
         opacity: var(--dimmed-paragraphs-opacity);
       }
+    }
+  }
 
-      .cm-line:not(.cm-active) {
-        opacity: var(--dimmed-paragraphs-opacity);
-      }
+  &[data-ptm-dim-unfocused-editors-behavior="dim-all"]
+    .cm-editor:not(.cm-focused) {
+    // prettier-ignore
+    .CodeMirror-lines:not(.selecting) .CodeMirror-code, .cm-line {
+      opacity: var(--dimmed-paragraphs-opacity);
     }
   }
 }

@@ -31,8 +31,7 @@ export default class TypewriterLineHighlightStyle extends Feature {
 
   private changeTypewriterLineHighlightStyle(newValue: "box" | "underline") {
     this.plugin.settings.typewriterLineHighlightStyle = newValue;
-    if (this.plugin.settings.isTypewriterScrollEnabled)
-      this.plugin.reloadCodeMirror();
     this.plugin.reloadCodeMirror();
+    this.plugin.saveSettings().then();
   }
 }
