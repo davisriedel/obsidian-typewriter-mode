@@ -7,6 +7,7 @@ import { measureTypewriterPosition } from "@/cm-plugin/getTypewriterOffset";
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginBaseClass {
     private typewriterLine: HTMLElement | null = null;
+    private isInitialInteraction = true;
 
     protected override onLoad() {
       super.onLoad();
@@ -24,6 +25,15 @@ export default ViewPlugin.fromClass(
       super.updateDisallowedUserEvent();
       this.view.dom.classList.add("ptm-select");
       this.updateAfterUserEvent();
+    }
+
+    protected override updateNonUserEvent() {
+      super.updateNonUserEvent();
+      if (!this.isInitialInteraction) return;
+      const { isOnlyActivateAfterFirstInteractionEnabled } =
+        this.view.state.facet(pluginSettingsFacet);
+      if (isOnlyActivateAfterFirstInteractionEnabled)
+        this.view.dom.classList.add("ptm-first-open");
     }
 
     private moveByCommand() {
@@ -46,6 +56,10 @@ export default ViewPlugin.fromClass(
     }
 
     private updateAfterUserEvent() {
+      if (this.isInitialInteraction) {
+        this.view.dom.classList.remove("ptm-first-open");
+        this.isInitialInteraction = false;
+      }
       measureTypewriterPosition(
         this.view,
         "TypewriterModeUpdateAfterUserEvent",

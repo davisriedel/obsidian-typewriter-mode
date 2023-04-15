@@ -48,7 +48,7 @@ export default abstract class CodeMirrorPluginBaseClass {
 
     const userEventsAllowed = this.userEventsAllowed(update);
     if (userEventsAllowed === null) {
-      this.updateNonUserEvent(update);
+      this.updateNonUserEvent();
       return;
     }
 
@@ -61,10 +61,10 @@ export default abstract class CodeMirrorPluginBaseClass {
   protected onLoad() {}
   protected updateAllowedUserEvent() {}
   protected updateDisallowedUserEvent() {}
-  protected updateNonUserEvent(update: ViewUpdate) {}
+  protected updateNonUserEvent() {}
   protected onResize() {}
 
   destroy() {
-    this.domResizeObserver.disconnect();
+    this.domResizeObserver?.disconnect();
   }
 }

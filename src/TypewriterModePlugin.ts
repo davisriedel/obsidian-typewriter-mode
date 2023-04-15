@@ -26,6 +26,7 @@ import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
 import DimUnfocusedEditorsBehavior from "@/features/DimUnfocusedEditorsBehavior";
 import OnlyMaintainTypewriterOffsetWhenReached from "@/features/OnlyMaintainTypewriterOffsetWhenReached";
 import CodeMirrorPlugin from "@/cm-plugin/CMTypewriterModePlugin";
+import OnlyActivateAfterFirstInteraction from "@/features/OnlyActivateAfterFirstInteraction";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
@@ -36,6 +37,7 @@ export default class TypewriterModePlugin extends Plugin {
     TypewriterOffset,
     OnlyMaintainTypewriterOffsetWhenReached,
     TypewriterOnlyUseCommands,
+    OnlyActivateAfterFirstInteraction,
     HighlightTypewriterLine,
     TypewriterLineHighlightColor,
     TypewriterLineHighlightStyle,

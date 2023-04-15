@@ -1,5 +1,6 @@
 export interface TypewriterModeSettings {
   isTypewriterScrollEnabled: boolean;
+  isOnlyActivateAfterFirstInteractionEnabled: boolean;
   isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
   isTypewriterOnlyUseCommandsEnabled: boolean;
   typewriterOffset: number;
@@ -22,6 +23,7 @@ export interface TypewriterModeSettings {
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   isTypewriterScrollEnabled: true,
+  isOnlyActivateAfterFirstInteractionEnabled: false,
   isOnlyMaintainTypewriterOffsetWhenReachedEnabled: false,
   isTypewriterOnlyUseCommandsEnabled: false,
   typewriterOffset: 0.5,

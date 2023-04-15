@@ -1,12 +1,12 @@
 .ptm-dim-unfocused-paragraphs {
   &[data-ptm-dim-unfocused-editors-behavior="dim"] {
-    &:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling, .ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor,
+    &:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling, .ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor:not(.ptm-first-open),
       // prettier-ignore
-    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling:not(.ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor:not(.ptm-wheel),
+    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling:not(.ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor:not(.ptm-wheel, .ptm-first-open),
       // prettier-ignore
-    &.ptm-dim-unfocused-paragraphs-pause-while-selecting:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling) .cm-editor:not(.ptm-select),
+    &.ptm-dim-unfocused-paragraphs-pause-while-selecting:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling) .cm-editor:not(.ptm-select, .ptm-first-open),
       // prettier-ignore
-    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling.ptm-dim-unfocused-paragraphs-pause-while-selecting .cm-editor:not(.ptm-wheel, .ptm-select) {
+    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling.ptm-dim-unfocused-paragraphs-pause-while-selecting .cm-editor:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
       // prettier-ignore
       .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), .cm-line:not(.cm-active) {
         opacity: var(--dimmed-paragraphs-opacity);
@@ -16,13 +16,14 @@
 
   &[data-ptm-dim-unfocused-editors-behavior="dim-none"],
   &[data-ptm-dim-unfocused-editors-behavior="dim-all"] {
-    &:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling, .ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor.cm-focused,
+    // prettier-ignore
+    &:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling, .ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-first-open),
       // prettier-ignore
-    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling:not(.ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-wheel),
+    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling:not(.ptm-dim-unfocused-paragraphs-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-wheel, .ptm-first-open),
       // prettier-ignore
-    &.ptm-dim-unfocused-paragraphs-pause-while-selecting:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling) .cm-editor.cm-focused:not(.ptm-select),
+    &.ptm-dim-unfocused-paragraphs-pause-while-selecting:not(.ptm-dim-unfocused-paragraphs-pause-while-scrolling) .cm-editor.cm-focused:not(.ptm-select, .ptm-first-open),
       // prettier-ignore
-    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling.ptm-dim-unfocused-paragraphs-pause-while-selecting .cm-editor.cm-focused:not(.ptm-wheel, .ptm-select) {
+    &.ptm-dim-unfocused-paragraphs-pause-while-scrolling.ptm-dim-unfocused-paragraphs-pause-while-selecting .cm-editor.cm-focused:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
       // prettier-ignore
       .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), .cm-line:not(.cm-active) {
         opacity: var(--dimmed-paragraphs-opacity);
@@ -30,8 +31,8 @@
     }
   }
 
-  &[data-ptm-dim-unfocused-editors-behavior="dim-all"]
-    .cm-editor:not(.cm-focused) {
+  // prettier-ignore
+  &[data-ptm-dim-unfocused-editors-behavior="dim-all"] .cm-editor:not(.cm-focused) {
     // prettier-ignore
     .CodeMirror-lines:not(.selecting) .CodeMirror-code, .cm-line {
       opacity: var(--dimmed-paragraphs-opacity);
@@ -86,6 +87,12 @@
       #ptm-typewriter-line {
         display: none;
       }
+    }
+  }
+
+  .cm-editor.ptm-first-open {
+    #ptm-typewriter-line {
+      display: none;
     }
   }
 }
