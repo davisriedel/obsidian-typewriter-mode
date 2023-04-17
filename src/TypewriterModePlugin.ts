@@ -27,47 +27,59 @@ import DimUnfocusedEditorsBehavior from "@/features/DimUnfocusedEditorsBehavior"
 import OnlyMaintainTypewriterOffsetWhenReached from "@/features/OnlyMaintainTypewriterOffsetWhenReached";
 import CodeMirrorPlugin from "@/cm-plugin/CMTypewriterModePlugin";
 import OnlyActivateAfterFirstInteraction from "@/features/OnlyActivateAfterFirstInteraction";
+import { ToggleTypewriterAndDimming } from "@/features/ToggleTypewriterAndDimming";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
   private editorExtensions: Extension[] = [];
 
-  readonly features = [
-    TypewriterScroll,
-    TypewriterOffset,
-    OnlyMaintainTypewriterOffsetWhenReached,
-    TypewriterOnlyUseCommands,
-    OnlyActivateAfterFirstInteraction,
-    HighlightTypewriterLine,
-    TypewriterLineHighlightColor,
-    TypewriterLineHighlightStyle,
-    TypewriterLineHighlightUnderlineThickness,
-    HighlightTypewriterLineOnlyInFocusedEditor,
-    DimUnfocusedParagraphs,
-    DimmedParagraphsOpacity,
-    PauseDimUnfocusedParagraphsWhileScrolling,
-    PauseDimUnfocusedParagraphsWhileSelecting,
-    DimUnfocusedEditorsBehavior,
-    LimitMaxCharsPerLine,
-    MaxCharsPerLine,
-    FullscreenWritingFocusShowsHeader,
-    FullscreenWritingFocusVignette,
-  ].map((f) => new f(this));
+  readonly features = {
+    TypewriterScroll: new TypewriterScroll(this),
+    TypewriterOffset: new TypewriterOffset(this),
+    OnlyMaintainTypewriterOffsetWhenReached:
+      new OnlyMaintainTypewriterOffsetWhenReached(this),
+    TypewriterOnlyUseCommands: new TypewriterOnlyUseCommands(this),
+    OnlyActivateAfterFirstInteraction: new OnlyActivateAfterFirstInteraction(
+      this
+    ),
+    HighlightTypewriterLine: new HighlightTypewriterLine(this),
+    TypewriterLineHighlightColor: new TypewriterLineHighlightColor(this),
+    TypewriterLineHighlightStyle: new TypewriterLineHighlightStyle(this),
+    TypewriterLineHighlightUnderlineThickness:
+      new TypewriterLineHighlightUnderlineThickness(this),
+    HighlightTypewriterLineOnlyInFocusedEditor:
+      new HighlightTypewriterLineOnlyInFocusedEditor(this),
+    DimUnfocusedParagraphs: new DimUnfocusedParagraphs(this),
+    DimmedParagraphsOpacity: new DimmedParagraphsOpacity(this),
+    PauseDimUnfocusedParagraphsWhileScrolling:
+      new PauseDimUnfocusedParagraphsWhileScrolling(this),
+    PauseDimUnfocusedParagraphsWhileSelecting:
+      new PauseDimUnfocusedParagraphsWhileSelecting(this),
+    DimUnfocusedEditorsBehavior: new DimUnfocusedEditorsBehavior(this),
+    LimitMaxCharsPerLine: new LimitMaxCharsPerLine(this),
+    MaxCharsPerLine: new MaxCharsPerLine(this),
+    FullscreenWritingFocusShowsHeader: new FullscreenWritingFocusShowsHeader(
+      this
+    ),
+    FullscreenWritingFocusVignette: new FullscreenWritingFocusVignette(this),
+  };
 
-  readonly commands = [FullscreenWritingFocus, MoveTypewriter].map(
-    (c) => new c(this)
-  );
+  readonly commands = {
+    ToggleTypewriterAndDimming: new ToggleTypewriterAndDimming(this),
+    MoveTypewriter: new MoveTypewriter(this),
+    FullscreenWritingFocus: new FullscreenWritingFocus(this),
+  };
 
   override async onload() {
     await this.loadSettings();
-    this.features.forEach((feature) => feature.load());
-    this.commands.forEach((command) => command.load());
+    Object.values(this.features).forEach((feature) => feature.load());
+    Object.values(this.commands).forEach((command) => command.load());
     this.addSettingTab(new TypewriterModeSettingTab(this.app, this));
     this.registerEditorExtension(this.editorExtensions);
   }
 
   override onunload() {
-    this.features.forEach((feature) => feature.disable());
+    Object.values(this.features).forEach((feature) => feature.disable());
   }
 
   reloadCodeMirror() {

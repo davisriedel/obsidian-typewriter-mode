@@ -48,7 +48,7 @@ export default ViewPlugin.fromClass(
 
     override destroy() {
       super.destroy();
-      this.typewriterLine.remove();
+      this.typewriterLine?.remove();
       window.removeEventListener(
         "moveByCommand",
         this.moveByCommand.bind(this)

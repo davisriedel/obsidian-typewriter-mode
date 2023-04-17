@@ -4,7 +4,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "module": "ESNext",
-    "target": "es5",
+    "target": "ESNext",
     "allowJs": true,
     "noImplicitAny": true,
     "noImplicitOverride": true,
@@ -12,7 +12,7 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "skipLibCheck": true,
-    "lib": ["dom", "es5", "scripthost", "es2015"],
+    "lib": ["dom", "ESNext", "scripthost"],
     "paths": {
       "@/*": ["src/*"]
     }

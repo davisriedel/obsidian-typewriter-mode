@@ -12,6 +12,8 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
   display(): void {
     this.containerEl.empty();
-    this.plugin.features.forEach((feature) => feature.registerSetting(this));
+    Object.values(this.plugin.features).forEach((feature) =>
+      feature.registerSetting(this)
+    );
   }
 }
