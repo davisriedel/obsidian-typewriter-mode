@@ -18,13 +18,40 @@ export default ViewPlugin.fromClass(
     protected override updateAllowedUserEvent() {
       super.updateAllowedUserEvent();
       this.view.dom.classList.remove("ptm-select");
-      this.updateAfterUserEvent();
+      if (this.isInitialInteraction) {
+        this.view.dom.classList.remove("ptm-first-open");
+        this.isInitialInteraction = false;
+      }
+      measureTypewriterPosition(
+        this.view,
+        "TypewriterModeUpdateAfterUserEvent",
+        (measure, view) => {
+          this.recenterAndMoveTypewriterLineHighlight(view, measure);
+        }
+      );
     }
 
     protected override updateDisallowedUserEvent() {
       super.updateDisallowedUserEvent();
+      if (this.isInitialInteraction) {
+        this.view.dom.classList.remove("ptm-first-open");
+        this.isInitialInteraction = false;
+      }
       this.view.dom.classList.add("ptm-select");
-      this.updateAfterUserEvent();
+      measureTypewriterPosition(
+        this.view,
+        "TypewriterModeUpdateAfterUserEvent",
+        ({ activeLineOffset, lineHeight }, view) => {
+          const { isHighlightTypewriterLineEnabled } =
+            view.state.facet(pluginSettingsFacet);
+          if (isHighlightTypewriterLineEnabled)
+            this.moveTypewriterLineHighlight(
+              view,
+              activeLineOffset,
+              lineHeight
+            );
+        }
+      );
     }
 
     protected override updateNonUserEvent() {
@@ -38,7 +65,7 @@ export default ViewPlugin.fromClass(
 
     private moveByCommand() {
       this.view.dom.classList.remove("ptm-select");
-      this.updateAfterUserEvent();
+      this.updateAllowedUserEvent();
     }
 
     protected override onResize() {
@@ -52,20 +79,6 @@ export default ViewPlugin.fromClass(
       window.removeEventListener(
         "moveByCommand",
         this.moveByCommand.bind(this)
-      );
-    }
-
-    private updateAfterUserEvent() {
-      if (this.isInitialInteraction) {
-        this.view.dom.classList.remove("ptm-first-open");
-        this.isInitialInteraction = false;
-      }
-      measureTypewriterPosition(
-        this.view,
-        "TypewriterModeUpdateAfterUserEvent",
-        (measure, view) => {
-          this.recenterAndMoveTypewriterLineHighlight(view, measure);
-        }
       );
     }
 
