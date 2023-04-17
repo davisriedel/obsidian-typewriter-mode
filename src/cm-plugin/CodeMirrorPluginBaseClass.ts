@@ -5,7 +5,6 @@ import { Transaction } from "@codemirror/state";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 
 export default abstract class CodeMirrorPluginBaseClass {
-  private internalUpdate = false;
   private domResizeObserver: ResizeObserver;
 
   constructor(protected view: EditorView) {
@@ -40,19 +39,12 @@ export default abstract class CodeMirrorPluginBaseClass {
   }
 
   update(update: ViewUpdate) {
-    // Ignore updates that are caused by this plugin
-    if (this.internalUpdate) {
-      this.internalUpdate = false;
-      return;
-    }
-
     const userEventsAllowed = this.userEventsAllowed(update);
     if (userEventsAllowed === null) {
       this.updateNonUserEvent();
       return;
     }
 
-    this.internalUpdate = true;
     userEventsAllowed
       ? this.updateAllowedUserEvent()
       : this.updateDisallowedUserEvent();
