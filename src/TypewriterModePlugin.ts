@@ -28,6 +28,8 @@ import OnlyMaintainTypewriterOffsetWhenReached from "@/features/OnlyMaintainType
 import CodeMirrorPlugin from "@/cm-plugin/CMTypewriterModePlugin";
 import OnlyActivateAfterFirstInteraction from "@/features/OnlyActivateAfterFirstInteraction";
 import { ToggleTypewriterAndDimming } from "@/features/ToggleTypewriterAndDimming";
+import KeepLinesAboveAndBelow from "@/features/KeepLinesAboveAndBelow";
+import LinesAboveAndBelow from "@/features/LinesAboveAndBelow";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
@@ -39,9 +41,8 @@ export default class TypewriterModePlugin extends Plugin {
     OnlyMaintainTypewriterOffsetWhenReached:
       new OnlyMaintainTypewriterOffsetWhenReached(this),
     TypewriterOnlyUseCommands: new TypewriterOnlyUseCommands(this),
-    OnlyActivateAfterFirstInteraction: new OnlyActivateAfterFirstInteraction(
-      this
-    ),
+    KeepLinesAboveAndBelow: new KeepLinesAboveAndBelow(this),
+    LinesAboveAndBelow: new LinesAboveAndBelow(this),
     HighlightTypewriterLine: new HighlightTypewriterLine(this),
     TypewriterLineHighlightColor: new TypewriterLineHighlightColor(this),
     TypewriterLineHighlightStyle: new TypewriterLineHighlightStyle(this),
@@ -56,6 +57,9 @@ export default class TypewriterModePlugin extends Plugin {
     PauseDimUnfocusedParagraphsWhileSelecting:
       new PauseDimUnfocusedParagraphsWhileSelecting(this),
     DimUnfocusedEditorsBehavior: new DimUnfocusedEditorsBehavior(this),
+    OnlyActivateAfterFirstInteraction: new OnlyActivateAfterFirstInteraction(
+      this
+    ),
     LimitMaxCharsPerLine: new LimitMaxCharsPerLine(this),
     MaxCharsPerLine: new MaxCharsPerLine(this),
     FullscreenWritingFocusShowsHeader: new FullscreenWritingFocusShowsHeader(

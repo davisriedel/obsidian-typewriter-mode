@@ -128,9 +128,13 @@ export default ViewPlugin.fromClass(
       view: EditorView,
       { scrollOffset, lineHeight }: TypewriterPositionData
     ) {
-      const { isTypewriterScrollEnabled, isHighlightTypewriterLineEnabled } =
-        view.state.facet(pluginSettingsFacet);
-      if (isTypewriterScrollEnabled) this.recenter(view, scrollOffset);
+      const {
+        isTypewriterScrollEnabled,
+        isKeepLinesAboveAndBelowEnabled,
+        isHighlightTypewriterLineEnabled,
+      } = view.state.facet(pluginSettingsFacet);
+      if (isTypewriterScrollEnabled || isKeepLinesAboveAndBelowEnabled)
+        this.recenter(view, scrollOffset);
       if (isHighlightTypewriterLineEnabled)
         this.moveTypewriterLineHighlight(view, scrollOffset, lineHeight);
     }

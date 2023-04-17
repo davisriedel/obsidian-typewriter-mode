@@ -31,6 +31,7 @@ function getTypewriterPositionData(view: EditorView) {
 
   const {
     isTypewriterScrollEnabled,
+    isKeepLinesAboveAndBelowEnabled,
     isOnlyMaintainTypewriterOffsetWhenReachedEnabled,
   } = view.state.facet(pluginSettingsFacet);
   let scrollOffset;
@@ -42,6 +43,22 @@ function getTypewriterPositionData(view: EditorView) {
         view.scrollDOM.scrollTop + activeLineOffset < typewriterOffset
           ? Math.min(typewriterOffset, activeLineOffset)
           : typewriterOffset;
+    }
+  } else if (isKeepLinesAboveAndBelowEnabled) {
+    const { linesAboveAndBelow } = view.state.facet(pluginSettingsFacet);
+    const lowerBound = view.defaultLineHeight * linesAboveAndBelow;
+    const upperBound =
+      view.dom.clientHeight - view.defaultLineHeight * (linesAboveAndBelow + 1);
+    const activeLineOffset = getActiveLineOffset(view);
+    const belowLowerBound =
+      view.scrollDOM.scrollTop !== 0 && activeLineOffset < lowerBound;
+    const aboveUpperBound = activeLineOffset > upperBound;
+    if (belowLowerBound) {
+      scrollOffset = lowerBound;
+    } else if (aboveUpperBound) {
+      scrollOffset = upperBound;
+    } else {
+      scrollOffset = activeLineOffset;
     }
   } else {
     scrollOffset = getActiveLineOffset(view);
