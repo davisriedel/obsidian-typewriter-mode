@@ -11,12 +11,14 @@ export default ViewPlugin.fromClass(
 
     protected override onLoad() {
       super.onLoad();
+      this.view.scrollDOM.addEventListener("wheel", this.onWheel.bind(this));
       window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
       this.updateAfterExternalEvent();
     }
 
     protected override updateAllowedUserEvent() {
       super.updateAllowedUserEvent();
+      this.view.dom.classList.remove("ptm-wheel");
       this.view.dom.classList.remove("ptm-select");
       if (this.isInitialInteraction) {
         this.view.dom.classList.remove("ptm-first-open");
@@ -73,9 +75,14 @@ export default ViewPlugin.fromClass(
       this.updateAfterExternalEvent();
     }
 
+    protected onWheel() {
+      this.view.dom.classList.add("ptm-wheel");
+    }
+
     override destroy() {
       super.destroy();
       this.typewriterLine?.remove();
+      this.view.scrollDOM.removeEventListener("wheel", this.onWheel);
       window.removeEventListener(
         "moveByCommand",
         this.moveByCommand.bind(this)

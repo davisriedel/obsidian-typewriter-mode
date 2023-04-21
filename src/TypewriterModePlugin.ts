@@ -3,7 +3,6 @@ import { DEFAULT_SETTINGS } from "@/TypewriterModeSettings";
 import { Plugin } from "obsidian";
 import TypewriterModeSettingTab from "@/TypewriterModeSettingsTab";
 import type { Extension } from "@codemirror/state";
-import OnWheelPlugin from "@/cm-plugin/CMOnWheelPlugin";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import HighlightTypewriterLine from "@/features/HighlightTypewriterLine";
 import HighlightTypewriterLineOnlyInFocusedEditor from "@/features/HighlightTypewriterLineOnlyInFocusedEditor";
@@ -91,10 +90,6 @@ export default class TypewriterModePlugin extends Plugin {
     const extensions = [
       pluginSettingsFacet.of(this.settings),
       CodeMirrorPlugin,
-      this.settings.isHighlightTypewriterLineEnabled ||
-      this.settings.isDimUnfocusedParagraphsEnabled
-        ? OnWheelPlugin
-        : [],
     ];
     this.editorExtensions.push(extensions);
     this.app.workspace.updateOptions();
