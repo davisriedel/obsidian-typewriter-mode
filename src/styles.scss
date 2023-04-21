@@ -49,16 +49,33 @@
 
 .ptm-fullscreen-writing-focus-vignette {
   .ptm-fullscreen-writing-focus-element {
-    background-color: var(--background-primary);
-    box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
-
-    .view-header,
-    .view-content {
-      background-color: transparent;
+    &::before {
+      z-index: 1000;
+      pointer-events: none;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
     }
 
-    .view-header .view-header-title-container:after {
-      background: transparent;
+    &[data-ptm-fullscreen-writing-focus-vignette-style="box"] {
+      &::before {
+        box-shadow: inset 0 0 2em 2em rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    &[data-ptm-fullscreen-writing-focus-vignette-style="column"] {
+      &::before {
+        background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.5),
+          transparent 5vw,
+          transparent 95vw,
+          rgba(0, 0, 0, 0.5)
+        );
+      }
     }
   }
 }

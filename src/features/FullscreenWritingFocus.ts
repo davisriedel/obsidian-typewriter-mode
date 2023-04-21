@@ -24,11 +24,13 @@ export class FullscreenWritingFocus extends Command {
       .doesFullscreenWritingFocusShowHeader
       ? view.containerEl
       : view.contentEl;
-    fullscreenEl
-      .requestFullscreen()
-      .then(() =>
-        fullscreenEl.classList.add("ptm-fullscreen-writing-focus-element")
+    fullscreenEl.requestFullscreen().then(() => {
+      fullscreenEl.classList.add("ptm-fullscreen-writing-focus-element");
+      fullscreenEl.setAttr(
+        "data-ptm-fullscreen-writing-focus-vignette-style",
+        this.plugin.settings.fullscreenWritingFocusVignetteStyle
       );
+    });
   }
 
   private exitFullscreenWritingFocus() {
@@ -41,5 +43,8 @@ export class FullscreenWritingFocus extends Command {
     );
     if (elements.length === 0) return;
     elements[0].classList.remove("ptm-fullscreen-writing-focus-element");
+    elements[0].removeAttribute(
+      "data-ptm-fullscreen-writing-focus-vignette-style"
+    );
   }
 }

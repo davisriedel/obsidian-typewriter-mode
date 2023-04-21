@@ -29,6 +29,7 @@ import OnlyActivateAfterFirstInteraction from "@/features/OnlyActivateAfterFirst
 import { ToggleTypewriterAndDimming } from "@/features/ToggleTypewriterAndDimming";
 import KeepLinesAboveAndBelow from "@/features/KeepLinesAboveAndBelow";
 import LinesAboveAndBelow from "@/features/LinesAboveAndBelow";
+import FullscreenWritingFocusVignetteStyle from "@/features/FullscreenWritingFocusVignetteStyle";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
@@ -65,6 +66,8 @@ export default class TypewriterModePlugin extends Plugin {
       this
     ),
     FullscreenWritingFocusVignette: new FullscreenWritingFocusVignette(this),
+    FullscreenWritingFocusVignetteStyle:
+      new FullscreenWritingFocusVignetteStyle(this),
   };
 
   readonly commands = {

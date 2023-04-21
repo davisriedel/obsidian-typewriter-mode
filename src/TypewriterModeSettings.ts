@@ -20,6 +20,7 @@ export interface TypewriterModeSettings {
   typewriterLineHighlightColor: string;
   doesFullscreenWritingFocusShowHeader: boolean;
   doesFullscreenWritingFocusShowVignette: boolean;
+  fullscreenWritingFocusVignetteStyle: "box" | "column";
   [key: string]: unknown;
 }
 
@@ -45,4 +46,5 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   typewriterLineHighlightColor: "#333",
   doesFullscreenWritingFocusShowHeader: false,
   doesFullscreenWritingFocusShowVignette: true,
+  fullscreenWritingFocusVignetteStyle: "box",
 };
