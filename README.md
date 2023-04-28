@@ -3,13 +3,29 @@
 **This plugin is currently in BETA.** _Please feel free to open an issue if you find any bugs._
 
 ## Features
-- **Typewriter scrolling:** While writing, the cursor will stay at a fixed percentage of the screen
-- **Highlight typewriter line:** The typewriter line to which the cursor is fixed can be highlighted
-- **Limit maximum number of characters per line**
-- **Dim unfocused paragraphs**: All paragraphs but the one containing the cursor will be dimmed
-- **Fullscreen writing focus**: Opens the editor in fullscreen, hiding everything but the text
 
-*Each of those features have several settings that allow you to customize them to your needs.*
+- **Typewriter Scrolling:** _Turns typewriter scrolling on or off_
+- **Typewriter Offset:** _Positions the typewriter line at the specified percentage of the screen_
+- **Only Maintain Typewriter Offset When Reached:** _The line that the cursor is on will not be scrolled to the center of the editor until it the specified typewriter offset is reached. This removes the additional space at the top of the editor._
+- **Do Not Snap Typewriter With Arrow Keys:** _The typewriter will only snap when using this plugin's move commands. It will not snap when using the arrow keys. The move commands are by default Cmd/Ctrl+ArrowUp/ArrowDown, but you can assign your own hotkeys for the move commands in Obsidian's settings._
+- **Keep Lines Above And Below:** _When enabled, always keeps the specified amount of lines above and below the current line in view_
+- **Amount of Lines Above and Below the Current Line:** _The amount of lines to always keep above and below the current line_
+- **Highlight Current Line:** _Highlights the line that the cursor is currently on_
+- **Current Line Highlight Color:** _The color of the current line highlight_
+- **Current Line Highlight Style:** _The style of the current line highlight_ - _Box, Underline_
+- **Current Line Underline Thickness:** _The thickness of the underline that highlights the current line_
+- **Highlight Current Line Only In Focused Note:** _Only show highlighted line in the note / editor your cursor is on_
+- **Dim Unfocused Paragraphs:** _Darkens unfocused paragraphs in the editor_
+- **Dimmed Paragraphs' Opacity:** _The opacity of dimmed paragraphs_
+- **Pause Dimming Unfocused Paragraphs While Scrolling:** _Paragraphs are not dimmed while scrolling_
+- **Pause Dimming Unfocused Paragraphs While Selecting Text:** _Paragraphs are not dimmed while selecting text_
+- **Paragraph Dimming Behavior in Unfocused Editors:** _How to dim paragraphs in unfocused editors_ - _Do Not Dim Any Paragraph, Dim All But Last Focused Paragraph, Dim All Paragraphs_
+- **Only Activate After First Interaction:** _Activate the focused line highlight and paragraph dimming only after the first interaction with the editor_
+- **Limit Maximum Number of Characters Per Line:** _Limits the maximum number of characters per line_
+- **Maximum Number of Characters Per Line:** _The maximum number of characters per line_
+- **Show Header in Fullscreen Writing Focus:** _If enabled, the header will be shown in fullscreen writing focus_
+- **Fullscreen Writing Focus Vignette:** _Add a vignette to the edges of the screen in fullscreen writing focus_
+- **Fullscreen Writing Focus Vignette Style:** _The style of the vignette in fullscreen writing focus mode_ - _Box, Column_
 
 ## Compatibility
 
@@ -17,7 +33,7 @@ This plugin is compatible with Obsidian v0.15.0 and above. It does not support t
 
 ## Installation
 
-To install community plugins make sure *safe mode* is turned off in Obsidian's settings.
+To install community plugins make sure _safe mode_ is turned off in Obsidian's settings.
 
 ### From within Obsidian
 
@@ -37,7 +53,7 @@ You can activate this plugin within Obsidian by doing the following:
 #### Manual
 
 1. Download the latest Release from the Releases section of the GitHub Repository
-2. Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`. *Note: On some machines the `.obsidian` folder may be hidden. On macOS you should be able to press `Command+Shift+Dot` to show the folder in Finder.*
+2. Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`. _Note: On some machines the `.obsidian` folder may be hidden. On macOS you should be able to press `Command+Shift+Dot` to show the folder in Finder._
 3. Reload Obsidian
 
 #### With BRAT
@@ -52,8 +68,7 @@ This plugin started as a fork of the incredible [Typewriter Scroll](https://gith
 
 The repo depends on the latest [Obsidian Plugin API](https://github.com/obsidianmd/obsidian-api).
 
-If you want to contribute to development and/or just customize it with your own
-tweaks, you can do the following:
+If you want to contribute to this project or make your own changes, you can do so by following these steps:
 
 1. Clone this repo
 2. Install dependencies with `npm i`, `yarn` or `pnpm i`
