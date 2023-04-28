@@ -6,7 +6,7 @@ import { measureTypewriterPosition } from "@/cm-plugin/getTypewriterOffset";
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginBaseClass {
-    private typewriterLine: HTMLElement | null = null;
+    private currentLineHighlight: HTMLElement | null = null;
     private isInitialInteraction = true;
 
     protected override onLoad() {
@@ -28,7 +28,7 @@ export default ViewPlugin.fromClass(
         this.view,
         "TypewriterModeUpdateAfterUserEvent",
         (measure, view) => {
-          this.recenterAndMoveTypewriterLineHighlight(view, measure);
+          this.recenterAndMoveCurrentLineHighlight(view, measure);
         }
       );
     }
@@ -44,14 +44,10 @@ export default ViewPlugin.fromClass(
         this.view,
         "TypewriterModeUpdateAfterUserEvent",
         ({ activeLineOffset, lineHeight }, view) => {
-          const { isHighlightTypewriterLineEnabled } =
+          const { isHighlightCurrentLineEnabled } =
             view.state.facet(pluginSettingsFacet);
-          if (isHighlightTypewriterLineEnabled)
-            this.moveTypewriterLineHighlight(
-              view,
-              activeLineOffset,
-              lineHeight
-            );
+          if (isHighlightCurrentLineEnabled)
+            this.moveCurrentLineHighlight(view, activeLineOffset, lineHeight);
         }
       );
     }
@@ -81,7 +77,7 @@ export default ViewPlugin.fromClass(
 
     override destroy() {
       super.destroy();
-      this.typewriterLine?.remove();
+      this.currentLineHighlight?.remove();
       this.view.scrollDOM.removeEventListener("wheel", this.onWheel);
       window.removeEventListener(
         "moveByCommand",
@@ -98,27 +94,28 @@ export default ViewPlugin.fromClass(
         (measure, view) => {
           if (isTypewriterScrollEnabled)
             this.setPadding(view, measure.typewriterOffset);
-          this.recenterAndMoveTypewriterLineHighlight(view, measure);
+          this.recenterAndMoveCurrentLineHighlight(view, measure);
         }
       );
     }
 
-    private createTypewriterLine(view: EditorView) {
-      this.typewriterLine = document.createElement("div");
-      this.typewriterLine.id = "ptm-typewriter-line";
+    private createCurrentLineHighlight(view: EditorView) {
+      this.currentLineHighlight = document.createElement("div");
+      this.currentLineHighlight.id = "ptm-current-line-highlight";
       const settings = view.state.facet(pluginSettingsFacet);
-      this.typewriterLine.className = `ptm-typewriter-line-${settings.typewriterLineHighlightStyle}`;
-      view.dom.appendChild(this.typewriterLine);
+      this.currentLineHighlight.className = `ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
+      view.dom.appendChild(this.currentLineHighlight);
     }
 
-    private moveTypewriterLineHighlight(
+    private moveCurrentLineHighlight(
       view: EditorView,
       offset: number,
       lineHeight: number
     ) {
-      if (this.typewriterLine == null) this.createTypewriterLine(view);
-      this.typewriterLine.style.height = `${lineHeight}px`;
-      this.typewriterLine.style.top = `${offset}px`;
+      if (this.currentLineHighlight == null)
+        this.createCurrentLineHighlight(view);
+      this.currentLineHighlight.style.height = `${lineHeight}px`;
+      this.currentLineHighlight.style.top = `${offset}px`;
     }
 
     private setPadding(view: EditorView, offset: number) {
@@ -144,19 +141,19 @@ export default ViewPlugin.fromClass(
       view.dispatch(transaction);
     }
 
-    private recenterAndMoveTypewriterLineHighlight(
+    private recenterAndMoveCurrentLineHighlight(
       view: EditorView,
       { scrollOffset, lineHeight }: TypewriterPositionData
     ) {
       const {
         isTypewriterScrollEnabled,
         isKeepLinesAboveAndBelowEnabled,
-        isHighlightTypewriterLineEnabled,
+        isHighlightCurrentLineEnabled,
       } = view.state.facet(pluginSettingsFacet);
       if (isTypewriterScrollEnabled || isKeepLinesAboveAndBelowEnabled)
         this.recenter(view, scrollOffset);
-      if (isHighlightTypewriterLineEnabled)
-        this.moveTypewriterLineHighlight(view, scrollOffset, lineHeight);
+      if (isHighlightCurrentLineEnabled)
+        this.moveCurrentLineHighlight(view, scrollOffset, lineHeight);
     }
   }
 );

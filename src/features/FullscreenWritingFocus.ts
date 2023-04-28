@@ -41,10 +41,10 @@ export class FullscreenWritingFocus extends Command {
     const elements = document.getElementsByClassName(
       "ptm-fullscreen-writing-focus-element"
     );
-    if (elements.length === 0) return;
-    elements[0].classList.remove("ptm-fullscreen-writing-focus-element");
+    if (!elements || elements.length === 0) return;
     elements[0].removeAttribute(
       "data-ptm-fullscreen-writing-focus-vignette-style"
     );
+    elements[0].classList.remove("ptm-fullscreen-writing-focus-element");
   }
 }

@@ -3,32 +3,31 @@ import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
-export default class TypewriterLineHighlightStyle extends Feature {
-  protected setting: keyof TypewriterModeSettings =
-    "typewriterLineHighlightStyle";
+export default class CurrentLineHighlightStyle extends Feature {
+  protected setting: keyof TypewriterModeSettings = "currentLineHighlightStyle";
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Typewriter Line Highlight Style")
-      .setDesc("The style of the typewriter line highlight")
+      .setName("Current Line Highlight Style")
+      .setDesc("The style of the current line highlight")
       .setClass("typewriter-mode-setting")
       .addDropdown((dropdown) =>
         dropdown
           .addOption("box", "Box")
           .addOption("underline", "Underline")
-          .setValue(this.plugin.settings.typewriterLineHighlightStyle)
+          .setValue(this.plugin.settings.currentLineHighlightStyle)
           .onChange((newValue) => {
-            this.changeTypewriterLineHighlightStyle(
+            this.changeCurrentLineHighlightStyle(
               newValue as "box" | "underline"
             );
             settingTab.display();
           })
       )
-      .setDisabled(!this.plugin.settings.isHighlightTypewriterLineEnabled);
+      .setDisabled(!this.plugin.settings.isHighlightCurrentLineEnabled);
   }
 
-  private changeTypewriterLineHighlightStyle(newValue: "box" | "underline") {
-    this.plugin.settings.typewriterLineHighlightStyle = newValue;
+  private changeCurrentLineHighlightStyle(newValue: "box" | "underline") {
+    this.plugin.settings.currentLineHighlightStyle = newValue;
     this.plugin.reloadCodeMirror();
     this.plugin.saveSettings().then();
   }

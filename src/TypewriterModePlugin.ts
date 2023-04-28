@@ -4,17 +4,17 @@ import { Plugin } from "obsidian";
 import TypewriterModeSettingTab from "@/TypewriterModeSettingsTab";
 import type { Extension } from "@codemirror/state";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
-import HighlightTypewriterLine from "@/features/HighlightTypewriterLine";
-import HighlightTypewriterLineOnlyInFocusedEditor from "@/features/HighlightTypewriterLineOnlyInFocusedEditor";
+import HighlightCurrentLine from "@/features/HighlightCurrentLine";
+import HighlightCurrentLineOnlyInFocusedEditor from "@/features/HighlightCurrentLineOnlyInFocusedEditor";
 import LimitMaxCharsPerLine from "@/features/LimitMaxCharsPerLine";
 import PauseDimUnfocusedParagraphsWhileScrolling from "@/features/PauseDimUnfocusedParagraphsWhileScrolling";
 import PauseDimUnfocusedParagraphsWhileSelecting from "@/features/PauseDimUnfocusedParagraphsWhileSelecting";
 import TypewriterScroll from "@/features/TypewriterScroll";
 import DimUnfocusedParagraphs from "@/features/DimUnfocusedParagraphs";
 import TypewriterOffset from "@/features/TypewriterOffset";
-import TypewriterLineHighlightColor from "@/features/TypewriterLineHighlightColor";
-import TypewriterLineHighlightStyle from "@/features/TypewriterLineHighlightStyle";
-import TypewriterLineHighlightUnderlineThickness from "@/features/TypewriterLineHighlightUnderlineThickness";
+import CurrentLineHighlightColor from "@/features/CurrentLineHighlightColor";
+import CurrentLineHighlightStyle from "@/features/CurrentLineHighlightStyle";
+import CurrentLineHighlightUnderlineThickness from "@/features/CurrentLineHighlightUnderlineThickness";
 import DimmedParagraphsOpacity from "@/features/DimmedParagraphsOpacity";
 import MaxCharsPerLine from "@/features/MaxCharsPerLine";
 import { FullscreenWritingFocus } from "@/features/FullscreenWritingFocus";
@@ -43,13 +43,13 @@ export default class TypewriterModePlugin extends Plugin {
     TypewriterOnlyUseCommands: new TypewriterOnlyUseCommands(this),
     KeepLinesAboveAndBelow: new KeepLinesAboveAndBelow(this),
     LinesAboveAndBelow: new LinesAboveAndBelow(this),
-    HighlightTypewriterLine: new HighlightTypewriterLine(this),
-    TypewriterLineHighlightColor: new TypewriterLineHighlightColor(this),
-    TypewriterLineHighlightStyle: new TypewriterLineHighlightStyle(this),
-    TypewriterLineHighlightUnderlineThickness:
-      new TypewriterLineHighlightUnderlineThickness(this),
-    HighlightTypewriterLineOnlyInFocusedEditor:
-      new HighlightTypewriterLineOnlyInFocusedEditor(this),
+    HighlightCurrentLine: new HighlightCurrentLine(this),
+    CurrentLineHighlightColor: new CurrentLineHighlightColor(this),
+    CurrentLineHighlightStyle: new CurrentLineHighlightStyle(this),
+    CurrentLineHighlightUnderlineThickness:
+      new CurrentLineHighlightUnderlineThickness(this),
+    HighlightCurrentLineOnlyInFocusedEditor:
+      new HighlightCurrentLineOnlyInFocusedEditor(this),
     DimUnfocusedParagraphs: new DimUnfocusedParagraphs(this),
     DimmedParagraphsOpacity: new DimmedParagraphsOpacity(this),
     PauseDimUnfocusedParagraphsWhileScrolling:

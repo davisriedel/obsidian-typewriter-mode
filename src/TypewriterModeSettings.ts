@@ -13,11 +13,11 @@ export interface TypewriterModeSettings {
   dimmedParagraphsOpacity: number;
   isPauseDimUnfocusedParagraphsWhileScrollingEnabled: boolean;
   isPauseDimUnfocusedParagraphsWhileSelectingEnabled: boolean;
-  isHighlightTypewriterLineEnabled: boolean;
-  isHighlightTypewriterLineOnlyInFocusedEditorEnabled: boolean;
-  typewriterLineHighlightStyle: "box" | "underline";
-  typewriterLineHighlightUnderlineThickness: number;
-  typewriterLineHighlightColor: string;
+  isHighlightCurrentLineEnabled: boolean;
+  isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
+  currentLineHighlightStyle: "box" | "underline";
+  currentLineHighlightUnderlineThickness: number;
+  currentLineHighlightColor: string;
   doesFullscreenWritingFocusShowHeader: boolean;
   doesFullscreenWritingFocusShowVignette: boolean;
   fullscreenWritingFocusVignetteStyle: "box" | "column";
@@ -39,11 +39,11 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   dimmedParagraphsOpacity: 0.25,
   isPauseDimUnfocusedParagraphsWhileScrollingEnabled: true,
   isPauseDimUnfocusedParagraphsWhileSelectingEnabled: true,
-  isHighlightTypewriterLineEnabled: true,
-  isHighlightTypewriterLineOnlyInFocusedEditorEnabled: false,
-  typewriterLineHighlightStyle: "box",
-  typewriterLineHighlightUnderlineThickness: 1,
-  typewriterLineHighlightColor: "#333",
+  isHighlightCurrentLineEnabled: true,
+  isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
+  currentLineHighlightStyle: "box",
+  currentLineHighlightUnderlineThickness: 1,
+  currentLineHighlightColor: "#333",
   doesFullscreenWritingFocusShowHeader: false,
   doesFullscreenWritingFocusShowVignette: true,
   fullscreenWritingFocusVignetteStyle: "box",

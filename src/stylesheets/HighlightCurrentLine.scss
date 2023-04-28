@@ -1,0 +1,39 @@
+.ptm-highlight-current-line {
+  #ptm-current-line-highlight {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+
+    &.ptm-current-line-highlight-box {
+      background-color: var(--current-line-highlight-color);
+      mix-blend-mode: screen;
+    }
+
+    &.ptm-current-line-highlight-underline {
+      border-bottom: var(--current-line-highlight-underline-thickness) solid
+        var(--current-line-highlight-color);
+    }
+  }
+
+  &.ptm-highlight-current-line-only-in-active-editor {
+    .cm-editor:not(.cm-focused) {
+      #ptm-current-line-highlight {
+        display: none;
+      }
+    }
+  }
+
+  .ptm-wheel {
+    #ptm-current-line-highlight {
+      display: none;
+    }
+  }
+
+  .cm-editor.ptm-first-open {
+    #ptm-current-line-highlight {
+      display: none;
+    }
+  }
+}
