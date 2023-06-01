@@ -5,9 +5,8 @@ All features can be turned on or off individually and have a variety of settings
 Below you can find a list of all features and settings.
 
 _These are a few exemplary screen captures:_
-![](https://github.com/davisriedel/obsidian-typewriter-mode/demo/typewriter.gif)
-![](https://github.com/davisriedel/obsidian-typewriter-mode/demo/dimming.gif)
-![](https://github.com/davisriedel/obsidian-typewriter-mode/demo/only-when-reached.gif)
+![Typewriter scrolling and current line highlighted](https://github.com/davisriedel/obsidian-typewriter-mode/raw/main/demo/typewriter.gif)
+![Unfocused paragraphs dimmed](https://github.com/davisriedel/obsidian-typewriter-mode/raw/main/demo/dimming.gif)
 
 ## Features and Settings
 
