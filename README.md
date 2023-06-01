@@ -1,8 +1,15 @@
 # Typewriter Mode for Obsidian
 
-**This plugin is currently in BETA.** _Please feel free to open an issue if you find any bugs._
+Typewriter Mode is a plugin that adds typewriter scrolling (current line stays at a fixed position on the screen), a highlight for the current line, dimming of unfocused paragraphs and more to [Obsidian](https://obsidian.md).
+All features can be turned on or off individually and have a variety of settings to customize their behavior to your liking.
+Below you can find a list of all features and settings.
 
-## Features
+_These are a few exemplary screen captures:_
+![](https://github.com/davisriedel/obsidian-typewriter-mode/demo/typewriter.gif)
+![](https://github.com/davisriedel/obsidian-typewriter-mode/demo/dimming.gif)
+![](https://github.com/davisriedel/obsidian-typewriter-mode/demo/only-when-reached.gif)
+
+## Features and Settings
 
 - **Typewriter Scrolling:** _Turns typewriter scrolling on or off_
 - **Typewriter Offset:** _Positions the typewriter line at the specified percentage of the screen_
@@ -37,16 +44,12 @@ To install community plugins make sure _safe mode_ is turned off in Obsidian's s
 
 ### From within Obsidian
 
-**Since this plugin is in BETA it is not yet published to Obsidian. Please install it from GitHub as described below.**
-
-<!---
 You can activate this plugin within Obsidian by doing the following:
 
 - Go to Settings > Community Plugins > Browse
 - Search for "Typewriter Mode"
 - Click Install
 - Click Enable
---->
 
 ### From GitHub
 
@@ -78,4 +81,4 @@ If you want to contribute to this project or make your own changes, you can do s
 
 If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do not need to copy the files manually and can skip step 4.
 
-**Feel free to open issues or contribute to this project!**
+**Feel free to open issues and/or contribute to this project!**
