@@ -6,7 +6,7 @@ function getActiveLineProp(view: EditorView, prop: string) {
     view.contentDOM
       .querySelector(".cm-active.cm-line")
       ?.getCssPropertyValue(prop)
-      .replace("px", "")
+      .replace("px", ""),
   );
 }
 
@@ -78,7 +78,7 @@ export type TypewriterPositionData = ReturnType<
 export function measureTypewriterPosition(
   view: EditorView,
   key: string,
-  write: (measure: TypewriterPositionData, view: EditorView) => void
+  write: (measure: TypewriterPositionData, view: EditorView) => void,
 ) {
   view.requestMeasure({
     key,

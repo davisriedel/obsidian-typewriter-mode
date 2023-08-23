@@ -16,7 +16,7 @@ export default class MaxCharsPerLine extends Feature {
           .setValue(this.plugin.settings.maxCharsPerLine.toString())
           .onChange((newValue) => {
             this.changeMaxCharsPerLine(parseInt(newValue));
-          })
+          }),
       )
       .setDisabled(!this.plugin.settings.isMaxCharsPerLineEnabled);
   }
@@ -24,7 +24,7 @@ export default class MaxCharsPerLine extends Feature {
   override load() {
     this.plugin.setCSSVariable(
       "--max-chars-per-line",
-      `${this.plugin.settings.maxCharsPerLine}ch`
+      `${this.plugin.settings.maxCharsPerLine}ch`,
     );
   }
 

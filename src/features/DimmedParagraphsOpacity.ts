@@ -18,7 +18,7 @@ export default class DimmedParagraphsOpacity extends Feature {
           .setValue(this.plugin.settings.dimmedParagraphsOpacity * 100)
           .onChange((newValue) => {
             this.changeDimmedParagraphsOpacity(newValue / 100);
-          })
+          }),
       )
       .setDisabled(!this.plugin.settings.isDimUnfocusedParagraphsEnabled);
   }
@@ -26,7 +26,7 @@ export default class DimmedParagraphsOpacity extends Feature {
   override load() {
     this.plugin.setCSSVariable(
       "--dimmed-paragraphs-opacity",
-      `${this.plugin.settings.dimmedParagraphsOpacity}`
+      `${this.plugin.settings.dimmedParagraphsOpacity}`,
     );
   }
 

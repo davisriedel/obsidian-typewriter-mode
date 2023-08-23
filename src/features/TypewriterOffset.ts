@@ -10,7 +10,7 @@ export default class TypewriterOffset extends Feature {
     new Setting(settingTab.containerEl)
       .setName("Typewriter Offset")
       .setDesc(
-        "Positions the typewriter line at the specified percentage of the screen"
+        "Positions the typewriter line at the specified percentage of the screen",
       )
       .setClass("typewriter-mode-setting")
       .addSlider((slider) =>
@@ -20,7 +20,7 @@ export default class TypewriterOffset extends Feature {
           .setValue(this.plugin.settings.typewriterOffset * 100)
           .onChange((newValue) => {
             this.changeTypewriterOffset(newValue / 100);
-          })
+          }),
       )
       .setDisabled(!this.plugin.settings.isTypewriterScrollEnabled);
   }

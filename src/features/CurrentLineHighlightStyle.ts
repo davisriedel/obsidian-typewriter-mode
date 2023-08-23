@@ -18,10 +18,10 @@ export default class CurrentLineHighlightStyle extends Feature {
           .setValue(this.plugin.settings.currentLineHighlightStyle)
           .onChange((newValue) => {
             this.changeCurrentLineHighlightStyle(
-              newValue as "box" | "underline"
+              newValue as "box" | "underline",
             );
             settingTab.display();
-          })
+          }),
       )
       .setDisabled(!this.plugin.settings.isHighlightCurrentLineEnabled);
   }

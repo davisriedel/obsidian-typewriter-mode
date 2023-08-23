@@ -20,10 +20,10 @@ export default class FullscreenWritingFocusVignetteStyle extends Feature {
           .onChange((newValue) => {
             this.changeVignetteStyle(newValue as "box" | "column");
             settingTab.display();
-          })
+          }),
       )
       .setDisabled(
-        !this.plugin.settings.doesFullscreenWritingFocusShowVignette
+        !this.plugin.settings.doesFullscreenWritingFocusShowVignette,
       );
   }
 

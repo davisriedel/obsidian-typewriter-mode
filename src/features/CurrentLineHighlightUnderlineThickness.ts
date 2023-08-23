@@ -11,7 +11,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
     new Setting(settingTab.containerEl)
       .setName("Current Line Underline Thickness")
       .setDesc(
-        "The thickness of the underline that highlights the current line"
+        "The thickness of the underline that highlights the current line",
       )
       .setClass("typewriter-mode-setting")
       .addSlider((slider) =>
@@ -21,18 +21,18 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
           .setValue(this.plugin.settings.currentLineHighlightUnderlineThickness)
           .onChange((newValue) => {
             this.changeCurrentLineHighlightUnderlineThickness(newValue);
-          })
+          }),
       )
       .setDisabled(
         !this.plugin.settings.isHighlightCurrentLineEnabled ||
-          this.plugin.settings.currentLineHighlightStyle !== "underline"
+          this.plugin.settings.currentLineHighlightStyle !== "underline",
       );
   }
 
   override load() {
     this.plugin.setCSSVariable(
       "--current-line-highlight-underline-thickness",
-      `${this.plugin.settings.currentLineHighlightUnderlineThickness}px`
+      `${this.plugin.settings.currentLineHighlightUnderlineThickness}px`,
     );
   }
 
@@ -40,7 +40,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
     this.plugin.settings.currentLineHighlightUnderlineThickness = newValue;
     this.plugin.setCSSVariable(
       "--current-line-highlight-underline-thickness",
-      `${newValue}px`
+      `${newValue}px`,
     );
     this.plugin.saveSettings().then();
   }

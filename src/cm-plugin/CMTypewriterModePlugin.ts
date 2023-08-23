@@ -29,7 +29,7 @@ export default ViewPlugin.fromClass(
         "TypewriterModeUpdateAfterUserEvent",
         (measure, view) => {
           this.recenterAndMoveCurrentLineHighlight(view, measure);
-        }
+        },
       );
     }
 
@@ -48,7 +48,7 @@ export default ViewPlugin.fromClass(
             view.state.facet(pluginSettingsFacet);
           if (isHighlightCurrentLineEnabled)
             this.moveCurrentLineHighlight(view, activeLineOffset, lineHeight);
-        }
+        },
       );
     }
 
@@ -81,7 +81,7 @@ export default ViewPlugin.fromClass(
       this.view.scrollDOM.removeEventListener("wheel", this.onWheel);
       window.removeEventListener(
         "moveByCommand",
-        this.moveByCommand.bind(this)
+        this.moveByCommand.bind(this),
       );
     }
 
@@ -95,7 +95,7 @@ export default ViewPlugin.fromClass(
           if (isTypewriterScrollEnabled)
             this.setPadding(view, measure.typewriterOffset);
           this.recenterAndMoveCurrentLineHighlight(view, measure);
-        }
+        },
       );
     }
 
@@ -110,7 +110,7 @@ export default ViewPlugin.fromClass(
     private moveCurrentLineHighlight(
       view: EditorView,
       offset: number,
-      lineHeight: number
+      lineHeight: number,
     ) {
       if (this.currentLineHighlight == null)
         this.createCurrentLineHighlight(view);
@@ -123,7 +123,7 @@ export default ViewPlugin.fromClass(
         view.state.facet(pluginSettingsFacet);
 
       const cmSizer = view.dom.getElementsByClassName(
-        "cm-sizer"
+        "cm-sizer",
       )[0] as HTMLElement;
 
       cmSizer.style.padding = isOnlyMaintainTypewriterOffsetWhenReachedEnabled
@@ -143,7 +143,7 @@ export default ViewPlugin.fromClass(
 
     private recenterAndMoveCurrentLineHighlight(
       view: EditorView,
-      { scrollOffset, lineHeight }: TypewriterPositionData
+      { scrollOffset, lineHeight }: TypewriterPositionData,
     ) {
       const {
         isTypewriterScrollEnabled,
@@ -155,5 +155,5 @@ export default ViewPlugin.fromClass(
       if (isHighlightCurrentLineEnabled)
         this.moveCurrentLineHighlight(view, scrollOffset, lineHeight);
     }
-  }
+  },
 );

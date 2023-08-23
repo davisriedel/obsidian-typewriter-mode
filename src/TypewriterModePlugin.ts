@@ -58,12 +58,12 @@ export default class TypewriterModePlugin extends Plugin {
       new PauseDimUnfocusedParagraphsWhileSelecting(this),
     DimUnfocusedEditorsBehavior: new DimUnfocusedEditorsBehavior(this),
     OnlyActivateAfterFirstInteraction: new OnlyActivateAfterFirstInteraction(
-      this
+      this,
     ),
     LimitMaxCharsPerLine: new LimitMaxCharsPerLine(this),
     MaxCharsPerLine: new MaxCharsPerLine(this),
     FullscreenWritingFocusShowsHeader: new FullscreenWritingFocusShowsHeader(
-      this
+      this,
     ),
     FullscreenWritingFocusVignette: new FullscreenWritingFocusVignette(this),
     FullscreenWritingFocusVignetteStyle:

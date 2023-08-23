@@ -28,7 +28,7 @@ export class FullscreenWritingFocus extends Command {
       fullscreenEl.classList.add("ptm-fullscreen-writing-focus-element");
       fullscreenEl.setAttr(
         "data-ptm-fullscreen-writing-focus-vignette-style",
-        this.plugin.settings.fullscreenWritingFocusVignetteStyle
+        this.plugin.settings.fullscreenWritingFocusVignetteStyle,
       );
     });
   }
@@ -39,11 +39,11 @@ export class FullscreenWritingFocus extends Command {
 
   private onExitFullscreenWritingFocus() {
     const elements = document.getElementsByClassName(
-      "ptm-fullscreen-writing-focus-element"
+      "ptm-fullscreen-writing-focus-element",
     );
     if (!elements || elements.length === 0) return;
     elements[0].removeAttribute(
-      "data-ptm-fullscreen-writing-focus-vignette-style"
+      "data-ptm-fullscreen-writing-focus-vignette-style",
     );
     elements[0].classList.remove("ptm-fullscreen-writing-focus-element");
   }

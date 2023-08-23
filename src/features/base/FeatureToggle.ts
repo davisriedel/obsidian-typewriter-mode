@@ -30,7 +30,7 @@ export abstract class FeatureToggle extends Feature {
           .onChange((newValue) => {
             this.toggle(newValue);
             settingTab.display();
-          })
+          }),
       )
       .setDisabled(!this.isSettingEnabled());
   }

@@ -16,7 +16,7 @@ export default class CurrentLineHighlightColor extends Feature {
           .setValue(this.plugin.settings.currentLineHighlightColor)
           .onChange((newValue) => {
             this.changeCurrentLineHighlightColor(newValue);
-          })
+          }),
       )
       .setDisabled(!this.plugin.settings.isHighlightCurrentLineEnabled);
   }
@@ -24,7 +24,7 @@ export default class CurrentLineHighlightColor extends Feature {
   override load() {
     this.plugin.setCSSVariable(
       "--current-line-highlight-color",
-      `${this.plugin.settings.currentLineHighlightColor}`
+      `${this.plugin.settings.currentLineHighlightColor}`,
     );
   }
 

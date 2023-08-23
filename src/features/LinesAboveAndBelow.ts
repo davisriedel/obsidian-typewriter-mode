@@ -10,7 +10,7 @@ export default class LinesAboveAndBelow extends Feature {
     new Setting(settingTab.containerEl)
       .setName("Amount of Lines Above and Below the Current Line")
       .setDesc(
-        "The amount of lines to always keep above and below the current line"
+        "The amount of lines to always keep above and below the current line",
       )
       .setClass("typewriter-mode-setting")
       .addText((text) =>
@@ -18,11 +18,11 @@ export default class LinesAboveAndBelow extends Feature {
           .setValue(this.plugin.settings.linesAboveAndBelow.toString())
           .onChange((newValue) => {
             this.changeAmountOfLinesAboveAndBelow(parseInt(newValue));
-          })
+          }),
       )
       .setDisabled(
         this.plugin.settings.isTypewriterScrollEnabled ||
-          !this.plugin.settings.isKeepLinesAboveAndBelowEnabled
+          !this.plugin.settings.isKeepLinesAboveAndBelowEnabled,
       );
   }
 
