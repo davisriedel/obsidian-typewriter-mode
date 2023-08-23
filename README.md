@@ -83,3 +83,13 @@ If you want to contribute to this project or make your own changes, you can do s
 If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do not need to copy the files manually and can skip step 4.
 
 **Feel free to open issues and/or contribute to this project!**
+
+## Changelog
+
+### 0.0.2
+
+Renamed all settings and commands to use sentence case according to [Obsidian's plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines#Use+sentence+case+in+UI).
+
+### 0.0.1
+
+Initial release of this plugin
