@@ -43,7 +43,9 @@ To install community plugins make sure _safe mode_ is turned off in Obsidian's s
 
 ### From within Obsidian
 
-You can activate this plugin within Obsidian by doing the following:
+_This plugin was submitted to Obsidian and is currently being reviewed. As soon as it is accepted, you will be able to install it from within Obsidian by following these steps. In the meantime please use the installation methods stated in the section "From GitHub"._
+
+<!-- You can install this plugin within Obsidian by doing the following: -->
 
 - Go to Settings > Community Plugins > Browse
 - Search for "Typewriter Mode"
