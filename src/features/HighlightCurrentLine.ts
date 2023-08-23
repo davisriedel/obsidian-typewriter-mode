@@ -7,7 +7,7 @@ export default class HighlightCurrentLine extends FeatureToggle {
   protected override toggleClass = "ptm-highlight-current-line";
   protected requiresReload = true;
   protected hasCommand = true;
-  protected override commandTitle = "Toggle Highlight Current Line On/Off";
-  protected settingTitle = "Highlight Current Line";
+  protected override commandTitle = "Toggle highlight current line";
+  protected settingTitle = "Highlight current line";
   protected settingDesc = "Highlights the line that the cursor is currently on";
 }

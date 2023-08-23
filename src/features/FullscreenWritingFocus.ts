@@ -3,7 +3,7 @@ import type { ItemView } from "obsidian";
 
 export class FullscreenWritingFocus extends Command {
   protected commandKey = "fullscreen-writing-focus";
-  protected commandTitle = "Toggle Fullscreen Writing Focus On/Off";
+  protected commandTitle = "Toggle fullscreen writing focus";
 
   protected onCommand(): void {
     const leaf = this.plugin.app.workspace.activeLeaf;

@@ -6,8 +6,8 @@ export default class TypewriterScroll extends FeatureToggle {
   protected override toggleClass = "ptm-typewriter-scroll";
   protected requiresReload = true;
   protected hasCommand = true;
-  protected override commandTitle = "Toggle Typewriter Scrolling On/Off";
-  protected settingTitle = "Typewriter Scrolling";
+  protected override commandTitle = "Toggle typewriter scrolling";
+  protected settingTitle = "Typewriter scrolling";
   protected settingDesc = "Turns typewriter scrolling on or off";
 
   protected override isSettingEnabled(): boolean {

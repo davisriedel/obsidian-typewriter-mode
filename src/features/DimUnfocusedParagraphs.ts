@@ -7,7 +7,7 @@ export default class DimUnfocusedParagraphs extends FeatureToggle {
   protected override toggleClass = "ptm-dim-unfocused-paragraphs";
   protected requiresReload = true;
   protected hasCommand = true;
-  protected override commandTitle = "Toggle Dim Unfocused Paragraphs On/Off";
-  protected settingTitle = "Dim Unfocused Paragraphs";
+  protected override commandTitle = "Toggle dimming unfocused paragraphs";
+  protected settingTitle = "Dim unfocused paragraphs";
   protected settingDesc = "Darkens unfocused paragraphs in the editor";
 }

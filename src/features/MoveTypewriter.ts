@@ -7,7 +7,7 @@ export class MoveTypewriter extends Loadable {
     (["up", "down"] as const).forEach((direction) => {
       this.plugin.addCommand({
         id: `move-typewriter-${direction}`,
-        name: `Move Typewriter ${capitalize(direction)}`,
+        name: `Move typewriter ${direction}`,
         hotkeys: [
           {
             modifiers: ["Mod"],

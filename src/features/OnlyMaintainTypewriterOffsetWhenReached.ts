@@ -6,7 +6,7 @@ export default class OnlyMaintainTypewriterOffsetWhenReached extends FeatureTogg
     "isOnlyMaintainTypewriterOffsetWhenReachedEnabled";
   protected requiresReload = true;
   protected hasCommand = false;
-  protected settingTitle = "Only Maintain Typewriter Offset When Reached";
+  protected settingTitle = "Only maintain typewriter offset when reached";
   protected settingDesc =
     "The line that the cursor is on will not be scrolled to the center of the editor until it the specified typewriter offset is reached. This removes the additional space at the top of the editor.";
 

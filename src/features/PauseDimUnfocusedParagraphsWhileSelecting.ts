@@ -9,8 +9,9 @@ export default class PauseDimUnfocusedParagraphsWhileSelecting extends FeatureTo
   protected requiresReload = true;
   protected hasCommand = false;
   protected settingTitle =
-    "Pause Dimming Unfocused Paragraphs While Selecting Text";
-  protected settingDesc = "Paragraphs are not dimmed while selecting text";
+    "Pause dimming unfocused paragraphs while selecting text";
+  protected settingDesc =
+    "If this is enabled, paragraphs are not dimmed while selecting text";
 
   protected override isSettingEnabled(): boolean {
     return this.plugin.settings.isDimUnfocusedParagraphsEnabled;

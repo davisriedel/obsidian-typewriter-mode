@@ -8,7 +8,7 @@ export default class HighlightCurrentLineOnlyInFocusedEditor extends FeatureTogg
     "ptm-highlight-current-line-only-in-active-editor";
   protected requiresReload = false;
   protected hasCommand = false;
-  protected settingTitle = "Highlight Current Line Only In Focused Note";
+  protected settingTitle = "Highlight current line only in focused note";
   protected settingDesc =
     "Only show highlighted line in the note your cursor is on (e.g. if you have multiple notes open in split panes)";
 

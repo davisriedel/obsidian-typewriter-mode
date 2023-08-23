@@ -8,7 +8,7 @@ export default class CurrentLineHighlightColor extends Feature {
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Current Line Highlight Color")
+      .setName("Current line highlight color")
       .setDesc("The color of the current line highlight")
       .setClass("typewriter-mode-setting")
       .addText((text) =>

@@ -7,7 +7,7 @@ export default class FullscreenWritingFocusShowsHeader extends FeatureToggle {
   protected override toggleClass = "ptm-fullscreen-writing-focus-show-header";
   protected requiresReload = false;
   protected hasCommand = false;
-  protected settingTitle = "Show Header in Fullscreen Writing Focus";
+  protected settingTitle = "Show header in fullscreen writing focus";
   protected settingDesc =
     "If enabled, the header will be shown in fullscreen writing focus";
 }

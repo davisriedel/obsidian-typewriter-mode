@@ -8,7 +8,7 @@ export default class DimmedParagraphsOpacity extends Feature {
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Dimmed Paragraphs' Opacity")
+      .setName("Opacity of dimmed paragraphs")
       .setDesc("The opacity of dimmed paragraphs")
       .setClass("typewriter-mode-setting")
       .addSlider((slider) =>

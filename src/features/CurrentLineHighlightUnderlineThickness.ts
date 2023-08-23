@@ -9,7 +9,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Current Line Underline Thickness")
+      .setName("Current line underline thickness")
       .setDesc(
         "The thickness of the underline that highlights the current line",
       )

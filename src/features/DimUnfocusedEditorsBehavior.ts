@@ -9,7 +9,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Paragraph Dimming Behavior in Unfocused Notes")
+      .setName("Paragraph dimming behavior in unfocused notes")
       .setDesc(
         "How to dim paragraphs in notes / editors that your cursor is not on (e.g. if you have multiple notes open in split panes)",
       )
@@ -17,7 +17,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
       .addDropdown((dropdown) =>
         dropdown
           .addOption("dim-none", "Do not dim any paragraph")
-          .addOption("dim", "Dim all but the last focused paragraph")
+          .addOption("dim", "Dim all but the previously focused paragraph")
           .addOption("dim-all", "Dim all paragraphs")
           .setValue(this.plugin.settings.dimUnfocusedEditorsBehavior)
           .onChange((newValue) => {

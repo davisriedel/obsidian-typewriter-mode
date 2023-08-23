@@ -9,7 +9,7 @@ export default class FullscreenWritingFocusVignetteStyle extends Feature {
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Fullscreen Writing Focus Vignette Style")
+      .setName("Fullscreen writing focus vignette style")
       .setDesc("The style of the vignette in fullscreen writing focus mode")
       .setClass("typewriter-mode-setting")
       .addDropdown((dropdown) =>

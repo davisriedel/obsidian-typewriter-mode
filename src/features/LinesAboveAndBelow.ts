@@ -8,7 +8,7 @@ export default class LinesAboveAndBelow extends Feature {
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Amount of Lines Above and Below the Current Line")
+      .setName("Amount of lines above and below the current line")
       .setDesc(
         "The amount of lines to always keep above and below the current line",
       )

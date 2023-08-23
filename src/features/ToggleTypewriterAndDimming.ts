@@ -2,8 +2,7 @@ import { Command } from "@/features/base/Command";
 
 export class ToggleTypewriterAndDimming extends Command {
   protected commandKey = "typewriter-scrolling-and-paragraph-dimming";
-  protected commandTitle =
-    "Toggle Typewriter Scrolling And Paragraph Dimming On/Off";
+  protected commandTitle = "Toggle typewriter scrolling and paragraph dimming";
 
   protected onCommand(): void {
     const { isTypewriterScrollEnabled, isDimUnfocusedParagraphsEnabled } =

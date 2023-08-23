@@ -8,7 +8,7 @@ export default class TypewriterOffset extends Feature {
 
   registerSetting(settingTab: PluginSettingTab): void {
     new Setting(settingTab.containerEl)
-      .setName("Typewriter Offset")
+      .setName("Typewriter offset")
       .setDesc(
         "Positions the typewriter line at the specified percentage of the screen",
       )

@@ -6,7 +6,7 @@ export default class OnlyActivateAfterFirstInteraction extends FeatureToggle {
     "isOnlyActivateAfterFirstInteractionEnabled";
   protected requiresReload = true;
   protected hasCommand = false;
-  protected settingTitle = "Only Activate After First Interaction";
+  protected settingTitle = "Only activate after first interaction";
   protected settingDesc =
     "Activate the focused line highlight and paragraph dimming only after the first interaction with the editor";
 }
