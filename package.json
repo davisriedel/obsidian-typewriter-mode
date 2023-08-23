@@ -1,15 +1,16 @@
 {
   "name": "obsidian-typewriter-mode",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",
   "main": "main.js",
   "scripts": {
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}' './build.cjs' './version-bump.cjs'",
     "type-check": "tsc --noEmit",
     "check": "$npm_execpath run format && $npm_execpath run lint && $npm_execpath run type-check",
     "build": "./build.cjs",
-    "clean": "rimraf main.js styles.css data.json"
+    "clean": "rimraf main.js styles.css data.json",
+    "version-bump": "./version-bump.cjs"
   },
   "keywords": [
     "obsidian",
