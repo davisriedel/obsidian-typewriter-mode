@@ -8,6 +8,7 @@ export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginBaseClass {
     private currentLineHighlight: HTMLElement | null = null;
     private isInitialInteraction = true;
+    private isRenderingAllowedUserEvent = false;
 
     protected override onLoad() {
       super.onLoad();
@@ -24,16 +25,19 @@ export default ViewPlugin.fromClass(
         this.view.dom.classList.remove("ptm-first-open");
         this.isInitialInteraction = false;
       }
+      this.isRenderingAllowedUserEvent = true;
       measureTypewriterPosition(
         this.view,
         "TypewriterModeUpdateAfterUserEvent",
         (measure, view) => {
           this.recenterAndMoveCurrentLineHighlight(view, measure);
+          this.isRenderingAllowedUserEvent = false;
         },
       );
     }
 
     protected override updateDisallowedUserEvent() {
+      if (this.isRenderingAllowedUserEvent) return;
       super.updateDisallowedUserEvent();
       if (this.isInitialInteraction) {
         this.view.dom.classList.remove("ptm-first-open");

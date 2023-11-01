@@ -40,6 +40,7 @@ export default abstract class CodeMirrorPluginBaseClass {
 
   update(update: ViewUpdate) {
     const userEventsAllowed = this.userEventsAllowed(update);
+
     if (userEventsAllowed === null) {
       this.updateNonUserEvent();
       return;
