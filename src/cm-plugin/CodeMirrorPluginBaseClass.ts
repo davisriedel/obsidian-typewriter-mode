@@ -11,6 +11,8 @@ export default abstract class CodeMirrorPluginBaseClass {
     this.onLoad();
     this.domResizeObserver = new ResizeObserver(this.onResize.bind(this));
     this.domResizeObserver.observe(this.view.dom);
+
+    this.view.dom.style;
   }
 
   private userEventAllowed(event: string) {

@@ -56,13 +56,31 @@ export abstract class FeatureToggle extends Feature {
     if (this.requiresReload) this.plugin.reloadCodeMirror();
   }
 
+  // override enable() {
+  //   if (this.toggleClass) document.body.classList.add(this.toggleClass);
+  //   this.reloadIfRequired();
+  // }
+  //
+  // override disable() {
+  //   if (this.toggleClass) document.body.classList.remove(this.toggleClass);
+  //   this.reloadIfRequired();
+  // }
+
   override enable() {
-    if (this.toggleClass) document.body.classList.add(this.toggleClass);
+    if (this.toggleClass) {
+      if (!this.plugin.perWindowProps.bodyClasses.contains(this.toggleClass)) {
+        this.plugin.perWindowProps.bodyClasses.push(this.toggleClass);
+      }
+    }
     this.reloadIfRequired();
   }
 
   override disable() {
-    if (this.toggleClass) document.body.classList.remove(this.toggleClass);
+    if (this.toggleClass) {
+      if (this.plugin.perWindowProps.bodyClasses.indexOf(this.toggleClass)) {
+        this.plugin.perWindowProps.bodyClasses.remove(this.toggleClass);
+      }
+    }
     this.reloadIfRequired();
   }
 

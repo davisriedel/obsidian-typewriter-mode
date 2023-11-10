@@ -32,17 +32,18 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 
   override load() {
     super.load();
-    document.body.setAttr(
-      "data-ptm-dim-unfocused-editors-behavior",
-      this.plugin.settings.dimUnfocusedEditorsBehavior,
-    );
+    this.plugin.perWindowProps.bodyAttrs[
+      "data-ptm-dim-unfocused-editors-behavior"
+    ] = this.plugin.settings.dimUnfocusedEditorsBehavior;
   }
 
   private changeDimUnfocusedEditorsBehavior(
     newValue: "dim-none" | "dim" | "dim-all",
   ) {
     this.plugin.settings.dimUnfocusedEditorsBehavior = newValue;
-    document.body.setAttr("data-ptm-dim-unfocused-editors-behavior", newValue);
+    this.plugin.perWindowProps.bodyAttrs[
+      "data-ptm-dim-unfocused-editors-behavior"
+    ] = newValue;
     this.plugin.saveSettings().then();
   }
 }

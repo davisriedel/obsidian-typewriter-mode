@@ -3,6 +3,7 @@ import CodeMirrorPluginBaseClass from "@/cm-plugin/CodeMirrorPluginBaseClass";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import type { TypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 import { measureTypewriterPosition } from "@/cm-plugin/getTypewriterOffset";
+import { perWindowProps } from "@/cm-plugin/PerWindowProps";
 
 export default ViewPlugin.fromClass(
   class extends CodeMirrorPluginBaseClass {
@@ -12,6 +13,12 @@ export default ViewPlugin.fromClass(
 
     protected override onLoad() {
       super.onLoad();
+
+      const props = this.view.state.facet(perWindowProps);
+      this.view.dom.parentElement.addClasses(props.bodyClasses);
+      this.view.dom.parentElement.setCssProps(props.cssVariables);
+      this.view.dom.parentElement.setAttrs(props.bodyAttrs);
+
       this.view.scrollDOM.addEventListener("wheel", this.onWheel.bind(this));
       window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
       this.updateAfterExternalEvent();

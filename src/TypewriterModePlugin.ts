@@ -30,9 +30,16 @@ import { ToggleTypewriterAndDimming } from "@/features/ToggleTypewriterAndDimmin
 import KeepLinesAboveAndBelow from "@/features/KeepLinesAboveAndBelow";
 import LinesAboveAndBelow from "@/features/LinesAboveAndBelow";
 import FullscreenWritingFocusVignetteStyle from "@/features/FullscreenWritingFocusVignetteStyle";
+import type { PerWindowProps } from "@/cm-plugin/PerWindowProps";
+import { perWindowProps } from "@/cm-plugin/PerWindowProps";
 
 export default class TypewriterModePlugin extends Plugin {
   settings: TypewriterModeSettings;
+  perWindowProps: PerWindowProps = {
+    cssVariables: {},
+    bodyClasses: [],
+    bodyAttrs: {},
+  };
   private editorExtensions: Extension[] = [];
 
   readonly features = {
@@ -92,6 +99,7 @@ export default class TypewriterModePlugin extends Plugin {
     this.editorExtensions.splice(0, this.editorExtensions.length);
     const extensions = [
       pluginSettingsFacet.of(this.settings),
+      perWindowProps.of(this.perWindowProps),
       CodeMirrorPlugin,
     ];
     this.editorExtensions.push(extensions);
@@ -107,7 +115,6 @@ export default class TypewriterModePlugin extends Plugin {
   }
 
   setCSSVariable(property: string, value: string) {
-    const r = document.querySelector(":root") as HTMLElement;
-    r.style.setProperty(property, value);
+    this.perWindowProps.cssVariables[property] = value;
   }
 }
