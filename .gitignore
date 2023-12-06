@@ -2,16 +2,14 @@
 node_modules
 package-lock.json
 package-lock.yml
+bun.lockb
 
-# build
-main.js
-styles.css
-
-# Obsidian
-data.json
+# Build
+dist
 
 # Jetbrains IDEs
 .idea
 
 # VSCode
 .vscode
+

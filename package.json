@@ -9,7 +9,9 @@
     "type-check": "tsc --noEmit",
     "check": "$npm_execpath run format && $npm_execpath run lint && $npm_execpath run type-check",
     "build": "./build.cjs",
-    "clean": "rimraf main.js styles.css data.json",
+    "clean": "rm -rf ./dist",
+    "test-vault": "./build.cjs && cp -r dist/* ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
+    "clean-test-vault": "rm -rf ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
     "version-bump": "./version-bump.cjs"
   },
   "keywords": [
@@ -40,7 +42,6 @@
     "lint-staged": "^14.0.1",
     "obsidian": "^1.4.4",
     "prettier": "^3.0.2",
-    "rimraf": "^5.0.1",
     "tslib": "^2.6.2",
     "typescript": "^5.1.6"
   }

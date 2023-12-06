@@ -2,5 +2,5 @@
 build.cjs
 
 # build output
-main.js
-styles.css
+dist
+
