@@ -11,7 +11,7 @@
     "build": "./build.cjs",
     "clean": "rm -rf ./dist",
     "test-vault": "./make-test-vault.sh",
-    "clean-test-vault": "rm -rf ./test-vault",
+    "clean-test-vault": "rm -rf ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
     "version-bump": "./version-bump.cjs"
   },
   "keywords": [
