@@ -15,24 +15,40 @@ export default ViewPlugin.fromClass(
       super.onLoad();
 
       const props = this.view.state.facet(perWindowProps);
-      this.view.dom.parentElement.addClasses(props.bodyClasses);
-      this.view.dom.parentElement.setCssProps(props.cssVariables);
-      this.view.dom.parentElement.setAttrs(props.bodyAttrs);
+      this.view.dom.ownerDocument.body.addClasses(props.bodyClasses);
+      this.view.dom.ownerDocument.body.setCssProps(props.cssVariables);
+      this.view.dom.ownerDocument.body.setAttrs(props.bodyAttrs);
 
-      this.view.scrollDOM.addEventListener("wheel", this.onWheel.bind(this));
       window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
       this.updateAfterExternalEvent();
     }
 
+    private setupWheelListener() {
+      const ownerScrollDOM = this.view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-scroller",
+      );
+      if (ownerScrollDOM)
+        ownerScrollDOM.addEventListener("wheel", this.onWheel.bind(this));
+    }
+
     protected override updateAllowedUserEvent() {
       super.updateAllowedUserEvent();
-      this.view.dom.classList.remove("ptm-wheel");
-      this.view.dom.classList.remove("ptm-select");
+
+      const ownerDOM = this.view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-editor",
+      );
+      if (ownerDOM) {
+        ownerDOM.classList.remove("ptm-wheel");
+        ownerDOM.classList.remove("ptm-select");
+      }
+
       if (this.isInitialInteraction) {
-        this.view.dom.classList.remove("ptm-first-open");
+        this.view.dom.ownerDocument.body.classList.remove("ptm-first-open");
         this.isInitialInteraction = false;
       }
+
       this.isRenderingAllowedUserEvent = true;
+
       measureTypewriterPosition(
         this.view,
         "TypewriterModeUpdateAfterUserEvent",
@@ -45,12 +61,19 @@ export default ViewPlugin.fromClass(
 
     protected override updateDisallowedUserEvent() {
       if (this.isRenderingAllowedUserEvent) return;
+
       super.updateDisallowedUserEvent();
+
       if (this.isInitialInteraction) {
-        this.view.dom.classList.remove("ptm-first-open");
+        this.view.dom.ownerDocument.body.classList.remove("ptm-first-open");
         this.isInitialInteraction = false;
       }
-      this.view.dom.classList.add("ptm-select");
+
+      const ownerDOM = this.view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-editor",
+      );
+      if (ownerDOM) ownerDOM.classList.add("ptm-select");
+
       measureTypewriterPosition(
         this.view,
         "TypewriterModeUpdateAfterUserEvent",
@@ -69,11 +92,14 @@ export default ViewPlugin.fromClass(
       const { isOnlyActivateAfterFirstInteractionEnabled } =
         this.view.state.facet(pluginSettingsFacet);
       if (isOnlyActivateAfterFirstInteractionEnabled)
-        this.view.dom.classList.add("ptm-first-open");
+        this.view.dom.ownerDocument.body.classList.add("ptm-first-open");
     }
 
     private moveByCommand() {
-      this.view.dom.classList.remove("ptm-select");
+      const ownerDOM = this.view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-editor",
+      );
+      if (ownerDOM) ownerDOM.classList.remove("ptm-select");
       this.updateAllowedUserEvent();
     }
 
@@ -83,13 +109,23 @@ export default ViewPlugin.fromClass(
     }
 
     protected onWheel() {
-      this.view.dom.classList.add("ptm-wheel");
+      const ownerDOM = this.view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-editor",
+      );
+      if (ownerDOM) ownerDOM.classList.add("ptm-wheel");
     }
 
     override destroy() {
       super.destroy();
+
       this.currentLineHighlight?.remove();
-      this.view.scrollDOM.removeEventListener("wheel", this.onWheel);
+
+      const ownerScrollDOM = this.view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-scroller",
+      );
+      if (ownerScrollDOM)
+        ownerScrollDOM.removeEventListener("wheel", this.onWheel);
+
       window.removeEventListener(
         "moveByCommand",
         this.moveByCommand.bind(this),
@@ -103,6 +139,7 @@ export default ViewPlugin.fromClass(
         this.view,
         "TypewriterModeUpdateAfterExternalEvent",
         (measure, view) => {
+          this.setupWheelListener();
           if (isTypewriterScrollEnabled)
             this.setPadding(view, measure.typewriterOffset);
           this.recenterAndMoveCurrentLineHighlight(view, measure);
@@ -110,12 +147,27 @@ export default ViewPlugin.fromClass(
       );
     }
 
-    private createCurrentLineHighlight(view: EditorView) {
-      this.currentLineHighlight = document.createElement("div");
-      this.currentLineHighlight.id = "ptm-current-line-highlight";
-      const settings = view.state.facet(pluginSettingsFacet);
-      this.currentLineHighlight.className = `ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
-      view.dom.appendChild(this.currentLineHighlight);
+    private loadCurrentLineHighlight(view: EditorView) {
+      const ownerDOM = view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-editor",
+      );
+      if (!ownerDOM) return false;
+
+      const currentLineHighlightQuery = ownerDOM.querySelector(
+        ".ptm-current-line-highlight",
+      ) as HTMLElement;
+
+      if (!currentLineHighlightQuery) {
+        this.currentLineHighlight = document.createElement("div");
+        const settings = view.state.facet(pluginSettingsFacet);
+        this.currentLineHighlight.className = `ptm-current-line-highlight ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
+
+        ownerDOM.appendChild(this.currentLineHighlight);
+      } else {
+        this.currentLineHighlight = currentLineHighlightQuery;
+      }
+
+      return true;
     }
 
     private moveCurrentLineHighlight(
@@ -123,8 +175,7 @@ export default ViewPlugin.fromClass(
       offset: number,
       lineHeight: number,
     ) {
-      if (this.currentLineHighlight == null)
-        this.createCurrentLineHighlight(view);
+      if (!this.loadCurrentLineHighlight(view)) return;
       this.currentLineHighlight.style.height = `${lineHeight}px`;
       this.currentLineHighlight.style.top = `${offset}px`;
     }
@@ -133,13 +184,15 @@ export default ViewPlugin.fromClass(
       const { isOnlyMaintainTypewriterOffsetWhenReachedEnabled } =
         view.state.facet(pluginSettingsFacet);
 
-      const cmSizer = view.dom.getElementsByClassName(
-        "cm-sizer",
-      )[0] as HTMLElement;
+      const ownerSizer = view.dom.ownerDocument.querySelector(
+        ".workspace-leaf.mod-active .cm-sizer",
+      ) as HTMLElement;
+      if (!ownerSizer) return;
 
-      cmSizer.style.padding = isOnlyMaintainTypewriterOffsetWhenReachedEnabled
-        ? `0 0 ${offset}px 0`
-        : `${offset}px 0`;
+      ownerSizer.style.padding =
+        isOnlyMaintainTypewriterOffsetWhenReachedEnabled
+          ? `0 0 ${offset}px 0`
+          : `${offset}px 0`;
     }
 
     private recenter(view: EditorView, offset: number) {

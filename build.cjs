@@ -19,4 +19,3 @@ require("esbuild")
   .finally(() => {
     fs.copyFileSync("./manifest.json", "./dist/manifest.json");
   });
-

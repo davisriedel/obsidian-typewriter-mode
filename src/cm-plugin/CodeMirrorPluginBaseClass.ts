@@ -10,9 +10,7 @@ export default abstract class CodeMirrorPluginBaseClass {
   constructor(protected view: EditorView) {
     this.onLoad();
     this.domResizeObserver = new ResizeObserver(this.onResize.bind(this));
-    this.domResizeObserver.observe(this.view.dom);
-
-    this.view.dom.style;
+    this.domResizeObserver.observe(this.view.dom.ownerDocument.body);
   }
 
   private userEventAllowed(event: string) {

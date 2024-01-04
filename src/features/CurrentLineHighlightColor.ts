@@ -31,6 +31,8 @@ export default class CurrentLineHighlightColor extends Feature {
   private changeCurrentLineHighlightColor(newValue: string) {
     this.plugin.settings.currentLineHighlightColor = newValue;
     this.plugin.setCSSVariable("--current-line-highlight-color", `${newValue}`);
-    this.plugin.saveSettings().then();
+    this.plugin.saveSettings().then(() => {
+      this.plugin.reloadCodeMirror();
+    });
   }
 }

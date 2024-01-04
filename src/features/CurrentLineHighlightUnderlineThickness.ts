@@ -42,6 +42,8 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
       "--current-line-highlight-underline-thickness",
       `${newValue}px`,
     );
-    this.plugin.saveSettings().then();
+    this.plugin.saveSettings().then(() => {
+      this.plugin.reloadCodeMirror();
+    });
   }
 }

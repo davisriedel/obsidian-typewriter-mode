@@ -33,6 +33,8 @@ export default class DimmedParagraphsOpacity extends Feature {
   private changeDimmedParagraphsOpacity(newValue = 0.25) {
     this.plugin.settings.dimmedParagraphsOpacity = newValue;
     this.plugin.setCSSVariable("--dimmed-paragraphs-opacity", `${newValue}`);
-    this.plugin.saveSettings().then();
+    this.plugin.saveSettings().then(() => {
+      this.plugin.reloadCodeMirror();
+    });
   }
 }
