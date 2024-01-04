@@ -10,8 +10,8 @@
     "check": "$npm_execpath run format && $npm_execpath run lint && $npm_execpath run type-check",
     "build": "./build.cjs",
     "clean": "rm -rf ./dist",
-    "test-vault": "./build.cjs && cp -r dist/* ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
-    "clean-test-vault": "rm -rf ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
+    "test-vault": "./make-test-vault.sh",
+    "clean-test-vault": "rm -rf ./test-vault",
     "version-bump": "./version-bump.cjs"
   },
   "keywords": [

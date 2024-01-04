@@ -6,10 +6,14 @@ bun.lockb
 
 # Build
 dist
+test-vault
 
 # Jetbrains IDEs
 .idea
 
 # VSCode
 .vscode
+
+# MacOS
+.DS_Store
 
