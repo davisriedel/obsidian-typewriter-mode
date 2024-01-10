@@ -12,7 +12,8 @@ import PauseDimUnfocusedParagraphsWhileSelecting from "@/features/PauseDimUnfocu
 import TypewriterScroll from "@/features/TypewriterScroll";
 import DimUnfocusedParagraphs from "@/features/DimUnfocusedParagraphs";
 import TypewriterOffset from "@/features/TypewriterOffset";
-import CurrentLineHighlightColor from "@/features/CurrentLineHighlightColor";
+import CurrentLineHighlightColorDark from "@/features/CurrentLineHighlightColorDark";
+import CurrentLineHighlightColorLight from "@/features/CurrentLineHighlightColorLight";
 import CurrentLineHighlightStyle from "@/features/CurrentLineHighlightStyle";
 import CurrentLineHighlightUnderlineThickness from "@/features/CurrentLineHighlightUnderlineThickness";
 import DimmedParagraphsOpacity from "@/features/DimmedParagraphsOpacity";
@@ -51,7 +52,8 @@ export default class TypewriterModePlugin extends Plugin {
     KeepLinesAboveAndBelow: new KeepLinesAboveAndBelow(this),
     LinesAboveAndBelow: new LinesAboveAndBelow(this),
     HighlightCurrentLine: new HighlightCurrentLine(this),
-    CurrentLineHighlightColor: new CurrentLineHighlightColor(this),
+    CurrentLineHighlightColorLight: new CurrentLineHighlightColorLight(this),
+    CurrentLineHighlightColorDark: new CurrentLineHighlightColorDark(this),
     CurrentLineHighlightStyle: new CurrentLineHighlightStyle(this),
     CurrentLineHighlightUnderlineThickness:
       new CurrentLineHighlightUnderlineThickness(this),

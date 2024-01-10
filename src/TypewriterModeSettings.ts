@@ -17,7 +17,8 @@ export interface TypewriterModeSettings {
   isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
   currentLineHighlightStyle: "box" | "underline";
   currentLineHighlightUnderlineThickness: number;
-  currentLineHighlightColor: string;
+  "currentLineHighlightColor-dark": string;
+  "currentLineHighlightColor-light": string;
   doesFullscreenWritingFocusShowHeader: boolean;
   doesFullscreenWritingFocusShowVignette: boolean;
   fullscreenWritingFocusVignetteStyle: "box" | "column";
@@ -43,7 +44,8 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
   currentLineHighlightStyle: "box",
   currentLineHighlightUnderlineThickness: 1,
-  currentLineHighlightColor: "#333",
+  "currentLineHighlightColor-dark": "#444",
+  "currentLineHighlightColor-light": "#ddd",
   doesFullscreenWritingFocusShowHeader: false,
   doesFullscreenWritingFocusShowVignette: true,
   fullscreenWritingFocusVignetteStyle: "box",
