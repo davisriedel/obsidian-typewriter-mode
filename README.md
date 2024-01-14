@@ -86,6 +86,17 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
 
 ## Changelog
 
+### 0.0.4
+
+- Fixed compatibility with new obsidian table editor
+- Fixed bug with current line highlight in light themes
+- You can now set a different color for the line highlight for dark and light themes
+
+### 0.0.3
+
+- Fixed compatibility with vim mode
+- Fixed typewriter dimming on separate window
+
 ### 0.0.2
 
 Renamed all settings and commands to use sentence case according to [Obsidian's plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines#Use+sentence+case+in+UI).

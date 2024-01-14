@@ -3,6 +3,6 @@ module.exports = {
     "bunx @biomejs/biome check --apply",
     () => "bun tsc --noEmit",
   ],
-  "*.{json,scss,css,md}": "bunx @biomejs/biome check --apply",
+  "*.{json}": "bunx @biomejs/biome check --apply",
 };
 
