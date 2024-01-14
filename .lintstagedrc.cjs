@@ -1,8 +1,8 @@
 module.exports = {
   "*.{js,jsx,ts,tsx}": [
-    "eslint --fix",
-    "prettier --write",
-    () => "tsc --noEmit",
+    "bunx @biomejs/biome check --apply",
+    () => "bun tsc --noEmit",
   ],
-  "*.{json,scss,css,md}": "prettier --write",
+  "*.{json,scss,css,md}": "bunx @biomejs/biome check --apply",
 };
+

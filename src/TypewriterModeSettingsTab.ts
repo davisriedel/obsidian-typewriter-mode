@@ -1,19 +1,19 @@
+import type TypewriterModePlugin from "@/TypewriterModePlugin";
 import type { App } from "obsidian";
 import { PluginSettingTab } from "obsidian";
-import type TypewriterModePlugin from "@/TypewriterModePlugin";
 
 export default class TypewriterModeSettingTab extends PluginSettingTab {
-  private plugin: TypewriterModePlugin;
+	private plugin: TypewriterModePlugin;
 
-  constructor(app: App, plugin: TypewriterModePlugin) {
-    super(app, plugin);
-    this.plugin = plugin;
-  }
+	constructor(app: App, plugin: TypewriterModePlugin) {
+		super(app, plugin);
+		this.plugin = plugin;
+	}
 
-  display(): void {
-    this.containerEl.empty();
-    Object.values(this.plugin.features).forEach((feature) =>
-      feature.registerSetting(this),
-    );
-  }
+	display(): void {
+		this.containerEl.empty();
+		for (const feature of Object.values(this.plugin.features)) {
+			feature.registerSetting(this);
+		}
+	}
 }
