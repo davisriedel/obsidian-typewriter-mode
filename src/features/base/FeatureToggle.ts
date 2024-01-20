@@ -4,7 +4,6 @@ import { Setting } from "obsidian";
 
 export abstract class FeatureToggle extends Feature {
 	protected toggleClass: string | null = null;
-	protected abstract requiresReload: boolean;
 	protected abstract hasCommand: boolean;
 	protected commandTitle?: string;
 	protected abstract settingTitle: string;
@@ -52,28 +51,12 @@ export abstract class FeatureToggle extends Feature {
 		this.plugin.saveSettings().then();
 	}
 
-	private reloadIfRequired() {
-		// if the feature requires a reload, reload the codemirror instance
-		if (this.requiresReload) this.plugin.reloadCodeMirror();
-	}
-
-	// override enable() {
-	//   if (this.toggleClass) document.body.classList.add(this.toggleClass);
-	//   this.reloadIfRequired();
-	// }
-	//
-	// override disable() {
-	//   if (this.toggleClass) document.body.classList.remove(this.toggleClass);
-	//   this.reloadIfRequired();
-	// }
-
 	override enable() {
 		if (this.toggleClass) {
 			if (!this.plugin.perWindowProps.bodyClasses.contains(this.toggleClass)) {
 				this.plugin.perWindowProps.bodyClasses.push(this.toggleClass);
 			}
 		}
-		this.reloadIfRequired();
 	}
 
 	override disable() {
@@ -82,7 +65,6 @@ export abstract class FeatureToggle extends Feature {
 				this.plugin.perWindowProps.bodyClasses.remove(this.toggleClass);
 			}
 		}
-		this.reloadIfRequired();
 	}
 
 	protected isSettingEnabled(): boolean {

@@ -9,6 +9,7 @@ export default abstract class CodeMirrorPluginBaseClass {
 
 	constructor(protected view: EditorView) {
 		this.onLoad();
+
 		this.domResizeObserver = new ResizeObserver(this.onResize.bind(this));
 		this.domResizeObserver.observe(this.view.dom.ownerDocument.body);
 	}
@@ -28,30 +29,51 @@ export default abstract class CodeMirrorPluginBaseClass {
 		return allowed.test(event) && !disallowed.test(event);
 	}
 
-	private userEventsAllowed(update: ViewUpdate) {
-		const userEvents = update.transactions
-			.map((tr) => tr.annotation(Transaction.userEvent))
-			.filter((event) => event !== undefined);
-		if (userEvents.length === 0) return null;
-		return userEvents.reduce<boolean>((result, event) => {
+	private inspectTransactions(update: ViewUpdate) {
+		const userEvents = [];
+		let isReconfigured = false;
+		for (const tr of update.transactions) {
+			if (tr.reconfigured) isReconfigured = true;
+
+			const event = tr.annotation(Transaction.userEvent);
+			if (event !== undefined) userEvents.push(event);
+		}
+
+		if (userEvents.length === 0)
+			return {
+				isReconfigured,
+				isUserEvent: false,
+				allowedUserEvents: null,
+			};
+
+		const allowedUserEvents = userEvents.reduce<boolean>((result, event) => {
 			return result && this.userEventAllowed(event);
 		}, userEvents.length > 0);
+		return {
+			isReconfigured: false,
+			isUserEvent: true,
+			allowedUserEvents,
+		};
 	}
 
 	update(update: ViewUpdate) {
-		const userEventsAllowed = this.userEventsAllowed(update);
+		const { isReconfigured, isUserEvent, allowedUserEvents } =
+			this.inspectTransactions(update);
 
-		if (userEventsAllowed === null) {
+		if (isReconfigured) this.onReconfigured();
+
+		if (!isUserEvent) {
 			this.updateNonUserEvent();
 			return;
 		}
 
-		userEventsAllowed
+		allowedUserEvents
 			? this.updateAllowedUserEvent()
 			: this.updateDisallowedUserEvent();
 	}
 
 	protected onLoad() {}
+	protected onReconfigured() {}
 	protected updateAllowedUserEvent() {}
 	protected updateDisallowedUserEvent() {}
 	protected updateNonUserEvent() {}

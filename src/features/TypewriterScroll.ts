@@ -4,7 +4,6 @@ import { FeatureToggle } from "@/features/base/FeatureToggle";
 export default class TypewriterScroll extends FeatureToggle {
 	protected setting: keyof TypewriterModeSettings = "isTypewriterScrollEnabled";
 	protected override toggleClass = "ptm-typewriter-scroll";
-	protected requiresReload = true;
 	protected hasCommand = true;
 	protected override commandTitle = "Toggle typewriter scrolling";
 	protected settingTitle = "Typewriter scrolling";

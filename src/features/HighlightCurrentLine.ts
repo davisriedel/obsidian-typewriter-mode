@@ -5,7 +5,6 @@ export default class HighlightCurrentLine extends FeatureToggle {
 	protected setting: keyof TypewriterModeSettings =
 		"isHighlightCurrentLineEnabled";
 	protected override toggleClass = "ptm-highlight-current-line";
-	protected requiresReload = true;
 	protected hasCommand = true;
 	protected override commandTitle = "Toggle highlight current line";
 	protected settingTitle = "Highlight current line";

@@ -6,7 +6,6 @@ export default class HighlightCurrentLineOnlyInFocusedEditor extends FeatureTogg
 		"isHighlightCurrentLineOnlyInFocusedEditorEnabled";
 	protected override toggleClass =
 		"ptm-highlight-current-line-only-in-active-editor";
-	protected requiresReload = false;
 	protected hasCommand = false;
 	protected settingTitle = "Highlight current line only in focused note";
 	protected settingDesc =

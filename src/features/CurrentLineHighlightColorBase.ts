@@ -46,8 +46,6 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 			`--current-line-highlight-color-${this.themeMode}`,
 			`${newValue}`,
 		);
-		this.plugin.saveSettings().then(() => {
-			this.plugin.reloadCodeMirror();
-		});
+		this.plugin.saveSettings().then();
 	}
 }

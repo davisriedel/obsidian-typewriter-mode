@@ -14,13 +14,20 @@ export default ViewPlugin.fromClass(
 		protected override onLoad() {
 			super.onLoad();
 
+			window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
+			this.onReconfigured();
+		}
+
+		protected override onReconfigured(): void {
+			this.loadPerWindowProps();
+			this.updateAfterExternalEvent();
+		}
+
+		private loadPerWindowProps() {
 			const props = this.view.state.facet(perWindowProps);
 			this.view.dom.ownerDocument.body.addClasses(props.bodyClasses);
 			this.view.dom.ownerDocument.body.setCssProps(props.cssVariables);
 			this.view.dom.ownerDocument.body.setAttrs(props.bodyAttrs);
-
-			window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
-			this.updateAfterExternalEvent();
 		}
 
 		private setupWheelListener() {

@@ -5,7 +5,6 @@ export default class FullscreenWritingFocusShowsHeader extends FeatureToggle {
 	protected setting: keyof TypewriterModeSettings =
 		"doesFullscreenWritingFocusShowHeader";
 	protected override toggleClass = "ptm-fullscreen-writing-focus-show-header";
-	protected requiresReload = false;
 	protected hasCommand = false;
 	protected settingTitle = "Show header in fullscreen writing focus";
 	protected settingDesc =

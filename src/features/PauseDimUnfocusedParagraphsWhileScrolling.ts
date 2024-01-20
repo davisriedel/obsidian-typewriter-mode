@@ -6,7 +6,6 @@ export default class PauseDimUnfocusedParagraphsWhileScrolling extends FeatureTo
 		"isPauseDimUnfocusedParagraphsWhileScrollingEnabled";
 	protected override toggleClass =
 		"ptm-dim-unfocused-paragraphs-pause-while-scrolling";
-	protected requiresReload = true;
 	protected hasCommand = false;
 	protected settingTitle = "Pause dimming unfocused paragraphs while scrolling";
 	protected settingDesc =

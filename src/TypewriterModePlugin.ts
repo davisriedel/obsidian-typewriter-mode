@@ -41,7 +41,7 @@ export default class TypewriterModePlugin extends Plugin {
 		bodyClasses: [],
 		bodyAttrs: {},
 	};
-	private editorExtensions: Extension[] = [];
+	private editorExtensions: Extension[] = [CodeMirrorPlugin, []];
 
 	readonly features = {
 		TypewriterScroll: new TypewriterScroll(this),
@@ -86,10 +86,12 @@ export default class TypewriterModePlugin extends Plugin {
 	};
 
 	override async onload() {
-		await this.loadSettings();
+		const settingsData = await this.loadData();
+		this.settings = Object.assign(DEFAULT_SETTINGS, settingsData);
 		for (const feature of Object.values(this.features)) feature.load();
 		for (const command of Object.values(this.commands)) command.load();
 		this.addSettingTab(new TypewriterModeSettingTab(this.app, this));
+		this.updateFacets();
 		this.registerEditorExtension(this.editorExtensions);
 	}
 
@@ -97,23 +99,17 @@ export default class TypewriterModePlugin extends Plugin {
 		for (const feature of Object.values(this.features)) feature.disable();
 	}
 
-	reloadCodeMirror() {
-		this.editorExtensions.splice(0, this.editorExtensions.length);
-		const extensions = [
+	private updateFacets() {
+		this.editorExtensions[1] = [
 			pluginSettingsFacet.of(this.settings),
 			perWindowProps.of(this.perWindowProps),
-			CodeMirrorPlugin,
 		];
-		this.editorExtensions.push(extensions);
-		this.app.workspace.updateOptions();
-	}
-
-	private async loadSettings() {
-		this.settings = Object.assign(DEFAULT_SETTINGS, await this.loadData());
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+		this.updateFacets();
+		this.app.workspace.updateOptions();
 	}
 
 	setCSSVariable(property: string, value: string) {

@@ -31,8 +31,6 @@ export default class MaxCharsPerLine extends Feature {
 	private changeMaxCharsPerLine(newValue: number) {
 		this.plugin.settings.maxCharsPerLine = newValue;
 		this.plugin.setCSSVariable("--max-chars-per-line", `${newValue}ch`);
-		this.plugin.saveSettings().then(() => {
-			this.plugin.reloadCodeMirror();
-		});
+		this.plugin.saveSettings();
 	}
 }

@@ -28,7 +28,6 @@ export default class CurrentLineHighlightStyle extends Feature {
 
 	private changeCurrentLineHighlightStyle(newValue: "box" | "underline") {
 		this.plugin.settings.currentLineHighlightStyle = newValue;
-		this.plugin.reloadCodeMirror();
 		this.plugin.saveSettings().then();
 	}
 }

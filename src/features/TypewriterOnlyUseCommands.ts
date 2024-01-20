@@ -5,7 +5,6 @@ export default class TypewriterOnlyUseCommands extends FeatureToggle {
 	protected setting: keyof TypewriterModeSettings =
 		"isTypewriterOnlyUseCommandsEnabled";
 	protected override toggleClass = "ptm-typewriter-only-use-commands";
-	protected requiresReload = true;
 	protected hasCommand = false;
 	protected settingTitle = "Do not snap typewriter with arrow keys";
 	protected settingDesc =

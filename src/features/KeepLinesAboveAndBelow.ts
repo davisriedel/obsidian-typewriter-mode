@@ -4,7 +4,6 @@ import { FeatureToggle } from "@/features/base/FeatureToggle";
 export default class KeepLinesAboveAndBelow extends FeatureToggle {
 	protected setting: keyof TypewriterModeSettings =
 		"isKeepLinesAboveAndBelowEnabled";
-	protected requiresReload = true;
 	protected hasCommand = true;
 	protected override commandTitle = "Toggle keeping lines above and below";
 	protected settingTitle = "Keep lines above and below";

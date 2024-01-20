@@ -27,8 +27,6 @@ export default class TypewriterOffset extends Feature {
 
 	private changeTypewriterOffset(newValue: number) {
 		this.plugin.settings.typewriterOffset = newValue;
-		if (this.plugin.settings.isTypewriterScrollEnabled)
-			this.plugin.reloadCodeMirror();
 		this.plugin.saveSettings().then();
 	}
 }

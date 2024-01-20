@@ -5,7 +5,6 @@ export default class FullscreenWritingFocusVignette extends FeatureToggle {
 	protected setting: keyof TypewriterModeSettings =
 		"doesFullscreenWritingFocusShowVignette";
 	protected override toggleClass = "ptm-fullscreen-writing-focus-vignette";
-	protected requiresReload = false;
 	protected hasCommand = false;
 	protected settingTitle = "Fullscreen writing focus vignette";
 	protected settingDesc =

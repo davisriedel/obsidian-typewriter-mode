@@ -6,7 +6,6 @@ export default class PauseDimUnfocusedParagraphsWhileSelecting extends FeatureTo
 		"isPauseDimUnfocusedParagraphsWhileSelectingEnabled";
 	protected override toggleClass =
 		"ptm-dim-unfocused-paragraphs-pause-while-selecting";
-	protected requiresReload = true;
 	protected hasCommand = false;
 	protected settingTitle =
 		"Pause dimming unfocused paragraphs while selecting text";
