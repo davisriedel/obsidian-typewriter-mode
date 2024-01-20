@@ -86,6 +86,10 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
 
 ## Changelog
 
+### 0.0.5
+
+- Fixed a bug where setting changes were not updated unless Obsidian was reopened / force reloaded.
+
 ### 0.0.4
 
 - Fixed compatibility with new obsidian table editor
