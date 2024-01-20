@@ -45,7 +45,10 @@ export abstract class FeatureToggle extends Feature {
 		if (newValue === null) newValue = !this.plugin.settings[this.setting];
 
 		// assign the new value and call the correct enable / disable function
-		this.plugin.settings[this.setting] = newValue;
+		this.plugin.settings = {
+			...this.plugin.settings,
+			[this.setting]: newValue,
+		};
 		newValue ? this.enable() : this.disable();
 
 		this.plugin.saveSettings().then();

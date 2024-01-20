@@ -1,0 +1,34 @@
+.ptm-update-modal-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: bold;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-left: 1em;
+    }
+  }
+}
+
+.ptm-update-modal {
+	min-width: 35%;
+	max-height: 70%;
+}
+

@@ -1,4 +1,7 @@
 export interface TypewriterModeSettings {
+	version: string;
+	isAnnounceUpdatesEnabled: boolean;
+
 	isTypewriterScrollEnabled: boolean;
 	isOnlyActivateAfterFirstInteractionEnabled: boolean;
 	isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
@@ -22,10 +25,12 @@ export interface TypewriterModeSettings {
 	doesFullscreenWritingFocusShowHeader: boolean;
 	doesFullscreenWritingFocusShowVignette: boolean;
 	fullscreenWritingFocusVignetteStyle: "box" | "column";
-	[key: string]: unknown;
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
+	version: null,
+	isAnnounceUpdatesEnabled: true,
+
 	isTypewriterScrollEnabled: true,
 	isOnlyActivateAfterFirstInteractionEnabled: false,
 	isOnlyMaintainTypewriterOffsetWhenReachedEnabled: false,
