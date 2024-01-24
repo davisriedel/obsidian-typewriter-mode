@@ -5,7 +5,7 @@ body.ptm-highlight-current-line {
     left: 0;
     width: 100%;
     pointer-events: none;
-    z-index: 0;
+    z-index: 100;
   }
 
   &.ptm-highlight-current-line-only-in-active-editor {
@@ -27,16 +27,17 @@ body.ptm-highlight-current-line {
       display: none;
     }
   }
-
-  .cm-editor .cm-scroller {
-    z-index: 1;
-    background: transparent !important;
-  }
 }
 
 @mixin ptm-current-line-highlight-theme-style($theme) {
   &.ptm-highlight-current-line {
     .ptm-current-line-highlight {
+      @if $theme == "light" {
+        mix-blend-mode: multiply;
+      } @else if $theme == "dark" {
+        mix-blend-mode: screen;
+      }
+
       &.ptm-current-line-highlight-box {
         background-color: var(--current-line-highlight-color-#{$theme});
       }

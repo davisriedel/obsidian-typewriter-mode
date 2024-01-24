@@ -1,5 +1,6 @@
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import type { EditorView } from "@codemirror/view";
+import { getEditorDom, getScrollDom } from "./selectors";
 
 function getActiveLineProp(view: EditorView, prop: string) {
 	return parseFloat(
@@ -14,25 +15,21 @@ function getActiveLineOffset(view: EditorView) {
 	const caretOffset =
 		view.coordsAtPos(view.state.selection.main.head)?.top ?? 0;
 
-	const ownerDOM = view.dom.ownerDocument.querySelector(
-		".workspace-leaf.mod-active .cm-editor",
-	);
-	if (!ownerDOM) return 0;
+	const editorDom = getEditorDom(view);
+	if (!editorDom) return 0;
 
-	const containerOffset = ownerDOM.getBoundingClientRect().top;
+	const containerOffset = editorDom.getBoundingClientRect().top;
 	return caretOffset - containerOffset;
 }
 
 function getTypewriterOffset(view: EditorView, lineHeight: number) {
-	const ownerDOM = view.dom.ownerDocument.querySelector(
-		".workspace-leaf.mod-active .cm-editor",
-	);
-	if (!ownerDOM) return 0;
+	const editorDom = getEditorDom(view);
+	if (!editorDom) return 0;
 
 	const fontSize = getActiveLineProp(view, "font-size");
 	const percentage = view.state.facet(pluginSettingsFacet).typewriterOffset;
 
-	const editorOffset = ownerDOM.clientHeight * percentage;
+	const editorOffset = editorDom.clientHeight * percentage;
 	const lineOffset = (lineHeight - fontSize) / 2;
 	return editorOffset - lineOffset;
 }
@@ -48,21 +45,17 @@ function getTypewriterPositionData(view: EditorView) {
 		isOnlyMaintainTypewriterOffsetWhenReachedEnabled,
 	} = view.state.facet(pluginSettingsFacet);
 
-	const ownerDOM = view.dom.ownerDocument.querySelector(
-		".workspace-leaf.mod-active .cm-editor",
-	);
-	const ownerScrollDOM = view.dom.ownerDocument.querySelector(
-		".workspace-leaf.mod-active .cm-scroller",
-	);
+	const editorDom = getEditorDom(view);
+	const scrollDom = getScrollDom(view);
 
 	let scrollOffset: number;
-	if (!ownerDOM || !ownerScrollDOM) {
+	if (!editorDom || !scrollDom) {
 		scrollOffset = 0;
 	} else if (isTypewriterScrollEnabled) {
 		scrollOffset = typewriterOffset;
 		if (isOnlyMaintainTypewriterOffsetWhenReachedEnabled) {
 			scrollOffset =
-				ownerScrollDOM.scrollTop + activeLineOffset < typewriterOffset
+				scrollDom.scrollTop + activeLineOffset < typewriterOffset
 					? Math.min(typewriterOffset, activeLineOffset)
 					: typewriterOffset;
 		}
@@ -70,9 +63,10 @@ function getTypewriterPositionData(view: EditorView) {
 		const { linesAboveAndBelow } = view.state.facet(pluginSettingsFacet);
 		const lowerBound = view.defaultLineHeight * linesAboveAndBelow;
 		const upperBound =
-			ownerDOM.clientHeight - view.defaultLineHeight * (linesAboveAndBelow + 1);
+			editorDom.clientHeight -
+			view.defaultLineHeight * (linesAboveAndBelow + 1);
 		const belowLowerBound =
-			ownerScrollDOM.scrollTop !== 0 && activeLineOffset < lowerBound;
+			scrollDom.scrollTop !== 0 && activeLineOffset < lowerBound;
 		const aboveUpperBound = activeLineOffset > upperBound;
 		if (belowLowerBound) {
 			scrollOffset = lowerBound;

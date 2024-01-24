@@ -4,16 +4,15 @@ import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import type { TypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 import { measureTypewriterPosition } from "@/cm-plugin/getTypewriterOffset";
 import { EditorView, ViewPlugin } from "@codemirror/view";
+import { getEditorDom, getScrollDom, getSizerDom } from "./selectors";
 
 export default ViewPlugin.fromClass(
 	class extends CodeMirrorPluginBaseClass {
-		private currentLineHighlight: HTMLElement | null = null;
 		private isInitialInteraction = true;
 		private isRenderingAllowedUserEvent = false;
 
 		protected override onLoad() {
 			super.onLoad();
-
 			window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
 			this.onReconfigured();
 		}
@@ -24,32 +23,52 @@ export default ViewPlugin.fromClass(
 		}
 
 		private loadPerWindowProps() {
+			// this is a hack, to make it work in canvas...
+			const iframes = Array.from(
+				this.view.dom.ownerDocument.querySelectorAll("iframe"),
+			).map((i: HTMLIFrameElement) => i.contentDocument.body);
+			const bodies = [this.view.dom.ownerDocument.body, ...iframes];
 			const props = this.view.state.facet(perWindowProps);
-			this.view.dom.ownerDocument.body.addClasses(props.bodyClasses);
-			this.view.dom.ownerDocument.body.setCssProps(props.cssVariables);
-			this.view.dom.ownerDocument.body.setAttrs(props.bodyAttrs);
+			for (const b of bodies) {
+				b.addClasses(props.bodyClasses);
+				b.setCssProps(props.cssVariables);
+				b.setAttrs(props.bodyAttrs);
+			}
 		}
 
-		private getEditorDom(view: EditorView = this.view) {
-			return view.dom.ownerDocument.querySelector(
-				".workspace-leaf.mod-active .cm-editor",
-			);
+		private loadCurrentLineHighlight(
+			view: EditorView = this.view,
+		): HTMLElement | null {
+			const editorDom = getEditorDom(view);
+			if (!editorDom) return null;
+
+			let currentLineHighlight = editorDom.querySelector(
+				".ptm-current-line-highlight",
+			) as HTMLElement;
+
+			if (!currentLineHighlight) {
+				currentLineHighlight = document.createElement("div");
+				const settings = view.state.facet(pluginSettingsFacet);
+				currentLineHighlight.className = `ptm-current-line-highlight ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
+
+				editorDom.appendChild(currentLineHighlight);
+			}
+
+			return currentLineHighlight;
 		}
 
-		private getScrollDom(view: EditorView = this.view) {
-			return view.dom.ownerDocument.querySelector(
-				".workspace-leaf.mod-active .cm-scroller",
-			);
-		}
+		private destroyCurrentLineHighlight(view: EditorView = this.view) {
+			const editorDom = getEditorDom(view);
+			if (!editorDom) return;
 
-		private getSizerDom(view: EditorView = this.view) {
-			return view.dom.ownerDocument.querySelector(
-				".workspace-leaf.mod-active .cm-sizer",
-			);
+			const currentLineHighlight = editorDom.querySelector(
+				".ptm-current-line-highlight",
+			) as HTMLElement;
+			currentLineHighlight?.remove();
 		}
 
 		private setupWheelListener() {
-			const scrollDom = this.getScrollDom();
+			const scrollDom = getScrollDom(this.view);
 			if (scrollDom)
 				scrollDom.addEventListener("wheel", this.onWheel.bind(this));
 		}
@@ -57,7 +76,7 @@ export default ViewPlugin.fromClass(
 		protected override updateAllowedUserEvent() {
 			super.updateAllowedUserEvent();
 
-			const editorDom = this.getEditorDom();
+			const editorDom = getEditorDom(this.view);
 			if (editorDom) {
 				editorDom.classList.remove("ptm-wheel");
 				editorDom.classList.remove("ptm-select");
@@ -85,7 +104,7 @@ export default ViewPlugin.fromClass(
 
 			super.updateDisallowedUserEvent();
 
-			const editorDom = this.getEditorDom();
+			const editorDom = getEditorDom(this.view);
 
 			if (editorDom) {
 				if (this.isInitialInteraction) {
@@ -117,13 +136,13 @@ export default ViewPlugin.fromClass(
 				this.view.state.facet(pluginSettingsFacet);
 
 			if (isOnlyActivateAfterFirstInteractionEnabled) {
-				const editorDom = this.getEditorDom();
+				const editorDom = getEditorDom(this.view);
 				if (editorDom) editorDom.classList.add("ptm-first-open");
 			}
 		}
 
 		private moveByCommand() {
-			const editorDom = this.getEditorDom();
+			const editorDom = getEditorDom(this.view);
 			if (editorDom) editorDom.classList.remove("ptm-select");
 			this.updateAllowedUserEvent();
 		}
@@ -134,16 +153,16 @@ export default ViewPlugin.fromClass(
 		}
 
 		protected onWheel() {
-			const editorDom = this.getEditorDom();
+			const editorDom = getEditorDom(this.view);
 			if (editorDom) editorDom.classList.add("ptm-wheel");
 		}
 
 		override destroy() {
 			super.destroy();
 
-			this.currentLineHighlight?.remove();
+			this.destroyCurrentLineHighlight();
 
-			const scrollDom = this.getScrollDom();
+			const scrollDom = getScrollDom(this.view);
 			if (scrollDom) scrollDom.removeEventListener("wheel", this.onWheel);
 
 			window.removeEventListener(
@@ -167,42 +186,22 @@ export default ViewPlugin.fromClass(
 			);
 		}
 
-		private loadCurrentLineHighlight(view: EditorView) {
-			const editorDom = this.getEditorDom(view);
-			if (!editorDom) return false;
-
-			const currentLineHighlightQuery = editorDom.querySelector(
-				".ptm-current-line-highlight",
-			) as HTMLElement;
-
-			if (!currentLineHighlightQuery) {
-				this.currentLineHighlight = document.createElement("div");
-				const settings = view.state.facet(pluginSettingsFacet);
-				this.currentLineHighlight.className = `ptm-current-line-highlight ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
-
-				editorDom.appendChild(this.currentLineHighlight);
-			} else {
-				this.currentLineHighlight = currentLineHighlightQuery;
-			}
-
-			return true;
-		}
-
 		private moveCurrentLineHighlight(
 			view: EditorView,
 			offset: number,
 			lineHeight: number,
 		) {
-			if (!this.loadCurrentLineHighlight(view)) return;
-			this.currentLineHighlight.style.height = `${lineHeight}px`;
-			this.currentLineHighlight.style.top = `${offset}px`;
+			const currentLineHighlight = this.loadCurrentLineHighlight(view);
+			if (!currentLineHighlight) return;
+			currentLineHighlight.style.height = `${lineHeight}px`;
+			currentLineHighlight.style.top = `${offset}px`;
 		}
 
 		private setPadding(view: EditorView, offset: number) {
 			const { isOnlyMaintainTypewriterOffsetWhenReachedEnabled } =
 				view.state.facet(pluginSettingsFacet);
 
-			const sizerDom = this.getSizerDom(view);
+			const sizerDom = getSizerDom(view);
 			if (!sizerDom) return;
 
 			(sizerDom as HTMLElement).style.padding =
