@@ -1,7 +1,5 @@
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import { Transaction } from "@codemirror/state";
-/* eslint-disable unused-imports/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import type { EditorView, ViewUpdate } from "@codemirror/view";
 
 export default abstract class CodeMirrorPluginBaseClass {
