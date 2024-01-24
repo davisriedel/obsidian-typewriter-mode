@@ -24,9 +24,11 @@ import TypewriterOffset from "@/features/TypewriterOffset";
 import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
 import TypewriterScroll from "@/features/TypewriterScroll";
 import AnnounceUpdates from "./AnnounceUpdates";
+import DisableInCanvas from "./DisableInCanvas";
 
 export function getFeatures(plugin: TypewriterModePlugin) {
 	return {
+		DisableInCanvas: new DisableInCanvas(plugin),
 		TypewriterScroll: new TypewriterScroll(plugin),
 		TypewriterOffset: new TypewriterOffset(plugin),
 		OnlyMaintainTypewriterOffsetWhenReached:

@@ -13,14 +13,12 @@ export default ViewPlugin.fromClass(
 
 		protected override onLoad() {
 			super.onLoad();
+      if (this.isDisabled()) return;
 			window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
-
-			if (this.isDisabled()) return;
-			this.onReconfigured();
 		}
 
 		protected override onReconfigured(): void {
-			super.onReconfigured();
+      super.onReconfigured();
 			this.loadPerWindowProps();
 			this.updateAfterExternalEvent();
 		}
@@ -151,7 +149,6 @@ export default ViewPlugin.fromClass(
 		}
 
 		protected override onResize() {
-			if (this.isDisabled()) return;
 			super.onResize();
 			this.updateAfterExternalEvent();
 		}
