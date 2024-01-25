@@ -3,7 +3,7 @@ import { FeatureToggle } from "@/features/base/FeatureToggle";
 
 export default class AnnounceUpdates extends FeatureToggle {
 	protected setting: keyof TypewriterModeSettings = "isAnnounceUpdatesEnabled";
-	protected override toggleClass = "ptm-dim-unfocused-paragraphs";
+	protected override toggleClass = "ptm-announce-updates";
 	protected hasCommand = false;
 	protected settingTitle = "Announce updates";
 	protected settingDesc =
