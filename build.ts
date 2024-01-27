@@ -1,20 +1,44 @@
-import fs from "fs";
-import esbuild from "esbuild";
-import { nodeExternalsPlugin } from "esbuild-node-externals";
-import { sassPlugin } from "esbuild-sass-plugin";
+/// <reference types="bun-types" />
 
-esbuild
-	.build({
-		entryPoints: ["./src/main.ts", "./src/styles.scss"],
-		outdir: "./dist",
-		bundle: true,
-		minify: true,
-		platform: "node",
-		sourcemap: false,
-		target: "node14",
-		plugins: [nodeExternalsPlugin(), sassPlugin()],
-	})
-	.catch(() => process.exit(1))
-	.finally(() => {
-		fs.copyFileSync("./manifest.json", "./dist/manifest.json");
-	});
+import type { BunPlugin } from "bun";
+
+import fs from "node:fs";
+
+const outdir = "./dist";
+
+// Bun plugin for compiling scss
+const scss: BunPlugin = {
+	name: "Sass Loader",
+	async setup(build) {
+		const sass = await import("sass");
+
+		build.onLoad({ filter: /\.scss$/ }, ({ path }) => {
+			const contents = sass.compile(path);
+			Bun.write(`${outdir}/styles.css`, contents.css);
+			return undefined;
+		});
+	},
+};
+
+// create dist folder
+if (!fs.existsSync(outdir)) fs.mkdirSync(outdir);
+
+// Build scss
+await Bun.build({
+	entrypoints: ["./src/styles.scss"],
+	outdir,
+	plugins: [scss],
+});
+
+// Build js
+await Bun.build({
+	entrypoints: ["./src/main.ts"],
+	outdir,
+	minify: true,
+	target: "node",
+	format: "cjs", // currently, only esm is supported, thus bun.build does not work with obsidian!
+	external: ["obsidian"],
+});
+
+// Copy manifest to dist folder
+fs.copyFileSync("./manifest.json", "./dist/manifest.json");

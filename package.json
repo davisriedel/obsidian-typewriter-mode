@@ -1,6 +1,6 @@
 {
   "name": "obsidian-typewriter-mode",
-  "version": "0.0.6-beta.3",
+  "version": "0.0.6",
   "description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",
   "main": "main.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "check": "bunx @biomejs/biome check --apply src build.ts version-bump.ts && bun run type-check",
     "build": "bun ./build.ts",
     "clean": "rm -rf ./dist",
-    "test-vault": "./make-test-vault.sh",
+    "test-vault": "bun ./make-test-vault.ts",
     "clean-test-vault": "rm -rf ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
     "version-bump": "bun ./version-bump.ts"
   },
@@ -25,9 +25,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "1.5.1",
+    "@biomejs/biome": "latest",
     "@codemirror/state": "^6.2.1",
     "@codemirror/view": "^6.16.0",
+    "@types/bun": "^1.0.4",
     "@types/codemirror": "^5.60.9",
     "@types/node": "^20.5.4",
     "esbuild": "^0.19.11",
