@@ -41,6 +41,7 @@ export default class TypewriterModePlugin extends Plugin {
 	}
 
 	private updateFacets() {
+		console.log("updateFacets");
 		this.editorExtensions[1] = [
 			pluginSettingsFacet.of(this.settings),
 			perWindowProps.of(this.perWindowProps),

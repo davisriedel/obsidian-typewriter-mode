@@ -11,6 +11,9 @@ export default class KeepLinesAboveAndBelow extends FeatureToggle {
 		"When enabled, always keeps the specified amount of lines above and below the current line in view";
 
 	protected override isSettingEnabled(): boolean {
-		return !this.plugin.settings.isTypewriterScrollEnabled;
+		return (
+			super.isSettingEnabled() &&
+			!this.plugin.settings.isTypewriterScrollEnabled
+		);
 	}
 }

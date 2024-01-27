@@ -13,6 +13,9 @@ export default class PauseDimUnfocusedParagraphsWhileSelecting extends FeatureTo
 		"If this is enabled, paragraphs are not dimmed while selecting text";
 
 	protected override isSettingEnabled(): boolean {
-		return this.plugin.settings.isDimUnfocusedParagraphsEnabled;
+		return (
+			super.isSettingEnabled() &&
+			this.plugin.settings.isDimUnfocusedParagraphsEnabled
+		);
 	}
 }

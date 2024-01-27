@@ -13,6 +13,9 @@ export default abstract class CodeMirrorPluginBaseClass {
 	}
 
 	protected isDisabled() {
+		const { isPluginActivated } = this.view.state.facet(pluginSettingsFacet);
+		if (!isPluginActivated) return true;
+
 		if (this._isDisabled == null) {
 			const { isDisableInCanvasEnabled } =
 				this.view.state.facet(pluginSettingsFacet);
@@ -66,12 +69,12 @@ export default abstract class CodeMirrorPluginBaseClass {
 	}
 
 	update(update: ViewUpdate) {
-		if (this.isDisabled()) return;
-
 		const { isReconfigured, isUserEvent, allowedUserEvents } =
 			this.inspectTransactions(update);
 
 		if (isReconfigured) this.onReconfigured();
+
+		if (this.isDisabled()) return;
 
 		if (!isUserEvent) {
 			this.updateNonUserEvent();

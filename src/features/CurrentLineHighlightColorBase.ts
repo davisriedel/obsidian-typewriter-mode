@@ -30,7 +30,7 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 						this.changeCurrentLineHighlightColor(newValue);
 					}),
 			)
-			.setDisabled(!this.plugin.settings.isHighlightCurrentLineEnabled);
+			.setDisabled(!this.isSettingEnabled());
 	}
 
 	override load() {
@@ -47,5 +47,12 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 			`${newValue}`,
 		);
 		this.plugin.saveSettings().then();
+	}
+
+	protected override isSettingEnabled(): boolean {
+		return (
+			super.isSettingEnabled() &&
+			this.plugin.settings.isHighlightCurrentLineEnabled
+		);
 	}
 }

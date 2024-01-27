@@ -27,7 +27,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 						settingTab.display();
 					}),
 			)
-			.setDisabled(!this.plugin.settings.isDimUnfocusedParagraphsEnabled);
+			.setDisabled(!this.isSettingEnabled());
 	}
 
 	override load() {
@@ -45,5 +45,12 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 			"data-ptm-dim-unfocused-editors-behavior"
 		] = newValue;
 		this.plugin.saveSettings().then();
+	}
+
+	protected override isSettingEnabled(): boolean {
+		return (
+			super.isSettingEnabled() &&
+			this.plugin.settings.isDimUnfocusedParagraphsEnabled
+		);
 	}
 }

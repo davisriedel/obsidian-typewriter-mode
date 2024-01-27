@@ -12,6 +12,9 @@ export default class PauseDimUnfocusedParagraphsWhileScrolling extends FeatureTo
 		"If this is enabled, paragraphs are not dimmed while scrolling";
 
 	protected override isSettingEnabled(): boolean {
-		return this.plugin.settings.isDimUnfocusedParagraphsEnabled;
+		return (
+			super.isSettingEnabled() &&
+			this.plugin.settings.isDimUnfocusedParagraphsEnabled
+		);
 	}
 }

@@ -25,9 +25,11 @@ import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
 import TypewriterScroll from "@/features/TypewriterScroll";
 import AnnounceUpdates from "./AnnounceUpdates";
 import DisableInCanvas from "./DisableInCanvas";
+import TogglePluginActivation from "./TogglePluginActivation";
 
 export function getFeatures(plugin: TypewriterModePlugin) {
 	return {
+		TogglePluginActivation: new TogglePluginActivation(plugin),
 		DisableInCanvas: new DisableInCanvas(plugin),
 		TypewriterScroll: new TypewriterScroll(plugin),
 		TypewriterOffset: new TypewriterOffset(plugin),

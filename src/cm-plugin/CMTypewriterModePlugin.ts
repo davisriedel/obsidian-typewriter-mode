@@ -14,12 +14,16 @@ export default ViewPlugin.fromClass(
 		protected override onLoad() {
 			super.onLoad();
 			window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
-
-			if (this.isDisabled()) return;
 			this.onReconfigured();
 		}
 
 		protected override onReconfigured(): void {
+			console.log("onReconfigured");
+			if (this.isDisabled()) {
+				this.removeCurrentLineHighlight();
+				return;
+			}
+
 			super.onReconfigured();
 			this.loadPerWindowProps();
 			this.updateAfterExternalEvent();
@@ -37,6 +41,15 @@ export default ViewPlugin.fromClass(
 				b.setCssProps(props.cssVariables);
 				b.setAttrs(props.bodyAttrs);
 			}
+		}
+
+		private removeCurrentLineHighlight(view: EditorView = this.view) {
+			const editorDom = getEditorDom(view);
+			if (!editorDom) return;
+			const currentLineHighlight = editorDom.querySelector(
+				".ptm-current-line-highlight",
+			) as HTMLElement;
+			currentLineHighlight.remove();
 		}
 
 		private loadCurrentLineHighlight(

@@ -22,13 +22,18 @@ export default class FullscreenWritingFocusVignetteStyle extends Feature {
 						settingTab.display();
 					}),
 			)
-			.setDisabled(
-				!this.plugin.settings.doesFullscreenWritingFocusShowVignette,
-			);
+			.setDisabled(!this.isSettingEnabled());
 	}
 
 	private changeVignetteStyle(newValue: "box" | "column") {
 		this.plugin.settings.fullscreenWritingFocusVignetteStyle = newValue;
 		this.plugin.saveSettings().then();
+	}
+
+	protected override isSettingEnabled(): boolean {
+		return (
+			super.isSettingEnabled() &&
+			this.plugin.settings.doesFullscreenWritingFocusShowVignette
+		);
 	}
 }

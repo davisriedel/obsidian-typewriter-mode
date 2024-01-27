@@ -11,5 +11,9 @@ export abstract class Feature extends Loadable {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	disable() {}
 
+	protected isSettingEnabled(): boolean {
+		return this.plugin.settings.isPluginActivated;
+	}
+
 	abstract registerSetting(settingTab: PluginSettingTab): void;
 }

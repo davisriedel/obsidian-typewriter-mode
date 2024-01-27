@@ -12,6 +12,9 @@ export default class HighlightCurrentLineOnlyInFocusedEditor extends FeatureTogg
 		"Only show highlighted line in the note your cursor is on (e.g. if you have multiple notes open in split panes)";
 
 	protected override isSettingEnabled(): boolean {
-		return this.plugin.settings.isHighlightCurrentLineEnabled;
+		return (
+			super.isSettingEnabled() &&
+			this.plugin.settings.isHighlightCurrentLineEnabled
+		);
 	}
 }

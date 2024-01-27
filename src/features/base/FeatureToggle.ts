@@ -69,8 +69,4 @@ export abstract class FeatureToggle extends Feature {
 			}
 		}
 	}
-
-	protected isSettingEnabled(): boolean {
-		return true;
-	}
 }
