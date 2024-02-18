@@ -86,6 +86,14 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
 
 ## Changelog
 
+### 0.0.6
+
+- Fixed "Only activate after first interaction"
+- Fixed bug when using this plugin inside a canvas
+- Added setting to disable the plugin in canvas
+- Added multiple commands to quickly enable certain features or the whole plugin
+- Added update announcement dialog
+
 ### 0.0.5
 
 - Fixed a bug where setting changes were not updated unless Obsidian was reopened / force reloaded.
