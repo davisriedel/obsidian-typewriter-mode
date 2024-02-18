@@ -6,5 +6,5 @@
 	"description": "Typewriter scrolling, highlighting of the current line, dimming of unfocused paragraphs and more",
 	"isDesktopOnly": false,
 	"minAppVersion": "0.15.0",
-	"version": "0.0.6"
+	"version": "0.0.7"
 }

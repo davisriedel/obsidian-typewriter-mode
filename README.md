@@ -86,6 +86,10 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
 
 ## Changelog
 
+### 0.0.7
+
+- Fixed interference with other plugins that use iframes
+
 ### 0.0.6
 
 - Fixed "Only activate after first interaction"
