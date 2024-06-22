@@ -4,6 +4,8 @@ import { Setting } from "obsidian";
 
 export abstract class FeatureToggle extends Feature {
 	protected toggleClass: string | null = null;
+	public readonly isToggleClassPersistent: boolean = false;
+
 	protected abstract hasCommand: boolean;
 	protected commandTitle?: string;
 	protected abstract settingTitle: string;

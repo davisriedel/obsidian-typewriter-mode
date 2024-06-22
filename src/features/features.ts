@@ -29,6 +29,9 @@ import TogglePluginActivation from "./TogglePluginActivation";
 
 export function getFeatures(plugin: TypewriterModePlugin) {
 	return {
+		LimitMaxCharsPerLine: new LimitMaxCharsPerLine(plugin),
+		MaxCharsPerLine: new MaxCharsPerLine(plugin),
+
 		TogglePluginActivation: new TogglePluginActivation(plugin),
 		DisableInCanvas: new DisableInCanvas(plugin),
 		TypewriterScroll: new TypewriterScroll(plugin),
@@ -56,8 +59,6 @@ export function getFeatures(plugin: TypewriterModePlugin) {
 		OnlyActivateAfterFirstInteraction: new OnlyActivateAfterFirstInteraction(
 			plugin,
 		),
-		LimitMaxCharsPerLine: new LimitMaxCharsPerLine(plugin),
-		MaxCharsPerLine: new MaxCharsPerLine(plugin),
 		FullscreenWritingFocusShowsHeader: new FullscreenWritingFocusShowsHeader(
 			plugin,
 		),

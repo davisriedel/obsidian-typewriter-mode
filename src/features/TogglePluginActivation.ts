@@ -6,9 +6,8 @@ export default class TogglePluginActivation extends FeatureToggle {
 	protected override toggleClass = "ptm-plugin-activated";
 	protected hasCommand = true;
 	protected override commandTitle = "Toggle on / off";
-	protected settingTitle = "Activate Typewriter Mode Plugin";
-	protected settingDesc =
-		"This enables or disables all features of the plugin.";
+	protected settingTitle = "Activate Typewriter Mode";
+	protected settingDesc = "This enables or disables all the features below.";
 
 	protected override isSettingEnabled(): boolean {
 		return true;

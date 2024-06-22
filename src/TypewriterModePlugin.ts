@@ -20,6 +20,7 @@ export default class TypewriterModePlugin extends Plugin {
 		bodyClasses: [],
 		bodyAttrs: {},
 		allBodyClasses: [],
+		persistentBodyClasses: [],
 	};
 
 	private editorExtensions: Extension[] = [CodeMirrorPlugin, []];
@@ -32,11 +33,18 @@ export default class TypewriterModePlugin extends Plugin {
 		const settingsData = await this.loadData();
 		this.settings = Object.assign(DEFAULT_SETTINGS, settingsData);
 		this.perWindowProps.allBodyClasses = [];
+		this.perWindowProps.persistentBodyClasses = [];
 		for (const feature of Object.values(this.features)) {
 			feature.load();
 			if (feature instanceof FeatureToggle) {
 				const toggleClass = feature.getToggleClass();
-				if (toggleClass) this.perWindowProps.allBodyClasses.push(toggleClass);
+				if (toggleClass) {
+					if (feature.isToggleClassPersistent) {
+						this.perWindowProps.persistentBodyClasses.push(toggleClass);
+					} else {
+						this.perWindowProps.allBodyClasses.push(toggleClass);
+					}
+				}
 			}
 		}
 		for (const command of Object.values(this.commands)) command.load();

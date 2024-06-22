@@ -35,8 +35,6 @@ export default class MaxCharsPerLine extends Feature {
 	}
 
 	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() && this.plugin.settings.isMaxCharsPerLineEnabled
-		);
+		return this.plugin.settings.isMaxCharsPerLineEnabled;
 	}
 }

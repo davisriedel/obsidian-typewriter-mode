@@ -25,6 +25,7 @@ export default ViewPlugin.fromClass(
 
 			if (this.isDisabled()) {
 				this.removeCurrentLineHighlight();
+				this.resetPadding(this.view);
 				return;
 			}
 
@@ -61,10 +62,10 @@ export default ViewPlugin.fromClass(
 		) {
 			// remove all classes set by this plugin
 			for (const c of props.allBodyClasses) el.classList.remove(c);
+			console.log(props.persistentBodyClasses);
 
-			if (this.isDisabled()) return;
-
-			el.addClasses(props.bodyClasses);
+			el.addClasses(props.persistentBodyClasses);
+			if (!this.isDisabled()) el.addClasses(props.bodyClasses);
 			el.setCssProps(props.cssVariables);
 			el.setAttrs(props.bodyAttrs);
 		}
@@ -268,6 +269,12 @@ export default ViewPlugin.fromClass(
 				isOnlyMaintainTypewriterOffsetWhenReachedEnabled
 					? `0 0 ${offset}px 0`
 					: `${offset}px 0`;
+		}
+
+		private resetPadding(view: EditorView) {
+			const sizerDom = getSizerDom(view);
+			if (!sizerDom) return;
+			(sizerDom as HTMLElement).style.padding = "var(--file-margins)";
 		}
 
 		private recenter(view: EditorView, offset: number) {
