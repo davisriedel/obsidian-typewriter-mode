@@ -86,6 +86,11 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
 
 ## Changelog
 
+### 0.0.8
+
+- Fix toggling all typewriter mode features on and off
+- Fix toggling paragraph dimming and other features
+
 ### 0.0.7
 
 - Fixed interference with other plugins that use iframes
