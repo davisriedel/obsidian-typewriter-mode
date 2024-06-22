@@ -1,4 +1,5 @@
 import fs from "fs";
+import builtins from "builtin-modules";
 import esbuild from "esbuild";
 import { nodeExternalsPlugin } from "esbuild-node-externals";
 import { sassPlugin } from "esbuild-sass-plugin";
@@ -12,6 +13,22 @@ esbuild
 		platform: "node",
 		sourcemap: false,
 		target: "node14",
+		external: [
+			"obsidian",
+			"electron",
+			"@codemirror/autocomplete",
+			"@codemirror/collab",
+			"@codemirror/commands",
+			"@codemirror/language",
+			"@codemirror/lint",
+			"@codemirror/search",
+			"@codemirror/state",
+			"@codemirror/view",
+			"@lezer/common",
+			"@lezer/highlight",
+			"@lezer/lr",
+			...builtins,
+		],
 		plugins: [nodeExternalsPlugin(), sassPlugin()],
 	})
 	.catch(() => process.exit(1))

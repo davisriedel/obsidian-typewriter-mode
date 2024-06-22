@@ -9,6 +9,10 @@ export abstract class FeatureToggle extends Feature {
 	protected abstract settingTitle: string;
 	protected abstract settingDesc: string;
 
+	public getToggleClass() {
+		return this.toggleClass;
+	}
+
 	private registerCommand() {
 		if (this.hasCommand)
 			this.plugin.addCommand({

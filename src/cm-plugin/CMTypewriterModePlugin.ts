@@ -20,13 +20,14 @@ export default ViewPlugin.fromClass(
 		}
 
 		protected override onReconfigured(): void {
+			super.onReconfigured();
+			this.loadPerWindowProps();
+
 			if (this.isDisabled()) {
 				this.removeCurrentLineHighlight();
 				return;
 			}
 
-			super.onReconfigured();
-			this.loadPerWindowProps();
 			this.updateAfterExternalEvent();
 		}
 
@@ -58,12 +59,17 @@ export default ViewPlugin.fromClass(
 			props: PerWindowProps,
 			el: HTMLElement,
 		) {
+			// remove all classes set by this plugin
+			for (const c of props.allBodyClasses) el.classList.remove(c);
+
+			if (this.isDisabled()) return;
+
 			el.addClasses(props.bodyClasses);
 			el.setCssProps(props.cssVariables);
 			el.setAttrs(props.bodyAttrs);
 		}
 
-		private loadPerWindowProps() {
+		private getMarkdownBodies() {
 			const embeddedMarkdownContent =
 				this.view.dom.ownerDocument.querySelectorAll(
 					".markdown-embed-content iframe.embed-iframe",
@@ -71,10 +77,11 @@ export default ViewPlugin.fromClass(
 			const embeddedMarkdownBodies: HTMLElement[] = Array.from(
 				embeddedMarkdownContent,
 			).map((i: HTMLIFrameElement) => i.contentDocument.body);
-			const bodies = [
-				this.view.dom.ownerDocument.body,
-				...embeddedMarkdownBodies,
-			];
+			return [this.view.dom.ownerDocument.body, ...embeddedMarkdownBodies];
+		}
+
+		private loadPerWindowProps() {
+			const bodies = this.getMarkdownBodies();
 			const props = this.view.state.facet(perWindowProps);
 			for (const b of bodies) this.loadPerWindowPropsOnElement(props, b);
 		}

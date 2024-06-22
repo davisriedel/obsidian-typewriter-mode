@@ -8,6 +8,7 @@ import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import type { Extension } from "@codemirror/state";
 import { Plugin } from "obsidian";
 import { UpdateModal } from "./UpdateModal";
+import { FeatureToggle } from "./features/base/FeatureToggle";
 import { getCommands } from "./features/commands";
 import { getFeatures } from "./features/features";
 
@@ -18,17 +19,26 @@ export default class TypewriterModePlugin extends Plugin {
 		cssVariables: {},
 		bodyClasses: [],
 		bodyAttrs: {},
+		allBodyClasses: [],
 	};
 
 	private editorExtensions: Extension[] = [CodeMirrorPlugin, []];
 
 	readonly features = getFeatures(this);
+
 	readonly commands = getCommands(this);
 
 	override async onload() {
 		const settingsData = await this.loadData();
 		this.settings = Object.assign(DEFAULT_SETTINGS, settingsData);
-		for (const feature of Object.values(this.features)) feature.load();
+		this.perWindowProps.allBodyClasses = [];
+		for (const feature of Object.values(this.features)) {
+			feature.load();
+			if (feature instanceof FeatureToggle) {
+				const toggleClass = feature.getToggleClass();
+				if (toggleClass) this.perWindowProps.allBodyClasses.push(toggleClass);
+			}
+		}
 		for (const command of Object.values(this.commands)) command.load();
 		this.addSettingTab(new TypewriterModeSettingTab(this.app, this));
 		this.updateFacets();
