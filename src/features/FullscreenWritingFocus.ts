@@ -19,7 +19,7 @@ export class FullscreenWritingFocus extends Command {
 		};
 	}
 
-	private startFullscreenWritingFocus(view: ItemView) {
+	protected startFullscreenWritingFocus(view: ItemView) {
 		const fullscreenEl = this.plugin.settings
 			.doesFullscreenWritingFocusShowHeader
 			? view.containerEl
@@ -33,11 +33,11 @@ export class FullscreenWritingFocus extends Command {
 		});
 	}
 
-	private exitFullscreenWritingFocus() {
+	protected exitFullscreenWritingFocus() {
 		document.exitFullscreen().then();
 	}
 
-	private onExitFullscreenWritingFocus() {
+	protected onExitFullscreenWritingFocus() {
 		const elements = document.getElementsByClassName(
 			"ptm-fullscreen-writing-focus-element",
 		);
