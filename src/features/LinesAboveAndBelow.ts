@@ -31,7 +31,7 @@ export default class LinesAboveAndBelow extends Feature {
 	protected override isSettingEnabled(): boolean {
 		return (
 			super.isSettingEnabled() &&
-			this.plugin.settings.isTypewriterScrollEnabled &&
+			!this.plugin.settings.isTypewriterScrollEnabled &&
 			this.plugin.settings.isKeepLinesAboveAndBelowEnabled
 		);
 	}
