@@ -7,9 +7,6 @@ import CurrentLineHighlightUnderlineThickness from "@/features/CurrentLineHighli
 import DimUnfocusedEditorsBehavior from "@/features/DimUnfocusedEditorsBehavior";
 import DimUnfocusedParagraphs from "@/features/DimUnfocusedParagraphs";
 import DimmedParagraphsOpacity from "@/features/DimmedParagraphsOpacity";
-import FullscreenWritingFocusShowsHeader from "@/features/FullscreenWritingFocusShowsHeader";
-import FullscreenWritingFocusVignette from "@/features/FullscreenWritingFocusVignette";
-import FullscreenWritingFocusVignetteStyle from "@/features/FullscreenWritingFocusVignetteStyle";
 import HighlightCurrentLine from "@/features/HighlightCurrentLine";
 import HighlightCurrentLineOnlyInFocusedEditor from "@/features/HighlightCurrentLineOnlyInFocusedEditor";
 import KeepLinesAboveAndBelow from "@/features/KeepLinesAboveAndBelow";
@@ -23,14 +20,23 @@ import PauseDimUnfocusedParagraphsWhileSelecting from "@/features/PauseDimUnfocu
 import TypewriterOffset from "@/features/TypewriterOffset";
 import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
 import TypewriterScroll from "@/features/TypewriterScroll";
+import WritingFocusShowsHeader from "@/features/WritingFocusShowsHeader";
+import WritingFocusVignette from "@/features/WritingFocusVignette";
+import WritingFocusVignetteStyle from "@/features/WritingFocusVignetteStyle";
 import AnnounceUpdates from "./AnnounceUpdates";
 import DisableInCanvas from "./DisableInCanvas";
 import TogglePluginActivation from "./TogglePluginActivation";
+import WritingFocusIsFullScreen from "./WritingFocusIsFullscreen";
 
 export function getFeatures(plugin: TypewriterModePlugin) {
 	return {
 		LimitMaxCharsPerLine: new LimitMaxCharsPerLine(plugin),
 		MaxCharsPerLine: new MaxCharsPerLine(plugin),
+
+		WritingFocusShowsHeader: new WritingFocusShowsHeader(plugin),
+		WritingFocusIsFullScreen: new WritingFocusIsFullScreen(plugin),
+		WritingFocusVignette: new WritingFocusVignette(plugin),
+		WritingFocusVignetteStyle: new WritingFocusVignetteStyle(plugin),
 
 		TogglePluginActivation: new TogglePluginActivation(plugin),
 		DisableInCanvas: new DisableInCanvas(plugin),
@@ -59,12 +65,6 @@ export function getFeatures(plugin: TypewriterModePlugin) {
 		OnlyActivateAfterFirstInteraction: new OnlyActivateAfterFirstInteraction(
 			plugin,
 		),
-		FullscreenWritingFocusShowsHeader: new FullscreenWritingFocusShowsHeader(
-			plugin,
-		),
-		FullscreenWritingFocusVignette: new FullscreenWritingFocusVignette(plugin),
-		FullscreenWritingFocusVignetteStyle:
-			new FullscreenWritingFocusVignetteStyle(plugin),
 		AnnounceUpdates: new AnnounceUpdates(plugin),
 	};
 }

@@ -25,9 +25,10 @@ export interface TypewriterModeSettings {
 	currentLineHighlightUnderlineThickness: number;
 	"currentLineHighlightColor-dark": string;
 	"currentLineHighlightColor-light": string;
-	doesFullscreenWritingFocusShowHeader: boolean;
-	doesFullscreenWritingFocusShowVignette: boolean;
-	fullscreenWritingFocusVignetteStyle: "box" | "column";
+	doesWritingFocusShowHeader: boolean;
+	doesWritingFocusShowVignette: boolean;
+	isWritingFocusFullscreen: boolean;
+	writingFocusVignetteStyle: "box" | "column";
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
@@ -57,7 +58,8 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 	currentLineHighlightUnderlineThickness: 1,
 	"currentLineHighlightColor-dark": "#444",
 	"currentLineHighlightColor-light": "#ddd",
-	doesFullscreenWritingFocusShowHeader: false,
-	doesFullscreenWritingFocusShowVignette: true,
-	fullscreenWritingFocusVignetteStyle: "box",
+	doesWritingFocusShowHeader: false,
+	doesWritingFocusShowVignette: true,
+	isWritingFocusFullscreen: true,
+	writingFocusVignetteStyle: "box",
 };

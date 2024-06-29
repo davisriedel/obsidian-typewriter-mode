@@ -1,0 +1,76 @@
+.ptm-focus-mode {
+  .ptm-writing-focus-vignette-element {
+    &::before {
+      z-index: 1000;
+      pointer-events: none;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    &[data-ptm-writing-focus-vignette-style="box"] {
+      &::before {
+        box-shadow: inset 0 0 2em 2em rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    &[data-ptm-writing-focus-vignette-style="column"] {
+      &::before {
+        background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.5),
+          transparent 5vw,
+          transparent 95vw,
+          rgba(0, 0, 0, 0.5)
+        );
+      }
+    }
+  }
+}
+
+
+
+// ADAPTED FROM https://github.com/ryanpcmcquen/obsidian-focus-mode
+
+.ptm-focus-mode .status-bar,
+.ptm-focus-mode .view-actions,
+.ptm-focus-mode .view-header-icon,
+.ptm-focus-mode .inline-title,
+.ptm-focus-mode .workspace-split.ptm-maximized .workspace-leaf:not(.mod-active),
+.ptm-focus-mode
+    .workspace-split.ptm-maximized
+    .workspace-leaf.mod-active
+    ~ .workspace-split,
+.ptm-focus-mode.plugin-tabs .stayopen .view-header,
+.ptm-focus-mode .workspace-ribbon,
+.ptm-focus-mode .workspace-tab-header-container,
+.ptm-focus-mode.ptm-writing-focus-no-header .view-header {
+    display: none;
+}
+
+.ptm-focus-mode .workspace-tab-header-container {
+    padding-left: var(--size-4-8);
+}
+
+.ptm-focus-mode .view-content {
+    height: 100%;
+}
+
+.ptm-focus-mode .workspace-split.ptm-maximized .workspace-leaf.mod-active {
+    /* 4px is for scrollbar width: */
+    flex-basis: calc(100% - 4px);
+}
+
+.ptm-focus-mode .workspace-ribbon,
+.ptm-focus-mode .sidebar-toggle-button {
+    visibility: hidden;
+}
+
+.ptm-focus-mode .workspace-ribbon::before,
+.ptm-focus-mode
+    .side-dock-ribbon-action[aria-label="Toggle Writing Focus"] {
+    visibility: visible;
+}

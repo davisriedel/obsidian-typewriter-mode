@@ -62,7 +62,6 @@ export default ViewPlugin.fromClass(
 		) {
 			// remove all classes set by this plugin
 			for (const c of props.allBodyClasses) el.classList.remove(c);
-			console.log(props.persistentBodyClasses);
 
 			el.addClasses(props.persistentBodyClasses);
 			if (!this.isDisabled()) el.addClasses(props.bodyClasses);

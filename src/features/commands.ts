@@ -1,8 +1,8 @@
 import TypewriterModePlugin from "@/TypewriterModePlugin";
 
-import { FullscreenWritingFocus } from "@/features/FullscreenWritingFocus";
 import { MoveTypewriter } from "@/features/MoveTypewriter";
 import { ToggleTypewriterAndDimming } from "@/features/ToggleTypewriterAndDimming";
+import { WritingFocus } from "@/features/WritingFocus";
 import { ToggleDimming } from "./ToggleDimming";
 import { ToggleTypewriter } from "./ToggleTypewriter";
 
@@ -12,6 +12,6 @@ export function getCommands(plugin: TypewriterModePlugin) {
 		ToggleDimming: new ToggleDimming(plugin),
 		ToggleTypewriterAndDimming: new ToggleTypewriterAndDimming(plugin),
 		MoveTypewriter: new MoveTypewriter(plugin),
-		FullscreenWritingFocus: new FullscreenWritingFocus(plugin),
+		WritingFocus: new WritingFocus(plugin),
 	};
 }

@@ -3,20 +3,19 @@ import { Feature } from "@/features/base/Feature";
 import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
-export default class FullscreenWritingFocusVignetteStyle extends Feature {
-	protected setting: keyof TypewriterModeSettings =
-		"fullscreenWritingFocusVignetteStyle";
+export default class WritingFocusVignetteStyle extends Feature {
+	protected setting: keyof TypewriterModeSettings = "writingFocusVignetteStyle";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)
-			.setName("Fullscreen writing focus vignette style")
-			.setDesc("The style of the vignette in fullscreen writing focus mode")
+			.setName("Writing focus vignette style")
+			.setDesc("The style of the vignette in writing focus mode")
 			.setClass("typewriter-mode-setting")
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOption("box", "Box")
 					.addOption("column", "Column")
-					.setValue(this.plugin.settings.fullscreenWritingFocusVignetteStyle)
+					.setValue(this.plugin.settings.writingFocusVignetteStyle)
 					.onChange((newValue) => {
 						this.changeVignetteStyle(newValue as "box" | "column");
 						settingTab.display();
@@ -26,14 +25,11 @@ export default class FullscreenWritingFocusVignetteStyle extends Feature {
 	}
 
 	private changeVignetteStyle(newValue: "box" | "column") {
-		this.plugin.settings.fullscreenWritingFocusVignetteStyle = newValue;
+		this.plugin.settings.writingFocusVignetteStyle = newValue;
 		this.plugin.saveSettings().then();
 	}
 
 	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() &&
-			this.plugin.settings.doesFullscreenWritingFocusShowVignette
-		);
+		return this.plugin.settings.doesWritingFocusShowVignette;
 	}
 }
