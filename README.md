@@ -59,6 +59,15 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
 
 ## Changelog
 
+### 0.0.9
+
+- Completely rewrote the writing focus
+    - This fixes:
+        - #64 (Fullscreen focus interferes with vim mode)
+        - #53 (Typewriter offset wrong in fullscreen mode)
+        - #44 (Cannot access command palette from fullscreen)
+    - The new implementation is based on [obsidian-focus-mode](https://github.com/ryanpcmcquen/obsidian-focus-mode) available under the MPL-2.0 license. Therefore, the code in the files `WritingFocus.ts` and `WritingFocus.scss` is available under the same license. The rest of the project remains MIT licensed.
+
 ### 0.0.8
 
 - Fix toggling all typewriter mode features on and off
