@@ -1,5 +1,6 @@
 // Adapted from https://github.com/chhoumann/quickadd/blob/master/src/gui/UpdateModal/UpdateModal.ts
 
+import { fetchUpdateNotice } from "@/utils/fetchUpdateNotice";
 import { Component } from "obsidian";
 import { MarkdownRenderer, Modal } from "obsidian";
 
@@ -58,6 +59,7 @@ async function getReleaseNotesAfter(
 
 export class UpdateModal extends Modal {
 	releases: Release[];
+	updateNotice: string;
 
 	constructor(previousQAVersion: string | null) {
 		super(app);
@@ -75,7 +77,15 @@ export class UpdateModal extends Modal {
 					return;
 				}
 
-				this.display();
+				fetchUpdateNotice()
+					.then((text) => {
+						this.updateNotice = text;
+						this.display();
+					})
+					.catch((err) => {
+						console.log(`Failed to fetch update notice: ${err as string}`);
+						this.close();
+					});
 			})
 			.catch((err) => {
 				console.log(`Failed to fetch release notes: ${err as string}`);
@@ -108,9 +118,7 @@ export class UpdateModal extends Modal {
 
 		const markdownStr = `# Typewriter Mode updated to v${this.releases[0].tag_name}
 
-**Thank you for using Typewriter Mode!** If you like the plugin, please consider supporting me on [GitHub Sponsors](https://github.com/sponsors/davisriedel). Your Sponsorship will allow me to invest more time in the development and maintenance of the plugin.
-
-If you find any bugs or have a feature request, please feel free to [open an issue on GitHub](https://github.com/davisriedel/obsidian-typewriter-mode/issues).
+${this.updateNotice}
 
 ## What's new?
 
