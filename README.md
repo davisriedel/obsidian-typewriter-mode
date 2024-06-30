@@ -57,6 +57,14 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
 
 **You are welcome to open issues and contribute to this project!**
 
+## Support this project
+
+I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Germany. I develop this plugin in my free time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors and buymeacoffee.com. Im a truly thankful for your support.
+
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/davisriedel)
+<br />
+<a href="https://www.buymeacoffee.com/davis.riedel" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 ## Changelog
 
 ### 0.0.9
@@ -66,6 +74,7 @@ If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do no
         - #64 (Fullscreen focus interferes with vim mode)
         - #53 (Typewriter offset wrong in fullscreen mode)
         - #44 (Cannot access command palette from fullscreen)
+        - #62 Let dropdown menu appear while writing in typewriter focus mode
     - The new implementation is based on [obsidian-focus-mode](https://github.com/ryanpcmcquen/obsidian-focus-mode) available under the MPL-2.0 license. Therefore, the code in the files `WritingFocus.ts` and `WritingFocus.scss` is available under the same license. The rest of the project remains MIT licensed.
 
 ### 0.0.8
