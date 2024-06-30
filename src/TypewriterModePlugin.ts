@@ -33,18 +33,13 @@ export default class TypewriterModePlugin extends Plugin {
 		const settingsData = await this.loadData();
 		this.settings = Object.assign(DEFAULT_SETTINGS, settingsData);
 		this.perWindowProps.allBodyClasses = [];
-		this.perWindowProps.persistentBodyClasses = [];
 		for (const category of Object.values(this.features)) {
 			for (const feature of Object.values(category)) {
 				feature.load();
 				if (feature instanceof FeatureToggle) {
 					const toggleClass = feature.getToggleClass();
 					if (toggleClass) {
-						if (feature.isToggleClassPersistent) {
-							this.perWindowProps.persistentBodyClasses.push(toggleClass);
-						} else {
-							this.perWindowProps.allBodyClasses.push(toggleClass);
-						}
+						this.perWindowProps.allBodyClasses.push(toggleClass);
 					}
 				}
 			}

@@ -60,11 +60,14 @@ export default ViewPlugin.fromClass(
 			props: PerWindowProps,
 			el: HTMLElement,
 		) {
+			console.log(props);
+
 			// remove all classes set by this plugin
 			for (const c of props.allBodyClasses) el.classList.remove(c);
 
 			el.addClasses(props.persistentBodyClasses);
 			if (!this.isDisabled()) el.addClasses(props.bodyClasses);
+
 			el.setCssProps(props.cssVariables);
 			el.setAttrs(props.bodyAttrs);
 		}

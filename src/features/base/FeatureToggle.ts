@@ -62,17 +62,21 @@ export abstract class FeatureToggle extends Feature {
 
 	override enable() {
 		if (this.toggleClass) {
-			if (!this.plugin.perWindowProps.bodyClasses.contains(this.toggleClass)) {
-				this.plugin.perWindowProps.bodyClasses.push(this.toggleClass);
+			const el = this.isToggleClassPersistent
+				? "persistentBodyClasses"
+				: "bodyClasses";
+			if (!this.plugin.perWindowProps[el].contains(this.toggleClass)) {
+				this.plugin.perWindowProps[el].push(this.toggleClass);
 			}
 		}
 	}
 
 	override disable() {
 		if (this.toggleClass) {
-			if (this.plugin.perWindowProps.bodyClasses.indexOf(this.toggleClass)) {
-				this.plugin.perWindowProps.bodyClasses.remove(this.toggleClass);
-			}
+			const el = this.isToggleClassPersistent
+				? "persistentBodyClasses"
+				: "bodyClasses";
+			this.plugin.perWindowProps[el].remove(this.toggleClass);
 		}
 	}
 }
