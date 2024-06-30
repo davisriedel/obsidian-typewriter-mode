@@ -1,6 +1,6 @@
 {
   "name": "obsidian-typewriter-mode",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",
   "main": "main.js",
   "scripts": {

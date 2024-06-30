@@ -67,6 +67,10 @@ I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Ger
 
 ## Changelog
 
+### 0.0.10
+
+- Various bug fixes and improvements
+
 ### 0.0.9
 
 - Completely rewrote the writing focus
