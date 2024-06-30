@@ -1,4 +1,5 @@
 import { Command } from "@/features/base/Command";
+import type { FeatureToggle } from "./base/FeatureToggle";
 
 export class ToggleTypewriterAndDimming extends Command {
 	protected commandKey = "typewriter-scrolling-and-paragraph-dimming";
@@ -8,7 +9,11 @@ export class ToggleTypewriterAndDimming extends Command {
 		const { isTypewriterScrollEnabled, isDimUnfocusedParagraphsEnabled } =
 			this.plugin.settings;
 		const isOn = isTypewriterScrollEnabled && isDimUnfocusedParagraphsEnabled;
-		this.plugin.features.TypewriterScroll.toggle(!isOn);
-		this.plugin.features.DimUnfocusedParagraphs.toggle(!isOn);
+		(this.plugin.features.typewriter.TypewriterScroll as FeatureToggle).toggle(
+			!isOn,
+		);
+		(
+			this.plugin.features.typewriter.DimUnfocusedParagraphs as FeatureToggle
+		).toggle(!isOn);
 	}
 }

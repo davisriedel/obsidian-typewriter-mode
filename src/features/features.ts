@@ -27,44 +27,53 @@ import AnnounceUpdates from "./AnnounceUpdates";
 import DisableInCanvas from "./DisableInCanvas";
 import TogglePluginActivation from "./TogglePluginActivation";
 import WritingFocusIsFullScreen from "./WritingFocusIsFullscreen";
+import type { Feature } from "./base/Feature";
 
-export function getFeatures(plugin: TypewriterModePlugin) {
+export function getFeatures(
+	plugin: TypewriterModePlugin,
+): Record<string, Record<string, Feature>> {
 	return {
-		LimitMaxCharsPerLine: new LimitMaxCharsPerLine(plugin),
-		MaxCharsPerLine: new MaxCharsPerLine(plugin),
+		maxChar: [
+			new LimitMaxCharsPerLine(plugin),
+			new MaxCharsPerLine(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
 
-		WritingFocusShowsHeader: new WritingFocusShowsHeader(plugin),
-		WritingFocusIsFullScreen: new WritingFocusIsFullScreen(plugin),
-		WritingFocusVignette: new WritingFocusVignette(plugin),
-		WritingFocusVignetteStyle: new WritingFocusVignetteStyle(plugin),
+		writingFocus: [
+			new WritingFocusShowsHeader(plugin),
+			new WritingFocusIsFullScreen(plugin),
+			new WritingFocusVignette(plugin),
+			new WritingFocusVignetteStyle(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
 
-		TogglePluginActivation: new TogglePluginActivation(plugin),
-		DisableInCanvas: new DisableInCanvas(plugin),
-		TypewriterScroll: new TypewriterScroll(plugin),
-		TypewriterOffset: new TypewriterOffset(plugin),
-		OnlyMaintainTypewriterOffsetWhenReached:
+		typewriter: [
+			new TogglePluginActivation(plugin),
+			new DisableInCanvas(plugin),
+			new TypewriterScroll(plugin),
+			new TypewriterOffset(plugin),
 			new OnlyMaintainTypewriterOffsetWhenReached(plugin),
-		TypewriterOnlyUseCommands: new TypewriterOnlyUseCommands(plugin),
-		KeepLinesAboveAndBelow: new KeepLinesAboveAndBelow(plugin),
-		LinesAboveAndBelow: new LinesAboveAndBelow(plugin),
-		HighlightCurrentLine: new HighlightCurrentLine(plugin),
-		CurrentLineHighlightColorLight: new CurrentLineHighlightColorLight(plugin),
-		CurrentLineHighlightColorDark: new CurrentLineHighlightColorDark(plugin),
-		CurrentLineHighlightStyle: new CurrentLineHighlightStyle(plugin),
-		CurrentLineHighlightUnderlineThickness:
+			new TypewriterOnlyUseCommands(plugin),
+			new KeepLinesAboveAndBelow(plugin),
+			new LinesAboveAndBelow(plugin),
+			new HighlightCurrentLine(plugin),
+			new CurrentLineHighlightColorLight(plugin),
+			new CurrentLineHighlightColorDark(plugin),
+			new CurrentLineHighlightStyle(plugin),
 			new CurrentLineHighlightUnderlineThickness(plugin),
-		HighlightCurrentLineOnlyInFocusedEditor:
 			new HighlightCurrentLineOnlyInFocusedEditor(plugin),
-		DimUnfocusedParagraphs: new DimUnfocusedParagraphs(plugin),
-		DimmedParagraphsOpacity: new DimmedParagraphsOpacity(plugin),
-		PauseDimUnfocusedParagraphsWhileScrolling:
+			new DimUnfocusedParagraphs(plugin),
+			new DimmedParagraphsOpacity(plugin),
 			new PauseDimUnfocusedParagraphsWhileScrolling(plugin),
-		PauseDimUnfocusedParagraphsWhileSelecting:
 			new PauseDimUnfocusedParagraphsWhileSelecting(plugin),
-		DimUnfocusedEditorsBehavior: new DimUnfocusedEditorsBehavior(plugin),
-		OnlyActivateAfterFirstInteraction: new OnlyActivateAfterFirstInteraction(
-			plugin,
-		),
-		AnnounceUpdates: new AnnounceUpdates(plugin),
+			new DimUnfocusedEditorsBehavior(plugin),
+			new OnlyActivateAfterFirstInteraction(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
+
+		updates: [
+			new AnnounceUpdates(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
 	};
 }

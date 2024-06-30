@@ -34,15 +34,17 @@ export default class TypewriterModePlugin extends Plugin {
 		this.settings = Object.assign(DEFAULT_SETTINGS, settingsData);
 		this.perWindowProps.allBodyClasses = [];
 		this.perWindowProps.persistentBodyClasses = [];
-		for (const feature of Object.values(this.features)) {
-			feature.load();
-			if (feature instanceof FeatureToggle) {
-				const toggleClass = feature.getToggleClass();
-				if (toggleClass) {
-					if (feature.isToggleClassPersistent) {
-						this.perWindowProps.persistentBodyClasses.push(toggleClass);
-					} else {
-						this.perWindowProps.allBodyClasses.push(toggleClass);
+		for (const category of Object.values(this.features)) {
+			for (const feature of Object.values(category)) {
+				feature.load();
+				if (feature instanceof FeatureToggle) {
+					const toggleClass = feature.getToggleClass();
+					if (toggleClass) {
+						if (feature.isToggleClassPersistent) {
+							this.perWindowProps.persistentBodyClasses.push(toggleClass);
+						} else {
+							this.perWindowProps.allBodyClasses.push(toggleClass);
+						}
 					}
 				}
 			}
@@ -55,7 +57,11 @@ export default class TypewriterModePlugin extends Plugin {
 	}
 
 	override onunload() {
-		for (const feature of Object.values(this.features)) feature.disable();
+		for (const category of Object.values(this.features)) {
+			for (const feature of Object.values(category)) {
+				feature.disable();
+			}
+		}
 	}
 
 	private updateFacets() {

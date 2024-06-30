@@ -5,13 +5,17 @@ import { ToggleTypewriterAndDimming } from "@/features/ToggleTypewriterAndDimmin
 import { WritingFocus } from "@/features/WritingFocus";
 import { ToggleDimming } from "./ToggleDimming";
 import { ToggleTypewriter } from "./ToggleTypewriter";
+import type { Command } from "./base/Command";
 
-export function getCommands(plugin: TypewriterModePlugin) {
-	return {
-		ToggleTypewriter: new ToggleTypewriter(plugin),
-		ToggleDimming: new ToggleDimming(plugin),
-		ToggleTypewriterAndDimming: new ToggleTypewriterAndDimming(plugin),
-		MoveTypewriter: new MoveTypewriter(plugin),
-		WritingFocus: new WritingFocus(plugin),
-	};
+export function getCommands(
+	plugin: TypewriterModePlugin,
+): Record<string, Command> {
+	return [
+		new ToggleTypewriter(plugin),
+		new ToggleDimming(plugin),
+		new ToggleTypewriterAndDimming(plugin),
+		new MoveTypewriter(plugin),
+		new WritingFocus(plugin),
+		// biome-ignore lint: reason
+	].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {});
 }

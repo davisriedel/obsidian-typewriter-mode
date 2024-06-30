@@ -1,4 +1,5 @@
 import { Command } from "@/features/base/Command";
+import type { FeatureToggle } from "./base/FeatureToggle";
 
 export class ToggleDimming extends Command {
 	protected commandKey = "toggle-paragraph-dimming";
@@ -6,8 +7,8 @@ export class ToggleDimming extends Command {
 
 	protected onCommand(): void {
 		const { isDimUnfocusedParagraphsEnabled } = this.plugin.settings;
-		this.plugin.features.DimUnfocusedParagraphs.toggle(
-			!isDimUnfocusedParagraphsEnabled,
-		);
+		(
+			this.plugin.features.typewriter.DimUnfocusedParagraphs as FeatureToggle
+		).toggle(!isDimUnfocusedParagraphsEnabled);
 	}
 }
