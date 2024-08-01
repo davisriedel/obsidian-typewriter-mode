@@ -60,8 +60,6 @@ export default ViewPlugin.fromClass(
 			props: PerWindowProps,
 			el: HTMLElement,
 		) {
-			console.log(props);
-
 			// remove all classes set by this plugin
 			for (const c of props.allBodyClasses) el.classList.remove(c);
 
@@ -137,6 +135,7 @@ export default ViewPlugin.fromClass(
 
 		protected override updateAllowedUserEvent() {
 			super.updateAllowedUserEvent();
+			console.log("allowed");
 
 			const editorDom = getEditorDom(this.view);
 			if (editorDom) {
@@ -155,6 +154,7 @@ export default ViewPlugin.fromClass(
 				this.view,
 				"TypewriterModeUpdateAfterUserEvent",
 				(measure, view) => {
+					console.log(measure);
 					this.recenterAndMoveCurrentLineHighlight(view, measure);
 					this.isRenderingAllowedUserEvent = false;
 				},

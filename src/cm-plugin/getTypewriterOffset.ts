@@ -57,10 +57,13 @@ function getTypewriterPositionData(view: EditorView) {
 	} else if (isTypewriterScrollEnabled) {
 		scrollOffset = typewriterOffset;
 		if (isOnlyMaintainTypewriterOffsetWhenReachedEnabled) {
-			scrollOffset =
-				scrollDom.scrollTop + activeLineOffset < typewriterOffset
-					? Math.min(typewriterOffset, activeLineOffset)
-					: typewriterOffset;
+			if (activeLineOffset < 0) scrollOffset = 0;
+			else {
+				scrollOffset =
+					scrollDom.scrollTop + activeLineOffset < typewriterOffset
+						? Math.min(typewriterOffset, activeLineOffset)
+						: typewriterOffset;
+			}
 		}
 	} else if (isKeepLinesAboveAndBelowEnabled) {
 		const { linesAboveAndBelow } = view.state.facet(pluginSettingsFacet);
