@@ -22,8 +22,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
 					.onChange((newValue) => {
 						this.changeCurrentLineHighlightUnderlineThickness(newValue);
 					}),
-			)
-			.setDisabled(!this.isSettingEnabled());
+			);
 	}
 
 	override load() {
@@ -40,12 +39,5 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
 			`${newValue}px`,
 		);
 		this.plugin.saveSettings();
-	}
-
-	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() &&
-			this.plugin.settings.isHighlightCurrentLineEnabled
-		);
 	}
 }

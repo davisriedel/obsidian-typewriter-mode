@@ -22,19 +22,11 @@ export default class CurrentLineHighlightStyle extends Feature {
 						);
 						settingTab.display();
 					}),
-			)
-			.setDisabled(!this.isSettingEnabled());
+			);
 	}
 
 	private changeCurrentLineHighlightStyle(newValue: "box" | "underline") {
 		this.plugin.settings.currentLineHighlightStyle = newValue;
 		this.plugin.saveSettings().then();
-	}
-
-	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() &&
-			this.plugin.settings.isHighlightCurrentLineEnabled
-		);
 	}
 }

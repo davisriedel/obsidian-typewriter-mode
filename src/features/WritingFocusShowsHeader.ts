@@ -8,8 +8,4 @@ export default class WritingFocusShowsHeader extends FeatureToggle {
 	protected settingTitle = "Show header in writing focus";
 	protected settingDesc =
 		"If enabled, the header will be shown in writing focus";
-
-	protected override isSettingEnabled(): boolean {
-		return true;
-	}
 }

@@ -10,9 +10,6 @@ export default class TypewriterScroll extends FeatureToggle {
 	protected settingDesc = "Turns typewriter scrolling on or off";
 
 	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() &&
-			!this.plugin.settings.isKeepLinesAboveAndBelowEnabled
-		);
+		return !this.plugin.settings.isKeepLinesAboveAndBelowEnabled;
 	}
 }

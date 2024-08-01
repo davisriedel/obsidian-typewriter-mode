@@ -16,8 +16,38 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
 		this.containerEl.createEl("h2", { text: "Typewriter Mode Settings" });
 
+		this.containerEl.createEl("h3", { text: "General" });
+		for (const feature of Object.values(this.plugin.features.general)) {
+			feature.registerSetting(this);
+		}
+
 		this.containerEl.createEl("h3", { text: "Typewriter" });
+		if (this.plugin.settings.isKeepLinesAboveAndBelowEnabled)
+			this.containerEl.createEl("p", {
+				text: 'Not available if "keep lines above and below" is activated',
+			});
 		for (const feature of Object.values(this.plugin.features.typewriter)) {
+			feature.registerSetting(this);
+		}
+
+		this.containerEl.createEl("h3", { text: "Keep Lines Above And Below" });
+		if (this.plugin.settings.isTypewriterScrollEnabled)
+			this.containerEl.createEl("p", {
+				text: "Not available if typewriter scrolling is activated",
+			});
+		for (const feature of Object.values(
+			this.plugin.features.keepAboveAndBelow,
+		)) {
+			feature.registerSetting(this);
+		}
+
+		this.containerEl.createEl("h3", { text: "Highlight Current Line" });
+		for (const feature of Object.values(this.plugin.features.currentLine)) {
+			feature.registerSetting(this);
+		}
+
+		this.containerEl.createEl("h3", { text: "Dimming" });
+		for (const feature of Object.values(this.plugin.features.dimming)) {
 			feature.registerSetting(this);
 		}
 

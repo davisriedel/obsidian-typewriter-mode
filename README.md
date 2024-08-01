@@ -41,6 +41,10 @@ Follow the instructions in the repository of the [BRAT plugin](https://github.co
 
 This plugin started as a fork of the incredible [Typewriter Scroll](https://github.com/deathau/cm-typewriter-scroll-obsidian) plugin by [deathau](https://github.com/deathau). It was turned into a separate plugin because many new features were added, breaking changes were introduced, and the code was completely restructured to make it more extensible.
 
+The sentence highlighting was derived from [Focus Active Sentence](https://github.com/artisticat1/focus-active-sentence).
+
+The writing focus was derived from [Obsidian Focus Mode](https://github.com/ryanpcmcquen/obsidian-focus-mode).
+
 ## Development
 
 The repo depends on the latest [Obsidian Plugin API](https://github.com/obsidianmd/obsidian-api).

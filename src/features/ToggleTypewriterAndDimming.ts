@@ -6,14 +6,12 @@ export class ToggleTypewriterAndDimming extends Command {
 	protected commandTitle = "Toggle typewriter scrolling and paragraph dimming";
 
 	protected onCommand(): void {
-		const { isTypewriterScrollEnabled, isDimUnfocusedParagraphsEnabled } =
+		const { isTypewriterScrollEnabled, isDimUnfocusedEnabled } =
 			this.plugin.settings;
-		const isOn = isTypewriterScrollEnabled && isDimUnfocusedParagraphsEnabled;
+		const isOn = isTypewriterScrollEnabled && isDimUnfocusedEnabled;
 		(this.plugin.features.typewriter.TypewriterScroll as FeatureToggle).toggle(
 			!isOn,
 		);
-		(
-			this.plugin.features.typewriter.DimUnfocusedParagraphs as FeatureToggle
-		).toggle(!isOn);
+		(this.plugin.features.dimming.DimUnfocused as FeatureToggle).toggle(!isOn);
 	}
 }

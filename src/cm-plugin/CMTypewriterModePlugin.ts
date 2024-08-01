@@ -4,13 +4,16 @@ import type { PerWindowProps } from "@/cm-plugin/PerWindowProps";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import type { TypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 import { measureTypewriterPosition } from "@/cm-plugin/getTypewriterOffset";
-import { EditorView, ViewPlugin } from "@codemirror/view";
+import { RangeSet } from "@codemirror/state";
+import { Decoration, EditorView, ViewPlugin } from "@codemirror/view";
+import { getActiveSentenceDecos } from "./highlightSentence";
 import { getEditorDom, getScrollDom, getSizerDom } from "./selectors";
 
 export default ViewPlugin.fromClass(
 	class extends CodeMirrorPluginBaseClass {
 		private isInitialInteraction = true;
 		private isRenderingAllowedUserEvent = false;
+		decorations: RangeSet<Decoration> = RangeSet.empty;
 
 		protected override onLoad() {
 			super.onLoad();
@@ -135,7 +138,7 @@ export default ViewPlugin.fromClass(
 
 		protected override updateAllowedUserEvent() {
 			super.updateAllowedUserEvent();
-			console.log("allowed");
+			this.applyDecorations();
 
 			const editorDom = getEditorDom(this.view);
 			if (editorDom) {
@@ -154,7 +157,6 @@ export default ViewPlugin.fromClass(
 				this.view,
 				"TypewriterModeUpdateAfterUserEvent",
 				(measure, view) => {
-					console.log(measure);
 					this.recenterAndMoveCurrentLineHighlight(view, measure);
 					this.isRenderingAllowedUserEvent = false;
 				},
@@ -196,6 +198,7 @@ export default ViewPlugin.fromClass(
 
 		protected override updateNonUserEvent() {
 			super.updateNonUserEvent();
+			this.applyDecorations();
 
 			if (!this.isInitialInteraction) return;
 
@@ -239,7 +242,20 @@ export default ViewPlugin.fromClass(
 			);
 		}
 
+		private applyDecorations() {
+			const { isDimUnfocusedEnabled, dimUnfocusedMode } =
+				this.view.state.facet(pluginSettingsFacet);
+			if (!isDimUnfocusedEnabled || dimUnfocusedMode !== "sentences") return;
+
+			this.decorations = getActiveSentenceDecos(this.view, {
+				sentenceDelimiters: ".!?",
+				extraCharacters: "*“”‘’",
+				ignoredPatterns: "Mr.",
+			});
+		}
+
 		private updateAfterExternalEvent() {
+			this.applyDecorations();
 			const { isTypewriterScrollEnabled } =
 				this.view.state.facet(pluginSettingsFacet);
 			measureTypewriterPosition(
@@ -315,4 +331,5 @@ export default ViewPlugin.fromClass(
 				);
 		}
 	},
+	{ decorations: (v) => v.decorations },
 );

@@ -20,16 +20,11 @@ export default class WritingFocusVignetteStyle extends Feature {
 						this.changeVignetteStyle(newValue as "box" | "column");
 						settingTab.display();
 					}),
-			)
-			.setDisabled(!this.isSettingEnabled());
+			);
 	}
 
 	private changeVignetteStyle(newValue: "box" | "column") {
 		this.plugin.settings.writingFocusVignetteStyle = newValue;
 		this.plugin.saveSettings().then();
-	}
-
-	protected override isSettingEnabled(): boolean {
-		return this.plugin.settings.doesWritingFocusShowVignette;
 	}
 }

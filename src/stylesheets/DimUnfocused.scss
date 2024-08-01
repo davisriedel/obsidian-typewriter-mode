@@ -1,0 +1,99 @@
+.ptm-dim-unfocused {
+  &[data-ptm-dim-unfocused-mode="paragraphs"] {
+    &[data-ptm-dim-unfocused-editors-behavior="dim"] {
+      &:not(.ptm-dim-unfocused-pause-while-scrolling, .ptm-dim-unfocused-pause-while-selecting) .cm-editor:not(.ptm-first-open),
+      &.ptm-dim-unfocused--pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor:not(.ptm-wheel, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor:not(.ptm-select, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
+        .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), .cm-line:not(.cm-active) {
+          opacity: var(--dimmed-opacity);
+        }
+      }
+    }
+
+    &[data-ptm-dim-unfocused-editors-behavior="dim-none"],
+    &[data-ptm-dim-unfocused-editors-behavior="dim-all"] {
+      &:not(.ptm-dim-unfocused-pause-while-scrolling, .ptm-dim-unfocused-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-wheel, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor.cm-focused:not(.ptm-select, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor.cm-focused:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
+        .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), .cm-line:not(.cm-active) {
+          opacity: var(--dimmed-opacity);
+        }
+      }
+    }
+
+    &[data-ptm-dim-unfocused-editors-behavior="dim-all"] .cm-editor:not(.cm-focused) {
+      .CodeMirror-lines:not(.selecting) .CodeMirror-code, .cm-line {
+        opacity: var(--dimmed-opacity);
+      }
+    }
+  }
+
+  &[data-ptm-dim-unfocused-mode="sentences"] {
+    &[data-ptm-dim-unfocused-editors-behavior="dim"] {
+      &:not(.ptm-dim-unfocused-pause-while-scrolling, .ptm-dim-unfocused-pause-while-selecting) .cm-editor:not(.ptm-first-open),
+      &.ptm-dim-unfocused--pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor:not(.ptm-wheel, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor:not(.ptm-select, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
+        .cm-line {
+            opacity: var(--dimmed-opacity);
+        }
+
+        .cm-active.cm-line {
+            opacity: 1;
+        }
+
+        .cm-active.cm-line .active-paragraph {
+            opacity: var(--dimmed-opacity);
+        }
+
+        .cm-active.cm-line .active-sentence {
+            opacity: 1;
+        }
+      }
+    }
+
+    &[data-ptm-dim-unfocused-editors-behavior="dim-none"],
+    &[data-ptm-dim-unfocused-editors-behavior="dim-all"] {
+      &:not(.ptm-dim-unfocused-pause-while-scrolling, .ptm-dim-unfocused-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor.cm-focused:not(.ptm-wheel, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor.cm-focused:not(.ptm-select, .ptm-first-open),
+      &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor.cm-focused:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
+        .cm-line {
+            opacity: var(--dimmed-opacity);
+        }
+
+        .cm-active.cm-line {
+            opacity: 1;
+        }
+
+        .cm-active.cm-line .active-paragraph {
+            opacity: var(--dimmed-opacity);
+        }
+
+        .cm-active.cm-line .active-sentence {
+            opacity: 1;
+        }
+      }
+    }
+
+    &[data-ptm-dim-unfocused-editors-behavior="dim-all"] .cm-editor:not(.cm-focused) {
+      .cm-line {
+          opacity: var(--dimmed-opacity);
+      }
+
+      .cm-active.cm-line {
+          opacity: 1;
+      }
+
+      .cm-active.cm-line .active-paragraph {
+          opacity: var(--dimmed-opacity);
+      }
+
+      .cm-active.cm-line .active-sentence {
+          opacity: 1;
+      }
+    }
+  }
+}

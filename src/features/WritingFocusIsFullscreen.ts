@@ -7,8 +7,4 @@ export default class WritingFocusIsFullScreen extends FeatureToggle {
 	protected settingTitle = "Make Obsidian fullscreen in writing focus";
 	protected settingDesc =
 		"If enabled, the Obsidian window will toggle to fullscreen when entering writing focus";
-
-	protected override isSettingEnabled(): boolean {
-		return true;
-	}
 }

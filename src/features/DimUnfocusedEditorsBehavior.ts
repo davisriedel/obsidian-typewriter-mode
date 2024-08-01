@@ -9,16 +9,19 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)
-			.setName("Paragraph dimming behavior in unfocused notes")
+			.setName("Dimming behavior in unfocused notes")
 			.setDesc(
-				"How to dim paragraphs in notes / editors that your cursor is not on (e.g. if you have multiple notes open in split panes)",
+				"How to dim paragraphs / sentences in notes / editors that your cursor is not on (e.g. if you have multiple notes open in split panes)",
 			)
 			.setClass("typewriter-mode-setting")
 			.addDropdown((dropdown) =>
 				dropdown
-					.addOption("dim-none", "Do not dim any paragraph")
-					.addOption("dim", "Dim all but the previously focused paragraph")
-					.addOption("dim-all", "Dim all paragraphs")
+					.addOption("dim-none", "Do not dim anything")
+					.addOption(
+						"dim",
+						"Dim all but the previously focused paragraph / sentence",
+					)
+					.addOption("dim-all", "Dim everything")
 					.setValue(this.plugin.settings.dimUnfocusedEditorsBehavior)
 					.onChange((newValue) => {
 						this.changeDimUnfocusedEditorsBehavior(
@@ -26,8 +29,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 						);
 						settingTab.display();
 					}),
-			)
-			.setDisabled(!this.isSettingEnabled());
+			);
 	}
 
 	override load() {
@@ -45,12 +47,5 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 			"data-ptm-dim-unfocused-editors-behavior"
 		] = newValue;
 		this.plugin.saveSettings().then();
-	}
-
-	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() &&
-			this.plugin.settings.isDimUnfocusedParagraphsEnabled
-		);
 	}
 }

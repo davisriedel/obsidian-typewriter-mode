@@ -4,9 +4,9 @@ import CurrentLineHighlightColorDark from "@/features/CurrentLineHighlightColorD
 import CurrentLineHighlightColorLight from "@/features/CurrentLineHighlightColorLight";
 import CurrentLineHighlightStyle from "@/features/CurrentLineHighlightStyle";
 import CurrentLineHighlightUnderlineThickness from "@/features/CurrentLineHighlightUnderlineThickness";
+import DimUnfocused from "@/features/DimUnfocused";
 import DimUnfocusedEditorsBehavior from "@/features/DimUnfocusedEditorsBehavior";
-import DimUnfocusedParagraphs from "@/features/DimUnfocusedParagraphs";
-import DimmedParagraphsOpacity from "@/features/DimmedParagraphsOpacity";
+import DimmedOpacity from "@/features/DimmedOpacity";
 import HighlightCurrentLine from "@/features/HighlightCurrentLine";
 import HighlightCurrentLineOnlyInFocusedEditor from "@/features/HighlightCurrentLineOnlyInFocusedEditor";
 import KeepLinesAboveAndBelow from "@/features/KeepLinesAboveAndBelow";
@@ -15,8 +15,8 @@ import LinesAboveAndBelow from "@/features/LinesAboveAndBelow";
 import MaxCharsPerLine from "@/features/MaxCharsPerLine";
 import OnlyActivateAfterFirstInteraction from "@/features/OnlyActivateAfterFirstInteraction";
 import OnlyMaintainTypewriterOffsetWhenReached from "@/features/OnlyMaintainTypewriterOffsetWhenReached";
-import PauseDimUnfocusedParagraphsWhileScrolling from "@/features/PauseDimUnfocusedParagraphsWhileScrolling";
-import PauseDimUnfocusedParagraphsWhileSelecting from "@/features/PauseDimUnfocusedParagraphsWhileSelecting";
+import PauseDimUnfocusedWhileScrolling from "@/features/PauseDimUnfocusedWhileScrolling";
+import PauseDimUnfocusedWhileSelecting from "@/features/PauseDimUnfocusedWhileSelecting";
 import TypewriterOffset from "@/features/TypewriterOffset";
 import TypewriterOnlyUseCommands from "@/features/TypewriterOnlyUseCommands";
 import TypewriterScroll from "@/features/TypewriterScroll";
@@ -24,6 +24,7 @@ import WritingFocusShowsHeader from "@/features/WritingFocusShowsHeader";
 import WritingFocusVignette from "@/features/WritingFocusVignette";
 import WritingFocusVignetteStyle from "@/features/WritingFocusVignetteStyle";
 import AnnounceUpdates from "./AnnounceUpdates";
+import DimUnfocusedMode from "./DimUnfocusedMode";
 import DisableInCanvas from "./DisableInCanvas";
 import TogglePluginActivation from "./TogglePluginActivation";
 import WritingFocusIsFullScreen from "./WritingFocusIsFullscreen";
@@ -47,27 +48,44 @@ export function getFeatures(
 			// biome-ignore lint: reason
 		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
 
-		typewriter: [
+		general: [
 			new TogglePluginActivation(plugin),
 			new DisableInCanvas(plugin),
+			new OnlyActivateAfterFirstInteraction(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
+
+		typewriter: [
 			new TypewriterScroll(plugin),
 			new TypewriterOffset(plugin),
 			new OnlyMaintainTypewriterOffsetWhenReached(plugin),
 			new TypewriterOnlyUseCommands(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
+
+		keepAboveAndBelow: [
 			new KeepLinesAboveAndBelow(plugin),
 			new LinesAboveAndBelow(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
+
+		currentLine: [
 			new HighlightCurrentLine(plugin),
 			new CurrentLineHighlightColorLight(plugin),
 			new CurrentLineHighlightColorDark(plugin),
 			new CurrentLineHighlightStyle(plugin),
 			new CurrentLineHighlightUnderlineThickness(plugin),
 			new HighlightCurrentLineOnlyInFocusedEditor(plugin),
-			new DimUnfocusedParagraphs(plugin),
-			new DimmedParagraphsOpacity(plugin),
-			new PauseDimUnfocusedParagraphsWhileScrolling(plugin),
-			new PauseDimUnfocusedParagraphsWhileSelecting(plugin),
+			// biome-ignore lint: reason
+		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
+
+		dimming: [
+			new DimUnfocused(plugin),
+			new DimUnfocusedMode(plugin),
+			new DimmedOpacity(plugin),
+			new PauseDimUnfocusedWhileScrolling(plugin),
+			new PauseDimUnfocusedWhileSelecting(plugin),
 			new DimUnfocusedEditorsBehavior(plugin),
-			new OnlyActivateAfterFirstInteraction(plugin),
 			// biome-ignore lint: reason
 		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),
 

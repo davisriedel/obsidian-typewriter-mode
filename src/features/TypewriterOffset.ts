@@ -21,18 +21,11 @@ export default class TypewriterOffset extends Feature {
 					.onChange((newValue) => {
 						this.changeTypewriterOffset(newValue / 100);
 					}),
-			)
-			.setDisabled(!this.isSettingEnabled());
+			);
 	}
 
 	private changeTypewriterOffset(newValue: number) {
 		this.plugin.settings.typewriterOffset = newValue;
 		this.plugin.saveSettings().then();
-	}
-
-	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() && this.plugin.settings.isTypewriterScrollEnabled
-		);
 	}
 }

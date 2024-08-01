@@ -19,20 +19,11 @@ export default class LinesAboveAndBelow extends Feature {
 					.onChange((newValue) => {
 						this.changeAmountOfLinesAboveAndBelow(parseInt(newValue));
 					}),
-			)
-			.setDisabled(!this.isSettingEnabled());
+			);
 	}
 
 	private changeAmountOfLinesAboveAndBelow(newValue: number) {
 		this.plugin.settings.linesAboveAndBelow = newValue;
 		this.plugin.saveSettings().then();
-	}
-
-	protected override isSettingEnabled(): boolean {
-		return (
-			super.isSettingEnabled() &&
-			!this.plugin.settings.isTypewriterScrollEnabled &&
-			this.plugin.settings.isKeepLinesAboveAndBelowEnabled
-		);
 	}
 }

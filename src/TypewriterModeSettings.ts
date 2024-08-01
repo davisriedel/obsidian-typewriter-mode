@@ -14,11 +14,12 @@ export interface TypewriterModeSettings {
 	linesAboveAndBelow: number;
 	isMaxCharsPerLineEnabled: boolean;
 	maxCharsPerLine: number;
-	isDimUnfocusedParagraphsEnabled: boolean;
+	isDimUnfocusedEnabled: boolean;
+	dimUnfocusedMode: "paragraphs" | "sentences";
 	dimUnfocusedEditorsBehavior: "dim-none" | "dim" | "dim-all";
-	dimmedParagraphsOpacity: number;
-	isPauseDimUnfocusedParagraphsWhileScrollingEnabled: boolean;
-	isPauseDimUnfocusedParagraphsWhileSelectingEnabled: boolean;
+	dimmedOpacity: number;
+	isPauseDimUnfocusedWhileScrollingEnabled: boolean;
+	isPauseDimUnfocusedWhileSelectingEnabled: boolean;
 	isHighlightCurrentLineEnabled: boolean;
 	isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
 	currentLineHighlightStyle: "box" | "underline";
@@ -47,11 +48,12 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 	linesAboveAndBelow: 5,
 	isMaxCharsPerLineEnabled: false,
 	maxCharsPerLine: 64,
-	isDimUnfocusedParagraphsEnabled: false,
+	isDimUnfocusedEnabled: false,
+	dimUnfocusedMode: "paragraphs",
 	dimUnfocusedEditorsBehavior: "dim",
-	dimmedParagraphsOpacity: 0.25,
-	isPauseDimUnfocusedParagraphsWhileScrollingEnabled: true,
-	isPauseDimUnfocusedParagraphsWhileSelectingEnabled: true,
+	dimmedOpacity: 0.25,
+	isPauseDimUnfocusedWhileScrollingEnabled: true,
+	isPauseDimUnfocusedWhileSelectingEnabled: true,
 	isHighlightCurrentLineEnabled: true,
 	isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
 	currentLineHighlightStyle: "box",

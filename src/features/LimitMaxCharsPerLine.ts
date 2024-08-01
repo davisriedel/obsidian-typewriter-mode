@@ -10,8 +10,4 @@ export default class LimitMaxCharsPerLine extends FeatureToggle {
 		"Toggle maximum number of characters per line";
 	protected settingTitle = "Limit maximum number of characters per line";
 	protected settingDesc = "Limits the maximum number of characters per line";
-
-	protected override isSettingEnabled(): boolean {
-		return true;
-	}
 }
