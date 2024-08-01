@@ -71,6 +71,14 @@ I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Ger
 
 ## Changelog
 
+### 0.0.11
+
+- New feature: Highlight active sentence (dim all other sentences, not only paragraphs)
+- Reworked settings panel (now all settings can be edited, even for inactive features)
+- Fixed compatibility of "Only maintain typewriter offset when reached" with "go to top" commands (e.g. vim mode)
+- Fixed current line highlight position with custom line heights
+- Fixed update modal scrolling
+
 ### 0.0.10
 
 - Various bug fixes and improvements

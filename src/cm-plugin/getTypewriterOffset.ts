@@ -13,7 +13,7 @@ function getActiveLineProp(view: EditorView, prop: string) {
 
 function getLineOffset(view: EditorView, lineHeight: number) {
 	const fontSize = getActiveLineProp(view, "font-size");
-	return (lineHeight - fontSize) / 2 - 2;
+	return (lineHeight - fontSize) / 2;
 }
 
 function getActiveLineOffset(view: EditorView) {
