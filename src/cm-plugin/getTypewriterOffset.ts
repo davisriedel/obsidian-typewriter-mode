@@ -11,6 +11,11 @@ function getActiveLineProp(view: EditorView, prop: string) {
 	);
 }
 
+function getLineOffset(view: EditorView, lineHeight: number) {
+	const fontSize = getActiveLineProp(view, "font-size");
+	return (lineHeight - fontSize) / 2 - 2;
+}
+
 function getActiveLineOffset(view: EditorView) {
 	const caretOffset =
 		view.coordsAtPos(view.state.selection.main.head)?.top ?? 0;
@@ -22,22 +27,20 @@ function getActiveLineOffset(view: EditorView) {
 	return caretOffset - containerOffset;
 }
 
-function getTypewriterOffset(view: EditorView, lineHeight: number) {
+function getTypewriterOffset(view: EditorView) {
 	const editorDom = getEditorDom(view);
 	if (!editorDom) return 0;
 
-	const fontSize = getActiveLineProp(view, "font-size");
 	const percentage = view.state.facet(pluginSettingsFacet).typewriterOffset;
 
-	const editorOffset = editorDom.clientHeight * percentage;
-	const lineOffset = (lineHeight - fontSize) / 2;
-	return editorOffset - lineOffset;
+	return editorDom.clientHeight * percentage;
 }
 
 function getTypewriterPositionData(view: EditorView) {
 	const lineHeight = getActiveLineProp(view, "line-height");
-	const typewriterOffset = getTypewriterOffset(view, lineHeight);
+	const typewriterOffset = getTypewriterOffset(view);
 	const activeLineOffset = getActiveLineOffset(view);
+	const lineOffset = getLineOffset(view, lineHeight);
 
 	const {
 		isTypewriterScrollEnabled,
@@ -84,6 +87,7 @@ function getTypewriterPositionData(view: EditorView) {
 		scrollOffset,
 		activeLineOffset,
 		lineHeight,
+		lineOffset,
 	};
 }
 
