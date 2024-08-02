@@ -1,7 +1,7 @@
 import fs from "fs";
 import builtins from "builtin-modules";
 import esbuild from "esbuild";
-import { nodeExternalsPlugin } from "esbuild-node-externals";
+// import { nodeExternalsPlugin } from "esbuild-node-externals";
 import { sassPlugin } from "esbuild-sass-plugin";
 
 esbuild
@@ -29,7 +29,7 @@ esbuild
 			"@lezer/lr",
 			...builtins,
 		],
-		plugins: [nodeExternalsPlugin(), sassPlugin()],
+		plugins: [sassPlugin()],
 	})
 	.catch(() => process.exit(1))
 	.finally(() => {

@@ -1,5 +1,6 @@
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import type { EditorView } from "@codemirror/view";
+import measure from "font-measure";
 import { getEditorDom, getScrollDom } from "./selectors";
 
 function getActiveLineProp(view: EditorView, prop: string) {
@@ -11,9 +12,27 @@ function getActiveLineProp(view: EditorView, prop: string) {
 	);
 }
 
+const lastFontSize: number | null = null;
+let capHeight: number | null = null;
+
+function reloadMetrics(fontSize: number) {
+	const fontFamily = getComputedStyle(document.body).getPropertyValue(
+		"--font-text",
+	);
+	const metrics = measure(fontFamily, {
+		fontSize,
+		origin: "top",
+	});
+	capHeight = metrics.capHeight;
+}
+
 function getLineOffset(view: EditorView, lineHeight: number) {
 	const fontSize = getActiveLineProp(view, "font-size");
-	return (lineHeight - fontSize) / 2;
+	if (fontSize !== lastFontSize || capHeight === null) {
+		reloadMetrics(fontSize);
+	}
+	const padding = getActiveLineProp(view, "padding-top");
+	return (lineHeight - capHeight * fontSize) / 4 - padding / 2;
 }
 
 function getActiveLineOffset(view: EditorView) {
