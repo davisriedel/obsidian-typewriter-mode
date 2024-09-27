@@ -39,8 +39,5 @@
     "test-vault": "./make-test-vault.sh",
     "clean-test-vault": "rm -rf ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
     "version-bump": "bun ./version-bump.ts"
-  },
-  "dependencies": {
-    "font-measure": "^1.2.2"
   }
 }
