@@ -1,8 +1,13 @@
 # Typewriter Mode for Obsidian
 
+[![](https://img.shields.io/badge/Obsidian-%23483699.svg?style=for-the-badge&logo=obsidian&logoColor=white)](https://obsidian.md/)
+[![](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![](https://img.shields.io/badge/Version-0.0.11-blue?style=for-the-badge)](https://github.com/davisriedel/obsidian-typewriter-mode/releases)
+[![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)
+[![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)
+
 Typewriter Mode is a plugin that adds typewriter scrolling (current line stays at a fixed position on the screen), a highlight for the current line, dimming of unfocused paragraphs and more to [Obsidian](https://obsidian.md).
 All features can be turned on or off individually and have various settings to customize their behavior to your liking.
-Below you can find a list of all features and settings.
 
 _These are a few exemplary screen captures:_
 ![Typewriter scrolling and current line highlighted](https://github.com/davisriedel/obsidian-typewriter-mode/raw/main/demo/typewriter.gif)
@@ -52,22 +57,19 @@ The repo depends on the latest [Obsidian Plugin API](https://github.com/obsidian
 If you want to contribute to this project or make your own changes, you can do so by following these steps:
 
 1. Clone this repo
-2. Install dependencies with `npm i`, `yarn` or `pnpm i`
-3. Build with `npm run build`, `yarn build` or `pnpm build`
-4. Copy `manifest.json`, `main.js` and `styles.css` to a subfolder of your plugins folder (e.g, `<vault>/.obsidian/plugins/<plugin-name>/`)
-5. Reload obsidian to see changes
-
-If you clone this repo into `<vault>/.obsidian/plugins/<plugin-name>/` you do not need to copy the files manually and can skip step 4.
+2. Install dependencies with `bun install`
+3. Build with `bun run build`
+4. Create / update test vault with `bun run test-vault`
+5. Open the test vault / reload Obsidian to see changes
 
 **You are welcome to open issues and contribute to this project!**
 
 ## Support this project
 
-I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Germany. I develop this plugin in my free time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors and buymeacoffee.com. Im a truly thankful for your support.
+I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Germany. I develop this plugin in my spare time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors or buymeacoffee.com. I am truly thankful for your support.
 
-[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/davisriedel)
-<br />
-<a href="https://www.buymeacoffee.com/davis.riedel" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+[![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)
+[![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)
 
 ## Changelog
 
