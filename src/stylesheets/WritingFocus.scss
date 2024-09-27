@@ -35,7 +35,7 @@
 
 // ADAPTED FROM https://github.com/ryanpcmcquen/obsidian-focus-mode
 
-.ptm-focus-mode .status-bar,
+.ptm-focus-mode:not(.ptm-writing-focus-shows-status-bar) .status-bar,
 .ptm-focus-mode .view-actions,
 .ptm-focus-mode .view-header-icon,
 .ptm-focus-mode .inline-title,

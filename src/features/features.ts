@@ -28,6 +28,7 @@ import DimUnfocusedMode from "./DimUnfocusedMode";
 import DisableInCanvas from "./DisableInCanvas";
 import TogglePluginActivation from "./TogglePluginActivation";
 import WritingFocusIsFullScreen from "./WritingFocusIsFullscreen";
+import WritingFocusShowsStatusBar from "./WritingFocusShowsStatusBar";
 import type { Feature } from "./base/Feature";
 
 export function getFeatures(
@@ -42,6 +43,7 @@ export function getFeatures(
 
 		writingFocus: [
 			new WritingFocusShowsHeader(plugin),
+			new WritingFocusShowsStatusBar(plugin),
 			new WritingFocusIsFullScreen(plugin),
 			new WritingFocusVignette(plugin),
 			new WritingFocusVignetteStyle(plugin),

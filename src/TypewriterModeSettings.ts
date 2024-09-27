@@ -28,6 +28,7 @@ export interface TypewriterModeSettings {
 	"currentLineHighlightColor-light": string;
 	doesWritingFocusShowHeader: boolean;
 	doesWritingFocusShowVignette: boolean;
+	doesWritingFocusShowStatusBar: boolean;
 	isWritingFocusFullscreen: boolean;
 	writingFocusVignetteStyle: "box" | "column";
 }
@@ -61,6 +62,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 	"currentLineHighlightColor-dark": "#444",
 	"currentLineHighlightColor-light": "#ddd",
 	doesWritingFocusShowHeader: false,
+	doesWritingFocusShowStatusBar: false,
 	doesWritingFocusShowVignette: true,
 	isWritingFocusFullscreen: true,
 	writingFocusVignetteStyle: "box",
