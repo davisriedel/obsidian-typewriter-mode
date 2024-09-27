@@ -3,6 +3,8 @@
 import { Command } from "@/features/base/Command";
 import type { ItemView } from "obsidian";
 
+import * as remote from "@electron/remote";
+
 export class WritingFocus extends Command {
 	protected commandKey = "writing-focus";
 	protected commandTitle = "Toggle writing focus";
@@ -18,6 +20,8 @@ export class WritingFocus extends Command {
 
 	private leftSplitCollapsed: boolean;
 	private rightSplitCollapsed: boolean;
+
+	private prevWindowSize = 0;
 
 	protected onCommand(): void {
 		this.toggleFocusMode();
@@ -45,11 +49,13 @@ export class WritingFocus extends Command {
 	}
 
 	private startFullscreen() {
-		document.body.requestFullscreen();
+		const currentWindow = remote.getCurrentWindow();
+		currentWindow.setFullScreen(true);
 	}
 
 	private exitFullscreen() {
-		document.exitFullscreen().then();
+		const currentWindow = remote.getCurrentWindow();
+		currentWindow.setFullScreen(false);
 	}
 
 	private onExitFullscreenWritingFocus(view: ItemView) {
@@ -87,14 +93,6 @@ export class WritingFocus extends Command {
 
 	enableFocusMode(view: ItemView) {
 		this.focusModeActive = true;
-
-		// this.plugin.app.on("active-leaf-change", () => {
-		// 	try {
-		// 		this.plugin.app.workspace.activeLeaf.view.editor.blur();
-		// 		this.plugin.app.workspace.activeLeaf.view.editor.focus();
-		// 		this.plugin.app.workspace.activeLeaf.view.editor.refresh();
-		// 	} catch (ignore) {}
-		// });
 
 		if (!document.body.classList.contains(this.focusModeClass)) {
 			this.storeSplitsValues();
@@ -135,7 +133,24 @@ export class WritingFocus extends Command {
 
 		if (this.plugin.settings.doesWritingFocusShowVignette)
 			this.addVignette(view);
-		if (this.plugin.settings.isWritingFocusFullscreen) this.startFullscreen();
+
+		if (this.plugin.settings.isWritingFocusFullscreen) {
+			this.startFullscreen();
+			const self = this;
+			function onResize() {
+				const currentWindowSize = window.innerWidth;
+				if (self.prevWindowSize > currentWindowSize) {
+					if (!document.fullscreenElement) {
+						self.onExitFullscreenWritingFocus(view);
+						document.body.removeEventListener("resize", this);
+						self.prevWindowSize = 0;
+					}
+				} else {
+					self.prevWindowSize = currentWindowSize;
+				}
+			}
+			document.body.onresize = onResize;
+		}
 	}
 
 	disableFocusMode(view: ItemView) {
@@ -162,13 +177,6 @@ export class WritingFocus extends Command {
 	}
 
 	private toggleFocusMode() {
-		if (this.plugin.settings.isWritingFocusFullscreen) {
-			document.body.onfullscreenchange = () => {
-				if (!document.fullscreenElement)
-					this.onExitFullscreenWritingFocus(view);
-			};
-		}
-
 		const leaf = this.plugin.app.workspace.activeLeaf;
 		const view = leaf.view as ItemView;
 		if (view.getViewType() === "empty") return;
