@@ -22,6 +22,7 @@ export class WritingFocus extends Command {
 	private rightSplitCollapsed: boolean;
 
 	private prevWindowSize = 0;
+	private prevWasFullscreen = false;
 
 	protected onCommand(): void {
 		this.toggleFocusMode();
@@ -50,10 +51,12 @@ export class WritingFocus extends Command {
 
 	private startFullscreen() {
 		const currentWindow = remote.getCurrentWindow();
+		this.prevWasFullscreen = currentWindow.isFullScreen();
 		currentWindow.setFullScreen(true);
 	}
 
 	private exitFullscreen() {
+		if (this.prevWasFullscreen) return;
 		const currentWindow = remote.getCurrentWindow();
 		currentWindow.setFullScreen(false);
 	}
