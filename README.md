@@ -73,6 +73,12 @@ I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Ger
 
 ## Changelog
 
+### 0.0.12
+
+- Rewritten the algorithm that positions the current line highlight. This fixes the alignment of the line highlight and improves performance.
+- Fullscreen writing focus now uses the native electron fullscreen API. Note: this means you can no longer exit it with the ESC key, but the ESC key remains available for Obsidian e.g. in the command pallette. Use the `Toggle Writing Focus` command or exit Fullscreen Mode with the native command of your OS to exit writing focus.
+- You can now keep the statusbar visible in writing focus.
+
 ### 0.0.11
 
 - New feature: Highlight active sentence (dim all other sentences, not only paragraphs)
