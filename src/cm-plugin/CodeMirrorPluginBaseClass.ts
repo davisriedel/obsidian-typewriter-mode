@@ -4,7 +4,6 @@ import type { EditorView, ViewUpdate } from "@codemirror/view";
 
 export default abstract class CodeMirrorPluginBaseClass {
 	private domResizeObserver: ResizeObserver | null = null;
-	private _isDisabled: boolean | null = null;
 
 	constructor(protected view: EditorView) {
 		this.onLoad();
@@ -12,19 +11,7 @@ export default abstract class CodeMirrorPluginBaseClass {
 		this.domResizeObserver.observe(this.view.dom.ownerDocument.body);
 	}
 
-	protected isDisabled() {
-		const { isPluginActivated } = this.view.state.facet(pluginSettingsFacet);
-		if (!isPluginActivated) return true;
-
-		if (this._isDisabled == null) {
-			const { isDisableInCanvasEnabled } =
-				this.view.state.facet(pluginSettingsFacet);
-			this._isDisabled =
-				isDisableInCanvasEnabled &&
-				this.view.dom.ownerDocument.querySelector(".canvas-wrapper") != null;
-		}
-		return this._isDisabled;
-	}
+	protected abstract isDisabled(): boolean;
 
 	private userEventAllowed(event: string) {
 		const { isTypewriterOnlyUseCommandsEnabled } =

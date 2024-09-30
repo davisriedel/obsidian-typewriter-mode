@@ -1,7 +1,8 @@
 import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import { DEFAULT_SETTINGS } from "@/TypewriterModeSettings";
 import TypewriterModeSettingTab from "@/TypewriterModeSettingsTab";
-import CodeMirrorPlugin from "@/cm-plugin/CMTypewriterModePlugin";
+import CodeMirrorPlugin from "@/cm-plugin/CodeMirrorViewPlugin";
+import createTypewriterModeViewPlugin from "@/cm-plugin/CodeMirrorViewPlugin";
 import type { PerWindowProps } from "@/cm-plugin/PerWindowProps";
 import { perWindowProps } from "@/cm-plugin/PerWindowProps";
 import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
@@ -23,7 +24,10 @@ export default class TypewriterModePlugin extends Plugin {
 		persistentBodyClasses: [],
 	};
 
-	private editorExtensions: Extension[] = [CodeMirrorPlugin, []];
+	private editorExtensions: Extension[] = [
+		createTypewriterModeViewPlugin(this.app),
+		[],
+	];
 
 	readonly features = getFeatures(this);
 

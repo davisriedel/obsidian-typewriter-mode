@@ -25,7 +25,6 @@ import WritingFocusVignette from "@/features/WritingFocusVignette";
 import WritingFocusVignetteStyle from "@/features/WritingFocusVignetteStyle";
 import AnnounceUpdates from "./AnnounceUpdates";
 import DimUnfocusedMode from "./DimUnfocusedMode";
-import DisableInCanvas from "./DisableInCanvas";
 import TogglePluginActivation from "./TogglePluginActivation";
 import WritingFocusIsFullScreen from "./WritingFocusIsFullscreen";
 import WritingFocusShowsStatusBar from "./WritingFocusShowsStatusBar";
@@ -52,7 +51,6 @@ export function getFeatures(
 
 		general: [
 			new TogglePluginActivation(plugin),
-			new DisableInCanvas(plugin),
 			new OnlyActivateAfterFirstInteraction(plugin),
 			// biome-ignore lint: reason
 		].reduce((a, v) => ({ ...a, [v.constructor.name]: v }), {}),

@@ -1,7 +1,7 @@
 // ADAPTED FROM https://github.com/ryanpcmcquen/obsidian-focus-mode
 
 import { Command } from "@/features/base/Command";
-import type { ItemView } from "obsidian";
+import { ItemView } from "obsidian";
 import { Platform } from "obsidian";
 
 export class WritingFocus extends Command {
@@ -183,8 +183,7 @@ export class WritingFocus extends Command {
 	}
 
 	private toggleFocusMode() {
-		const leaf = this.plugin.app.workspace.activeLeaf;
-		const view = leaf.view as ItemView;
+		const view = this.plugin.app.workspace.getActiveViewOfType(ItemView);
 		if (view.getViewType() === "empty") return;
 
 		if (this.focusModeActive) {

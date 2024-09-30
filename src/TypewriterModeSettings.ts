@@ -4,7 +4,6 @@ export interface TypewriterModeSettings {
 
 	isPluginActivated: boolean;
 
-	isDisableInCanvasEnabled: boolean;
 	isTypewriterScrollEnabled: boolean;
 	isOnlyActivateAfterFirstInteractionEnabled: boolean;
 	isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
@@ -39,7 +38,6 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 
 	isPluginActivated: true,
 
-	isDisableInCanvasEnabled: false,
 	isTypewriterScrollEnabled: true,
 	isOnlyActivateAfterFirstInteractionEnabled: false,
 	isOnlyMaintainTypewriterOffsetWhenReachedEnabled: false,
