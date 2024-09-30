@@ -2,8 +2,7 @@
 
 import { Command } from "@/features/base/Command";
 import type { ItemView } from "obsidian";
-
-import * as remote from "@electron/remote";
+import { Platform } from "obsidian";
 
 export class WritingFocus extends Command {
 	protected commandKey = "writing-focus";
@@ -49,14 +48,18 @@ export class WritingFocus extends Command {
 		vignetteEl.classList.remove(this.vignetteElClass);
 	}
 
-	private startFullscreen() {
+	private async startFullscreen() {
+		if (Platform.isMobile) return;
+		const remote = await import("@electron/remote");
 		const currentWindow = remote.getCurrentWindow();
 		this.prevWasFullscreen = currentWindow.isFullScreen();
 		currentWindow.setFullScreen(true);
 	}
 
-	private exitFullscreen() {
+	private async exitFullscreen() {
+		if (Platform.isMobile) return;
 		if (this.prevWasFullscreen) return;
+		const remote = await import("@electron/remote");
 		const currentWindow = remote.getCurrentWindow();
 		currentWindow.setFullScreen(false);
 	}
