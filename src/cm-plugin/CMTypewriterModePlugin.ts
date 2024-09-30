@@ -133,7 +133,9 @@ export default ViewPlugin.fromClass(
 		private setupWheelListener() {
 			const scrollDom = getScrollDom(this.view);
 			if (scrollDom)
-				scrollDom.addEventListener("wheel", this.onWheel.bind(this));
+				scrollDom.addEventListener("wheel", this.onWheel.bind(this), {
+					passive: true,
+				});
 		}
 
 		protected override updateAllowedUserEvent() {
@@ -263,6 +265,7 @@ export default ViewPlugin.fromClass(
 				"TypewriterModeUpdateAfterExternalEvent",
 				(measure, view) => {
 					this.setupWheelListener();
+					if (!measure) return;
 					if (isTypewriterScrollEnabled)
 						this.setPadding(view, measure.typewriterOffset);
 					this.recenterAndMoveCurrentLineHighlight(view, measure);

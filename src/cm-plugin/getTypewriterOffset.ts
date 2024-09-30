@@ -11,11 +11,7 @@ function getActiveLineProp(view: EditorView, prop: string) {
 	);
 }
 
-function getLineOffset(
-	view: EditorView,
-	caretCoords: Rect,
-	lineHeight: number,
-) {
+function getLineOffset(caretCoords: Rect, lineHeight: number) {
 	const caretHeight = caretCoords.bottom - caretCoords.top;
 	return (lineHeight - caretHeight) / 2;
 }
@@ -46,7 +42,7 @@ function getTypewriterPositionData(view: EditorView) {
 
 	const typewriterOffset = getTypewriterOffset(view);
 	const activeLineOffset = getActiveLineOffset(view, caretCoords);
-	const lineOffset = getLineOffset(view, caretCoords, lineHeight);
+	const lineOffset = getLineOffset(caretCoords, lineHeight);
 
 	const {
 		isTypewriterScrollEnabled,
