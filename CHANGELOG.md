@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.0.14 (WIP)
+
+- Make current line highlight at least as big as cursor
+
 ### 0.0.13
 
 - Fixed bug preventing mobile users from using version 0.0.12
