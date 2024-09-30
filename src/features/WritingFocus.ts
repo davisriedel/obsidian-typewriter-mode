@@ -48,19 +48,17 @@ export class WritingFocus extends Command {
 		vignetteEl.classList.remove(this.vignetteElClass);
 	}
 
-	private async startFullscreen() {
+	private startFullscreen() {
 		if (Platform.isMobile) return;
-		const remote = await import("@electron/remote");
-		const currentWindow = remote.getCurrentWindow();
+		const currentWindow = window.electron.remote.getCurrentWindow();
 		this.prevWasFullscreen = currentWindow.isFullScreen();
 		currentWindow.setFullScreen(true);
 	}
 
-	private async exitFullscreen() {
+	private exitFullscreen() {
 		if (Platform.isMobile) return;
 		if (this.prevWasFullscreen) return;
-		const remote = await import("@electron/remote");
-		const currentWindow = remote.getCurrentWindow();
+		const currentWindow = window.electron.remote.getCurrentWindow();
 		currentWindow.setFullScreen(false);
 	}
 
