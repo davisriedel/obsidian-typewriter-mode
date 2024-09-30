@@ -1,20 +1,18 @@
 ## Changelog
 
-### 0.0.14 (WIP)
+### 0.0.14
 
 - Make current line highlight at least as big as cursor
-
-### 0.0.13
-
 - Fixed bug preventing mobile users from using version 0.0.12
 - Plugin is now only enabled in markdown files to avoid issues with several plugins like canvas, kanban and lineage
 - Minor bug fixes
-
-### 0.0.12
-
 - Rewritten the algorithm that positions the current line highlight. This fixes the alignment of the line highlight and improves performance.
 - Fullscreen writing focus now uses the native electron fullscreen API. Note: this means you can no longer exit it with the ESC key, but the ESC key remains available for Obsidian e.g. in the command pallette. Use the `Toggle Writing Focus` command or exit Fullscreen Mode with the native command of your OS to exit writing focus.
 - You can now keep the statusbar visible in writing focus.
+
+### Removed: 0.0.12, 0.0.13
+
+Versions 0.0.12 and 0.0.13 have been removed due to major bugs. The features introduced in those versions are included in 0.0.14.
 
 ### 0.0.11
 
