@@ -1,7 +1,6 @@
 import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
 import { DEFAULT_SETTINGS } from "@/TypewriterModeSettings";
 import TypewriterModeSettingTab from "@/TypewriterModeSettingsTab";
-import CodeMirrorPlugin from "@/cm-plugin/CodeMirrorViewPlugin";
 import createTypewriterModeViewPlugin from "@/cm-plugin/CodeMirrorViewPlugin";
 import type { PerWindowProps } from "@/cm-plugin/PerWindowProps";
 import { perWindowProps } from "@/cm-plugin/PerWindowProps";
@@ -14,7 +13,7 @@ import { getCommands } from "./features/commands";
 import { getFeatures } from "./features/features";
 
 export default class TypewriterModePlugin extends Plugin {
-	settings: TypewriterModeSettings;
+	settings: TypewriterModeSettings = DEFAULT_SETTINGS;
 
 	perWindowProps: PerWindowProps = {
 		cssVariables: {},
@@ -91,7 +90,7 @@ export default class TypewriterModePlugin extends Plugin {
 
 		if (this.settings.isAnnounceUpdatesEnabled === false) return;
 
-		const updateModal = new UpdateModal(knownVersion);
+		const updateModal = new UpdateModal(this.app, knownVersion);
 		updateModal.open();
 	}
 }

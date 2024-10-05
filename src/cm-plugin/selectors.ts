@@ -1,4 +1,4 @@
-import { EditorView } from "@codemirror/view";
+import type { EditorView } from "@codemirror/view";
 
 export function getEditorDom(view: EditorView) {
 	return view.dom.ownerDocument.querySelector(

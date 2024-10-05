@@ -1,5 +1,5 @@
 import { Command } from "@/features/base/Command";
-import { FeatureToggle } from "./base/FeatureToggle";
+import type { FeatureToggle } from "./base/FeatureToggle";
 
 export class ToggleDimming extends Command {
 	protected commandKey = "toggle-dimming";

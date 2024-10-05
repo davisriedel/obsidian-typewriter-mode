@@ -1,4 +1,4 @@
-import { Remote } from "electron";
+import type { Remote } from "electron";
 
 declare global {
 	interface Window {

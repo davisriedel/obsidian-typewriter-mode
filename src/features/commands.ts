@@ -1,4 +1,4 @@
-import TypewriterModePlugin from "@/TypewriterModePlugin";
+import type TypewriterModePlugin from "@/TypewriterModePlugin";
 
 import { MoveTypewriter } from "@/features/MoveTypewriter";
 import { ToggleTypewriterAndDimming } from "@/features/ToggleTypewriterAndDimming";

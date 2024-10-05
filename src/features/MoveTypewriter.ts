@@ -1,6 +1,6 @@
 import Loadable from "@/features/base/Loadable";
 import { capitalize } from "@/utils/capitalize";
-import type { Editor, MarkdownView } from "obsidian";
+import type { Editor } from "obsidian";
 
 export class MoveTypewriter extends Loadable {
 	override load() {
@@ -14,8 +14,7 @@ export class MoveTypewriter extends Loadable {
 						key: direction === "up" ? "ArrowUp" : "ArrowDown",
 					},
 				],
-				editorCallback: (editor: Editor, _view: MarkdownView) =>
-					this.onCommand(editor, direction),
+				editorCallback: (editor, _view) => this.onCommand(editor, direction),
 			});
 		}
 	}

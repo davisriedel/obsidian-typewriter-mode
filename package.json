@@ -1,44 +1,32 @@
 {
-  "name": "obsidian-typewriter-mode",
-  "version": "0.0.14",
-  "author": "Davis Riedel",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/davisriedel/obsidian-typewriter-mode"
-  },
-  "main": "main.js",
-  "devDependencies": {
-    "@biomejs/biome": "1.5.1",
-    "@codemirror/state": "^6.4.1",
-    "@codemirror/view": "^6.28.2",
-    "@types/codemirror": "^5.60.15",
-    "@types/node": "^20.14.8",
-    "builtin-modules": "^3.3.0",
-    "electron": "28",
-    "esbuild": "^0.19.12",
-    "esbuild-node-externals": "^1.13.1",
-    "esbuild-sass-plugin": "^2.16.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
-    "obsidian": "^1.5.7",
-    "tslib": "^2.6.3",
-    "typescript": "latest"
-  },
-  "description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",
-  "keywords": [
-    "obsidian",
-    "typewriter"
-  ],
-  "license": "MIT",
-  "scripts": {
-    "lint": "bunx @biomejs/biome lint src build.ts version-bump.ts",
-    "format": "bunx @biomejs/biome format src build.ts version-bump.ts --write",
-    "type-check": "bun tsc --noEmit",
-    "check": "bunx @biomejs/biome check --apply src build.ts version-bump.ts && bun run type-check",
-    "build": "bun ./build.ts",
-    "clean": "rm -rf ./dist",
-    "test-vault": "./make-test-vault.sh",
-    "clean-test-vault": "rm -rf ./test-vault/.obsidian/plugins/obsidian-typewriter-mode",
-    "version-bump": "bun ./version-bump.ts"
-  }
+	"name": "obsidian-typewriter-mode",
+	"version": "0.0.15",
+	"author": "Davis Riedel",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/davisriedel/obsidian-typewriter-mode"
+	},
+	"main": "main.js",
+	"devDependencies": {
+		"@biomejs/biome": "latest",
+		"@codemirror/state": "^6.4.1",
+		"@codemirror/view": "^6.34.1",
+		"@types/codemirror": "^5.60.15",
+		"@types/node": "^20.16.10",
+		"builtin-modules": "^3.3.0",
+		"electron": "^28.3.3",
+		"husky": "^8.0.3",
+		"just-install": "latest",
+		"lint-staged": "^14.0.1",
+		"obsidian": "^1.7.2",
+		"typescript": "latest"
+	},
+	"description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",
+	"keywords": ["obsidian", "typewriter"],
+	"license": "MIT",
+	"scripts": {},
+	"dependencies": {
+		"@types/bun": "^1.1.10",
+		"biome": "^0.3.3"
+	}
 }

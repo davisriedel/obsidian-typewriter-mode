@@ -1,7 +1,7 @@
 // ADAPTED FROM: https://github.com/artisticat1/focus-active-sentence
 
-import { Line, Range } from "@codemirror/state";
-import { Decoration, EditorView } from "@codemirror/view";
+import type { Line, Range } from "@codemirror/state";
+import { Decoration, type EditorView } from "@codemirror/view";
 
 function textStartsWithIgnored(
 	lineText: string,

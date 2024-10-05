@@ -1,5 +1,5 @@
 import Loadable from "@/features/base/Loadable";
-import type { Editor, MarkdownView } from "obsidian";
+import type { Editor, MarkdownFileInfo, MarkdownView } from "obsidian";
 
 export abstract class EditorCommand extends Loadable {
 	protected abstract commandKey: string;
@@ -17,5 +17,8 @@ export abstract class EditorCommand extends Loadable {
 		this.registerCommand();
 	}
 
-	protected abstract onCommand(editor: Editor, view: MarkdownView): void;
+	protected abstract onCommand(
+		editor: Editor,
+		view: MarkdownView | MarkdownFileInfo,
+	): void;
 }

@@ -1,7 +1,7 @@
 // Adapted from https://github.com/chhoumann/quickadd/blob/master/src/gui/UpdateModal/UpdateModal.ts
 
 import { fetchUpdateNotice } from "@/utils/fetchUpdateNotice";
-import { Component } from "obsidian";
+import { type App, Component } from "obsidian";
 import { MarkdownRenderer, Modal } from "obsidian";
 
 type Release = {
@@ -58,10 +58,10 @@ async function getReleaseNotesAfter(
 }
 
 export class UpdateModal extends Modal {
-	releases: Release[];
-	updateNotice: string;
+	releases: Release[] = [];
+	updateNotice = "";
 
-	constructor(previousQAVersion: string | null) {
+	constructor(app: App, previousQAVersion: string | null) {
 		super(app);
 
 		getReleaseNotesAfter(
@@ -131,7 +131,7 @@ ${releaseNotes}`;
 		MarkdownRenderer.renderMarkdown(
 			markdownStr,
 			contentDiv,
-			app.vault.getRoot().path,
+			this.app.vault.getRoot().path,
 			new Component(),
 		);
 	}

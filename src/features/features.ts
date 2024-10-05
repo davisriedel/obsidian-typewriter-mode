@@ -1,4 +1,4 @@
-import TypewriterModePlugin from "@/TypewriterModePlugin";
+import type TypewriterModePlugin from "@/TypewriterModePlugin";
 
 import CurrentLineHighlightColorDark from "@/features/CurrentLineHighlightColorDark";
 import CurrentLineHighlightColorLight from "@/features/CurrentLineHighlightColorLight";

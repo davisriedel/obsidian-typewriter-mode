@@ -17,8 +17,8 @@ export class WritingFocus extends Command {
 	private readonly vignetteElClass = "ptm-writing-focus-vignette-element";
 	private readonly vignetteStyleAttr = "data-ptm-writing-focus-vignette-style";
 
-	private leftSplitCollapsed: boolean;
-	private rightSplitCollapsed: boolean;
+	private leftSplitCollapsed = false;
+	private rightSplitCollapsed = false;
 
 	private prevWindowSize = 0;
 	private prevWasFullscreen = false;
@@ -140,19 +140,18 @@ export class WritingFocus extends Command {
 
 		if (this.plugin.settings.isWritingFocusFullscreen) {
 			this.startFullscreen();
-			const self = this;
-			function onResize() {
+			const onResize = () => {
 				const currentWindowSize = window.innerWidth;
-				if (self.prevWindowSize > currentWindowSize) {
+				if (this.prevWindowSize > currentWindowSize) {
 					if (!document.fullscreenElement) {
-						self.onExitFullscreenWritingFocus(view);
-						document.body.removeEventListener("resize", this);
-						self.prevWindowSize = 0;
+						this.onExitFullscreenWritingFocus(view);
+						document.body.removeEventListener("resize", onResize);
+						this.prevWindowSize = 0;
 					}
 				} else {
-					self.prevWindowSize = currentWindowSize;
+					this.prevWindowSize = currentWindowSize;
 				}
-			}
+			};
 			document.body.onresize = onResize;
 		}
 	}
@@ -182,7 +181,7 @@ export class WritingFocus extends Command {
 
 	private toggleFocusMode() {
 		const view = this.plugin.app.workspace.getActiveViewOfType(ItemView);
-		if (view.getViewType() === "empty") return;
+		if (!view || view?.getViewType() === "empty") return;
 
 		if (this.focusModeActive) {
 			this.disableFocusMode(view);

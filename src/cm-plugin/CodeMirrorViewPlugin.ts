@@ -5,8 +5,8 @@ import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
 import type { TypewriterPositionData } from "@/cm-plugin/getTypewriterOffset";
 import { measureTypewriterPosition } from "@/cm-plugin/getTypewriterOffset";
 import { RangeSet } from "@codemirror/state";
-import { Decoration, EditorView, ViewPlugin } from "@codemirror/view";
-import { App, ItemView } from "obsidian";
+import { type Decoration, EditorView, ViewPlugin } from "@codemirror/view";
+import { type App, ItemView } from "obsidian";
 import { getActiveSentenceDecos } from "./highlightSentence";
 import { getEditorDom, getScrollDom, getSizerDom } from "./selectors";
 
@@ -59,10 +59,9 @@ export default function createTypewriterModeViewPlugin(app: App) {
 								node.nodeType === Node.ELEMENT_NODE &&
 								(node as HTMLElement).matches(selector)
 							) {
-								this.loadPerWindowPropsOnElement(
-									props,
-									(node as HTMLIFrameElement).contentDocument.body,
-								);
+								const body = (node as HTMLIFrameElement).contentDocument?.body;
+								if (!body) return;
+								this.loadPerWindowPropsOnElement(props, body);
 							}
 						});
 					});
@@ -94,7 +93,10 @@ export default function createTypewriterModeViewPlugin(app: App) {
 					);
 				const embeddedMarkdownBodies: HTMLElement[] = Array.from(
 					embeddedMarkdownContent,
-				).map((i: HTMLIFrameElement) => i.contentDocument.body);
+				).flatMap((i) => {
+					const body = (i as HTMLIFrameElement).contentDocument?.body;
+					return body ? [body] : [];
+				});
 				return [this.view.dom.ownerDocument.body, ...embeddedMarkdownBodies];
 			}
 

@@ -1,5 +1,5 @@
 export interface TypewriterModeSettings {
-	version: string;
+	version: string | null;
 	isAnnounceUpdatesEnabled: boolean;
 
 	isPluginActivated: boolean;

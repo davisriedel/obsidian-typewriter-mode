@@ -20,12 +20,13 @@ export abstract class FeatureToggle extends Feature {
 	}
 
 	private registerCommand() {
-		if (this.hasCommand)
+		if (this.hasCommand && this.commandTitle) {
 			this.plugin.addCommand({
 				id: this.setting as string,
 				name: this.commandTitle,
 				callback: this.toggle.bind(this),
 			});
+		}
 	}
 
 	registerSetting(settingTab: PluginSettingTab) {
@@ -49,7 +50,7 @@ export abstract class FeatureToggle extends Feature {
 		this.plugin.settings[this.setting] ? this.enable() : this.disable();
 	}
 
-	toggle(pNewValue: boolean = null) {
+	toggle(pNewValue: boolean | null = null) {
 		// if no value is passed in, toggle the existing value
 		let newValue = pNewValue;
 		if (newValue === null) newValue = !this.plugin.settings[this.setting];

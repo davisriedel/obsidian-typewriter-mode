@@ -17,7 +17,7 @@ export default class LinesAboveAndBelow extends Feature {
 				text
 					.setValue(this.plugin.settings.linesAboveAndBelow.toString())
 					.onChange((newValue) => {
-						this.changeAmountOfLinesAboveAndBelow(parseInt(newValue));
+						this.changeAmountOfLinesAboveAndBelow(Number.parseInt(newValue));
 					}),
 			);
 	}

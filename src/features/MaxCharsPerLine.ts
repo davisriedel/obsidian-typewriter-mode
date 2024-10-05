@@ -15,7 +15,7 @@ export default class MaxCharsPerLine extends Feature {
 				text
 					.setValue(this.plugin.settings.maxCharsPerLine.toString())
 					.onChange((newValue) => {
-						this.changeMaxCharsPerLine(parseInt(newValue));
+						this.changeMaxCharsPerLine(Number.parseInt(newValue));
 					}),
 			);
 	}

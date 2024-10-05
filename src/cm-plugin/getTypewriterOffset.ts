@@ -3,12 +3,12 @@ import type { EditorView, Rect } from "@codemirror/view";
 import { getEditorDom, getScrollDom } from "./selectors";
 
 function getActiveLineProp(view: EditorView, prop: string) {
-	return parseFloat(
-		view.contentDOM
-			.querySelector(".cm-active.cm-line")
-			?.getCssPropertyValue(prop)
-			.replace("px", ""),
-	);
+	const valueStr = view.contentDOM
+		.querySelector(".cm-active.cm-line")
+		?.getCssPropertyValue(prop)
+		.replace("px", "");
+	if (!valueStr) return null;
+	return Number.parseFloat(valueStr);
 }
 
 function getActiveLineOffset(view: EditorView, caretCoords: Rect) {
@@ -36,6 +36,7 @@ function getTypewriterPositionData(view: EditorView) {
 
 	const caretHeight = caretCoords.bottom - caretCoords.top;
 	const lineHeightProp = getActiveLineProp(view, "line-height");
+	if (!lineHeightProp) return null;
 
 	let lineHeight = 0;
 	let lineOffset = 0;
@@ -102,9 +103,13 @@ function getTypewriterPositionData(view: EditorView) {
 	};
 }
 
-export type TypewriterPositionData = ReturnType<
-	typeof getTypewriterPositionData
->;
+export type TypewriterPositionData = {
+	typewriterOffset: number;
+	scrollOffset: number;
+	activeLineOffset: number;
+	lineHeight: number;
+	lineOffset: number;
+};
 
 export function measureTypewriterPosition(
 	view: EditorView,
@@ -115,6 +120,7 @@ export function measureTypewriterPosition(
 		key,
 		read: (view: EditorView) => getTypewriterPositionData(view),
 		write: (measure, view) => {
+			if (!measure) return;
 			window.requestAnimationFrame(() => {
 				write(measure, view);
 			});
