@@ -20,6 +20,8 @@ export interface TypewriterModeSettings {
 	isPauseDimUnfocusedWhileScrollingEnabled: boolean;
 	isPauseDimUnfocusedWhileSelectingEnabled: boolean;
 	isHighlightCurrentLineEnabled: boolean;
+	isFadeLinesEnabled: boolean;
+	fadeLinesIntensity: number;
 	isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
 	currentLineHighlightStyle: "box" | "underline";
 	currentLineHighlightUnderlineThickness: number;
@@ -54,6 +56,8 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 	isPauseDimUnfocusedWhileScrollingEnabled: true,
 	isPauseDimUnfocusedWhileSelectingEnabled: true,
 	isHighlightCurrentLineEnabled: true,
+	isFadeLinesEnabled: true,
+	fadeLinesIntensity: 0.5,
 	isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
 	currentLineHighlightStyle: "box",
 	currentLineHighlightUnderlineThickness: 1,

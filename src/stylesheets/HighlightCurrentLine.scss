@@ -1,31 +1,11 @@
 body.ptm-highlight-current-line {
   .ptm-current-line-highlight {
     display: block;
-    position: absolute;
-    left: 0;
+    position: relative;
     width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 100;
-  }
-
-  &.ptm-highlight-current-line-only-in-active-editor {
-    .cm-editor:not(.cm-focused) {
-      .ptm-current-line-highlight {
-        display: none;
-      }
-    }
-  }
-
-  .ptm-wheel {
-    .ptm-current-line-highlight {
-      display: none;
-    }
-  }
-
-  .ptm-first-open {
-    .ptm-current-line-highlight {
-      display: none;
-    }
   }
 }
 

@@ -10,6 +10,9 @@ import { type App, ItemView } from "obsidian";
 import { getActiveSentenceDecos } from "./highlightSentence";
 import { getEditorDom, getScrollDom, getSizerDom } from "./selectors";
 
+const currentLineClass = "ptm-current-line";
+const currentLineHighlightClass = "ptm-current-line-highlight";
+
 export default function createTypewriterModeViewPlugin(app: App) {
 	return ViewPlugin.fromClass(
 		class extends CodeMirrorPluginBaseClass {
@@ -41,7 +44,7 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				this.loadPerWindowProps();
 
 				if (this.isDisabled()) {
-					this.removeCurrentLineHighlight();
+					this.destroyCurrentLine();
 					this.resetPadding(this.view);
 					return;
 				}
@@ -106,45 +109,39 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				for (const b of bodies) this.loadPerWindowPropsOnElement(props, b);
 			}
 
-			private removeCurrentLineHighlight(view: EditorView = this.view) {
-				const editorDom = getEditorDom(view);
-				if (!editorDom) return;
-				const currentLineHighlight = editorDom.querySelector(
-					".ptm-current-line-highlight",
-				);
-				if (currentLineHighlight)
-					(currentLineHighlight as HTMLElement).remove();
-			}
-
-			private loadCurrentLineHighlight(
+			private loadCurrentLine(
 				view: EditorView = this.view,
 			): HTMLElement | null {
 				const editorDom = getEditorDom(view);
 				if (!editorDom) return null;
 
-				let currentLineHighlight = editorDom.querySelector(
-					".ptm-current-line-highlight",
+				let currentLine = editorDom.querySelector(
+					`.${currentLineClass}`,
 				) as HTMLElement;
 
-				if (!currentLineHighlight) {
-					currentLineHighlight = document.createElement("div");
-					const settings = view.state.facet(pluginSettingsFacet);
-					currentLineHighlight.className = `ptm-current-line-highlight ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
+				if (!currentLine) {
+					currentLine = document.createElement("div");
+					currentLine.className = currentLineClass;
 
-					editorDom.appendChild(currentLineHighlight);
+					const currentLineHighlight = document.createElement("div");
+					const settings = view.state.facet(pluginSettingsFacet);
+					currentLineHighlight.className = `${currentLineHighlightClass} ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
+					currentLine.append(currentLineHighlight);
+
+					editorDom.appendChild(currentLine);
 				}
 
-				return currentLineHighlight;
+				return currentLine;
 			}
 
-			private destroyCurrentLineHighlight(view: EditorView = this.view) {
+			private destroyCurrentLine(view: EditorView = this.view) {
 				const editorDom = getEditorDom(view);
 				if (!editorDom) return;
 
-				const currentLineHighlight = editorDom.querySelector(
-					".ptm-current-line-highlight",
+				const currentLine = editorDom.querySelector(
+					`.${currentLineClass}`,
 				) as HTMLElement;
-				currentLineHighlight?.remove();
+				currentLine?.remove();
 			}
 
 			private setupWheelListener() {
@@ -202,10 +199,10 @@ export default function createTypewriterModeViewPlugin(app: App) {
 					this.view,
 					"TypewriterModeUpdateAfterUserEvent",
 					({ activeLineOffset, lineHeight, lineOffset }, view) => {
-						const { isHighlightCurrentLineEnabled } =
+						const { isHighlightCurrentLineEnabled, isFadeLinesEnabled } =
 							view.state.facet(pluginSettingsFacet);
-						if (isHighlightCurrentLineEnabled)
-							this.moveCurrentLineHighlight(
+						if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
+							this.moveCurrentLine(
 								view,
 								activeLineOffset,
 								lineHeight,
@@ -250,7 +247,7 @@ export default function createTypewriterModeViewPlugin(app: App) {
 			override destroy() {
 				super.destroy();
 
-				this.destroyCurrentLineHighlight();
+				this.destroyCurrentLine();
 
 				const scrollDom = getScrollDom(this.view);
 				if (scrollDom) scrollDom.removeEventListener("wheel", this.onWheel);
@@ -290,16 +287,16 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				);
 			}
 
-			private moveCurrentLineHighlight(
+			private moveCurrentLine(
 				view: EditorView,
 				offset: number,
 				lineHeight: number,
 				lineOffset: number,
 			) {
-				const currentLineHighlight = this.loadCurrentLineHighlight(view);
-				if (!currentLineHighlight) return;
-				currentLineHighlight.style.height = `${lineHeight}px`;
-				currentLineHighlight.style.top = `${offset - lineOffset}px`;
+				const currentLine = this.loadCurrentLine(view);
+				if (!currentLine) return;
+				currentLine.style.height = `${lineHeight}px`;
+				currentLine.style.top = `${offset - lineOffset}px`;
 			}
 
 			private setPadding(view: EditorView, offset: number) {
@@ -340,16 +337,12 @@ export default function createTypewriterModeViewPlugin(app: App) {
 					isTypewriterScrollEnabled,
 					isKeepLinesAboveAndBelowEnabled,
 					isHighlightCurrentLineEnabled,
+					isFadeLinesEnabled,
 				} = view.state.facet(pluginSettingsFacet);
 				if (isTypewriterScrollEnabled || isKeepLinesAboveAndBelowEnabled)
 					this.recenter(view, scrollOffset);
-				if (isHighlightCurrentLineEnabled)
-					this.moveCurrentLineHighlight(
-						view,
-						scrollOffset,
-						lineHeight,
-						lineOffset,
-					);
+				if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
+					this.moveCurrentLine(view, scrollOffset, lineHeight, lineOffset);
 			}
 		},
 		{ decorations: (v) => v.decorations },

@@ -25,6 +25,8 @@ import WritingFocusVignette from "@/features/WritingFocusVignette";
 import WritingFocusVignetteStyle from "@/features/WritingFocusVignetteStyle";
 import AnnounceUpdates from "./AnnounceUpdates";
 import DimUnfocusedMode from "./DimUnfocusedMode";
+import FadeLines from "./FadeLines";
+import FadeLinesIntensity from "./FadeLinesIntensity";
 import TogglePluginActivation from "./TogglePluginActivation";
 import WritingFocusIsFullScreen from "./WritingFocusIsFullscreen";
 import WritingFocusShowsStatusBar from "./WritingFocusShowsStatusBar";
@@ -71,6 +73,8 @@ export function getFeatures(
 
 		currentLine: [
 			new HighlightCurrentLine(plugin),
+			new FadeLines(plugin),
+			new FadeLinesIntensity(plugin),
 			new CurrentLineHighlightColorLight(plugin),
 			new CurrentLineHighlightColorDark(plugin),
 			new CurrentLineHighlightStyle(plugin),

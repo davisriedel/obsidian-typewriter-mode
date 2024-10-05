@@ -1,0 +1,29 @@
+.ptm-fade-lines {
+  .ptm-current-line {
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 100vh;
+      bottom: 100%;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 100;
+      background: linear-gradient(to top, transparent, var(--background-primary) var(--ptm-fade-lines-intensity));
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 100vh;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 100;
+      background: linear-gradient(to bottom, transparent, var(--background-primary) var(--ptm-fade-lines-intensity));
+    }
+  }
+}
