@@ -29,5 +29,5 @@
 		"@types/bun": "^1.1.10",
 		"biome": "^0.3.3"
 	},
-	"trustedDependencies": ["@biomejs/biome", "core-js"]
+	"trustedDependencies": ["@biomejs/biome", "core-js", "electron"]
 }

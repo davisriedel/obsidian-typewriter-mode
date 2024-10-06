@@ -16,7 +16,9 @@ const scss: BunPlugin = {
 	name: "Sass Loader",
 	async setup(build) {
 		build.onLoad({ filter: /\.scss$/ }, async (args) => {
-			const contents = await sass.compileAsync(args.path);
+			const contents = await sass.compileAsync(args.path, {
+				style: "compressed",
+			});
 			const filename = path.parse(args.path).name;
 			await Bun.write(`${outdir}/${filename}.css`, contents.css);
 
