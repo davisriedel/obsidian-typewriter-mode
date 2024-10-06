@@ -18,6 +18,7 @@
 		"husky": "^8.0.3",
 		"lint-staged": "^14.0.1",
 		"obsidian": "^1.7.2",
+		"sass-embedded": "^1.79.4",
 		"typescript": "latest"
 	},
 	"description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",
@@ -27,5 +28,6 @@
 	"dependencies": {
 		"@types/bun": "^1.1.10",
 		"biome": "^0.3.3"
-	}
+	},
+	"trustedDependencies": ["@biomejs/biome", "core-js"]
 }

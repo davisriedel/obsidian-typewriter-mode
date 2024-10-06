@@ -5,6 +5,8 @@ import { $ } from "bun";
 import path from "node:path";
 import type { BunPlugin } from "bun";
 
+import * as sass from "sass-embedded";
+
 import builtins from "builtin-modules";
 
 const outdir = "./dist";
@@ -13,12 +15,10 @@ const outdir = "./dist";
 const scss: BunPlugin = {
 	name: "Sass Loader",
 	async setup(build) {
-		const sass = await import("sass");
-
-		build.onLoad({ filter: /\.scss$/ }, (args) => {
-			const contents = sass.compile(args.path);
+		build.onLoad({ filter: /\.scss$/ }, async (args) => {
+			const contents = await sass.compileAsync(args.path);
 			const filename = path.parse(args.path).name;
-			Bun.write(`${outdir}/${filename}.css`, contents.css);
+			await Bun.write(`${outdir}/${filename}.css`, contents.css);
 
 			// Do nothing... File is already written.
 			return {
