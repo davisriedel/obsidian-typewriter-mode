@@ -19,12 +19,13 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: canary # needed for experimental bundling of cjs files with bun
+      - uses: extractions/setup-just@v2
 
       - name: Build
         id: build
         run: |
           bun install
-          bun just build
+          just build
           mkdir ${{ env.PLUGIN_NAME }}
           cp -r dist/* ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}

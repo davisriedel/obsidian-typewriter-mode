@@ -13,15 +13,17 @@ _These are a few exemplary screen captures:_
 ![Typewriter scrolling and current line highlighted](https://github.com/davisriedel/obsidian-typewriter-mode/raw/main/demo/typewriter.gif)
 ![Unfocused paragraphs dimmed](https://github.com/davisriedel/obsidian-typewriter-mode/raw/main/demo/dimming.gif)
 
+
 ## Compatibility
 
 This plugin is compatible with Obsidian v0.15.0 and above. It does not support the legacy editor.
+
 
 ## Installation
 
 To install community plugins make sure _safe mode_ is turned off in Obsidian's settings.
 
-### From within Obsidian
+### Obsidian
 
 You can install this plugin within Obsidian by doing the following:
 
@@ -30,19 +32,18 @@ You can install this plugin within Obsidian by doing the following:
 - Click Install
 - Click Enable
 
-### From GitHub
-
-#### Manual
+### Manual
 
 1. Download the latest Release from the Releases section of the GitHub Repository
-2. Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`. _Note: On some machines the `.obsidian` folder may be hidden. On macOS you should be able to press `Command+Shift+Dot` to show the folder in Finder._
+2. Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`. _Note: On some machines, the `.obsidian` folder may be hidden. On macOS, you should be able to press `Command+Shift+Dot` to show the folder in Finder._
 3. Reload Obsidian
 
-#### With BRAT
+### Beta Versions With BRAT
 
-Follow the instructions in the repository of the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat#Quick-Guide-for-using-BRAT) and use this repository's URL: `https://github.com/davisriedel/obsidian-typewriter-mode` to install the plugin.
+Follow the instructions in the repository of the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat#Quick-Guide-for-using-BRAT) and use this repository's URL: `https://github.com/davisriedel/obsidian-typewriter-mode` to install **beta versions** of the plugin.
 
-## Derived from
+
+## Acknowledgements
 
 This plugin started as a fork of the incredible [Typewriter Scroll](https://github.com/deathau/cm-typewriter-scroll-obsidian) plugin by [deathau](https://github.com/deathau). It was turned into a separate plugin because many new features were added, breaking changes were introduced, and the code was completely restructured to make it more extensible.
 
@@ -50,19 +51,6 @@ The sentence highlighting was derived from [Focus Active Sentence](https://githu
 
 The writing focus was derived from [Obsidian Focus Mode](https://github.com/ryanpcmcquen/obsidian-focus-mode).
 
-## Development
-
-The repo depends on the latest [Obsidian Plugin API](https://github.com/obsidianmd/obsidian-api).
-
-If you want to contribute to this project or make your own changes, you can do so by following these steps:
-
-1. Clone this repo
-2. Install dependencies with `bun install`
-3. Build with `bun run build`
-4. Create / update test vault with `bun run test-vault`
-5. Open the test vault / reload Obsidian to see changes
-
-**You are welcome to open issues and contribute to this project!**
 
 ## Support this project
 
@@ -70,6 +58,7 @@ I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Ger
 
 [![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)
 [![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)
+
 
 ## Changelog
 

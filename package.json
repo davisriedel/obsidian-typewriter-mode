@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-typewriter-mode",
-	"version": "0.0.15",
+	"version": "0.0.15-beta.1",
 	"author": "Davis Riedel",
 	"repository": {
 		"type": "git",
@@ -16,7 +16,6 @@
 		"builtin-modules": "^3.3.0",
 		"electron": "^28.3.3",
 		"husky": "^8.0.3",
-		"just-install": "latest",
 		"lint-staged": "^14.0.1",
 		"obsidian": "^1.7.2",
 		"typescript": "latest"

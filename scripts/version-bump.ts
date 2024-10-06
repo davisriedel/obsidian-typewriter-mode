@@ -13,13 +13,15 @@ manifestBeta.version = targetVersion;
 await Bun.write("manifest-beta.json", JSON.stringify(manifestBeta, null, 2));
 
 // check if it is release version
-console.log("Updating manifest.json");
 if (!targetVersion.includes("-")) {
+	console.log("Updating manifest.json");
 	// read minAppVersion from manifest.json and bump version to target version
 	const manifest = await Bun.file("manifest.json").json();
 	minAppVersion = manifest.minAppVersion;
 	manifest.version = targetVersion;
 	await Bun.write("manifest.json", JSON.stringify(manifest, null, 2));
+} else {
+	console.log("Skipping manifest.json update for beta version");
 }
 
 // update versions.json with target version and minAppVersion from manifest.json
