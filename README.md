@@ -63,3 +63,11 @@ I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Ger
 ## Changelog
 
 See the `CHANGELOG.md` file.
+
+
+## Contribute
+
+**You are welcome to open issues and contribute to this project!**
+
+See the `DEVELOPMENT.md` file for instructions.
+
