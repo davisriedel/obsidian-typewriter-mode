@@ -1,32 +1,21 @@
 /// <reference types="bun-types" />
 
 import { $ } from "bun";
+import { getPackageMetadata } from "./utils/getPackageMetadata";
+import { updateManifests } from "./utils/updateManifests";
 
 console.log("Release script started");
 
-console.log("Reading package.json");
-const pkg = await Bun.file("package.json").json();
-const targetVersion = pkg.version;
-if (!targetVersion) {
-	console.error("Failed to read version from package.json");
+const { targetVersion, minAppVersion } = await getPackageMetadata();
+
+console.log("Checking git status");
+const result = await $`git tag -l "${targetVersion}"`.text();
+if (result.trim() === targetVersion) {
+	console.error(`Version v${targetVersion} is already published. Exiting...`);
 	process.exit(1);
 }
-console.log(`Releasing version v${targetVersion}`);
 
-const isBeta = targetVersion.includes("-");
-
-console.log("Reading manifests");
-const manifest = await Bun.file("manifest.json").json();
-const manifestBeta = await Bun.file("manifest-beta.json").json();
-
-if (
-	manifest.version === targetVersion ||
-	manifestBeta.version === targetVersion
-) {
-	console.log(`Current version v${targetVersion} is already applied`);
-	console.info("Please set a new version in package.json to apply it");
-	process.exit(0);
-}
+await updateManifests(targetVersion, minAppVersion);
 
 console.log("Reading changelog");
 const changelog = await Bun.file("CHANGELOG.md").text();
@@ -38,31 +27,15 @@ if (!changelog.includes(`## ${targetVersion}`)) {
 	process.exit(1);
 }
 
-// check if it is release version
-if (!isBeta) {
-	console.log("Updating manifest.json");
-	manifest.version = targetVersion;
-	await Bun.write("manifest.json", JSON.stringify(manifest, null, 2));
-} else {
-	console.log("Skipping manifest.json update for beta version");
-}
-
-// bump version of manifest-beta.json to target version
-console.log("Updating manifest-beta.json");
-manifestBeta.version = targetVersion;
-await Bun.write("manifest-beta.json", JSON.stringify(manifestBeta, null, 2));
-
 // update versions.json with target version and minAppVersion from manifest.json
 console.log("Updating versions.json");
 const versions = await Bun.file("versions.json").json();
-versions[targetVersion] = isBeta
-	? manifestBeta.minAppVersion
-	: manifest.minAppVersion;
+versions[targetVersion] = minAppVersion;
 await Bun.write("versions.json", JSON.stringify(versions, null, 2));
 
 console.log("Committing new version");
 await $`git add package.json manifest.json manifest-beta.json versions.json CHANGELOG.md`.quiet();
-await $`git commit -m "Release v${targetVersion}"`.quiet();
+await $`git commit --no-verify -m "Release v${targetVersion}"`.quiet();
 
 console.log("Tagging new version");
 await $`git tag -a "${targetVersion}" -m "${targetVersion}"`.quiet();
