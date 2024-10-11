@@ -36,9 +36,9 @@ clean-test-vault:
 
 dev: build test-vault
 
-version-bump: 
-  bun ./scripts/version-bump.ts
 
+prerelease: check type-check build
 
-release: check type-check build version-bump
+release: prerelease
+  bun ./scripts/release.ts
 
