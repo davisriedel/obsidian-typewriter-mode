@@ -24,6 +24,7 @@ import WritingFocusShowsHeader from "@/features/WritingFocusShowsHeader";
 import WritingFocusVignette from "@/features/WritingFocusVignette";
 import WritingFocusVignetteStyle from "@/features/WritingFocusVignetteStyle";
 import AnnounceUpdates from "./AnnounceUpdates";
+import DimHighlightListParent from "./DimHighlightListParent";
 import DimUnfocusedMode from "./DimUnfocusedMode";
 import FadeLines from "./FadeLines";
 import FadeLinesIntensity from "./FadeLinesIntensity";
@@ -86,6 +87,7 @@ export function getFeatures(
 		dimming: [
 			new DimUnfocused(plugin),
 			new DimUnfocusedMode(plugin),
+			new DimHighlightListParent(plugin),
 			new DimmedOpacity(plugin),
 			new PauseDimUnfocusedWhileScrolling(plugin),
 			new PauseDimUnfocusedWhileSelecting(plugin),

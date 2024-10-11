@@ -1,0 +1,7 @@
+@mixin dimmed($dimmed) {
+  @if $dimmed {
+    opacity: var(--dimmed-opacity);
+  } @else {
+    opacity: 1;
+  }
+}

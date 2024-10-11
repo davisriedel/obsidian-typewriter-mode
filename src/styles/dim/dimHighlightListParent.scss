@@ -1,0 +1,23 @@
+@mixin dimHighlightListParent {
+  .HyperMD-list-line {
+    @include dimmed(true);
+  }
+
+  .HyperMD-list-line.cm-active {
+    @include dimmed(false);
+  }
+
+  $maxLevel: 10;
+   
+  @for $l from 1 through $maxLevel {
+    @for $n from $l + 1 through $maxLevel {
+      .HyperMD-list-line-#{$l}:has(~ .HyperMD-list-line-#{$n}.cm-active) {
+        @include dimmed(false);
+      }
+
+      .HyperMD-list-line-#{$l}:has(~ .HyperMD-list-line-#{$l} ~ .HyperMD-list-line-#{$n}.cm-active) {
+        @include dimmed(true);
+      }
+    }
+  }
+}

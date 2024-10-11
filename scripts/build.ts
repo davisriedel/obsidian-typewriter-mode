@@ -2,34 +2,11 @@
 
 import { $ } from "bun";
 
-import path from "node:path";
-import type { BunPlugin } from "bun";
-
 import * as sass from "sass-embedded";
 
 import builtins from "builtin-modules";
 
 const outdir = "./dist";
-
-// Bun plugin for compiling scss
-const scss: BunPlugin = {
-	name: "Sass Loader",
-	async setup(build) {
-		build.onLoad({ filter: /\.scss$/ }, async (args) => {
-			const contents = await sass.compileAsync(args.path, {
-				style: "compressed",
-			});
-			const filename = path.parse(args.path).name;
-			await Bun.write(`${outdir}/${filename}.css`, contents.css);
-
-			// Do nothing... File is already written.
-			return {
-				loader: "object",
-				exports: {},
-			};
-		});
-	},
-};
 
 // clean and remake dist folder
 console.log("Cleaning dist folder...");
@@ -38,11 +15,10 @@ await $`mkdir -p ${outdir}`.quiet();
 
 // Build scss
 console.log("Building styles...");
-await Bun.build({
-	entrypoints: ["./src/styles.scss"],
-	outdir,
-	plugins: [scss],
+const contents = await sass.compileAsync("src/styles/index.scss", {
+	style: "compressed",
 });
+await Bun.write(`${outdir}/styles.css`, contents.css);
 
 // Build js
 console.log("Building main...");
