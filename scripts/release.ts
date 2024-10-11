@@ -64,10 +64,8 @@ console.log("Committing new version");
 await $`git add package.json manifest.json manifest-beta.json versions.json CHANGELOG.md`.quiet();
 await $`git commit -m "Release v${targetVersion}"`.quiet();
 
-if (!isBeta) {
-	console.log("Tagging new version");
-	await $`git tag -a "${targetVersion}" -m "${targetVersion}"`.quiet();
-}
+console.log("Tagging new version");
+await $`git tag -a "${targetVersion}" -m "${targetVersion}"`.quiet();
 
 console.log("Release script completed");
 console.info(
