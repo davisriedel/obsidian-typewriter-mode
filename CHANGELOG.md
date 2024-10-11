@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.0.15-beta.2
+
+- New feature: While navigating in lists in dimming mode, you can enable to highlight/not dim direct parents/grandparents/... of the current list item. (See issue #86).
+
 ### 0.0.15-beta.1
 
 **Now using Bun to bundle the plugin.** *Since CJS bundling is experimental in Bun and requires the canary version, this is released as a Beta version for now.*
