@@ -20,25 +20,15 @@ type-check:
   bun tsc --noEmit
 
 
-build:
-  bun ./scripts/build.ts
-
-clean:
-  bun exec "rm -rf ./dist"
+dev:
+  bun ./scripts/dev.ts
 
 
-test-vault: 
-  bun ./scripts/make-test-vault.ts
-
-clean-test-vault: 
-  bun exec "rm -rf ./test-vault/.obsidian/plugins/obsidian-typewriter-mode"
-
-
-dev: build test-vault
-
-
-prerelease: check type-check build
+prerelease: check type-check
 
 release: prerelease
   bun ./scripts/release.ts
+
+ci:
+  bun ./scripts/ci.ts
 

@@ -25,7 +25,7 @@ jobs:
         id: build
         run: |
           bun install
-          just build
+          just ci
           mkdir ${{ env.PLUGIN_NAME }}
           cp -r dist/* ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
@@ -41,8 +41,9 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          draft: true # release notes must be set manually
+          draft: false
           prerelease: ${{ contains(github.ref, '-') }}
+          body_path: ./dist/release-notes.md
 
       - name: Upload zip file
         id: upload-zip

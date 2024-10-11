@@ -14,7 +14,9 @@ if (result.trim() === targetVersion) {
 	console.error(`Version v${targetVersion} is already published. Exiting...`);
 	process.exit(1);
 }
+console.log(`Releasing v${targetVersion}`);
 
+console.log("Updating manifests");
 await updateManifests(targetVersion, minAppVersion);
 
 console.log("Reading changelog");

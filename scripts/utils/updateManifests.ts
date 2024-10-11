@@ -5,8 +5,6 @@ export async function updateManifests(
 	minAppVersion: string,
 	outdir = ".",
 ) {
-	console.log(`Updating manifests to version v${targetVersion}`);
-
 	console.log("Reading manifests");
 	const manifest = await Bun.file("manifest.json").json();
 	const manifestBeta = await Bun.file("manifest-beta.json").json();
@@ -30,5 +28,5 @@ export async function updateManifests(
 	manifestBeta.minAppVersion = minAppVersion;
 	await Bun.write(betaOutPath, JSON.stringify(manifestBeta, null, 2));
 
-	return { targetVersion, isBeta, minAppVersion };
+	return { targetVersion, minAppVersion };
 }
