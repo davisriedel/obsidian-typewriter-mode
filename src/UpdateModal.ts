@@ -83,12 +83,12 @@ export class UpdateModal extends Modal {
 						this.display();
 					})
 					.catch((err) => {
-						console.log(`Failed to fetch update notice: ${err as string}`);
+						console.error(`Failed to fetch update notice: ${err as string}`);
 						this.close();
 					});
 			})
 			.catch((err) => {
-				console.log(`Failed to fetch release notes: ${err as string}`);
+				console.error(`Failed to fetch release notes: ${err as string}`);
 				this.close();
 			});
 	}
@@ -128,7 +128,8 @@ Here's what's new since the last version you had installed:
 
 ${releaseNotes}`;
 
-		MarkdownRenderer.renderMarkdown(
+		MarkdownRenderer.render(
+			this.app,
 			markdownStr,
 			contentDiv,
 			this.app.vault.getRoot().path,

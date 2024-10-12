@@ -51,7 +51,10 @@ export default class TypewriterModePlugin extends Plugin {
 		this.addSettingTab(new TypewriterModeSettingTab(this.app, this));
 		this.updateFacets();
 		this.registerEditorExtension(this.editorExtensions);
-		this.announceUpdate();
+
+		this.app.workspace.onLayoutReady(() => {
+			this.announceUpdate();
+		});
 	}
 
 	override onunload() {

@@ -1,6 +1,11 @@
 import type TypewriterModePlugin from "@/TypewriterModePlugin";
 import type { App } from "obsidian";
-import { Component, MarkdownRenderer, PluginSettingTab } from "obsidian";
+import {
+	Component,
+	MarkdownRenderer,
+	PluginSettingTab,
+	Setting,
+} from "obsidian";
 import { fetchUpdateNotice } from "./utils/fetchUpdateNotice";
 
 export default class TypewriterModeSettingTab extends PluginSettingTab {
@@ -11,57 +16,60 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
+	private addHeading(text: string) {
+		return new Setting(this.containerEl).setName(text).setHeading();
+	}
+
+	private addText(text: string) {
+		return new Setting(this.containerEl).setName(text);
+	}
+
 	display(): void {
 		this.containerEl.empty();
 
-		this.containerEl.createEl("h2", { text: "Typewriter Mode Settings" });
-
-		this.containerEl.createEl("h3", { text: "General" });
 		for (const feature of Object.values(this.plugin.features.general)) {
 			feature.registerSetting(this);
 		}
 
-		this.containerEl.createEl("h3", { text: "Typewriter" });
+		this.addHeading("Typewriter");
 		if (this.plugin.settings.isKeepLinesAboveAndBelowEnabled)
-			this.containerEl.createEl("p", {
-				text: 'Not available if "keep lines above and below" is activated',
-			});
+			this.addText(
+				'Not available if "keep lines above and below" is activated',
+			);
 		for (const feature of Object.values(this.plugin.features.typewriter)) {
 			feature.registerSetting(this);
 		}
 
-		this.containerEl.createEl("h3", { text: "Keep Lines Above And Below" });
+		this.addHeading("Keep lines above and below");
 		if (this.plugin.settings.isTypewriterScrollEnabled)
-			this.containerEl.createEl("p", {
-				text: "Not available if typewriter scrolling is activated",
-			});
+			this.addText("Not available if typewriter scrolling is activated");
 		for (const feature of Object.values(
 			this.plugin.features.keepAboveAndBelow,
 		)) {
 			feature.registerSetting(this);
 		}
 
-		this.containerEl.createEl("h3", { text: "Highlight Current Line" });
+		this.addHeading("Highlight current line");
 		for (const feature of Object.values(this.plugin.features.currentLine)) {
 			feature.registerSetting(this);
 		}
 
-		this.containerEl.createEl("h3", { text: "Dimming" });
+		this.addHeading("Dimming");
 		for (const feature of Object.values(this.plugin.features.dimming)) {
 			feature.registerSetting(this);
 		}
 
-		this.containerEl.createEl("h3", { text: "Limit Line Width" });
+		this.addHeading("Limit line width");
 		for (const feature of Object.values(this.plugin.features.maxChar)) {
 			feature.registerSetting(this);
 		}
 
-		this.containerEl.createEl("h3", { text: "Writing Focus" });
+		this.addHeading("Writing focus");
 		for (const feature of Object.values(this.plugin.features.writingFocus)) {
 			feature.registerSetting(this);
 		}
 
-		this.containerEl.createEl("h3", { text: "Updates and Info" });
+		this.addHeading("Update notice and funding");
 		for (const feature of Object.values(this.plugin.features.updates)) {
 			feature.registerSetting(this);
 		}
@@ -69,7 +77,8 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 		fetchUpdateNotice().then((text) => {
 			const updateNoticeDiv = this.containerEl.createDiv();
 			this.containerEl.appendChild(updateNoticeDiv);
-			MarkdownRenderer.renderMarkdown(
+			MarkdownRenderer.render(
+				this.app,
 				text,
 				updateNoticeDiv,
 				this.app.vault.getRoot().path,
