@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.15-beta.3
+
+- Minor changes to comply with [Obsidian October O_O 2024 plugin self-critique checklist](https://docs.obsidian.md/oo24/plugin).
+
 ## 0.0.15-beta.2
 
 - New feature: While navigating in lists in dimming mode, you can enable to highlight/not dim direct parents/grandparents/... of the current list item. (See issue #86).
