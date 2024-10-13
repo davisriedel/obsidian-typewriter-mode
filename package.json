@@ -29,9 +29,5 @@
 	"keywords": ["obsidian", "typewriter"],
 	"license": "MIT",
 	"scripts": {},
-	"dependencies": {
-		"@types/bun": "^1.1.10",
-		"biome": "^0.3.3"
-	},
 	"trustedDependencies": ["@biomejs/biome", "core-js", "electron"]
 }

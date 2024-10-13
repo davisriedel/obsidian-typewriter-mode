@@ -1,9 +1,11 @@
-import type { Remote } from "electron";
+import type { BrowserWindow } from "electron";
 
 declare global {
 	interface Window {
 		electron: {
-			remote: Remote;
+			remote: {
+				getCurrentWindow: () => BrowserWindow;
+			};
 		};
 	}
 }

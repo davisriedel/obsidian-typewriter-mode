@@ -24,6 +24,7 @@ export async function buildPlugin(outdir: string) {
 		external: [
 			"obsidian",
 			"electron",
+			"@electron/remote",
 			"@codemirror/autocomplete",
 			"@codemirror/collab",
 			"@codemirror/commands",

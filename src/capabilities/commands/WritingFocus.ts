@@ -19,7 +19,6 @@ export class WritingFocus extends Command {
 	private leftSplitCollapsed = false;
 	private rightSplitCollapsed = false;
 
-	private prevWindowSize = 0;
 	private prevWasFullscreen = false;
 
 	protected onCommand(): void {
@@ -47,16 +46,29 @@ export class WritingFocus extends Command {
 		vignetteEl.classList.remove(this.vignetteElClass);
 	}
 
-	private startFullscreen() {
+	private startFullscreen(view: ItemView) {
+		// Native electron fullscreen is not supported on mobile
 		if (Platform.isMobile) return;
+
 		const currentWindow = window.electron.remote.getCurrentWindow();
 		this.prevWasFullscreen = currentWindow.isFullScreen();
 		currentWindow.setFullScreen(true);
+
+		const onLeaveFullScreen = () => {
+			this.onExitFullscreenWritingFocus(view);
+			currentWindow.off("leave-full-screen", onLeaveFullScreen);
+		};
+
+		currentWindow.on("leave-full-screen", onLeaveFullScreen);
 	}
 
 	private exitFullscreen() {
+		// Native electron fullscreen is not supported on mobile
 		if (Platform.isMobile) return;
+
+		// Do not exit fullscreen if writing focus was started in fullscreen
 		if (this.prevWasFullscreen) return;
+
 		const currentWindow = window.electron.remote.getCurrentWindow();
 		currentWindow.setFullScreen(false);
 	}
@@ -126,22 +138,8 @@ export class WritingFocus extends Command {
 		if (this.plugin.settings.doesWritingFocusShowVignette)
 			this.addVignette(view);
 
-		if (this.plugin.settings.isWritingFocusFullscreen) {
-			this.startFullscreen();
-			const onResize = () => {
-				const currentWindowSize = window.innerWidth;
-				if (this.prevWindowSize > currentWindowSize) {
-					if (!document.fullscreenElement) {
-						this.onExitFullscreenWritingFocus(view);
-						document.body.removeEventListener("resize", onResize);
-						this.prevWindowSize = 0;
-					}
-				} else {
-					this.prevWindowSize = currentWindowSize;
-				}
-			};
-			document.body.onresize = onResize;
-		}
+		if (this.plugin.settings.isWritingFocusFullscreen)
+			this.startFullscreen(view);
 	}
 
 	disableFocusMode(view: ItemView) {
