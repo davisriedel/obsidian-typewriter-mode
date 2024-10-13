@@ -104,6 +104,8 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				const { isReconfigured, isUserEvent, allowedUserEvents } =
 					this.inspectTransactions(update);
 
+				if (this.isTableCell()) return;
+
 				if (isReconfigured) this.onReconfigured();
 
 				if (this.isDisabled()) return;
@@ -116,6 +118,14 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				allowedUserEvents
 					? this.updateAllowedUserEvent()
 					: this.updateDisallowedUserEvent();
+			}
+
+			private isTableCell() {
+				return (
+					this.view.dom.parentElement?.parentElement?.className.contains(
+						"table-cell-wrapper",
+					) ?? false
+				);
 			}
 
 			private isMarkdownFile() {
@@ -342,6 +352,11 @@ export default function createTypewriterModeViewPlugin(app: App) {
 			}
 
 			private updateAfterExternalEvent() {
+				if (this.isTableCell()) {
+					this.destroyCurrentLine();
+					return;
+				}
+
 				this.applyDecorations();
 				const { isTypewriterScrollEnabled } =
 					this.view.state.facet(pluginSettingsFacet);
