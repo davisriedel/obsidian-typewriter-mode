@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.5
+
+- Multiple bug fixes and improvements for full screen writing focus
+
 ## 1.0.0-beta.4
 
 - Fix typewriter scrolling in new obsidian tables
