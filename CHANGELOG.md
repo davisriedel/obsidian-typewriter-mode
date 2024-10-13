@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0-beta.4
+
+- Fix typewriter scrolling in new obsidian tables
+
+**Refactoring of the whole codebase. This needs testing. Also bump to version 1.0.0.**
+
 ## 0.0.15-beta.3
 
 - Minor changes to comply with [Obsidian October O_O 2024 plugin self-critique checklist](https://docs.obsidian.md/oo24/plugin).

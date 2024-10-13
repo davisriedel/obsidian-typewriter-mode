@@ -94,15 +94,13 @@ function getTypewriterPositionData(view: EditorView) {
 		scrollOffset = getActiveLineOffset(view, caretCoords);
 	}
 
-	const result = {
+	return {
 		typewriterOffset,
 		scrollOffset,
 		activeLineOffset,
 		lineHeight,
 		lineOffset,
 	};
-	console.log(result);
-	return result;
 }
 
 export type TypewriterPositionData = {
