@@ -2,38 +2,35 @@
 
 @mixin writing-focus-hide-elements {
   &:not(.ptm-writing-focus-shows-status-bar) .status-bar,
-  .view-actions,
-  .view-header-icon,
+  &:not(.ptm-writing-focus-shows-header) .view-header,
   .inline-title,
   .workspace-split.ptm-maximized .workspace-leaf:not(.mod-active),
   .workspace-split.ptm-maximized .workspace-leaf.mod-active ~ .workspace-split,
-  .ptm-writing-focus-no-header .view-header,
-  .plugin-tabs .stayopen .view-header,
   .workspace-ribbon,
   .workspace-tab-header-container {
-      display: none;
+    display: none;
   }
 
   .workspace-tab-header-container {
-      padding-left: var(--size-4-8);
+    padding-left: var(--size-4-8);
   }
 
   .view-content {
-      height: 100%;
+    height: 100%;
   }
 
   .workspace-split.ptm-maximized .workspace-leaf.mod-active {
-      /* 4px is for scrollbar width: */
-      flex-basis: calc(100% - 4px);
+    /* 4px is for scrollbar width: */
+    flex-basis: calc(100% - 4px);
   }
 
   .workspace-ribbon,
   .sidebar-toggle-button {
-      visibility: hidden;
+    visibility: hidden;
   }
 
   .workspace-ribbon::before,
   .side-dock-ribbon-action[aria-label="Toggle Writing Focus"] {
-      visibility: visible;
+    visibility: visible;
   }
 }

@@ -12,7 +12,6 @@ export class WritingFocus extends Command {
 
 	private readonly maximizedClass = "ptm-maximized";
 	private readonly focusModeClass = "ptm-focus-mode";
-	private readonly hideHeaderClass = "ptm-writing-focus-no-header";
 
 	private readonly vignetteElClass = "ptm-writing-focus-vignette-element";
 	private readonly vignetteStyleAttr = "data-ptm-writing-focus-vignette-style";
@@ -86,12 +85,8 @@ export class WritingFocus extends Command {
 		if (this.plugin.app.workspace.containerEl.hasClass(this.maximizedClass)) {
 			this.plugin.app.workspace.containerEl.removeClass(this.maximizedClass);
 		}
-
 		if (document.body.classList.contains(this.focusModeClass)) {
 			document.body.classList.remove(this.focusModeClass);
-		}
-		if (document.body.classList.contains(this.hideHeaderClass)) {
-			document.body.classList.remove(this.hideHeaderClass);
 		}
 	}
 
@@ -113,13 +108,6 @@ export class WritingFocus extends Command {
 			this.focusModeClass,
 			!document.body.classList.contains(this.focusModeClass),
 		);
-
-		if (!this.plugin.settings.doesWritingFocusShowHeader) {
-			document.body.classList.toggle(
-				this.hideHeaderClass,
-				!document.body.classList.contains(this.hideHeaderClass),
-			);
-		}
 
 		if (document.body.classList.contains(this.focusModeClass)) {
 			Array.from(
