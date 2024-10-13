@@ -1,0 +1,71 @@
+@mixin apply-dim-sentence($line-condition) {
+  .cm-line#{$line-condition} {
+    @include dimmed(true);
+
+    &.cm-active {
+      @include dimmed(false);
+    }
+
+    &.cm-active .active-paragraph {
+      @include dimmed(true);
+    }
+
+    &.cm-active .active-sentence {
+      @include dimmed(false);
+    }
+  }
+}
+
+@mixin apply-dim($focus-condition, $mode, $line-condition) {
+  &:not(.ptm-dim-unfocused-pause-while-scrolling, .ptm-dim-unfocused-pause-while-selecting) .cm-editor#{$focus-condition}:not(.ptm-first-open),
+  &.ptm-dim-unfocused--pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor#{$focus-condition}:not(.ptm-wheel, .ptm-first-open),
+  &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor#{$focus-condition}:not(.ptm-select, .ptm-first-open),
+  &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor#{$focus-condition}:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
+    @if $mode == 'paragraphs' {
+      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), 
+      .cm-line:not(.cm-active)#{$line-condition} {
+        @include dimmed(true);
+      }
+    } @else if $mode == 'sentences' {
+      @include apply-dim-sentence($line-condition);
+    }
+  }
+}
+
+@mixin apply-dim-unfocused($mode, $behavior, $line-condition) {
+  &[data-ptm-dim-unfocused-mode="#{$mode}"] {
+    &[data-ptm-dim-unfocused-editors-behavior="#{$behavior}"] {
+      @if $behavior == "dim" {
+        @include apply-dim('', $mode, $line-condition);
+      } @else {
+        // for dim-none and dim-all
+        @include apply-dim('.cm-focused', $mode, $line-condition)
+      }
+
+      @if $behavior == 'dim-all' {
+        .cm-editor:not(.cm-focused) {
+          @if $mode == 'paragraphs' {
+            .CodeMirror-lines:not(.selecting) .CodeMirror-code, .cm-line#{$line-condition} {
+              @include dimmed(true);
+            }
+          } @else if $mode == 'sentences' {
+            @include apply-dim-sentence($line-condition);
+          }
+        }
+      }
+    }
+  }
+}
+
+$modes: 'paragraphs', 'sentences';
+$bahaviors: 'dim', 'dim-none', 'dim-all';
+
+@mixin dim-unfocused($highlight-list-parent) {
+  $line-condition: if($highlight-list-parent, ':not(.HyperMD-list-line)', '');
+
+  @each $mode in $modes {
+    @each $behavior in $bahaviors {
+      @include apply-dim-unfocused($mode, $behavior, $line-condition);
+    }
+  }
+}

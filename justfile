@@ -6,6 +6,10 @@ default:
 biome ARG:
   bunx @biomejs/biome {{ARG}} --write ./src ./scripts
 
+[private]
+stylelint:
+  bunx stylelint --fix "src/**/*.scss"
+
 format:
   just biome format
 

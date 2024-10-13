@@ -1,0 +1,29 @@
+@mixin writing-focus-vignette {
+  .ptm-writing-focus-vignette-element {
+    &::before {
+      z-index: 1000;
+      pointer-events: none;
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    &[data-ptm-writing-focus-vignette-style="box"] {
+      &::before {
+        box-shadow: inset 0 0 2em 2em rgb(0 0 0 / 50%);
+      }
+    }
+
+    &[data-ptm-writing-focus-vignette-style="column"] {
+      &::before {
+        background: linear-gradient(
+          to right,
+          rgb(0 0 0 / 50%),
+          transparent 5vw,
+          transparent 95vw,
+          rgb(0 0 0 / 50%)
+        );
+      }
+    }
+  }
+}

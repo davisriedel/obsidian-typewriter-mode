@@ -1,8 +1,6 @@
-@import "./Settings.scss";
-@import "./FadeLines.scss";
-@import "./CurrentLine.scss";
-@import "./HighlightCurrentLine.scss";
-@import "./UpdateModal.scss";
-@import "./WritingFocus.scss";
-@import "./MaxCharsPerLine.scss";
-@import "./dim/index.scss";
+// UI
+@import "ui/settings";
+@import "ui/update-modal";
+
+// Editor
+@import "editor/index";

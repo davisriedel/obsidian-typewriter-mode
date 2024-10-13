@@ -4,5 +4,6 @@ module.exports = {
     () => "bun tsc --noEmit",
   ],
   "*.{json}": "bunx @biomejs/biome check --apply",
+  "*.scss": "bunx stylelint --fix"
 };
 

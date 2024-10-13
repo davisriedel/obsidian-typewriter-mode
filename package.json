@@ -12,6 +12,7 @@
 		"@biomejs/biome": "latest",
 		"@codemirror/state": "^6.4.1",
 		"@codemirror/view": "^6.34.1",
+		"@types/bun": "latest",
 		"@types/codemirror": "^5.60.15",
 		"@types/node": "^20.16.10",
 		"builtin-modules": "^3.3.0",
@@ -20,6 +21,8 @@
 		"lint-staged": "^14.0.1",
 		"obsidian": "^1.7.2",
 		"sass-embedded": "^1.79.4",
+		"stylelint": "^16.10.0",
+		"stylelint-config-standard-scss": "^13.1.0",
 		"typescript": "latest"
 	},
 	"description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",

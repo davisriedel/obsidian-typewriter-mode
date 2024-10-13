@@ -1,0 +1,14 @@
+@import "dimmed";
+@import 'dim-unfocused';
+@import "dim-highlight-list-parent";
+
+body.ptm-dim-unfocused {
+  &:not(.ptm-dim-highlight-list-parent) {
+    @include dim-unfocused(false);
+  }
+
+  &.ptm-dim-highlight-list-parent {
+    @include dim-unfocused(true);
+    @include dim-highlight-list-parent;
+  }
+}

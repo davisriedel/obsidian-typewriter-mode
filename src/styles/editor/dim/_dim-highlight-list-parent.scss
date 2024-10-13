@@ -1,20 +1,24 @@
-@mixin dimHighlightListParent {
+@mixin dim-highlight-list-parent {
+  /* stylelint-disable-next-line selector-class-pattern */
   .HyperMD-list-line {
     @include dimmed(true);
   }
 
+  /* stylelint-disable-next-line selector-class-pattern */
   .HyperMD-list-line.cm-active {
     @include dimmed(false);
   }
 
-  $maxLevel: 10;
+  $max-level: 10;
    
-  @for $l from 1 through $maxLevel {
-    @for $n from $l + 1 through $maxLevel {
+  @for $l from 1 through $max-level {
+    @for $n from $l + 1 through $max-level {
+      /* stylelint-disable-next-line selector-class-pattern */
       .HyperMD-list-line-#{$l}:has(~ .HyperMD-list-line-#{$n}.cm-active) {
         @include dimmed(false);
       }
 
+      /* stylelint-disable-next-line selector-class-pattern */
       .HyperMD-list-line-#{$l}:has(~ .HyperMD-list-line-#{$l} ~ .HyperMD-list-line-#{$n}.cm-active) {
         @include dimmed(true);
       }

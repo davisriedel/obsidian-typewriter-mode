@@ -1,0 +1,7 @@
+@import "vignette";
+@import "hide-elements";
+
+body.ptm-focus-mode {
+  @include writing-focus-hide-elements;
+  @include writing-focus-vignette;
+}
