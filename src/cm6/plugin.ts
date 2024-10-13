@@ -1,0 +1,421 @@
+import { perWindowProps } from "@/cm6/facets/perWindowProps";
+import type { PerWindowProps } from "@/cm6/facets/perWindowProps";
+import { pluginSettingsFacet } from "@/cm6/facets/pluginSettingsFacet";
+import type { TypewriterPositionData } from "@/cm6/utils/getTypewriterOffset";
+import { measureTypewriterPosition } from "@/cm6/utils/getTypewriterOffset";
+import { RangeSet } from "@codemirror/state";
+import { Transaction } from "@codemirror/state";
+import {
+	type Decoration,
+	EditorView,
+	ViewPlugin,
+	type ViewUpdate,
+} from "@codemirror/view";
+import { type App, ItemView } from "obsidian";
+import { getActiveSentenceDecos } from "./utils/highlightSentence";
+import { getEditorDom, getScrollDom, getSizerDom } from "./utils/selectors";
+
+const currentLineClass = "ptm-current-line";
+const currentLineHighlightClass = "ptm-current-line-highlight";
+
+export default function createTypewriterModeViewPlugin(app: App) {
+	return ViewPlugin.fromClass(
+		class {
+			private domResizeObserver: ResizeObserver | null = null;
+
+			private isInitialInteraction = true;
+			private isRenderingAllowedUserEvent = false;
+			decorations: RangeSet<Decoration> = RangeSet.empty;
+
+			constructor(protected view: EditorView) {
+				this.onLoad();
+			}
+
+			destroy() {
+				this.domResizeObserver?.disconnect();
+
+				this.destroyCurrentLine();
+
+				const scrollDom = getScrollDom(this.view);
+				if (scrollDom) scrollDom.removeEventListener("wheel", this.onWheel);
+
+				window.removeEventListener(
+					"moveByCommand",
+					this.moveByCommand.bind(this),
+				);
+			}
+
+			protected onLoad() {
+				this.domResizeObserver = new ResizeObserver(this.onResize.bind(this));
+				this.domResizeObserver.observe(this.view.dom.ownerDocument.body);
+
+				window.addEventListener("moveByCommand", this.moveByCommand.bind(this));
+
+				this.watchEmbeddedMarkdown();
+				this.onReconfigured();
+			}
+
+			private userEventAllowed(event: string) {
+				const { isTypewriterOnlyUseCommandsEnabled } =
+					this.view.state.facet(pluginSettingsFacet);
+
+				let allowed = /^(select|input|delete|undo|redo)(\..+)?$/;
+				let disallowed = /^(select.pointer)$/;
+
+				if (isTypewriterOnlyUseCommandsEnabled) {
+					allowed = /^(input|delete|undo|redo)(\..+)?$/;
+					disallowed = /^(select)(\..+)?$/;
+				}
+
+				return allowed.test(event) && !disallowed.test(event);
+			}
+
+			private inspectTransactions(update: ViewUpdate) {
+				const userEvents = [];
+				let isReconfigured = false;
+				for (const tr of update.transactions) {
+					if (tr.reconfigured) isReconfigured = true;
+
+					const event = tr.annotation(Transaction.userEvent);
+					if (event !== undefined) userEvents.push(event);
+				}
+
+				if (userEvents.length === 0)
+					return {
+						isReconfigured,
+						isUserEvent: false,
+						allowedUserEvents: null,
+					};
+
+				const allowedUserEvents = userEvents.reduce<boolean>(
+					(result, event) => {
+						return result && this.userEventAllowed(event);
+					},
+					userEvents.length > 0,
+				);
+				return {
+					isReconfigured: false,
+					isUserEvent: true,
+					allowedUserEvents,
+				};
+			}
+
+			update(update: ViewUpdate) {
+				const { isReconfigured, isUserEvent, allowedUserEvents } =
+					this.inspectTransactions(update);
+
+				if (isReconfigured) this.onReconfigured();
+
+				if (this.isDisabled()) return;
+
+				if (!isUserEvent) {
+					this.updateNonUserEvent();
+					return;
+				}
+
+				allowedUserEvents
+					? this.updateAllowedUserEvent()
+					: this.updateDisallowedUserEvent();
+			}
+
+			private isMarkdownFile() {
+				const view = app.workspace.getActiveViewOfType(ItemView);
+				return view?.getViewType() === "markdown";
+			}
+
+			private isDisabled() {
+				const { isPluginActivated } =
+					this.view.state.facet(pluginSettingsFacet);
+				if (!isPluginActivated) return true;
+				return !this.isMarkdownFile();
+			}
+
+			private onReconfigured(): void {
+				this.loadPerWindowProps();
+
+				if (this.isDisabled()) {
+					this.destroyCurrentLine();
+					this.resetPadding(this.view);
+					return;
+				}
+
+				this.updateAfterExternalEvent();
+			}
+
+			private watchEmbeddedMarkdown() {
+				const selector = ".markdown-embed-content iframe.embed-iframe";
+				const props = this.view.state.facet(perWindowProps);
+				const observer = new MutationObserver((mutations) => {
+					mutations.forEach((mutation) => {
+						[].forEach.call(mutation.addedNodes, (node: Node) => {
+							if (
+								node.nodeType === Node.ELEMENT_NODE &&
+								(node as HTMLElement).matches(selector)
+							) {
+								const body = (node as HTMLIFrameElement).contentDocument?.body;
+								if (!body) return;
+								this.loadPerWindowPropsOnElement(props, body);
+							}
+						});
+					});
+				});
+				observer.observe(this.view.dom.ownerDocument, {
+					childList: true,
+					subtree: true,
+				});
+			}
+
+			private loadPerWindowPropsOnElement(
+				props: PerWindowProps,
+				el: HTMLElement,
+			) {
+				// remove all classes set by this plugin
+				for (const c of props.allBodyClasses) el.classList.remove(c);
+
+				el.addClasses(props.persistentBodyClasses);
+				if (!this.isDisabled()) el.addClasses(props.bodyClasses);
+
+				el.setCssProps(props.cssVariables);
+				el.setAttrs(props.bodyAttrs);
+			}
+
+			private getMarkdownBodies() {
+				const embeddedMarkdownContent =
+					this.view.dom.ownerDocument.querySelectorAll(
+						".markdown-embed-content iframe.embed-iframe",
+					);
+				const embeddedMarkdownBodies: HTMLElement[] = Array.from(
+					embeddedMarkdownContent,
+				).flatMap((i) => {
+					const body = (i as HTMLIFrameElement).contentDocument?.body;
+					return body ? [body] : [];
+				});
+				return [this.view.dom.ownerDocument.body, ...embeddedMarkdownBodies];
+			}
+
+			private loadPerWindowProps() {
+				const bodies = this.getMarkdownBodies();
+				const props = this.view.state.facet(perWindowProps);
+				for (const b of bodies) this.loadPerWindowPropsOnElement(props, b);
+			}
+
+			private loadCurrentLine(
+				view: EditorView = this.view,
+			): HTMLElement | null {
+				const editorDom = getEditorDom(view);
+				if (!editorDom) return null;
+
+				let currentLine = editorDom.querySelector(
+					`.${currentLineClass}`,
+				) as HTMLElement;
+
+				if (!currentLine) {
+					currentLine = document.createElement("div");
+					currentLine.className = currentLineClass;
+
+					const currentLineHighlight = document.createElement("div");
+					const settings = view.state.facet(pluginSettingsFacet);
+					currentLineHighlight.className = `${currentLineHighlightClass} ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
+					currentLine.append(currentLineHighlight);
+
+					editorDom.appendChild(currentLine);
+				}
+
+				return currentLine;
+			}
+
+			private destroyCurrentLine(view: EditorView = this.view) {
+				const editorDom = getEditorDom(view);
+				if (!editorDom) return;
+
+				const currentLine = editorDom.querySelector(
+					`.${currentLineClass}`,
+				) as HTMLElement;
+				currentLine?.remove();
+			}
+
+			private setupWheelListener() {
+				const scrollDom = getScrollDom(this.view);
+				if (scrollDom)
+					scrollDom.addEventListener("wheel", this.onWheel.bind(this), {
+						passive: true,
+					});
+			}
+
+			private updateAllowedUserEvent() {
+				this.applyDecorations();
+
+				const editorDom = getEditorDom(this.view);
+				if (editorDom) {
+					editorDom.classList.remove("ptm-wheel");
+					editorDom.classList.remove("ptm-select");
+
+					if (this.isInitialInteraction) {
+						editorDom.classList.remove("ptm-first-open");
+						this.isInitialInteraction = false;
+					}
+				}
+
+				this.isRenderingAllowedUserEvent = true;
+
+				measureTypewriterPosition(
+					this.view,
+					"TypewriterModeUpdateAfterUserEvent",
+					(measure, view) => {
+						this.recenterAndMoveCurrentLineHighlight(view, measure);
+						this.isRenderingAllowedUserEvent = false;
+					},
+				);
+			}
+
+			private updateDisallowedUserEvent() {
+				if (this.isRenderingAllowedUserEvent) return;
+
+				const editorDom = getEditorDom(this.view);
+
+				if (editorDom) {
+					if (this.isInitialInteraction) {
+						editorDom.classList.remove("ptm-first-open");
+						this.isInitialInteraction = false;
+					}
+
+					editorDom.classList.add("ptm-select");
+				}
+
+				measureTypewriterPosition(
+					this.view,
+					"TypewriterModeUpdateAfterUserEvent",
+					({ activeLineOffset, lineHeight, lineOffset }, view) => {
+						const { isHighlightCurrentLineEnabled, isFadeLinesEnabled } =
+							view.state.facet(pluginSettingsFacet);
+						if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
+							this.moveCurrentLine(
+								view,
+								activeLineOffset,
+								lineHeight,
+								lineOffset,
+							);
+					},
+				);
+			}
+
+			private updateNonUserEvent() {
+				this.applyDecorations();
+
+				if (!this.isInitialInteraction) return;
+
+				const { isOnlyActivateAfterFirstInteractionEnabled } =
+					this.view.state.facet(pluginSettingsFacet);
+
+				if (isOnlyActivateAfterFirstInteractionEnabled) {
+					const editorDom = getEditorDom(this.view);
+					if (editorDom) editorDom.classList.add("ptm-first-open");
+				}
+			}
+
+			private moveByCommand() {
+				const editorDom = getEditorDom(this.view);
+				if (editorDom) editorDom.classList.remove("ptm-select");
+				this.updateAllowedUserEvent();
+			}
+
+			private onResize() {
+				if (this.isDisabled()) return;
+				this.updateAfterExternalEvent();
+			}
+
+			private onWheel() {
+				const editorDom = getEditorDom(this.view);
+				if (editorDom) editorDom.classList.add("ptm-wheel");
+			}
+
+			private applyDecorations() {
+				const { isDimUnfocusedEnabled, dimUnfocusedMode } =
+					this.view.state.facet(pluginSettingsFacet);
+				if (!isDimUnfocusedEnabled || dimUnfocusedMode !== "sentences") return;
+
+				this.decorations = getActiveSentenceDecos(this.view, {
+					sentenceDelimiters: ".!?",
+					extraCharacters: "*“”‘’",
+					ignoredPatterns: "Mr.",
+				});
+			}
+
+			private updateAfterExternalEvent() {
+				this.applyDecorations();
+				const { isTypewriterScrollEnabled } =
+					this.view.state.facet(pluginSettingsFacet);
+				measureTypewriterPosition(
+					this.view,
+					"TypewriterModeUpdateAfterExternalEvent",
+					(measure, view) => {
+						this.setupWheelListener();
+						if (!measure) return;
+						if (isTypewriterScrollEnabled)
+							this.setPadding(view, measure.typewriterOffset);
+						this.recenterAndMoveCurrentLineHighlight(view, measure);
+					},
+				);
+			}
+
+			private moveCurrentLine(
+				view: EditorView,
+				offset: number,
+				lineHeight: number,
+				lineOffset: number,
+			) {
+				const currentLine = this.loadCurrentLine(view);
+				if (!currentLine) return;
+				currentLine.style.height = `${lineHeight}px`;
+				currentLine.style.top = `${offset - lineOffset}px`;
+			}
+
+			private setPadding(view: EditorView, offset: number) {
+				const { isOnlyMaintainTypewriterOffsetWhenReachedEnabled } =
+					view.state.facet(pluginSettingsFacet);
+
+				const sizerDom = getSizerDom(view);
+				if (!sizerDom) return;
+
+				(sizerDom as HTMLElement).style.padding =
+					isOnlyMaintainTypewriterOffsetWhenReachedEnabled
+						? `0 0 ${offset}px 0`
+						: `${offset}px 0`;
+			}
+
+			private resetPadding(view: EditorView) {
+				if (!this.isMarkdownFile()) return;
+				const sizerDom = getSizerDom(view);
+				if (!sizerDom) return;
+				(sizerDom as HTMLElement).style.padding = "var(--file-margins)";
+			}
+
+			private recenter(view: EditorView, offset: number) {
+				const head = view.state.selection.main.head;
+				const effect = EditorView.scrollIntoView(head, {
+					y: "start",
+					yMargin: offset,
+				});
+				const transaction = view.state.update({ effects: effect });
+				view.dispatch(transaction);
+			}
+
+			private recenterAndMoveCurrentLineHighlight(
+				view: EditorView,
+				{ scrollOffset, lineHeight, lineOffset }: TypewriterPositionData,
+			) {
+				const {
+					isTypewriterScrollEnabled,
+					isKeepLinesAboveAndBelowEnabled,
+					isHighlightCurrentLineEnabled,
+					isFadeLinesEnabled,
+				} = view.state.facet(pluginSettingsFacet);
+				if (isTypewriterScrollEnabled || isKeepLinesAboveAndBelowEnabled)
+					this.recenter(view, scrollOffset);
+				if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
+					this.moveCurrentLine(view, scrollOffset, lineHeight, lineOffset);
+			}
+		},
+		{ decorations: (v) => v.decorations },
+	);
+}

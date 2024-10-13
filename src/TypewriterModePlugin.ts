@@ -1,16 +1,18 @@
-import type { TypewriterModeSettings } from "@/TypewriterModeSettings";
-import { DEFAULT_SETTINGS } from "@/TypewriterModeSettings";
-import TypewriterModeSettingTab from "@/TypewriterModeSettingsTab";
-import createTypewriterModeViewPlugin from "@/cm-plugin/CodeMirrorViewPlugin";
-import type { PerWindowProps } from "@/cm-plugin/PerWindowProps";
-import { perWindowProps } from "@/cm-plugin/PerWindowProps";
-import { pluginSettingsFacet } from "@/cm-plugin/PluginSettingsFacet";
+import type { PerWindowProps } from "@/cm6/facets/perWindowProps";
+import { perWindowProps } from "@/cm6/facets/perWindowProps";
+import { pluginSettingsFacet } from "@/cm6/facets/pluginSettingsFacet";
+import createTypewriterModeViewPlugin from "@/cm6/plugin";
+import TypewriterModeSettingTab from "@/components/SettingsTab";
 import type { Extension } from "@codemirror/state";
 import { Plugin } from "obsidian";
-import { UpdateModal } from "./UpdateModal";
-import { FeatureToggle } from "./features/base/FeatureToggle";
-import { getCommands } from "./features/commands";
-import { getFeatures } from "./features/features";
+import { FeatureToggle } from "./capabilities/base/FeatureToggle";
+import { getCommands } from "./capabilities/commands";
+import { getFeatures } from "./capabilities/features";
+import {
+	DEFAULT_SETTINGS,
+	type TypewriterModeSettings,
+} from "./capabilities/settings";
+import { UpdateModal } from "./components/UpdateModal";
 
 export default class TypewriterModePlugin extends Plugin {
 	settings: TypewriterModeSettings = DEFAULT_SETTINGS;
@@ -84,7 +86,7 @@ export default class TypewriterModePlugin extends Plugin {
 
 	private announceUpdate() {
 		const currentVersion = this.manifest.version;
-		const knownVersion = this.settings.version;
+		const knownVersion = this.settings.version ?? "";
 
 		if (currentVersion === knownVersion) return;
 
