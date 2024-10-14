@@ -95,7 +95,7 @@ export default class TypewriterModePlugin extends Plugin {
 
 		if (this.settings.isAnnounceUpdatesEnabled === false) return;
 
-		const updateModal = new UpdateModal(this.app, knownVersion);
+		const updateModal = new UpdateModal(this.app, currentVersion, knownVersion);
 		updateModal.open();
 	}
 }

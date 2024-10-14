@@ -29,6 +29,7 @@ async function getReleaseNotesAfter(
 	repoOwner: string,
 	repoName: string,
 	releaseTagName: string | null,
+	includePreReleases: boolean,
 ): Promise<Release[]> {
 	const response = await fetch(
 		`https://api.github.com/repos/${repoOwner}/${repoName}/releases`,
@@ -57,67 +58,63 @@ async function getReleaseNotesAfter(
 
 	return releases
 		.slice(0, startReleaseIdx)
-		.filter((release) => !release.draft && !release.prerelease);
+		.filter(
+			(release) =>
+				!release.draft && (includePreReleases || !release.prerelease),
+		);
 }
 
 export class UpdateModal extends Modal {
-	releases: Release[] = [];
-	previousQAVersion: string;
-
-	constructor(app: App, previousQAVersion: string) {
+	constructor(
+		app: App,
+		private currentVersion: string,
+		private previousVersion: string,
+	) {
 		super(app);
-		this.previousQAVersion = previousQAVersion;
 	}
 
-	private fetchReleaseNotes() {
+	private fetchAndDisplayReleaseNotes() {
+		const isCurrentVersionBeta = this.currentVersion.includes("-");
 		getReleaseNotesAfter(
 			"davisriedel",
 			"obsidian-typewriter-mode",
-			this.previousQAVersion,
+			this.previousVersion,
+			isCurrentVersionBeta, // if the current version is a beta version, include pre-releases
 		)
 			.then((releases) => {
-				this.releases = releases;
-
-				if (this.releases.length === 0) {
-					this.close();
-					return;
+				if (releases.length === 0) {
+					this.displayError(new Error("No new releases found"));
+				} else {
+					this.displayReleaseNotes(releases);
 				}
-
-				this.display();
 			})
 			.catch((err) => {
-				console.error(`Failed to fetch release notes: ${err as string}`);
-				this.close();
+				this.displayError(err);
 			});
 	}
 
 	override onOpen() {
 		const { contentEl } = this;
 		contentEl.empty();
-		contentEl.createEl("h1", {
+		contentEl.createEl("h2", {
 			text: "Fetching release notes...",
 		});
 
-		this.fetchReleaseNotes();
+		this.fetchAndDisplayReleaseNotes();
 	}
 
-	override onClose() {
-		const { contentEl } = this;
-		contentEl.empty();
-	}
-
-	private display(): void {
+	private displayReleaseNotes(releases: Release[]): void {
 		const { contentEl } = this;
 		contentEl.empty();
 		contentEl.classList.add("ptm-update-modal-container");
 		const contentDiv = contentEl.createDiv("ptm-update-modal");
 
-		const releaseNotes = this.releases
+		const releaseNotes = releases
 			.map((release) => `### ${release.tag_name}\n\n${release.body}`)
 			.join("\n---\n");
 
 		const markdownStr = updateNotice
-			.replace("{{tag_name}}", this.releases[0].tag_name)
+			.replace("{{tag_name}}", releases[0].tag_name)
 			.replace("{{funding}}", fundingText)
 			.replace("{{release_notes}}", releaseNotes);
 
@@ -128,5 +125,14 @@ export class UpdateModal extends Modal {
 			this.app.vault.getRoot().path,
 			new Component(),
 		);
+	}
+
+	private displayError(error: Error): void {
+		const { contentEl } = this;
+		contentEl.empty();
+		contentEl.classList.add("ptm-update-modal-container");
+		const contentDiv = contentEl.createDiv("ptm-update-modal");
+
+		contentDiv.createEl("h2", { text: error.message });
 	}
 }
