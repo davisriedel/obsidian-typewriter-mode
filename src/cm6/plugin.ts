@@ -23,6 +23,9 @@ export default function createTypewriterModeViewPlugin(app: App) {
 		class {
 			private domResizeObserver: ResizeObserver | null = null;
 
+			private isListeningToOnWheel = false;
+			private isOnWheelClassSet = false;
+
 			private isInitialInteraction = true;
 			private isRenderingAllowedUserEvent = false;
 			decorations: RangeSet<Decoration> = RangeSet.empty;
@@ -36,8 +39,7 @@ export default function createTypewriterModeViewPlugin(app: App) {
 
 				this.destroyCurrentLine();
 
-				const scrollDom = getScrollDom(this.view);
-				if (scrollDom) scrollDom.removeEventListener("wheel", this.onWheel);
+				this.removeWheelListener();
 
 				window.removeEventListener(
 					"moveByCommand",
@@ -245,19 +247,34 @@ export default function createTypewriterModeViewPlugin(app: App) {
 			}
 
 			private setupWheelListener() {
+				if (this.isListeningToOnWheel) return;
 				const scrollDom = getScrollDom(this.view);
-				if (scrollDom)
+				if (scrollDom) {
 					scrollDom.addEventListener("wheel", this.onWheel.bind(this), {
 						passive: true,
 					});
+					this.isListeningToOnWheel = true;
+				}
+			}
+
+			private removeWheelListener() {
+				if (!this.isListeningToOnWheel) return;
+				const scrollDom = getScrollDom(this.view);
+				if (scrollDom) {
+					scrollDom.removeEventListener("wheel", this.onWheel);
+					this.isListeningToOnWheel = false;
+				}
 			}
 
 			private updateAllowedUserEvent() {
 				this.applyDecorations();
+				this.removeWheelListener();
 
 				const editorDom = getEditorDom(this.view);
 				if (editorDom) {
 					editorDom.classList.remove("ptm-wheel");
+					this.isOnWheelClassSet = false;
+
 					editorDom.classList.remove("ptm-select");
 
 					if (this.isInitialInteraction) {
@@ -270,9 +287,10 @@ export default function createTypewriterModeViewPlugin(app: App) {
 
 				measureTypewriterPosition(
 					this.view,
-					"TypewriterModeUpdateAfterUserEvent",
+					"TypewriterModeUpdateAfterAllowedUserEvent",
 					(measure, view) => {
-						this.recenterAndMoveCurrentLineHighlight(view, measure);
+						if (!measure) return;
+						this.recenterAndMoveCurrentLine(view, measure);
 						this.isRenderingAllowedUserEvent = false;
 					},
 				);
@@ -294,16 +312,19 @@ export default function createTypewriterModeViewPlugin(app: App) {
 
 				measureTypewriterPosition(
 					this.view,
-					"TypewriterModeUpdateAfterUserEvent",
-					({ activeLineOffset, lineHeight, lineOffset }, view) => {
+					"TypewriterModeUpdateAfterDisallowedUserEvent",
+					(measure, view) => {
+						if (!measure) return;
+						const { activeLineOffset, lineHeight, lineOffset } = measure;
+
 						const { isHighlightCurrentLineEnabled, isFadeLinesEnabled } =
 							view.state.facet(pluginSettingsFacet);
 						if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
 							this.moveCurrentLine(
 								view,
 								activeLineOffset,
-								lineHeight,
 								lineOffset,
+								lineHeight,
 							);
 					},
 				);
@@ -335,8 +356,28 @@ export default function createTypewriterModeViewPlugin(app: App) {
 			}
 
 			private onWheel() {
-				const editorDom = getEditorDom(this.view);
-				if (editorDom) editorDom.classList.add("ptm-wheel");
+				if (!this.isOnWheelClassSet) {
+					const editorDom = getEditorDom(this.view);
+					if (editorDom) {
+						editorDom.classList.add("ptm-wheel");
+						this.isOnWheelClassSet = true;
+					}
+				}
+
+				measureTypewriterPosition(
+					this.view,
+					"TypewriterModeOnWheel",
+					(measure, view) => {
+						if (!measure) return;
+						const { activeLineOffset, lineOffset, lineHeight } = measure;
+						this.moveCurrentLine(
+							view,
+							activeLineOffset,
+							lineOffset,
+							lineHeight,
+						);
+					},
+				);
 			}
 
 			private applyDecorations() {
@@ -358,17 +399,22 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				}
 
 				this.applyDecorations();
+
 				const { isTypewriterScrollEnabled } =
 					this.view.state.facet(pluginSettingsFacet);
+
 				measureTypewriterPosition(
 					this.view,
 					"TypewriterModeUpdateAfterExternalEvent",
 					(measure, view) => {
 						this.setupWheelListener();
+
 						if (!measure) return;
+
 						if (isTypewriterScrollEnabled)
 							this.setPadding(view, measure.typewriterOffset);
-						this.recenterAndMoveCurrentLineHighlight(view, measure);
+
+						this.recenterAndMoveCurrentLine(view, measure);
 					},
 				);
 			}
@@ -376,8 +422,8 @@ export default function createTypewriterModeViewPlugin(app: App) {
 			private moveCurrentLine(
 				view: EditorView,
 				offset: number,
-				lineHeight: number,
 				lineOffset: number,
+				lineHeight: number,
 			) {
 				const currentLine = this.loadCurrentLine(view);
 				if (!currentLine) return;
@@ -415,9 +461,9 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				view.dispatch(transaction);
 			}
 
-			private recenterAndMoveCurrentLineHighlight(
+			private recenterAndMoveCurrentLine(
 				view: EditorView,
-				{ scrollOffset, lineHeight, lineOffset }: TypewriterPositionData,
+				{ scrollOffset, lineOffset, lineHeight }: TypewriterPositionData,
 			) {
 				const {
 					isTypewriterScrollEnabled,
@@ -428,7 +474,7 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				if (isTypewriterScrollEnabled || isKeepLinesAboveAndBelowEnabled)
 					this.recenter(view, scrollOffset);
 				if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
-					this.moveCurrentLine(view, scrollOffset, lineHeight, lineOffset);
+					this.moveCurrentLine(view, scrollOffset, lineOffset, lineHeight);
 			}
 		},
 		{ decorations: (v) => v.decorations },
