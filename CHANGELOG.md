@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.8
+
+- You can now disable the plugin on a per-file basis. Include `typewriter-mode: false` in the file's frontmatter to disable the plugin in that file.
+
 ## 1.0.0-beta.7
 
 - Tables are now correctly dimmed
