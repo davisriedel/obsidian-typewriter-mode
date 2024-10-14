@@ -15,6 +15,7 @@ export interface TypewriterModeSettings {
 	maxCharsPerLine: number;
 	isDimUnfocusedEnabled: boolean;
 	isDimHighlightListParentEnabled: boolean;
+	isDimTableAsOneEnabled: boolean;
 	dimUnfocusedMode: "paragraphs" | "sentences";
 	dimUnfocusedEditorsBehavior: "dim-none" | "dim" | "dim-all";
 	dimmedOpacity: number;
@@ -52,6 +53,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 	maxCharsPerLine: 64,
 	isDimUnfocusedEnabled: false,
 	isDimHighlightListParentEnabled: false,
+	isDimTableAsOneEnabled: true,
 	dimUnfocusedMode: "paragraphs",
 	dimUnfocusedEditorsBehavior: "dim",
 	dimmedOpacity: 0.25,

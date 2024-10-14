@@ -14,7 +14,31 @@
   }
 }
 
-@mixin apply-dim($focus-condition, $mode, $highlight-list-parent, $line-condition) {
+@mixin apply-dim-table($dim-table-as-one) {
+  @if $dim-table-as-one {
+    .table-editor {
+      &:not(:has(.cm-active)) .table-cell-wrapper {
+        @include dimmed(true);
+      }
+
+      .cm-active {
+        @include dimmed(false);
+      }
+    }
+  } @else {
+    .table-cell-wrapper {
+      &:not(:has(.cm-active)) {
+        @include dimmed(true);
+      }
+
+      .cm-active {
+        @include dimmed(false);
+      }
+    }
+  }
+}
+
+@mixin apply-dim($focus-condition, $mode, $highlight-list-parent, $line-condition, $dim-table-as-one) {
   &:not(.ptm-dim-unfocused-pause-while-scrolling, .ptm-dim-unfocused-pause-while-selecting) .cm-editor#{$focus-condition}:not(.ptm-first-open),
   &.ptm-dim-unfocused-pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor#{$focus-condition}:not(.ptm-wheel, .ptm-first-open),
   &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor#{$focus-condition}:not(.ptm-select, .ptm-first-open),
@@ -22,6 +46,8 @@
     @if $highlight-list-parent {
       @include dim-highlight-list-parent;
     }
+
+    @include apply-dim-table($dim-table-as-one);
 
     @if $mode == 'paragraphs' {
       .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), 
@@ -36,16 +62,16 @@
   }
 }
 
-@mixin apply-dim-unfocused($mode, $behavior, $highlight-list-parent) {
+@mixin apply-dim-unfocused($mode, $behavior, $highlight-list-parent, $dim-table-as-one) {
   $line-condition: if($highlight-list-parent, ':not(.HyperMD-list-line)', '');
 
   &[data-ptm-dim-unfocused-mode="#{$mode}"] {
     &[data-ptm-dim-unfocused-editors-behavior="#{$behavior}"] {
       @if $behavior == "dim" {
-        @include apply-dim('', $mode, $highlight-list-parent, $line-condition);
+        @include apply-dim('', $mode, $highlight-list-parent, $line-condition, $dim-table-as-one);
       } @else {
         // for dim-none and dim-all
-        @include apply-dim('.cm-focused', $mode, $highlight-list-parent, $line-condition);
+        @include apply-dim('.cm-focused', $mode, $highlight-list-parent, $line-condition, $dim-table-as-one);
       }
 
       @if $behavior == 'dim-all' {
@@ -68,20 +94,32 @@
 $modes: 'paragraphs', 'sentences';
 $bahaviors: 'dim', 'dim-none', 'dim-all';
 
-@mixin dim-unfocused($highlight-list-parent) {
+@mixin dim-unfocused($highlight-list-parent, $dim-table-as-one) {
   @each $mode in $modes {
     @each $behavior in $bahaviors {
-      @include apply-dim-unfocused($mode, $behavior, $highlight-list-parent);
+      @include apply-dim-unfocused($mode, $behavior, $highlight-list-parent, $dim-table-as-one);
     }
   }
 }
 
 body.ptm-dim-unfocused {
   &:not(.ptm-dim-highlight-list-parent) {
-    @include dim-unfocused(false);
+    &:not(.ptm-dim-table-as-one) {
+      @include dim-unfocused(false, false);
+    }
+
+    &.ptm-dim-table-as-one {
+      @include dim-unfocused(false, true);
+    }
   }
 
   &.ptm-dim-highlight-list-parent {
-    @include dim-unfocused(true);
+    &:not(.ptm-dim-table-as-one) {
+      @include dim-unfocused(true, false);
+    }
+
+    &.ptm-dim-table-as-one {
+      @include dim-unfocused(true, true);
+    }
   }
 }
