@@ -135,11 +135,20 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				return view?.getViewType() === "markdown";
 			}
 
+			private isDisabledInFrontmatter() {
+				const file = app.workspace.getActiveFile();
+				if (!file) return false;
+				const frontmatter = app.metadataCache.getFileCache(file)?.frontmatter;
+				if (!frontmatter) return false;
+				return !frontmatter["typewriter-mode"];
+			}
+
 			private isDisabled() {
 				const { isPluginActivated } =
 					this.view.state.facet(pluginSettingsFacet);
 				if (!isPluginActivated) return true;
-				return !this.isMarkdownFile();
+				if (!this.isMarkdownFile()) return true;
+				if (this.isDisabledInFrontmatter()) return true;
 			}
 
 			private onReconfigured(): void {
