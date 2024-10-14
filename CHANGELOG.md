@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0-beta.7
+
+- Tables are now correctly dimmed
+- In the settings, you can now choose to undim all table cells or only the active cell when editing a table
+- Update notice now includes pre-releases if you update to a pre-release
+
 ## 1.0.0-beta.6
 
 - The current line highlight now scrolls with the text and is not hidden anymore when scrolling

@@ -6,7 +6,7 @@
   "description": "Typewriter scrolling, highlighting of the current line, dimming of unfocused paragraphs, writing focus and more.",
   "isDesktopOnly": false,
   "minAppVersion": "0.15.0",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "fundingUrl": {
     "Buy Me a Coffee": "https://www.buymeacoffee.com/davis.riedel",
     "GitHub Sponsors": "https://github.com/sponsors/davisriedel"
