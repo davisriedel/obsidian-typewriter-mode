@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta.6
+
+- The current line highlight now scrolls with the text and is not hidden anymore when scrolling
+
 ## 1.0.0-beta.5
 
 - Multiple bug fixes and improvements for full screen writing focus
