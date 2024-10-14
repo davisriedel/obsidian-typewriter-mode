@@ -1,42 +1,21 @@
 # Changelog
 
-## 1.0.0-beta.8
+## 1.0.0-rc.1
 
 - You can now disable the plugin on a per-file basis. Include `typewriter-mode: false` in the file's frontmatter to disable the plugin in that file.
-
-## 1.0.0-beta.7
-
 - Tables are now correctly dimmed
 - In the settings, you can now choose to undim all table cells or only the active cell when editing a table
 - Update notice now includes pre-releases if you update to a pre-release
-
-## 1.0.0-beta.6
-
 - The current line highlight now scrolls with the text and is not hidden anymore when scrolling
-
-## 1.0.0-beta.5
-
 - Multiple bug fixes and improvements for full screen writing focus
-
-## 1.0.0-beta.4
-
 - Fix typewriter scrolling in new obsidian tables
-
-**Refactoring of the whole codebase. This needs testing. Also bump to version 1.0.0.**
-
-## 0.0.15-beta.3
-
 - Minor changes to comply with [Obsidian October O_O 2024 plugin self-critique checklist](https://docs.obsidian.md/oo24/plugin).
-
-## 0.0.15-beta.2
-
 - New feature: While navigating in lists in dimming mode, you can enable to highlight/not dim direct parents/grandparents/... of the current list item. (See issue #86).
-
-## 0.0.15-beta.1
-
-**Now using Bun to bundle the plugin.** *Since CJS bundling is experimental in Bun and requires the canary version, this is released as a Beta version for now.*
-
 - Add "fade lines" feature that places a gradient on the lines above and below the current line, making the text fade out more and more towards the top and bottom of the editor.
+
+- *Developer notes:*
+    - *We are now using Bun for bundling. Since bundling CJS format with bun is experimental at the moment, we have to use the canary version for now.*
+    - *The whole codebase was refactored and many new features were introduced. This release candidate must be thoroughly tested before release.*
 
 ## 0.0.14
 
