@@ -1,4 +1,4 @@
-# Typewriter Mode updated to v{{tag_name}}
+# Typewriter Mode updated to v{{tag\_name}}
 
 {{funding}}
 
@@ -6,6 +6,6 @@
 
 Here's what's new since the last version you had installed:
 
----
+***
 
-{{release_notes}}
+{{release\_notes}}

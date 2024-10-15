@@ -3,34 +3,28 @@ default:
 
 
 [private]
-biome ARG:
-  bunx @biomejs/biome {{ARG}} --write ./src ./scripts
+biome:
+  bun biome check --write ./src ./scripts
 
 [private]
 stylelint:
-  bunx stylelint --fix "src/**/*.scss"
+  bun stylelint --fix "src/**/*.scss"
 
-format:
-  just biome format
+[private]
+markdownlint:
+  bun markdownlint --disable MD013 --fix "**/*.md"
 
-lint:
-  just biome lint
-
-check:
-  just biome check
-
-
-type-check:
+tsc:
   bun tsc --noEmit
+
+check: tsc biome stylelint markdownlint
 
 
 dev:
   bun ./scripts/dev.ts
 
 
-prerelease: check type-check
-
-release: prerelease
+release: check
   bun ./scripts/release.ts
 
 ci:
