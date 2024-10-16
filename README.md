@@ -11,12 +11,14 @@
 <!-- markdownlint-disable-next-line -->
 [![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge\&logo=GitHub-Sponsors\&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)
 
-Typewriter Mode is a plugin that adds typewriter scrolling (current line stays at a fixed position on the screen), a highlight for the current line, dimming of unfocused paragraphs and more to [Obsidian](https://obsidian.md).
-All features can be turned on or off individually and have various settings to customize their behavior to your liking.
+Typewriter Mode is plugin that adds several features to turn [Obsidian](https://obsidian.md) into a typewriter-like, distraction-free writing environment, including:
 
-_These are a few exemplary screen captures:_
-![Typewriter scrolling and current line highlighted](https://github.com/davisriedel/obsidian-typewriter-mode/raw/main/demo/typewriter.gif)
-![Unfocused paragraphs dimmed](https://github.com/davisriedel/obsidian-typewriter-mode/raw/main/demo/dimming.gif)
+- Typewriter scrolling (current line stays at a fixed position on the screen)
+- Highlighting the current line
+- Keeping a set number of lines above and below the cursor
+- Dimming unfocused paragraphs / sentences
+- Fullscreen writing focus
+- Limit line length to set number of characters
 
 ## Compatibility
 
@@ -24,22 +26,22 @@ This plugin is compatible with Obsidian v0.15.0 and above. It does not support t
 
 ## Installation
 
-To install community plugins make sure _safe mode_ is turned off in Obsidian's settings.
+To install community plugins, make sure _safe mode_ is turned off in Obsidian's settings.
 
 ### Obsidian
 
 You can install this plugin within Obsidian by doing the following:
 
 - Go to Settings > Community Plugins > Browse
-- Search for "Typewriter Mode"
+- Search for “Typewriter Mode”
 - Click Install
 - Click Enable
 
 ### Manual
 
-1. Download the latest Release from the Releases section of the GitHub Repository
+1. Download the latest release from GitHub: [https://github.com/davisriedel/obsidian-typewriter-mode/releases](https://github.com/davisriedel/obsidian-typewriter-mode/releases)
 2. Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`. _Note: On some machines, the `.obsidian` folder may be hidden. On macOS, you should be able to press `Command+Shift+Dot` to show the folder in Finder._
-3. Reload Obsidian
+3. Force reload Obsidian
 
 ### Beta Versions With BRAT
 
@@ -53,11 +55,11 @@ The sentence highlighting was derived from [Focus Active Sentence](https://githu
 
 The writing focus was derived from [Obsidian Focus Mode](https://github.com/ryanpcmcquen/obsidian-focus-mode) by [ryanpcmcquen](https://github.com/ryanpcmcquen).
 
-Many thanks to the developers of these awesome plugins.
+Many thanks to the developers of these fantastic plugins.
 
 ## Support this project
 
-I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Germany. I develop this plugin in my spare time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors or buymeacoffee.com. I am truly thankful for your support.
+I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Germany. I develop this plugin in my spare time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors or Buy Me a Coffee. I am truly thankful for your support.
 
 <!-- markdownlint-disable-next-line -->
 [![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)
