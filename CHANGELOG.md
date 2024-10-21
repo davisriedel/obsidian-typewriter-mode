@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-rc.2
+
+- Fix current line highlight not transparent on iOS (webkit)
+
 ## 1.0.0-rc.1
 
 - You can now disable the plugin on a per-file basis. Include `typewriter-mode: false` in the file's frontmatter to disable the plugin in that file.
