@@ -16,7 +16,11 @@ import { getActiveSentenceDecos } from "./utils/highlightSentence";
 import { getEditorDom, getScrollDom, getSizerDom } from "./utils/selectors";
 
 const currentLineClass = "ptm-current-line";
-const currentLineHighlightClass = "ptm-current-line-highlight";
+
+// these elements are a workaround, because webkit does not allow
+// ::before and ::after elements to have a different mix-blend-mode than their parent
+const fadeBeforeClass = "ptm-current-line-fade-before";
+const fadeAfterClass = "ptm-current-line-fade-after";
 
 export default function createTypewriterModeViewPlugin(app: App) {
 	return ViewPlugin.fromClass(
@@ -220,9 +224,7 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				for (const b of bodies) this.loadPerWindowPropsOnElement(props, b);
 			}
 
-			private loadCurrentLine(
-				view: EditorView = this.view,
-			): HTMLElement | null {
+			private loadCurrentLine(view: EditorView = this.view) {
 				const editorDom = getEditorDom(view);
 				if (!editorDom) return null;
 
@@ -230,19 +232,38 @@ export default function createTypewriterModeViewPlugin(app: App) {
 					`.${currentLineClass}`,
 				) as HTMLElement;
 
+				const settings = view.state.facet(pluginSettingsFacet);
+
 				if (!currentLine) {
 					currentLine = document.createElement("div");
-					currentLine.className = currentLineClass;
-
-					const currentLineHighlight = document.createElement("div");
-					const settings = view.state.facet(pluginSettingsFacet);
-					currentLineHighlight.className = `${currentLineHighlightClass} ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
-					currentLine.append(currentLineHighlight);
-
+					currentLine.className = `${currentLineClass} ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
 					editorDom.appendChild(currentLine);
 				}
 
-				return currentLine;
+				if (settings.isFadeLinesEnabled) {
+					let fadeBefore = editorDom.querySelector(
+						`.${fadeBeforeClass}`,
+					) as HTMLElement;
+					let fadeAfter = editorDom.querySelector(
+						`.${fadeAfterClass}`,
+					) as HTMLElement;
+
+					if (!fadeBefore) {
+						fadeBefore = document.createElement("div");
+						fadeBefore.className = fadeBeforeClass;
+						editorDom.appendChild(fadeBefore);
+					}
+
+					if (!fadeAfter) {
+						fadeAfter = document.createElement("div");
+						fadeAfter.className = fadeAfterClass;
+						editorDom.appendChild(fadeAfter);
+					}
+
+					return { currentLine, fadeBefore, fadeAfter };
+				}
+
+				return { currentLine };
 			}
 
 			private destroyCurrentLine(view: EditorView = this.view) {
@@ -434,10 +455,17 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				lineOffset: number,
 				lineHeight: number,
 			) {
-				const currentLine = this.loadCurrentLine(view);
-				if (!currentLine) return;
-				currentLine.style.height = `${lineHeight}px`;
-				currentLine.style.top = `${offset - lineOffset}px`;
+				const result = this.loadCurrentLine(view);
+				if (!result) return;
+
+				result.currentLine.style.height = `${lineHeight}px`;
+				result.currentLine.style.top = `${offset - lineOffset}px`;
+
+				// this is a workaround, because fadeBefore.style.bottom does not work somehow...
+				if (result.fadeBefore)
+					result.fadeBefore.style.top = `calc(${offset - lineOffset}px - 100vh)`;
+				if (result.fadeAfter)
+					result.fadeAfter.style.top = `${offset - lineOffset + lineHeight}px`;
 			}
 
 			private setPadding(view: EditorView, offset: number) {

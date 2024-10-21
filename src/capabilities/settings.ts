@@ -60,7 +60,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 	isPauseDimUnfocusedWhileScrollingEnabled: true,
 	isPauseDimUnfocusedWhileSelectingEnabled: true,
 	isHighlightCurrentLineEnabled: true,
-	isFadeLinesEnabled: true,
+	isFadeLinesEnabled: false,
 	fadeLinesIntensity: 0.5,
 	isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
 	currentLineHighlightStyle: "box",
