@@ -1,12 +1,14 @@
+@use "dimmed";
+
 @mixin dim-highlight-list-parent {
   /* stylelint-disable-next-line selector-class-pattern */
   .HyperMD-list-line {
-    @include dimmed(true);
+    @include dimmed.dimmed(true);
   }
 
   /* stylelint-disable-next-line selector-class-pattern */
   .HyperMD-list-line.cm-active {
-    @include dimmed(false);
+    @include dimmed.dimmed(false);
   }
 
   $max-level: 10;
@@ -15,12 +17,12 @@
     @for $n from $l + 1 through $max-level {
       /* stylelint-disable-next-line selector-class-pattern */
       .HyperMD-list-line-#{$l}:has(~ .HyperMD-list-line-#{$n}.cm-active) {
-        @include dimmed(false);
+        @include dimmed.dimmed(false);
       }
 
       /* stylelint-disable-next-line selector-class-pattern */
       .HyperMD-list-line-#{$l}:has(~ .HyperMD-list-line-#{$l} ~ .HyperMD-list-line-#{$n}.cm-active) {
-        @include dimmed(true);
+        @include dimmed.dimmed(true);
       }
     }
   }

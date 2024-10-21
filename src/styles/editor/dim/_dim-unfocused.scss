@@ -1,16 +1,19 @@
+@use "dim-highlight-list-parent";
+@use "dimmed";
+
 @mixin apply-dim-sentence($line-condition) {
-  @include dimmed(true);
+  @include dimmed.dimmed(true);
 
   &.cm-active {
-    @include dimmed(false);
+    @include dimmed.dimmed(false);
   }
 
   &.cm-active .active-paragraph {
-    @include dimmed(true);
+    @include dimmed.dimmed(true);
   }
 
   &.cm-active .active-sentence {
-    @include dimmed(false);
+    @include dimmed.dimmed(false);
   }
 }
 
@@ -18,21 +21,21 @@
   @if $dim-table-as-one {
     .table-editor {
       &:not(:has(.cm-active)) .table-cell-wrapper {
-        @include dimmed(true);
+        @include dimmed.dimmed(true);
       }
 
       .cm-active {
-        @include dimmed(false);
+        @include dimmed.dimmed(false);
       }
     }
   } @else {
     .table-cell-wrapper {
       &:not(:has(.cm-active)) {
-        @include dimmed(true);
+        @include dimmed.dimmed(true);
       }
 
       .cm-active {
-        @include dimmed(false);
+        @include dimmed.dimmed(false);
       }
     }
   }
@@ -44,7 +47,7 @@
   &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor#{$focus-condition}:not(.ptm-select, .ptm-first-open),
   &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor#{$focus-condition}:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
     @if $highlight-list-parent {
-      @include dim-highlight-list-parent;
+      @include dim-highlight-list-parent.dim-highlight-list-parent;
     }
 
     @include apply-dim-table($dim-table-as-one);
@@ -52,7 +55,7 @@
     @if $mode == 'paragraphs' {
       .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), 
       .cm-line:not(.cm-active)#{$line-condition} {
-        @include dimmed(true);
+        @include dimmed.dimmed(true);
       }
     } @else if $mode == 'sentences' {
       .cm-line#{$line-condition} {
@@ -78,7 +81,7 @@
         .cm-editor:not(.cm-focused) {
           @if $mode == 'paragraphs' {
             .CodeMirror-lines:not(.selecting) .CodeMirror-code, .cm-line#{$line-condition} {
-              @include dimmed(true);
+              @include dimmed.dimmed(true);
             }
           } @else if $mode == 'sentences' {
             .cm-line#{$line-condition} {

@@ -1,4 +1,4 @@
-@import "current-line/index";
-@import "dim/index";
-@import "max-chars-per-line/index";
-@import "writing-focus/index";
+@use "current-line";
+@use "dim";
+@use "max-chars-per-line";
+@use "writing-focus";

@@ -1,6 +1,2 @@
-// UI
-@import "ui/settings";
-@import "ui/update-modal";
-
-// Editor
-@import "editor/index";
+@use "ui";
+@use "editor";
