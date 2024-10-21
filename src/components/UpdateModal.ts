@@ -114,9 +114,9 @@ export class UpdateModal extends Modal {
 			.join("\n---\n");
 
 		const markdownStr = updateNotice
-			.replace("{{tag_name}}", releases[0].tag_name)
+			.replace("{{tag-name}}", releases[0].tag_name)
 			.replace("{{funding}}", fundingText)
-			.replace("{{release_notes}}", releaseNotes);
+			.replace("{{release-notes}}", releaseNotes);
 
 		MarkdownRenderer.render(
 			this.app,
