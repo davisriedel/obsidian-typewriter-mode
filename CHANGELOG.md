@@ -3,6 +3,10 @@
 ## 1.0.0-rc.2
 
 - Fix current line highlight not transparent on iOS (webkit)
+- Fix update modal
+
+- _Developer notes:_
+  - _We have migrated from SCSS @import to @use_
 
 ## 1.0.0-rc.1
 
