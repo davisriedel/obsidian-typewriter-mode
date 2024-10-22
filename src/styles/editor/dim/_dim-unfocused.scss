@@ -43,9 +43,9 @@
 
 @mixin apply-dim($focus-condition, $mode, $highlight-list-parent, $line-condition, $dim-table-as-one) {
   &:not(.ptm-dim-unfocused-pause-while-scrolling, .ptm-dim-unfocused-pause-while-selecting) .cm-editor#{$focus-condition}:not(.ptm-first-open),
-  &.ptm-dim-unfocused-pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor#{$focus-condition}:not(.ptm-wheel, .ptm-first-open),
+  &.ptm-dim-unfocused-pause-while-scrolling:not(.ptm-dim-unfocused-pause-while-selecting) .cm-editor#{$focus-condition}:not(.ptm-scroll, .ptm-first-open),
   &.ptm-dim-unfocused-pause-while-selecting:not(.ptm-dim-unfocused-pause-while-scrolling) .cm-editor#{$focus-condition}:not(.ptm-select, .ptm-first-open),
-  &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor#{$focus-condition}:not(.ptm-wheel, .ptm-select, .ptm-first-open) {
+  &.ptm-dim-unfocused-pause-while-scrolling.ptm-dim-unfocused-pause-while-selecting .cm-editor#{$focus-condition}:not(.ptm-scroll, .ptm-select, .ptm-first-open) {
     @if $highlight-list-parent {
       @include dim-highlight-list-parent.dim-highlight-list-parent;
     }
@@ -53,7 +53,7 @@
     @include apply-dim-table($dim-table-as-one);
 
     @if $mode == 'paragraphs' {
-      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline), 
+      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline),
       .cm-line:not(.cm-active)#{$line-condition} {
         @include dimmed.dimmed(true);
       }

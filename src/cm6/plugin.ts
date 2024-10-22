@@ -27,8 +27,8 @@ export default function createTypewriterModeViewPlugin(app: App) {
 		class {
 			private domResizeObserver: ResizeObserver | null = null;
 
-			private isListeningToOnWheel = false;
-			private isOnWheelClassSet = false;
+			private isListeningToOnScroll = false;
+			private isOnScrollClassSet = false;
 
 			private isInitialInteraction = true;
 			private isRenderingAllowedUserEvent = false;
@@ -43,7 +43,7 @@ export default function createTypewriterModeViewPlugin(app: App) {
 
 				this.destroyCurrentLine();
 
-				this.removeWheelListener();
+				this.removeScrollListener();
 
 				window.removeEventListener(
 					"moveByCommand",
@@ -273,37 +273,46 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				const currentLine = editorDom.querySelector(
 					`.${currentLineClass}`,
 				) as HTMLElement;
+				const fadeBefore = editorDom.querySelector(
+					`.${fadeBeforeClass}`,
+				) as HTMLElement;
+				const fadeAfter = editorDom.querySelector(
+					`.${fadeAfterClass}`,
+				) as HTMLElement;
+
 				currentLine?.remove();
+				fadeBefore?.remove();
+				fadeAfter?.remove();
 			}
 
-			private setupWheelListener() {
-				if (this.isListeningToOnWheel) return;
+			private setupScrollListener() {
+				if (this.isListeningToOnScroll) return;
 				const scrollDom = getScrollDom(this.view);
 				if (scrollDom) {
-					scrollDom.addEventListener("wheel", this.onWheel.bind(this), {
+					scrollDom.addEventListener("scroll", this.onScroll.bind(this), {
 						passive: true,
 					});
-					this.isListeningToOnWheel = true;
+					this.isListeningToOnScroll = true;
 				}
 			}
 
-			private removeWheelListener() {
-				if (!this.isListeningToOnWheel) return;
+			private removeScrollListener() {
+				if (!this.isListeningToOnScroll) return;
 				const scrollDom = getScrollDom(this.view);
 				if (scrollDom) {
-					scrollDom.removeEventListener("wheel", this.onWheel);
-					this.isListeningToOnWheel = false;
+					scrollDom.removeEventListener("scroll", this.onScroll);
+					this.isListeningToOnScroll = false;
 				}
 			}
 
 			private updateAllowedUserEvent() {
 				this.applyDecorations();
-				this.removeWheelListener();
+				this.removeScrollListener();
 
 				const editorDom = getEditorDom(this.view);
 				if (editorDom) {
-					editorDom.classList.remove("ptm-wheel");
-					this.isOnWheelClassSet = false;
+					editorDom.classList.remove("ptm-scroll");
+					this.isOnScrollClassSet = false;
 
 					editorDom.classList.remove("ptm-select");
 
@@ -385,19 +394,20 @@ export default function createTypewriterModeViewPlugin(app: App) {
 				this.updateAfterExternalEvent();
 			}
 
-			private onWheel() {
-				if (!this.isOnWheelClassSet) {
-					const editorDom = getEditorDom(this.view);
-					if (editorDom) {
-						editorDom.classList.add("ptm-wheel");
-						this.isOnWheelClassSet = true;
-					}
-				}
-
+			private onScroll() {
 				measureTypewriterPosition(
 					this.view,
-					"TypewriterModeOnWheel",
+					"TypewriterModeOnScroll",
 					(measure, view) => {
+						// This is placed here to debounce DOM manipulation
+						if (!this.isOnScrollClassSet) {
+							const editorDom = getEditorDom(this.view);
+							if (editorDom) {
+								editorDom.classList.add("ptm-scroll");
+								this.isOnScrollClassSet = true;
+							}
+						}
+
 						if (!measure) return;
 						const { activeLineOffset, lineOffset, lineHeight } = measure;
 						this.moveCurrentLine(
@@ -437,7 +447,7 @@ export default function createTypewriterModeViewPlugin(app: App) {
 					this.view,
 					"TypewriterModeUpdateAfterExternalEvent",
 					(measure, view) => {
-						this.setupWheelListener();
+						this.setupScrollListener();
 
 						if (!measure) return;
 
