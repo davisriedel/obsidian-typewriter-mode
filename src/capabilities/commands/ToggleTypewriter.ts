@@ -6,8 +6,8 @@ export class ToggleTypewriter extends Command {
 	protected commandTitle = "Toggle typewriter scrolling";
 
 	protected onCommand(): void {
-		const { isTypewriterScrollEnabled } = this.plugin.settings;
-		(this.plugin.features.typewriter.TypewriterScroll as FeatureToggle).toggle(
+		const { isTypewriterScrollEnabled } = this.tm.settings;
+		(this.tm.features.typewriter.TypewriterScroll as FeatureToggle).toggle(
 			!isTypewriterScrollEnabled,
 		);
 	}

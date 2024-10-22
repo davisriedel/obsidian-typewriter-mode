@@ -1,7 +1,7 @@
-import type TypewriterModePlugin from "@/TypewriterModePlugin";
+import type TypewriterModeLib from "@/lib";
 
 export default abstract class Loadable {
-	constructor(protected plugin: TypewriterModePlugin) {}
+	constructor(protected tm: TypewriterModeLib) {}
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	load() {}

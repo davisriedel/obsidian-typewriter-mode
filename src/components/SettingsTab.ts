@@ -1,4 +1,4 @@
-import type TypewriterModePlugin from "@/TypewriterModePlugin";
+import type TypewriterModeLib from "@/lib";
 import fundingText from "@/texts/Funding.md" with { type: "text" };
 import type { App } from "obsidian";
 import {
@@ -9,11 +9,11 @@ import {
 } from "obsidian";
 
 export default class TypewriterModeSettingTab extends PluginSettingTab {
-	private plugin: TypewriterModePlugin;
+	private tm: TypewriterModeLib;
 
-	constructor(app: App, plugin: TypewriterModePlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
+	constructor(app: App, tm: TypewriterModeLib) {
+		super(app, tm.plugin);
+		this.tm = tm;
 	}
 
 	private addHeading(text: string) {
@@ -27,50 +27,48 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 	display(): void {
 		this.containerEl.empty();
 
-		for (const feature of Object.values(this.plugin.features.general)) {
+		for (const feature of Object.values(this.tm.features.general)) {
 			feature.registerSetting(this);
 		}
 
 		this.addHeading("Typewriter");
-		if (this.plugin.settings.isKeepLinesAboveAndBelowEnabled)
+		if (this.tm.settings.isKeepLinesAboveAndBelowEnabled)
 			this.addText(
 				'Not available if "keep lines above and below" is activated',
 			);
-		for (const feature of Object.values(this.plugin.features.typewriter)) {
+		for (const feature of Object.values(this.tm.features.typewriter)) {
 			feature.registerSetting(this);
 		}
 
 		this.addHeading("Keep lines above and below");
-		if (this.plugin.settings.isTypewriterScrollEnabled)
+		if (this.tm.settings.isTypewriterScrollEnabled)
 			this.addText("Not available if typewriter scrolling is activated");
-		for (const feature of Object.values(
-			this.plugin.features.keepAboveAndBelow,
-		)) {
+		for (const feature of Object.values(this.tm.features.keepAboveAndBelow)) {
 			feature.registerSetting(this);
 		}
 
 		this.addHeading("Highlight current line");
-		for (const feature of Object.values(this.plugin.features.currentLine)) {
+		for (const feature of Object.values(this.tm.features.currentLine)) {
 			feature.registerSetting(this);
 		}
 
 		this.addHeading("Dimming");
-		for (const feature of Object.values(this.plugin.features.dimming)) {
+		for (const feature of Object.values(this.tm.features.dimming)) {
 			feature.registerSetting(this);
 		}
 
 		this.addHeading("Limit line width");
-		for (const feature of Object.values(this.plugin.features.maxChar)) {
+		for (const feature of Object.values(this.tm.features.maxChar)) {
 			feature.registerSetting(this);
 		}
 
 		this.addHeading("Writing focus");
-		for (const feature of Object.values(this.plugin.features.writingFocus)) {
+		for (const feature of Object.values(this.tm.features.writingFocus)) {
 			feature.registerSetting(this);
 		}
 
 		this.addHeading("Update notice and funding");
-		for (const feature of Object.values(this.plugin.features.updates)) {
+		for (const feature of Object.values(this.tm.features.updates)) {
 			feature.registerSetting(this);
 		}
 

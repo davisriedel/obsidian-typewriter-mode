@@ -6,6 +6,6 @@ export class ToggleDimming extends Command {
 	protected commandTitle = "Toggle dimming";
 
 	protected onCommand(): void {
-		(this.plugin.features.dimming.DimUnfocused as FeatureToggle).toggle();
+		(this.tm.features.dimming.DimUnfocused as FeatureToggle).toggle();
 	}
 }

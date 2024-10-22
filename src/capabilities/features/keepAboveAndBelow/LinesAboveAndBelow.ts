@@ -15,7 +15,7 @@ export default class LinesAboveAndBelow extends Feature {
 			.setClass("typewriter-mode-setting")
 			.addText((text) =>
 				text
-					.setValue(this.plugin.settings.linesAboveAndBelow.toString())
+					.setValue(this.tm.settings.linesAboveAndBelow.toString())
 					.onChange((newValue) => {
 						this.changeAmountOfLinesAboveAndBelow(Number.parseInt(newValue));
 					}),
@@ -23,7 +23,7 @@ export default class LinesAboveAndBelow extends Feature {
 	}
 
 	private changeAmountOfLinesAboveAndBelow(newValue: number) {
-		this.plugin.settings.linesAboveAndBelow = newValue;
-		this.plugin.saveSettings().then();
+		this.tm.settings.linesAboveAndBelow = newValue;
+		this.tm.saveSettings().then();
 	}
 }

@@ -17,7 +17,7 @@ export default class DimUnfocusedMode extends Feature {
 				dropdown
 					.addOption("paragraphs", "Paragraphs")
 					.addOption("sentences", "Sentences")
-					.setValue(this.plugin.settings.dimUnfocusedMode)
+					.setValue(this.tm.settings.dimUnfocusedMode)
 					.onChange((newValue) => {
 						this.change(newValue as Options);
 						settingTab.display();
@@ -27,14 +27,14 @@ export default class DimUnfocusedMode extends Feature {
 
 	override load() {
 		super.load();
-		this.plugin.perWindowProps.bodyAttrs["data-ptm-dim-unfocused-mode"] =
-			this.plugin.settings.dimUnfocusedMode;
+		this.tm.perWindowProps.bodyAttrs["data-ptm-dim-unfocused-mode"] =
+			this.tm.settings.dimUnfocusedMode;
 	}
 
 	private change(newValue: Options) {
-		this.plugin.settings.dimUnfocusedMode = newValue;
-		this.plugin.perWindowProps.bodyAttrs["data-ptm-dim-unfocused-mode"] =
-			this.plugin.settings.dimUnfocusedMode;
-		this.plugin.saveSettings().then();
+		this.tm.settings.dimUnfocusedMode = newValue;
+		this.tm.perWindowProps.bodyAttrs["data-ptm-dim-unfocused-mode"] =
+			this.tm.settings.dimUnfocusedMode;
+		this.tm.saveSettings().then();
 	}
 }

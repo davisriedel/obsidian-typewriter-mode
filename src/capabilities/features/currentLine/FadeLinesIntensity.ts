@@ -15,7 +15,7 @@ export default class FadeLinesIntensity extends Feature {
 				slider
 					.setLimits(0, 100, 5)
 					.setDynamicTooltip()
-					.setValue(this.plugin.settings.fadeLinesIntensity * 100)
+					.setValue(this.tm.settings.fadeLinesIntensity * 100)
 					.onChange((newValue) => {
 						this.changeFadeLinesIntensity(newValue / 100);
 					}),
@@ -23,18 +23,15 @@ export default class FadeLinesIntensity extends Feature {
 	}
 
 	override load() {
-		this.plugin.setCSSVariable(
+		this.tm.setCSSVariable(
 			"--ptm-fade-lines-intensity",
-			`${this.plugin.settings.fadeLinesIntensity * 100}%`,
+			`${this.tm.settings.fadeLinesIntensity * 100}%`,
 		);
 	}
 
 	private changeFadeLinesIntensity(newValue = 0.5) {
-		this.plugin.settings.fadeLinesIntensity = newValue;
-		this.plugin.setCSSVariable(
-			"--ptm-fade-lines-intensity",
-			`${newValue * 100}%`,
-		);
-		this.plugin.saveSettings();
+		this.tm.settings.fadeLinesIntensity = newValue;
+		this.tm.setCSSVariable("--ptm-fade-lines-intensity", `${newValue * 100}%`);
+		this.tm.saveSettings();
 	}
 }

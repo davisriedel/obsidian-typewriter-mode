@@ -6,7 +6,7 @@ export abstract class EditorCommand extends Loadable {
 	protected abstract commandTitle: string;
 
 	private registerCommand() {
-		this.plugin.addCommand({
+		this.tm.plugin.addCommand({
 			id: this.commandKey,
 			name: this.commandTitle,
 			editorCallback: this.onCommand.bind(this),

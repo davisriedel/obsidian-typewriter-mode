@@ -13,7 +13,7 @@ export default class MaxCharsPerLine extends Feature {
 			.setClass("typewriter-mode-setting")
 			.addText((text) =>
 				text
-					.setValue(this.plugin.settings.maxCharsPerLine.toString())
+					.setValue(this.tm.settings.maxCharsPerLine.toString())
 					.onChange((newValue) => {
 						this.changeMaxCharsPerLine(Number.parseInt(newValue));
 					}),
@@ -21,15 +21,15 @@ export default class MaxCharsPerLine extends Feature {
 	}
 
 	override load() {
-		this.plugin.setCSSVariable(
+		this.tm.setCSSVariable(
 			"--max-chars-per-line",
-			`${this.plugin.settings.maxCharsPerLine}ch`,
+			`${this.tm.settings.maxCharsPerLine}ch`,
 		);
 	}
 
 	private changeMaxCharsPerLine(newValue: number) {
-		this.plugin.settings.maxCharsPerLine = newValue;
-		this.plugin.setCSSVariable("--max-chars-per-line", `${newValue}ch`);
-		this.plugin.saveSettings();
+		this.tm.settings.maxCharsPerLine = newValue;
+		this.tm.setCSSVariable("--max-chars-per-line", `${newValue}ch`);
+		this.tm.saveSettings();
 	}
 }

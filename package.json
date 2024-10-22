@@ -7,7 +7,6 @@
 		"type": "git",
 		"url": "https://github.com/davisriedel/obsidian-typewriter-mode"
 	},
-	"main": "main.js",
 	"devDependencies": {
 		"@biomejs/biome": "latest",
 		"@codemirror/state": "^6.4.1",
@@ -21,6 +20,7 @@
 		"lint-staged": "^14.0.1",
 		"markdownlint-cli": "^0.42.0",
 		"obsidian": "^1.7.2",
+		"resolve-tspaths": "^0.8.22",
 		"sass-embedded": "^1.79.4",
 		"sass-migrator": "^2.2.0",
 		"stylelint": "^16.10.0",

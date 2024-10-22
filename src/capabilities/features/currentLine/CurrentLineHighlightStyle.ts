@@ -15,7 +15,7 @@ export default class CurrentLineHighlightStyle extends Feature {
 				dropdown
 					.addOption("box", "Box")
 					.addOption("underline", "Underline")
-					.setValue(this.plugin.settings.currentLineHighlightStyle)
+					.setValue(this.tm.settings.currentLineHighlightStyle)
 					.onChange((newValue) => {
 						this.changeCurrentLineHighlightStyle(
 							newValue as "box" | "underline",
@@ -26,7 +26,7 @@ export default class CurrentLineHighlightStyle extends Feature {
 	}
 
 	private changeCurrentLineHighlightStyle(newValue: "box" | "underline") {
-		this.plugin.settings.currentLineHighlightStyle = newValue;
-		this.plugin.saveSettings().then();
+		this.tm.settings.currentLineHighlightStyle = newValue;
+		this.tm.saveSettings().then();
 	}
 }

@@ -24,6 +24,10 @@ dev:
   bun ./scripts/dev.ts
 
 
+lib:
+  bun ./scripts/lib.ts
+
+
 release: check
   bun ./scripts/release.ts
 

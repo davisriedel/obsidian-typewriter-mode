@@ -31,5 +31,6 @@
 		"paths": {
 			"@/*": ["src/*"]
 		}
-	}
+	},
+  "exclude": ["node_modules", "dist", "lib-dist", "scripts"]
 }

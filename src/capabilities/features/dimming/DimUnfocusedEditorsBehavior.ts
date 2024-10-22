@@ -22,7 +22,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 						"Dim all but the previously focused paragraph / sentence",
 					)
 					.addOption("dim-all", "Dim everything")
-					.setValue(this.plugin.settings.dimUnfocusedEditorsBehavior)
+					.setValue(this.tm.settings.dimUnfocusedEditorsBehavior)
 					.onChange((newValue) => {
 						this.changeDimUnfocusedEditorsBehavior(
 							newValue as "dim-none" | "dim" | "dim-all",
@@ -34,18 +34,18 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 
 	override load() {
 		super.load();
-		this.plugin.perWindowProps.bodyAttrs[
+		this.tm.perWindowProps.bodyAttrs[
 			"data-ptm-dim-unfocused-editors-behavior"
-		] = this.plugin.settings.dimUnfocusedEditorsBehavior;
+		] = this.tm.settings.dimUnfocusedEditorsBehavior;
 	}
 
 	private changeDimUnfocusedEditorsBehavior(
 		newValue: "dim-none" | "dim" | "dim-all",
 	) {
-		this.plugin.settings.dimUnfocusedEditorsBehavior = newValue;
-		this.plugin.perWindowProps.bodyAttrs[
+		this.tm.settings.dimUnfocusedEditorsBehavior = newValue;
+		this.tm.perWindowProps.bodyAttrs[
 			"data-ptm-dim-unfocused-editors-behavior"
 		] = newValue;
-		this.plugin.saveSettings().then();
+		this.tm.saveSettings().then();
 	}
 }

@@ -18,7 +18,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
 				slider
 					.setLimits(1, 5, 1)
 					.setDynamicTooltip()
-					.setValue(this.plugin.settings.currentLineHighlightUnderlineThickness)
+					.setValue(this.tm.settings.currentLineHighlightUnderlineThickness)
 					.onChange((newValue) => {
 						this.changeCurrentLineHighlightUnderlineThickness(newValue);
 					}),
@@ -26,18 +26,18 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
 	}
 
 	override load() {
-		this.plugin.setCSSVariable(
+		this.tm.setCSSVariable(
 			"--current-line-highlight-underline-thickness",
-			`${this.plugin.settings.currentLineHighlightUnderlineThickness}px`,
+			`${this.tm.settings.currentLineHighlightUnderlineThickness}px`,
 		);
 	}
 
 	private changeCurrentLineHighlightUnderlineThickness(newValue: number) {
-		this.plugin.settings.currentLineHighlightUnderlineThickness = newValue;
-		this.plugin.setCSSVariable(
+		this.tm.settings.currentLineHighlightUnderlineThickness = newValue;
+		this.tm.setCSSVariable(
 			"--current-line-highlight-underline-thickness",
 			`${newValue}px`,
 		);
-		this.plugin.saveSettings();
+		this.tm.saveSettings();
 	}
 }

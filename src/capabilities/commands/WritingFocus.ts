@@ -26,19 +26,19 @@ export class WritingFocus extends Command {
 	}
 
 	private addVignette(view: ItemView) {
-		const vignetteEl = this.plugin.settings.doesWritingFocusShowHeader
+		const vignetteEl = this.tm.settings.doesWritingFocusShowHeader
 			? view.containerEl
 			: view.contentEl;
 
 		vignetteEl.classList.add(this.vignetteElClass);
 		vignetteEl.setAttr(
 			this.vignetteStyleAttr,
-			this.plugin.settings.writingFocusVignetteStyle,
+			this.tm.settings.writingFocusVignetteStyle,
 		);
 	}
 
 	private removeVignette(view: ItemView) {
-		const vignetteEl = this.plugin.settings.doesWritingFocusShowHeader
+		const vignetteEl = this.tm.settings.doesWritingFocusShowHeader
 			? view.containerEl
 			: view.contentEl;
 
@@ -78,24 +78,23 @@ export class WritingFocus extends Command {
 	}
 
 	storeSplitsValues() {
-		this.leftSplitCollapsed = this.plugin.app.workspace.leftSplit.collapsed;
-		this.rightSplitCollapsed = this.plugin.app.workspace.rightSplit.collapsed;
+		this.leftSplitCollapsed = this.tm.app.workspace.leftSplit.collapsed;
+		this.rightSplitCollapsed = this.tm.app.workspace.rightSplit.collapsed;
 	}
 
 	collapseSplits() {
-		this.plugin.app.workspace.leftSplit.collapse();
-		this.plugin.app.workspace.rightSplit.collapse();
+		this.tm.app.workspace.leftSplit.collapse();
+		this.tm.app.workspace.rightSplit.collapse();
 	}
 
 	restoreSplits() {
-		if (!this.leftSplitCollapsed) this.plugin.app.workspace.leftSplit.expand();
-		if (!this.rightSplitCollapsed)
-			this.plugin.app.workspace.rightSplit.expand();
+		if (!this.leftSplitCollapsed) this.tm.app.workspace.leftSplit.expand();
+		if (!this.rightSplitCollapsed) this.tm.app.workspace.rightSplit.expand();
 	}
 
 	removeExtraneousClasses() {
-		if (this.plugin.app.workspace.containerEl.hasClass(this.maximizedClass)) {
-			this.plugin.app.workspace.containerEl.removeClass(this.maximizedClass);
+		if (this.tm.app.workspace.containerEl.hasClass(this.maximizedClass)) {
+			this.tm.app.workspace.containerEl.removeClass(this.maximizedClass);
 		}
 		if (document.body.classList.contains(this.focusModeClass)) {
 			document.body.classList.remove(this.focusModeClass);
@@ -111,9 +110,9 @@ export class WritingFocus extends Command {
 
 		this.collapseSplits();
 
-		this.plugin.app.workspace.containerEl.toggleClass(
+		this.tm.app.workspace.containerEl.toggleClass(
 			this.maximizedClass,
-			!this.plugin.app.workspace.containerEl.hasClass(this.maximizedClass),
+			!this.tm.app.workspace.containerEl.hasClass(this.maximizedClass),
 		);
 
 		document.body.classList.toggle(
@@ -135,11 +134,9 @@ export class WritingFocus extends Command {
 			});
 		}
 
-		if (this.plugin.settings.doesWritingFocusShowVignette)
-			this.addVignette(view);
+		if (this.tm.settings.doesWritingFocusShowVignette) this.addVignette(view);
 
-		if (this.plugin.settings.isWritingFocusFullscreen)
-			this.startFullscreen(view);
+		if (this.tm.settings.isWritingFocusFullscreen) this.startFullscreen(view);
 	}
 
 	disableFocusMode(view: ItemView) {
@@ -158,15 +155,15 @@ export class WritingFocus extends Command {
 			},
 		);
 
-		if (this.plugin.settings.doesWritingFocusShowVignette)
+		if (this.tm.settings.doesWritingFocusShowVignette)
 			this.removeVignette(view);
-		if (this.plugin.settings.isWritingFocusFullscreen) this.exitFullscreen();
+		if (this.tm.settings.isWritingFocusFullscreen) this.exitFullscreen();
 
 		this.focusModeActive = false;
 	}
 
 	private toggleFocusMode() {
-		const view = this.plugin.app.workspace.getActiveViewOfType(ItemView);
+		const view = this.tm.app.workspace.getActiveViewOfType(ItemView);
 		if (!view || view?.getViewType() === "empty") return;
 
 		if (this.focusModeActive) {
@@ -177,7 +174,7 @@ export class WritingFocus extends Command {
 	}
 
 	async onload() {
-		this.plugin.addRibbonIcon(
+		this.tm.plugin.addRibbonIcon(
 			"enter",
 			"Toggle Writing Focus",
 			(_event): void => {

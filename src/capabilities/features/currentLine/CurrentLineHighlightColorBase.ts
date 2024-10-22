@@ -1,5 +1,5 @@
-import type TypewriterModePlugin from "@/TypewriterModePlugin";
 import { Feature } from "@/capabilities/base/Feature";
+import type TypewriterModeLib from "@/lib";
 import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
@@ -10,8 +10,8 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 	protected setting: SettingKey<ThemeMode>;
 	protected themeMode: ThemeMode;
 
-	public constructor(plugin: TypewriterModePlugin, themeMode: ThemeMode) {
-		super(plugin);
+	public constructor(tm: TypewriterModeLib, themeMode: ThemeMode) {
+		super(tm);
 		this.themeMode = themeMode;
 		this.setting = `currentLineHighlightColor-${themeMode}`;
 	}
@@ -25,7 +25,7 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 			.setClass("typewriter-mode-setting")
 			.addText((text) =>
 				text
-					.setValue(this.plugin.settings[this.setting] as string)
+					.setValue(this.tm.settings[this.setting] as string)
 					.onChange((newValue) => {
 						this.changeCurrentLineHighlightColor(newValue);
 					}),
@@ -33,18 +33,18 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 	}
 
 	override load() {
-		this.plugin.setCSSVariable(
+		this.tm.setCSSVariable(
 			`--current-line-highlight-color-${this.themeMode}`,
-			`${this.plugin.settings[this.setting]}`,
+			`${this.tm.settings[this.setting]}`,
 		);
 	}
 
 	private changeCurrentLineHighlightColor(newValue: string) {
-		this.plugin.settings[this.setting] = newValue;
-		this.plugin.setCSSVariable(
+		this.tm.settings[this.setting] = newValue;
+		this.tm.setCSSVariable(
 			`--current-line-highlight-color-${this.themeMode}`,
 			`${newValue}`,
 		);
-		this.plugin.saveSettings().then();
+		this.tm.saveSettings().then();
 	}
 }

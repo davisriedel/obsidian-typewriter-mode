@@ -8,7 +8,7 @@ function capitalize(str: string) {
 export class MoveTypewriter extends Loadable {
 	override load() {
 		for (const direction of ["up", "down"] as const) {
-			this.plugin.addCommand({
+			this.tm.plugin.addCommand({
 				id: `move-typewriter-${direction}`,
 				name: `Move typewriter ${direction}`,
 				hotkeys: [

@@ -15,7 +15,7 @@ export default class WritingFocusVignetteStyle extends Feature {
 				dropdown
 					.addOption("box", "Box")
 					.addOption("column", "Column")
-					.setValue(this.plugin.settings.writingFocusVignetteStyle)
+					.setValue(this.tm.settings.writingFocusVignetteStyle)
 					.onChange((newValue) => {
 						this.changeVignetteStyle(newValue as "box" | "column");
 						settingTab.display();
@@ -24,7 +24,7 @@ export default class WritingFocusVignetteStyle extends Feature {
 	}
 
 	private changeVignetteStyle(newValue: "box" | "column") {
-		this.plugin.settings.writingFocusVignetteStyle = newValue;
-		this.plugin.saveSettings().then();
+		this.tm.settings.writingFocusVignetteStyle = newValue;
+		this.tm.saveSettings().then();
 	}
 }

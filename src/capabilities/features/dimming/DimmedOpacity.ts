@@ -15,7 +15,7 @@ export default class DimmedOpacity extends Feature {
 				slider
 					.setLimits(0, 100, 5)
 					.setDynamicTooltip()
-					.setValue(this.plugin.settings.dimmedOpacity * 100)
+					.setValue(this.tm.settings.dimmedOpacity * 100)
 					.onChange((newValue) => {
 						this.changeDimmedOpacity(newValue / 100);
 					}),
@@ -23,15 +23,15 @@ export default class DimmedOpacity extends Feature {
 	}
 
 	override load() {
-		this.plugin.setCSSVariable(
+		this.tm.setCSSVariable(
 			"--dimmed-opacity",
-			`${this.plugin.settings.dimmedOpacity}`,
+			`${this.tm.settings.dimmedOpacity}`,
 		);
 	}
 
 	private changeDimmedOpacity(newValue = 0.25) {
-		this.plugin.settings.dimmedOpacity = newValue;
-		this.plugin.setCSSVariable("--dimmed-opacity", `${newValue}`);
-		this.plugin.saveSettings();
+		this.tm.settings.dimmedOpacity = newValue;
+		this.tm.setCSSVariable("--dimmed-opacity", `${newValue}`);
+		this.tm.saveSettings();
 	}
 }

@@ -1,8 +1,8 @@
-import type TypewriterModePlugin from "@/TypewriterModePlugin";
+import type TypewriterModeLib from "@/lib";
 import CurrentLineHighlightColorBase from "./CurrentLineHighlightColorBase";
 
 export default class CurrentLineHighlightColorLight extends CurrentLineHighlightColorBase {
-	public constructor(plugin: TypewriterModePlugin) {
-		super(plugin, "light");
+	public constructor(tm: TypewriterModeLib) {
+		super(tm, "light");
 	}
 }

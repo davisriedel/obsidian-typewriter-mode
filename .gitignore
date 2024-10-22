@@ -6,6 +6,7 @@ bun.lockb
 
 # Build
 dist
+lib-dist
 test-vault
 
 # Jetbrains IDEs
