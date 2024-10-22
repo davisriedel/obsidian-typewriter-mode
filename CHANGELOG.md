@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-rc.3
+
+- Fix current line not moving when scrolling on mobile
+
 ## 1.0.0-rc.2
 
 - Fix current line highlight not transparent on iOS (webkit)
