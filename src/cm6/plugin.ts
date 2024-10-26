@@ -166,14 +166,15 @@ class TypewriterModeCM6Plugin {
 	private onReconfigured(): void {
 		console.debug("onReconfigured");
 
+		this.isPerWindowPropsReloadRequired = true;
+
 		if (this.isDisabled()) {
 			this.destroyCurrentLine();
 			this.resetPadding(this.view);
-			return;
+			this.loadPerWindowProps();
+		} else {
+			this.updateAfterExternalEvent();
 		}
-
-		this.isPerWindowPropsReloadRequired = true;
-		this.updateAfterExternalEvent();
 	}
 
 	private watchEmbeddedMarkdown() {
@@ -517,7 +518,7 @@ class TypewriterModeCM6Plugin {
 		if (!this.isMarkdownFile()) return;
 		const sizerDom = getSizerDom(view);
 		if (!sizerDom) return;
-		(sizerDom as HTMLElement).style.padding = "var(--file-margins)";
+		(sizerDom as HTMLElement).style.removeProperty("padding");
 	}
 
 	private recenter(view: EditorView, offset: number) {
