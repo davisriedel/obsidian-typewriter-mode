@@ -35,6 +35,8 @@ class TypewriterModeCM6Plugin {
 	private isRenderingAllowedUserEvent = false;
 	decorations: RangeSet<Decoration> = RangeSet.empty;
 
+	private isPerWindowPropsReloadRequired = false;
+
 	constructor(app: App, view: EditorView) {
 		this.app = app;
 		this.view = view;
@@ -133,12 +135,22 @@ class TypewriterModeCM6Plugin {
 
 	private isMarkdownFile() {
 		const view = this.app.workspace.getActiveViewOfType(ItemView);
-		return view?.getViewType() === "markdown";
+		if (!view) {
+			// We currently do not have an active view. After a new view gets active, the per window props must be reloaded.
+			this.isPerWindowPropsReloadRequired = true;
+			return false;
+		}
+		return view.getViewType() === "markdown";
 	}
 
 	private isDisabledInFrontmatter() {
 		const file = this.app.workspace.getActiveFile();
-		if (!file) return false;
+		if (!file) {
+			// We currently do not have an active file. After a new file gets active, the per window props must be reloaded.
+			this.isPerWindowPropsReloadRequired = true;
+			return false;
+		}
+
 		const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
 		if (!frontmatter) return false;
 		return !frontmatter["typewriter-mode"];
@@ -152,7 +164,7 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private onReconfigured(): void {
-		this.loadPerWindowProps();
+		console.debug("onReconfigured");
 
 		if (this.isDisabled()) {
 			this.destroyCurrentLine();
@@ -160,6 +172,7 @@ class TypewriterModeCM6Plugin {
 			return;
 		}
 
+		this.isPerWindowPropsReloadRequired = true;
 		this.updateAfterExternalEvent();
 	}
 
@@ -212,12 +225,19 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private loadPerWindowProps() {
+		console.debug("loadPerWindowProps");
+
+		if (!this.isPerWindowPropsReloadRequired) return;
+		this.isPerWindowPropsReloadRequired = false;
+
 		const bodies = this.getMarkdownBodies();
 		const props = this.view.state.facet(perWindowProps);
 		for (const b of bodies) this.loadPerWindowPropsOnElement(props, b);
 	}
 
 	private loadCurrentLine(view: EditorView = this.view) {
+		console.debug("loadCurrentLine");
+
 		const editorDom = getEditorDom(view);
 		if (!editorDom) return null;
 
@@ -260,6 +280,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private destroyCurrentLine(view: EditorView = this.view) {
+		console.debug("destroyCurrentLine");
+
 		const editorDom = getEditorDom(view);
 		if (!editorDom) return;
 
@@ -279,6 +301,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private setupScrollListener() {
+		console.debug("setupScrollListener");
+
 		if (this.isListeningToOnScroll) return;
 		const scrollDom = getScrollDom(this.view);
 		if (scrollDom) {
@@ -290,6 +314,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private removeScrollListener() {
+		console.debug("removeScrollListener");
+
 		if (!this.isListeningToOnScroll) return;
 		const scrollDom = getScrollDom(this.view);
 		if (scrollDom) {
@@ -299,6 +325,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private updateAllowedUserEvent() {
+		console.debug("updateAllowedUserEvent");
+
 		this.applyDecorations();
 		this.removeScrollListener();
 
@@ -329,6 +357,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private updateDisallowedUserEvent() {
+		console.debug("updateDisallowedUserEvent");
+
 		if (this.isRenderingAllowedUserEvent) return;
 
 		const editorDom = getEditorDom(this.view);
@@ -358,6 +388,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private updateNonUserEvent() {
+		console.debug("updateNonUserEvent");
+
 		this.applyDecorations();
 
 		if (!this.isInitialInteraction) return;
@@ -416,11 +448,14 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private updateAfterExternalEvent() {
+		console.debug("updateAfterExternalEvent");
+
 		if (this.isTableCell()) {
 			this.destroyCurrentLine();
 			return;
 		}
 
+		this.loadPerWindowProps();
 		this.applyDecorations();
 
 		const { isTypewriterScrollEnabled } =
@@ -448,6 +483,8 @@ class TypewriterModeCM6Plugin {
 		lineOffset: number,
 		lineHeight: number,
 	) {
+		console.debug("moveCurrentLine", offset, lineOffset, lineHeight);
+
 		const result = this.loadCurrentLine(view);
 		if (!result) return;
 
@@ -462,6 +499,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private setPadding(view: EditorView, offset: number) {
+		console.debug("setPadding", offset);
+
 		const { isOnlyMaintainTypewriterOffsetWhenReachedEnabled } =
 			view.state.facet(pluginSettingsFacet);
 
@@ -482,6 +521,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private recenter(view: EditorView, offset: number) {
+		console.debug("recenter", offset);
+
 		const head = view.state.selection.main.head;
 		const effect = EditorView.scrollIntoView(head, {
 			y: "start",

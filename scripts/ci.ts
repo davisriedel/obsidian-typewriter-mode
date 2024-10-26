@@ -2,7 +2,7 @@
 
 import { $ } from "bun";
 
-import { buildPlugin } from "./utils/buildPlugin";
+import { buildPlugin } from "./utils/build";
 import { getPackageMetadata } from "./utils/getPackageMetadata";
 
 const outdir = "dist";

@@ -23,6 +23,9 @@ check: tsc biome stylelint markdownlint
 dev:
   bun ./scripts/dev.ts
 
+debug:
+  bun ./scripts/dev.ts --debug
+
 
 lib:
   bun ./scripts/lib.ts

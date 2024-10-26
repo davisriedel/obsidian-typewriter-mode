@@ -11,6 +11,7 @@
 		"@biomejs/biome": "latest",
 		"@codemirror/state": "^6.4.1",
 		"@codemirror/view": "^6.34.1",
+		"@namchee/bun-plugin-strip-debug": "^1.0.4",
 		"@types/bun": "latest",
 		"@types/codemirror": "^5.60.15",
 		"@types/node": "^20.16.10",

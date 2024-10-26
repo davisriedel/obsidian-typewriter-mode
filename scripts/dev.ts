@@ -1,13 +1,25 @@
 /// <reference types="bun-types" />
 
+import { parseArgs } from "node:util";
 import { $ } from "bun";
 
-import { buildPlugin } from "./utils/buildPlugin";
+import { buildPlugin } from "./utils/build";
 import { getPackageMetadata } from "./utils/getPackageMetadata";
 import { updateManifests } from "./utils/updateManifests";
 
 const obsidianConfigPath = "./test-vault/.obsidian";
 const pluginPath = `${obsidianConfigPath}/plugins/obsidian-typewriter-mode`;
+
+const { values: args } = parseArgs({
+	args: Bun.argv,
+	options: {
+		debug: {
+			type: "boolean",
+		},
+	},
+	strict: true,
+	allowPositionals: true,
+});
 
 console.log("Creating test vault");
 await $`mkdir -p ${pluginPath}`.quiet();
@@ -28,7 +40,8 @@ console.log("Cleaning test vault");
 await $`rm ${pluginPath}/main.js ${pluginPath}/styles.css ${pluginPath}/manifest.json`.quiet();
 
 console.log("Building plugin");
-await buildPlugin(pluginPath);
+const isDebugMode = args.debug ?? false;
+await buildPlugin(pluginPath, !isDebugMode);
 
 console.log("Copying updated manifests");
 const { targetVersion, minAppVersion, isBeta } = await getPackageMetadata();
