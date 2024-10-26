@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0-rc.4
+
+- Fix padding changes when disabling typewriter mode
+- Fix CSS classes noCSS classes not being applied to body on newly created files
+
 ## 1.0.0-rc.3
 
 - Fix current line not moving when scrolling on mobile
