@@ -9,7 +9,6 @@ export default class TypewriterModePlugin extends Plugin {
 	constructor(app: App, manifest: PluginManifest) {
 		super(app, manifest);
 		this.tm = new TypewriterModeLib(
-			app,
 			this,
 			async () => await this.loadData(),
 			async (settings: TypewriterModeSettings) => await this.saveData(settings),
@@ -17,12 +16,9 @@ export default class TypewriterModePlugin extends Plugin {
 	}
 
 	override async onload() {
-		this.tm.loadSettings();
-		this.tm.saveSettings(); // if default settings were loaded
+		await this.tm.load();
 
-		this.tm.loadPerWindowProps();
 		this.tm.loadSettingsTab();
-		this.tm.loadEditorExtension();
 
 		// Load update announcer
 		this.app.workspace.onLayoutReady(() => {

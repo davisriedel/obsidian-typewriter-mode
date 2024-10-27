@@ -24,7 +24,7 @@ async function build(
 		entrypoints: [entrypoint],
 		outdir,
 		minify: true,
-		target: "node",
+		target: "browser",
 		// @ts-ignore - cjs is experimental and only works on canary build of bun
 		format,
 		plugins: stripDebug ? [stripDebugPlugin()] : [],

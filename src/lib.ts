@@ -4,7 +4,7 @@ import { pluginSettingsFacet } from "@/cm6/facets/pluginSettingsFacet";
 import createTypewriterModeViewPlugin from "@/cm6/plugin";
 import TypewriterModeSettingTab from "@/components/SettingsTab";
 import type { Extension } from "@codemirror/state";
-import type { App, Plugin } from "obsidian";
+import type { Plugin } from "obsidian";
 import { FeatureToggle } from "./capabilities/base/FeatureToggle";
 import { getCommands } from "./capabilities/commands";
 import { getFeatures } from "./capabilities/features";
@@ -14,9 +14,7 @@ import {
 } from "./capabilities/settings";
 
 export default class TypewriterModeLib {
-	public readonly app: App;
 	public readonly plugin: Plugin;
-
 	private readonly loadData: () => Promise<TypewriterModeSettings>;
 	private readonly saveData: (
 		settings: TypewriterModeSettings,
@@ -39,16 +37,25 @@ export default class TypewriterModeLib {
 	readonly commands = getCommands(this);
 
 	constructor(
-		app: App,
 		plugin: Plugin,
 		loadData: () => Promise<TypewriterModeSettings>,
 		saveData: (settings: TypewriterModeSettings) => Promise<void>,
 	) {
-		this.app = app;
 		this.plugin = plugin;
 		this.loadData = loadData;
 		this.saveData = saveData;
-		this.editorExtensions = [createTypewriterModeViewPlugin(this.app), []];
+		this.editorExtensions = [
+			createTypewriterModeViewPlugin(this.plugin.app),
+			[],
+		];
+	}
+
+	public async load() {
+		await this.loadSettings();
+		await this.saveSettings(); // if default settings were loaded
+
+		this.loadPerWindowProps();
+		this.loadEditorExtension();
 	}
 
 	public loadPerWindowProps() {
@@ -73,7 +80,9 @@ export default class TypewriterModeLib {
 	}
 
 	public loadSettingsTab() {
-		this.plugin.addSettingTab(new TypewriterModeSettingTab(this.app, this));
+		this.plugin.addSettingTab(
+			new TypewriterModeSettingTab(this.plugin.app, this),
+		);
 	}
 
 	public unload() {
@@ -99,7 +108,7 @@ export default class TypewriterModeLib {
 	public async saveSettings() {
 		await this.saveData(this.settings);
 		this.updateFacets();
-		this.app.workspace.updateOptions();
+		this.plugin.app.workspace.updateOptions();
 	}
 
 	public setCSSVariable(property: string, value: string) {

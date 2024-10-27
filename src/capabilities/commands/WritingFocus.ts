@@ -78,23 +78,28 @@ export class WritingFocus extends Command {
 	}
 
 	storeSplitsValues() {
-		this.leftSplitCollapsed = this.tm.app.workspace.leftSplit.collapsed;
-		this.rightSplitCollapsed = this.tm.app.workspace.rightSplit.collapsed;
+		this.leftSplitCollapsed = this.tm.plugin.app.workspace.leftSplit.collapsed;
+		this.rightSplitCollapsed =
+			this.tm.plugin.app.workspace.rightSplit.collapsed;
 	}
 
 	collapseSplits() {
-		this.tm.app.workspace.leftSplit.collapse();
-		this.tm.app.workspace.rightSplit.collapse();
+		this.tm.plugin.app.workspace.leftSplit.collapse();
+		this.tm.plugin.app.workspace.rightSplit.collapse();
 	}
 
 	restoreSplits() {
-		if (!this.leftSplitCollapsed) this.tm.app.workspace.leftSplit.expand();
-		if (!this.rightSplitCollapsed) this.tm.app.workspace.rightSplit.expand();
+		if (!this.leftSplitCollapsed)
+			this.tm.plugin.app.workspace.leftSplit.expand();
+		if (!this.rightSplitCollapsed)
+			this.tm.plugin.app.workspace.rightSplit.expand();
 	}
 
 	removeExtraneousClasses() {
-		if (this.tm.app.workspace.containerEl.hasClass(this.maximizedClass)) {
-			this.tm.app.workspace.containerEl.removeClass(this.maximizedClass);
+		if (
+			this.tm.plugin.app.workspace.containerEl.hasClass(this.maximizedClass)
+		) {
+			this.tm.plugin.app.workspace.containerEl.removeClass(this.maximizedClass);
 		}
 		if (document.body.classList.contains(this.focusModeClass)) {
 			document.body.classList.remove(this.focusModeClass);
@@ -110,9 +115,9 @@ export class WritingFocus extends Command {
 
 		this.collapseSplits();
 
-		this.tm.app.workspace.containerEl.toggleClass(
+		this.tm.plugin.app.workspace.containerEl.toggleClass(
 			this.maximizedClass,
-			!this.tm.app.workspace.containerEl.hasClass(this.maximizedClass),
+			!this.tm.plugin.app.workspace.containerEl.hasClass(this.maximizedClass),
 		);
 
 		document.body.classList.toggle(
@@ -163,7 +168,7 @@ export class WritingFocus extends Command {
 	}
 
 	private toggleFocusMode() {
-		const view = this.tm.app.workspace.getActiveViewOfType(ItemView);
+		const view = this.tm.plugin.app.workspace.getActiveViewOfType(ItemView);
 		if (!view || view?.getViewType() === "empty") return;
 
 		if (this.focusModeActive) {
