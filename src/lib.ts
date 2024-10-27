@@ -59,13 +59,13 @@ export default class TypewriterModeLib {
 		];
 	}
 
-	public async load() {
+  public async load() {
 		await this.loadSettings();
 		await this.saveSettings(); // if default settings were loaded
 
 		this.loadPerWindowProps();
 		this.loadEditorExtension();
-	}
+  }
 
 	public loadPerWindowProps() {
 		this.perWindowProps.allBodyClasses = [];
@@ -89,9 +89,7 @@ export default class TypewriterModeLib {
 	}
 
 	public loadSettingsTab() {
-		this.plugin.addSettingTab(
-			new TypewriterModeSettingTab(this.plugin.app, this),
-		);
+		this.plugin.addSettingTab(new TypewriterModeSettingTab(this.plugin.app, this));
 	}
 
 	public unload() {
