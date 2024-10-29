@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-rc.5
+
+- Add enable / disable commands for all toggle commands
+
 ## 1.0.0-rc.4
 
 - Fix padding changes when disabling typewriter mode
