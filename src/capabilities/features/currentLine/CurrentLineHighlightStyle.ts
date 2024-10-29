@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class CurrentLineHighlightStyle extends Feature {
-	protected setting: keyof TypewriterModeSettings = "currentLineHighlightStyle";
+	public settingKey: keyof TypewriterModeSettings = "currentLineHighlightStyle";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

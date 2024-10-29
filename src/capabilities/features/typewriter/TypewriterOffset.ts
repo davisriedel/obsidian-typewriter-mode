@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class TypewriterOffset extends Feature {
-	protected setting: keyof TypewriterModeSettings = "typewriterOffset";
+	public settingKey: keyof TypewriterModeSettings = "typewriterOffset";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

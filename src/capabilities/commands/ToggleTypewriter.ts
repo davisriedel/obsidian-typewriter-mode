@@ -1,14 +1,9 @@
-import { Command } from "../base/Command";
 import type { FeatureToggle } from "../base/FeatureToggle";
+import { ToggleCommand } from "../base/ToggleCommand";
 
-export class ToggleTypewriter extends Command {
-	protected commandKey = "toggle-typewriter";
-	protected commandTitle = "Toggle typewriter scrolling";
-
-	protected onCommand(): void {
-		const { isTypewriterScrollEnabled } = this.tm.settings;
-		(this.tm.features.typewriter.TypewriterScroll as FeatureToggle).toggle(
-			!isTypewriterScrollEnabled,
-		);
-	}
+export class ToggleTypewriter extends ToggleCommand {
+	public readonly commandKey = "typewriter";
+	public readonly commandTitle = "typewriter scrolling";
+	protected override featureToggle = this.tm.features.typewriter
+		.isTypewriterScrollEnabled as FeatureToggle;
 }

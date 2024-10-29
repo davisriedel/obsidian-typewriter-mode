@@ -2,8 +2,7 @@ import { FeatureToggle } from "@/capabilities/base/FeatureToggle";
 import type { TypewriterModeSettings } from "@/capabilities/settings";
 
 export default class DimTableAsOne extends FeatureToggle {
-	protected override hasCommand = false;
-	protected setting: keyof TypewriterModeSettings = "isDimTableAsOneEnabled";
+	public settingKey: keyof TypewriterModeSettings = "isDimTableAsOneEnabled";
 	protected override toggleClass = "ptm-dim-table-as-one";
 	protected settingTitle = "Undim all table cells when editing";
 	protected settingDesc =

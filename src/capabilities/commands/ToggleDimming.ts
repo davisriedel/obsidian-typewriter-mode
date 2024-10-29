@@ -1,11 +1,9 @@
-import { Command } from "../base/Command";
 import type { FeatureToggle } from "../base/FeatureToggle";
+import { ToggleCommand } from "../base/ToggleCommand";
 
-export class ToggleDimming extends Command {
-	protected commandKey = "toggle-dimming";
-	protected commandTitle = "Toggle dimming";
-
-	protected onCommand(): void {
-		(this.tm.features.dimming.DimUnfocused as FeatureToggle).toggle();
-	}
+export class ToggleDimming extends ToggleCommand {
+	public readonly commandKey = "dimming";
+	public readonly commandTitle = "dimming";
+	protected featureToggle = this.tm.features.dimming
+		.isDimUnfocusedEnabled as FeatureToggle;
 }

@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class WritingFocusVignetteStyle extends Feature {
-	protected setting: keyof TypewriterModeSettings = "writingFocusVignetteStyle";
+	public settingKey: keyof TypewriterModeSettings = "writingFocusVignetteStyle";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

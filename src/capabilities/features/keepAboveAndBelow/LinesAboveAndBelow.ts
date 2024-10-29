@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class LinesAboveAndBelow extends Feature {
-	protected setting: keyof TypewriterModeSettings = "linesAboveAndBelow";
+	public settingKey: keyof TypewriterModeSettings = "linesAboveAndBelow";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

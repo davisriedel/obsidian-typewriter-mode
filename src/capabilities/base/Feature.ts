@@ -3,7 +3,7 @@ import type { TypewriterModeSettings } from "../settings";
 import Loadable from "./Loadable";
 
 export abstract class Feature extends Loadable {
-	protected abstract setting: keyof TypewriterModeSettings;
+	public abstract readonly settingKey: keyof TypewriterModeSettings;
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	enable() {}
@@ -12,4 +12,12 @@ export abstract class Feature extends Loadable {
 	disable() {}
 
 	abstract registerSetting(settingTab: PluginSettingTab): void;
+
+	public getSettingKey() {
+		return this.settingKey;
+	}
+
+	public getSettingValue() {
+		return this.tm.settings[this.settingKey];
+	}
 }

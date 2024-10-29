@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class DimmedOpacity extends Feature {
-	protected setting: keyof TypewriterModeSettings = "dimmedOpacity";
+	public settingKey: keyof TypewriterModeSettings = "dimmedOpacity";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

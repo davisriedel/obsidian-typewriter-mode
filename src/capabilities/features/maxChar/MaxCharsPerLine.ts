@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class MaxCharsPerLine extends Feature {
-	protected setting: keyof TypewriterModeSettings = "maxCharsPerLine";
+	public settingKey: keyof TypewriterModeSettings = "maxCharsPerLine";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

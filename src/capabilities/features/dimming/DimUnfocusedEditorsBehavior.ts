@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class DimUnfocusedEditorsBehavior extends Feature {
-	protected setting: keyof TypewriterModeSettings =
+	public settingKey: keyof TypewriterModeSettings =
 		"dimUnfocusedEditorsBehavior";
 
 	registerSetting(settingTab: PluginSettingTab): void {

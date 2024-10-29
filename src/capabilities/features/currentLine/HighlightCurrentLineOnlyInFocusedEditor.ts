@@ -2,7 +2,7 @@ import { FeatureToggle } from "@/capabilities/base/FeatureToggle";
 import type { TypewriterModeSettings } from "@/capabilities/settings";
 
 export default class HighlightCurrentLineOnlyInFocusedEditor extends FeatureToggle {
-	protected setting: keyof TypewriterModeSettings =
+	public settingKey: keyof TypewriterModeSettings =
 		"isHighlightCurrentLineOnlyInFocusedEditorEnabled";
 	protected override toggleClass =
 		"ptm-highlight-current-line-only-in-active-editor";

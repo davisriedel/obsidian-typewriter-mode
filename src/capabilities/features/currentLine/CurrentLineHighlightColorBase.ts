@@ -7,13 +7,13 @@ type ThemeMode = "light" | "dark";
 type SettingKey<T extends ThemeMode> = `currentLineHighlightColor-${T}`;
 
 export default abstract class CurrentLineHighlightColor extends Feature {
-	protected setting: SettingKey<ThemeMode>;
+	public settingKey: SettingKey<ThemeMode>;
 	protected themeMode: ThemeMode;
 
 	public constructor(tm: TypewriterModeLib, themeMode: ThemeMode) {
 		super(tm);
 		this.themeMode = themeMode;
-		this.setting = `currentLineHighlightColor-${themeMode}`;
+		this.settingKey = `currentLineHighlightColor-${themeMode}`;
 	}
 
 	registerSetting(settingTab: PluginSettingTab): void {
@@ -24,23 +24,21 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 			)
 			.setClass("typewriter-mode-setting")
 			.addText((text) =>
-				text
-					.setValue(this.tm.settings[this.setting] as string)
-					.onChange((newValue) => {
-						this.changeCurrentLineHighlightColor(newValue);
-					}),
+				text.setValue(this.getSettingValue() as string).onChange((newValue) => {
+					this.changeCurrentLineHighlightColor(newValue);
+				}),
 			);
 	}
 
 	override load() {
 		this.tm.setCSSVariable(
 			`--current-line-highlight-color-${this.themeMode}`,
-			`${this.tm.settings[this.setting]}`,
+			`${this.getSettingValue()}`,
 		);
 	}
 
 	private changeCurrentLineHighlightColor(newValue: string) {
-		this.tm.settings[this.setting] = newValue;
+		this.tm.settings[this.settingKey] = newValue;
 		this.tm.setCSSVariable(
 			`--current-line-highlight-color-${this.themeMode}`,
 			`${newValue}`,

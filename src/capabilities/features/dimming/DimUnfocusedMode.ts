@@ -6,7 +6,7 @@ import { Setting } from "obsidian";
 type Options = "paragraphs" | "sentences";
 
 export default class DimUnfocusedMode extends Feature {
-	protected setting: keyof TypewriterModeSettings = "dimUnfocusedMode";
+	public settingKey: keyof TypewriterModeSettings = "dimUnfocusedMode";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

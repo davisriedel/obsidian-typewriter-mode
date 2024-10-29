@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class FadeLinesIntensity extends Feature {
-	protected setting: keyof TypewriterModeSettings = "fadeLinesIntensity";
+	public settingKey: keyof TypewriterModeSettings = "fadeLinesIntensity";
 
 	registerSetting(settingTab: PluginSettingTab): void {
 		new Setting(settingTab.containerEl)

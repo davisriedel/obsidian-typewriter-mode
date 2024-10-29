@@ -4,7 +4,7 @@ import type { PluginSettingTab } from "obsidian";
 import { Setting } from "obsidian";
 
 export default class CurrentLineHighlightUnderlineThickness extends Feature {
-	protected setting: keyof TypewriterModeSettings =
+	public settingKey: keyof TypewriterModeSettings =
 		"currentLineHighlightUnderlineThickness";
 
 	registerSetting(settingTab: PluginSettingTab): void {

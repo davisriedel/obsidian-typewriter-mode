@@ -1,10 +1,7 @@
-import Loadable from "./Loadable";
+import { AbstractCommand } from "./AbstractCommand";
 
-export abstract class Command extends Loadable {
-	protected abstract commandKey: string;
-	protected abstract commandTitle: string;
-
-	private registerCommand() {
+export abstract class Command extends AbstractCommand {
+	protected override registerCommand() {
 		this.tm.plugin.addCommand({
 			id: this.commandKey,
 			name: this.commandTitle,

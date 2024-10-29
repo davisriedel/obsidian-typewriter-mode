@@ -6,8 +6,6 @@ export abstract class FeatureToggle extends Feature {
 	protected toggleClass: string | null = null;
 	public readonly isToggleClassPersistent: boolean = false;
 
-	protected abstract hasCommand: boolean;
-	protected commandTitle?: string;
 	protected abstract settingTitle: string;
 	protected abstract settingDesc: string;
 
@@ -19,16 +17,6 @@ export abstract class FeatureToggle extends Feature {
 		return this.toggleClass;
 	}
 
-	private registerCommand() {
-		if (this.hasCommand && this.commandTitle) {
-			this.tm.plugin.addCommand({
-				id: this.setting as string,
-				name: this.commandTitle,
-				callback: this.toggle.bind(this),
-			});
-		}
-	}
-
 	registerSetting(settingTab: PluginSettingTab) {
 		new Setting(settingTab.containerEl)
 			.setName(this.settingTitle)
@@ -36,7 +24,7 @@ export abstract class FeatureToggle extends Feature {
 			.setClass("typewriter-mode-setting")
 			.addToggle((toggle) =>
 				toggle
-					.setValue(this.tm.settings[this.setting] as boolean)
+					.setValue(this.getSettingValue() as boolean)
 					.onChange((newValue) => {
 						this.toggle(newValue);
 						settingTab.display();
@@ -46,19 +34,18 @@ export abstract class FeatureToggle extends Feature {
 	}
 
 	override load() {
-		this.registerCommand();
-		this.tm.settings[this.setting] ? this.enable() : this.disable();
+		this.tm.settings[this.settingKey] ? this.enable() : this.disable();
 	}
 
 	toggle(pNewValue: boolean | null = null) {
 		// if no value is passed in, toggle the existing value
 		let newValue = pNewValue;
-		if (newValue === null) newValue = !this.tm.settings[this.setting];
+		if (newValue === null) newValue = !this.getSettingValue();
 
 		// assign the new value and call the correct enable / disable function
 		this.tm.settings = {
 			...this.tm.settings,
-			[this.setting]: newValue,
+			[this.settingKey]: newValue,
 		};
 		newValue ? this.enable() : this.disable();
 

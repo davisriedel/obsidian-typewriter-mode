@@ -1,12 +1,15 @@
 // ADAPTED FROM https://github.com/ryanpcmcquen/obsidian-focus-mode
 
-import { Command } from "@/capabilities/base/Command";
+import type TypewriterModeLib from "@/lib";
 import { ItemView } from "obsidian";
 import { Platform } from "obsidian";
 
-export class WritingFocus extends Command {
-	protected commandKey = "writing-focus";
-	protected commandTitle = "Toggle writing focus";
+export class WritingFocus {
+	private readonly tm: TypewriterModeLib;
+
+	constructor(tm: TypewriterModeLib) {
+		this.tm = tm;
+	}
 
 	private focusModeActive = false;
 
@@ -20,10 +23,6 @@ export class WritingFocus extends Command {
 	private rightSplitCollapsed = false;
 
 	private prevWasFullscreen = false;
-
-	protected onCommand(): void {
-		this.toggleFocusMode();
-	}
 
 	private addVignette(view: ItemView) {
 		const vignetteEl = this.tm.settings.doesWritingFocusShowHeader
@@ -74,28 +73,28 @@ export class WritingFocus extends Command {
 	}
 
 	private onExitFullscreenWritingFocus(view: ItemView) {
-		if (this.focusModeActive) this.disableFocusMode(view);
+		if (this.focusModeActive) this.disableFocusModeForView(view);
 	}
 
-	storeSplitsValues() {
+	private storeSplitsValues() {
 		this.leftSplitCollapsed = this.tm.plugin.app.workspace.leftSplit.collapsed;
 		this.rightSplitCollapsed =
 			this.tm.plugin.app.workspace.rightSplit.collapsed;
 	}
 
-	collapseSplits() {
+	private collapseSplits() {
 		this.tm.plugin.app.workspace.leftSplit.collapse();
 		this.tm.plugin.app.workspace.rightSplit.collapse();
 	}
 
-	restoreSplits() {
+	private restoreSplits() {
 		if (!this.leftSplitCollapsed)
 			this.tm.plugin.app.workspace.leftSplit.expand();
 		if (!this.rightSplitCollapsed)
 			this.tm.plugin.app.workspace.rightSplit.expand();
 	}
 
-	removeExtraneousClasses() {
+	private removeExtraneousClasses() {
 		if (
 			this.tm.plugin.app.workspace.containerEl.hasClass(this.maximizedClass)
 		) {
@@ -106,7 +105,7 @@ export class WritingFocus extends Command {
 		}
 	}
 
-	enableFocusMode(view: ItemView) {
+	private enableFocusModeForView(view: ItemView) {
 		this.focusModeActive = true;
 
 		if (!document.body.classList.contains(this.focusModeClass)) {
@@ -144,7 +143,7 @@ export class WritingFocus extends Command {
 		if (this.tm.settings.isWritingFocusFullscreen) this.startFullscreen(view);
 	}
 
-	disableFocusMode(view: ItemView) {
+	private disableFocusModeForView(view: ItemView) {
 		this.removeExtraneousClasses();
 
 		if (document.body.classList.contains(this.focusModeClass)) {
@@ -167,24 +166,19 @@ export class WritingFocus extends Command {
 		this.focusModeActive = false;
 	}
 
-	private toggleFocusMode() {
+	public enableFocusMode() {
 		const view = this.tm.plugin.app.workspace.getActiveViewOfType(ItemView);
 		if (!view || view?.getViewType() === "empty") return;
-
-		if (this.focusModeActive) {
-			this.disableFocusMode(view);
-		} else {
-			this.enableFocusMode(view);
-		}
+		this.enableFocusModeForView(view);
 	}
 
-	async onload() {
-		this.tm.plugin.addRibbonIcon(
-			"enter",
-			"Toggle Writing Focus",
-			(_event): void => {
-				this.toggleFocusMode();
-			},
-		);
+	public disableFocusMode() {
+		const view = this.tm.plugin.app.workspace.getActiveViewOfType(ItemView);
+		if (!view || view?.getViewType() === "empty") return;
+		this.disableFocusModeForView(view);
+	}
+
+	public toggleFocusMode() {
+		this.focusModeActive ? this.disableFocusMode() : this.enableFocusMode();
 	}
 }

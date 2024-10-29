@@ -17,7 +17,8 @@ export function loadCapabilityGroups<L extends Loadable>(
 ): Record<string, Record<string, L>> {
 	return objectMap(groups, (v) => {
 		return v.reduce((a, v) => {
-			a[v.prototype.constructor.name] = new v(tm);
+			const feature = new v(tm);
+			a[feature.settingKey] = feature;
 			return a;
 		}, {});
 	});

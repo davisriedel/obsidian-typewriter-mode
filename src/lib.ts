@@ -5,6 +5,8 @@ import createTypewriterModeViewPlugin from "@/cm6/plugin";
 import TypewriterModeSettingTab from "@/components/SettingsTab";
 import type { Extension } from "@codemirror/state";
 import type { Plugin } from "obsidian";
+import type { Command } from "./capabilities/base/Command";
+import type { Feature } from "./capabilities/base/Feature";
 import { FeatureToggle } from "./capabilities/base/FeatureToggle";
 import { getCommands } from "./capabilities/commands";
 import { getFeatures } from "./capabilities/features";
@@ -32,9 +34,11 @@ export default class TypewriterModeLib {
 
 	private editorExtensions: Extension[];
 
-	readonly features = getFeatures(this);
-
-	readonly commands = getCommands(this);
+	readonly features: Record<
+		string,
+		Record<keyof TypewriterModeSettings, Feature>
+	>;
+	readonly commands: Record<string, Command>;
 
 	constructor(
 		plugin: Plugin,
@@ -44,6 +48,11 @@ export default class TypewriterModeLib {
 		this.plugin = plugin;
 		this.loadData = loadData;
 		this.saveData = saveData;
+
+		// Features must be loaded first!
+		this.features = getFeatures(this);
+		this.commands = getCommands(this);
+
 		this.editorExtensions = [
 			createTypewriterModeViewPlugin(this.plugin.app),
 			[],
