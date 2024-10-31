@@ -153,6 +153,9 @@ class TypewriterModeCM6Plugin {
 
 		const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
 		if (!frontmatter) return false;
+
+		if (!Object.hasOwn(frontmatter, "typewriter-mode")) return false;
+
 		return !frontmatter["typewriter-mode"];
 	}
 

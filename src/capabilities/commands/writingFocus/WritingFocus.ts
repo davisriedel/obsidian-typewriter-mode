@@ -76,69 +76,29 @@ export class WritingFocus {
 		if (this.focusModeActive) this.disableFocusModeForView(view);
 	}
 
-<<<<<<< HEAD:src/capabilities/commands/writingFocus/WritingFocus.ts
 	private storeSplitsValues() {
 		this.leftSplitCollapsed = this.tm.plugin.app.workspace.leftSplit.collapsed;
 		this.rightSplitCollapsed =
 			this.tm.plugin.app.workspace.rightSplit.collapsed;
-||||||| parent of 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
-	storeSplitsValues() {
-		this.leftSplitCollapsed = this.tm.app.workspace.leftSplit.collapsed;
-		this.rightSplitCollapsed = this.tm.app.workspace.rightSplit.collapsed;
-=======
-	storeSplitsValues() {
-		this.leftSplitCollapsed = this.tm.plugin.app.workspace.leftSplit.collapsed;
-		this.rightSplitCollapsed = this.tm.plugin.app.workspace.rightSplit.collapsed;
->>>>>>> 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
 	}
 
-<<<<<<< HEAD:src/capabilities/commands/writingFocus/WritingFocus.ts
 	private collapseSplits() {
 		this.tm.plugin.app.workspace.leftSplit.collapse();
 		this.tm.plugin.app.workspace.rightSplit.collapse();
-||||||| parent of 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
-	collapseSplits() {
-		this.tm.app.workspace.leftSplit.collapse();
-		this.tm.app.workspace.rightSplit.collapse();
-=======
-	collapseSplits() {
-		this.tm.plugin.app.workspace.leftSplit.collapse();
-		this.tm.plugin.app.workspace.rightSplit.collapse();
->>>>>>> 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
 	}
 
-<<<<<<< HEAD:src/capabilities/commands/writingFocus/WritingFocus.ts
 	private restoreSplits() {
 		if (!this.leftSplitCollapsed)
 			this.tm.plugin.app.workspace.leftSplit.expand();
 		if (!this.rightSplitCollapsed)
 			this.tm.plugin.app.workspace.rightSplit.expand();
-||||||| parent of 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
-	restoreSplits() {
-		if (!this.leftSplitCollapsed) this.tm.app.workspace.leftSplit.expand();
-		if (!this.rightSplitCollapsed) this.tm.app.workspace.rightSplit.expand();
-=======
-	restoreSplits() {
-		if (!this.leftSplitCollapsed) this.tm.plugin.app.workspace.leftSplit.expand();
-		if (!this.rightSplitCollapsed) this.tm.plugin.app.workspace.rightSplit.expand();
->>>>>>> 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
 	}
 
-<<<<<<< HEAD:src/capabilities/commands/writingFocus/WritingFocus.ts
 	private removeExtraneousClasses() {
 		if (
 			this.tm.plugin.app.workspace.containerEl.hasClass(this.maximizedClass)
 		) {
 			this.tm.plugin.app.workspace.containerEl.removeClass(this.maximizedClass);
-||||||| parent of 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
-	removeExtraneousClasses() {
-		if (this.tm.app.workspace.containerEl.hasClass(this.maximizedClass)) {
-			this.tm.app.workspace.containerEl.removeClass(this.maximizedClass);
-=======
-	removeExtraneousClasses() {
-		if (this.tm.plugin.app.workspace.containerEl.hasClass(this.maximizedClass)) {
-			this.tm.plugin.app.workspace.containerEl.removeClass(this.maximizedClass);
->>>>>>> 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
 		}
 		if (document.body.classList.contains(this.focusModeClass)) {
 			document.body.classList.remove(this.focusModeClass);
@@ -206,16 +166,8 @@ export class WritingFocus {
 		this.focusModeActive = false;
 	}
 
-<<<<<<< HEAD:src/capabilities/commands/writingFocus/WritingFocus.ts
 	public enableFocusMode() {
 		const view = this.tm.plugin.app.workspace.getActiveViewOfType(ItemView);
-||||||| parent of 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
-	private toggleFocusMode() {
-		const view = this.tm.app.workspace.getActiveViewOfType(ItemView);
-=======
-	private toggleFocusMode() {
-		const view = this.tm.plugin.app.workspace.getActiveViewOfType(ItemView);
->>>>>>> 55c5168 (update lib):src/capabilities/commands/WritingFocus.ts
 		if (!view || view?.getViewType() === "empty") return;
 		this.enableFocusModeForView(view);
 	}
