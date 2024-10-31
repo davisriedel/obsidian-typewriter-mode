@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-rc.6
+
+- Fix a bug with reading frontmatter
+
 ## 1.0.0-rc.5
 
 - Add enable / disable commands for all toggle commands
