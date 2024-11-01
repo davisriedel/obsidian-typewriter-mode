@@ -1,14 +1,14 @@
 {
-  "id": "typewriter-mode",
-  "name": "Typewriter Mode",
-  "author": "Davis Riedel",
-  "authorUrl": "https://github.com/davisriedel",
-  "description": "Typewriter scrolling, highlighting of the current line, dimming of unfocused paragraphs, writing focus and more.",
-  "isDesktopOnly": false,
-  "minAppVersion": "0.15.0",
-  "version": "1.0.0-rc.6",
-  "fundingUrl": {
-    "Buy Me a Coffee": "https://www.buymeacoffee.com/davis.riedel",
-    "GitHub Sponsors": "https://github.com/sponsors/davisriedel"
-  }
+	"id": "typewriter-mode",
+	"name": "Typewriter Mode",
+	"author": "Davis Riedel",
+	"authorUrl": "https://github.com/davisriedel",
+	"description": "Typewriter scrolling, highlighting of the current line, dimming of unfocused paragraphs, writing focus and more.",
+	"isDesktopOnly": false,
+	"minAppVersion": "0.15.0",
+	"version": "1.0.0-rc.7",
+	"fundingUrl": {
+		"Buy Me a Coffee": "https://www.buymeacoffee.com/davis.riedel",
+		"GitHub Sponsors": "https://github.com/sponsors/davisriedel"
+	}
 }

@@ -11,7 +11,7 @@ import {
 	ViewPlugin,
 	type ViewUpdate,
 } from "@codemirror/view";
-import { type App, ItemView } from "obsidian";
+import { type App, ItemView, Platform } from "obsidian";
 import { getActiveSentenceDecos } from "./utils/highlightSentence";
 import { getEditorDom, getScrollDom, getSizerDom } from "./utils/selectors";
 
@@ -28,6 +28,7 @@ class TypewriterModeCM6Plugin {
 
 	private domResizeObserver: ResizeObserver | null = null;
 
+	private readonly onScrollEventKey: "wheel" | "touchmove";
 	private isListeningToOnScroll = false;
 	private isOnScrollClassSet = false;
 
@@ -40,6 +41,9 @@ class TypewriterModeCM6Plugin {
 	constructor(app: App, view: EditorView) {
 		this.app = app;
 		this.view = view;
+
+		this.onScrollEventKey = Platform.isMobile ? "touchmove" : "wheel";
+
 		this.onLoad();
 	}
 
@@ -310,9 +314,13 @@ class TypewriterModeCM6Plugin {
 		if (this.isListeningToOnScroll) return;
 		const scrollDom = getScrollDom(this.view);
 		if (scrollDom) {
-			scrollDom.addEventListener("scroll", this.onScroll.bind(this), {
-				passive: true,
-			});
+			scrollDom.addEventListener(
+				this.onScrollEventKey,
+				this.onScroll.bind(this),
+				{
+					passive: true,
+				},
+			);
 			this.isListeningToOnScroll = true;
 		}
 	}
@@ -323,7 +331,7 @@ class TypewriterModeCM6Plugin {
 		if (!this.isListeningToOnScroll) return;
 		const scrollDom = getScrollDom(this.view);
 		if (scrollDom) {
-			scrollDom.removeEventListener("scroll", this.onScroll);
+			scrollDom.removeEventListener(this.onScrollEventKey, this.onScroll);
 			this.isListeningToOnScroll = false;
 		}
 	}

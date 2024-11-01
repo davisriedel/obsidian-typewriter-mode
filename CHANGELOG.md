@@ -1,55 +1,23 @@
 # Changelog
 
-## 1.0.0-rc.6
-
-- Fix a bug with reading frontmatter
-
-## 1.0.0-rc.5
-
-- Add enable / disable commands for all toggle commands
-
-## 1.0.0-rc.4
-
-- Fix padding changes when disabling typewriter mode
-- Fix CSS classes noCSS classes not being applied to body on newly created files
-
-## 1.0.0-rc.3
-
-- Fix current line not moving when scrolling on mobile
-
-## 1.0.0-rc.2
-
-- Fix current line highlight not transparent on iOS (webkit)
-- Fix update modal
-
-- _Developer notes:_
-  - _We have migrated from SCSS @import to @use_
-
-## 1.0.0-rc.1
-
-- You can now disable the plugin on a per-file basis. Include `typewriter-mode: false` in the file's frontmatter to disable the plugin in that file.
-
-- Tables are now correctly dimmed
-
-- In the settings, you can now choose to undim all table cells or only the active cell when editing a table
-
-- Update notice now includes pre-releases if you update to a pre-release
+## 1.0.0-rc.7
 
 - The current line highlight now scrolls with the text and is not hidden anymore when scrolling
-
+- While navigating lists in dimming mode, you can enable to highlight all parents of the current list item.
+- Compatibility with Obsidian tables
+  - Typewriter scrolling in tables fixed
+  - Dimming of tables implemented
+  - In the settings, you can now choose to undim all table cells or only the active cell when editing a table
+- Add “fade lines” feature that places a gradient on the lines above and below the current line, making the text fade out more and more towards the top and bottom of the editor.
+- You can now disable the plugin on a per-file basis. Include `typewriter-mode: false` in the file's frontmatter to disable the plugin in that file.
+- Add enable / disable commands for all toggle commands
+- The update notice dialog now includes pre-releases if you update to a pre-release
+- Fixed a bug that caused the editor padding to change, when disabling typewriter mode
 - Multiple bug fixes and improvements for fullscreen writing focus
+- Now complying with the [Obsidian October O\_O 2024 plugin self-critique checklist](https://docs.obsidian.md/oo24/plugin).
 
-- Fix typewriter scrolling in new obsidian tables
-
-- Minor changes to comply with [Obsidian October O\_O 2024 plugin self-critique checklist](https://docs.obsidian.md/oo24/plugin).
-
-- New feature: While navigating in lists in dimming mode, you can enable to highlight/not dim direct parents/grandparents/... of the current list item. (See issue #86).
-
-- Add "fade lines" feature that places a gradient on the lines above and below the current line, making the text fade out more and more towards the top and bottom of the editor.
-
-- _Developer notes:_
-  - _We are now using Bun for bundling. Since bundling CJS format with bun is experimental at the moment, we have to use the canary version for now._
-  - _The whole codebase was refactored and many new features were introduced. This release candidate must be thoroughly tested before release._
+**Note:** _The codebase has gone through extensive refactorings and the build system was
+changed._
 
 ## 0.0.14
 
@@ -61,15 +29,11 @@
 - Fullscreen writing focus now uses the native electron fullscreen API. Note: this means you can no longer exit it with the ESC key, but the ESC key remains available for Obsidian, e.g. in the command pallette. Use the `Toggle Writing Focus` command or exit Fullscreen Mode with the native command of your OS to exit writing focus.
 - You can now keep the statusbar visible in writing focus.
 
-## Removed: 0.0.12, 0.0.13
-
-Versions 0.0.12 and 0.0.13 have been removed due to major bugs. The features introduced in those versions are included in 0.0.14.
-
 ## 0.0.11
 
 - New feature: Highlight active sentence (dim all other sentences, not only paragraphs)
 - Reworked settings panel (now all settings can be edited, even for inactive features)
-- Fixed compatibility of "Only maintain typewriter offset when reached" with "go to top" commands (e.g. vim mode)
+- Fixed compatibility of “Only maintain typewriter offset when reached” with “go to top” commands (e.g. vim mode)
 - Fixed current line highlight position with custom line heights
 - Fixed update modal scrolling
 
@@ -98,7 +62,7 @@ Versions 0.0.12 and 0.0.13 have been removed due to major bugs. The features int
 
 ## 0.0.6
 
-- Fixed "Only activate after first interaction"
+- Fixed “Only activate after first interaction”
 - Fixed bug when using this plugin inside a canvas
 - Added setting to disable the plugin in canvas
 - Added multiple commands to quickly enable certain features or the whole plugin

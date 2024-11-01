@@ -6,14 +6,18 @@
 
   &.cm-active {
     @include dimmed.dimmed(false);
-  }
 
-  &.cm-active .active-paragraph {
-    @include dimmed.dimmed(true);
-  }
+    &:not(:has(.active-sentence)) {
+      @include dimmed.dimmed(true);
+    }
 
-  &.cm-active .active-sentence {
-    @include dimmed.dimmed(false);
+    .active-paragraph {
+      @include dimmed.dimmed(true);
+    }
+
+    .active-sentence {
+      @include dimmed.dimmed(false);
+    }
   }
 }
 
@@ -53,7 +57,6 @@
     @include apply-dim-table($dim-table-as-one);
 
     @if $mode == 'paragraphs' {
-      .CodeMirror-lines:not(.selecting) .CodeMirror-code > :not(.CodeMirror-activeline),
       .cm-line:not(.cm-active)#{$line-condition} {
         @include dimmed.dimmed(true);
       }
@@ -126,3 +129,4 @@ body.ptm-dim-unfocused {
     }
   }
 }
+
