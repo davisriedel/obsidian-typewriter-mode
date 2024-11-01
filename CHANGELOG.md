@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-rc.7
+## 1.0.0
 
 - The current line highlight now scrolls with the text and is not hidden anymore when scrolling
 - While navigating lists in dimming mode, you can enable to highlight all parents of the current list item.
