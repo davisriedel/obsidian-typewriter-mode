@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0-beta.1
+
+- Add feature to remember and restore last cursor position per file
+
 ## 1.0.0
 
 - The current line highlight now scrolls with the text and is not hidden anymore when scrolling
