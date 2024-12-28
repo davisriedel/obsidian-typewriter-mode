@@ -55,7 +55,9 @@ The sentence highlighting was derived from [Focus Active Sentence](https://githu
 
 The writing focus was derived from [Obsidian Focus Mode](https://github.com/ryanpcmcquen/obsidian-focus-mode) by [ryanpcmcquen](https://github.com/ryanpcmcquen).
 
-Many thanks to the developers of these fantastic plugins.
+The restore cursor position feature was derived from [Remember Cursor Position](https://arc.net/l/quote/jmvjfrza) by [dy-sh](https://github.com/dy-sh).
+
+Many thanks to the developers of these fantastic plugins. Please also consider supporting them.
 
 ## Support this project
 
