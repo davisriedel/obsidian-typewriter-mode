@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0-beta.2
+
+- Internal code restructuring
+- Bug fixes
+
 ## 1.1.0-beta.1
 
 - Add feature to remember and restore last cursor position per file
