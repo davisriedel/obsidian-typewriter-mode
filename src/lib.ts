@@ -53,10 +53,7 @@ export default class TypewriterModeLib {
 		this.features = getFeatures(this);
 		this.commands = getCommands(this);
 
-		this.editorExtensions = [
-			createTypewriterModeViewPlugin(this.plugin.app),
-			[],
-		];
+		this.editorExtensions = [createTypewriterModeViewPlugin(this), []];
 	}
 
 	public async load() {
@@ -89,7 +86,9 @@ export default class TypewriterModeLib {
 	}
 
 	public loadSettingsTab() {
-		this.plugin.addSettingTab(new TypewriterModeSettingTab(this.plugin.app, this));
+		this.plugin.addSettingTab(
+			new TypewriterModeSettingTab(this.plugin.app, this),
+		);
 	}
 
 	public unload() {

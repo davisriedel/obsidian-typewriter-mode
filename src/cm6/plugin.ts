@@ -1,8 +1,10 @@
+import type RestoreCursorPosition from "@/capabilities/features/restoreCursorPosition/RestoreCursorPosition";
 import { perWindowProps } from "@/cm6/facets/perWindowProps";
 import type { PerWindowProps } from "@/cm6/facets/perWindowProps";
 import { pluginSettingsFacet } from "@/cm6/facets/pluginSettingsFacet";
 import type { TypewriterPositionData } from "@/cm6/utils/getTypewriterOffset";
 import { measureTypewriterPosition } from "@/cm6/utils/getTypewriterOffset";
+import type TypewriterModeLib from "@/lib";
 import { RangeSet } from "@codemirror/state";
 import { Transaction } from "@codemirror/state";
 import {
@@ -11,7 +13,7 @@ import {
 	ViewPlugin,
 	type ViewUpdate,
 } from "@codemirror/view";
-import { type App, ItemView, Platform } from "obsidian";
+import { ItemView, Platform } from "obsidian";
 import { getActiveSentenceDecos } from "./utils/highlightSentence";
 import { getEditorDom, getScrollDom, getSizerDom } from "./utils/selectors";
 
@@ -23,7 +25,7 @@ const fadeBeforeClass = "ptm-current-line-fade-before";
 const fadeAfterClass = "ptm-current-line-fade-after";
 
 class TypewriterModeCM6Plugin {
-	protected app: App;
+	protected tm: TypewriterModeLib;
 	protected view: EditorView;
 
 	private domResizeObserver: ResizeObserver | null = null;
@@ -38,8 +40,8 @@ class TypewriterModeCM6Plugin {
 
 	private isPerWindowPropsReloadRequired = false;
 
-	constructor(app: App, view: EditorView) {
-		this.app = app;
+	constructor(tm: TypewriterModeLib, view: EditorView) {
+		this.tm = tm;
 		this.view = view;
 
 		this.onScrollEventKey = Platform.isMobile ? "touchmove" : "wheel";
@@ -58,6 +60,12 @@ class TypewriterModeCM6Plugin {
 	}
 
 	protected onLoad() {
+		console.debug("onLoad");
+
+		window.requestAnimationFrame(() => {
+			this.restoreCursorPosition(this.view);
+		});
+
 		this.domResizeObserver = new ResizeObserver(this.onResize.bind(this));
 		this.domResizeObserver.observe(this.view.dom.ownerDocument.body);
 
@@ -138,7 +146,7 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private isMarkdownFile() {
-		const view = this.app.workspace.getActiveViewOfType(ItemView);
+		const view = this.tm.plugin.app.workspace.getActiveViewOfType(ItemView);
 		if (!view) {
 			// We currently do not have an active view. After a new view gets active, the per window props must be reloaded.
 			this.isPerWindowPropsReloadRequired = true;
@@ -148,14 +156,15 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private isDisabledInFrontmatter() {
-		const file = this.app.workspace.getActiveFile();
+		const file = this.tm.plugin.app.workspace.getActiveFile();
 		if (!file) {
 			// We currently do not have an active file. After a new file gets active, the per window props must be reloaded.
 			this.isPerWindowPropsReloadRequired = true;
 			return false;
 		}
 
-		const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
+		const frontmatter =
+			this.tm.plugin.app.metadataCache.getFileCache(file)?.frontmatter;
 		if (!frontmatter) return false;
 
 		if (!Object.hasOwn(frontmatter, "typewriter-mode")) return false;
@@ -339,8 +348,11 @@ class TypewriterModeCM6Plugin {
 	private updateAllowedUserEvent() {
 		console.debug("updateAllowedUserEvent");
 
-		this.applyDecorations();
 		this.removeScrollListener();
+
+		this.handleCursorStateUpdate(this.view);
+
+		this.applyDecorations();
 
 		const editorDom = getEditorDom(this.view);
 		if (editorDom) {
@@ -372,6 +384,8 @@ class TypewriterModeCM6Plugin {
 		console.debug("updateDisallowedUserEvent");
 
 		if (this.isRenderingAllowedUserEvent) return;
+
+		this.handleCursorStateUpdate(this.view);
 
 		const editorDom = getEditorDom(this.view);
 
@@ -559,12 +573,56 @@ class TypewriterModeCM6Plugin {
 		if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
 			this.moveCurrentLine(view, scrollOffset, lineOffset, lineHeight);
 	}
+
+	private handleCursorStateUpdate(view: EditorView) {
+		console.debug("handleCursorStateUpdate");
+
+		const { isRestoreCursorPositionEnabled } =
+			view.state.facet(pluginSettingsFacet);
+		if (!isRestoreCursorPositionEnabled) return;
+
+		const rcp = this.tm.features.restoreCursorPosition
+			.isRestoreCursorPositionEnabled as RestoreCursorPosition;
+		rcp.setCursorState(view.state.selection.main);
+	}
+
+	private restoreCursorPosition(view: EditorView) {
+		console.debug("Start restoreCursorPosition");
+
+		const rcp = this.tm.features.restoreCursorPosition
+			.isRestoreCursorPositionEnabled as RestoreCursorPosition;
+
+		// Persite the state everytime a new file is opened
+		rcp.saveState();
+
+		const fileName = this.tm.plugin.app.workspace.getActiveFile()?.path;
+
+		if (fileName) {
+			const st = rcp.state[fileName];
+			if (st) {
+				// Don't scroll when a link scrolls and highlights text
+				// i.e. if file is open by links like [link](note.md#header) and wikilinks
+				// See https://github.com/dy-sh/obsidian-remember-cursor-position issues #10, #32, #46, #51
+				const containsFlashingSpan =
+					this.tm.plugin.app.workspace.containerEl.querySelector(
+						"span.is-flashing",
+					);
+				console.log("containsFlashingSpan", containsFlashingSpan);
+
+				if (!containsFlashingSpan) {
+					console.debug("Dispatch restoreCursorPosition", fileName, st);
+					// await this.delay(10)
+					view.dispatch({ selection: st });
+				}
+			}
+		}
+	}
 }
 
-export default function createTypewriterModeViewPlugin(app: App) {
+export default function createTypewriterModeViewPlugin(tm: TypewriterModeLib) {
 	return ViewPlugin.define(
 		(view: EditorView) => {
-			return new TypewriterModeCM6Plugin(app, view);
+			return new TypewriterModeCM6Plugin(tm, view);
 		},
 		{ decorations: (v) => v.decorations },
 	);

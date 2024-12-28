@@ -6,6 +6,7 @@ import dimming from "./dimming";
 import general from "./general";
 import keepAboveAndBelow from "./keepAboveAndBelow";
 import maxChar from "./maxChar";
+import restoreCursorPosition from "./restoreCursorPosition";
 import typewriter from "./typewriter";
 import updates from "./updates";
 import writingFocus from "./writingFocus";
@@ -22,5 +23,6 @@ export function getFeatures(
 		typewriter,
 		updates,
 		writingFocus,
+		restoreCursorPosition,
 	});
 }

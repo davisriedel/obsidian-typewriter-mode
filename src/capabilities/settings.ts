@@ -34,6 +34,7 @@ export interface TypewriterModeSettings {
 	doesWritingFocusShowStatusBar: boolean;
 	isWritingFocusFullscreen: boolean;
 	writingFocusVignetteStyle: "box" | "column";
+	isRestoreCursorPositionEnabled: boolean;
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
@@ -72,4 +73,5 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 	doesWritingFocusShowVignette: true,
 	isWritingFocusFullscreen: true,
 	writingFocusVignetteStyle: "box",
+	isRestoreCursorPositionEnabled: false,
 };

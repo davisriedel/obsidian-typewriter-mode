@@ -62,6 +62,13 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 			feature.registerSetting(this);
 		}
 
+		this.addHeading("Restore cursor position");
+		for (const feature of Object.values(
+			this.tm.features.restoreCursorPosition,
+		)) {
+			feature.registerSetting(this);
+		}
+
 		this.addHeading("Writing focus");
 		for (const feature of Object.values(this.tm.features.writingFocus)) {
 			feature.registerSetting(this);

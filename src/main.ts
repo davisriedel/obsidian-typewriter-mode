@@ -32,8 +32,9 @@ export default class TypewriterModePlugin extends Plugin {
 
 	private announceUpdate() {
 		const currentVersion = this.manifest.version;
-		const knownVersion = this.tm.settings.version ?? "";
+		const knownVersion = this.tm.settings.version;
 
+		if (!knownVersion) return; // do not announce on first install
 		if (currentVersion === knownVersion) return;
 
 		this.tm.settings.version = currentVersion;
