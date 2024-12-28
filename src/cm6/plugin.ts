@@ -1,9 +1,6 @@
-import type RestoreCursorPosition from "@/capabilities/features/restoreCursorPosition/RestoreCursorPosition";
-import { perWindowProps } from "@/cm6/facets/perWindowProps";
-import type { PerWindowProps } from "@/cm6/facets/perWindowProps";
-import { pluginSettingsFacet } from "@/cm6/facets/pluginSettingsFacet";
-import type { TypewriterPositionData } from "@/cm6/utils/getTypewriterOffset";
-import { measureTypewriterPosition } from "@/cm6/utils/getTypewriterOffset";
+import type { TypewriterPositionData } from "@/cm6/TypewriterOffsetCalculator";
+import { TypewriterOffsetCalculator } from "@/cm6/TypewriterOffsetCalculator";
+import type { PerWindowProps } from "@/cm6/perWindowProps";
 import type TypewriterModeLib from "@/lib";
 import { RangeSet } from "@codemirror/state";
 import { Transaction } from "@codemirror/state";
@@ -14,8 +11,8 @@ import {
 	type ViewUpdate,
 } from "@codemirror/view";
 import { ItemView, Platform } from "obsidian";
-import { getActiveSentenceDecos } from "./utils/highlightSentence";
-import { getEditorDom, getScrollDom, getSizerDom } from "./utils/selectors";
+import { getActiveSentenceDecos } from "./highlightSentence";
+import { getEditorDom, getScrollDom, getSizerDom } from "./selectors";
 
 const currentLineClass = "ptm-current-line";
 
@@ -62,10 +59,6 @@ class TypewriterModeCM6Plugin {
 	protected onLoad() {
 		console.debug("onLoad");
 
-		window.requestAnimationFrame(() => {
-			this.restoreCursorPosition(this.view);
-		});
-
 		this.domResizeObserver = new ResizeObserver(this.onResize.bind(this));
 		this.domResizeObserver.observe(this.view.dom.ownerDocument.body);
 
@@ -73,16 +66,17 @@ class TypewriterModeCM6Plugin {
 
 		this.watchEmbeddedMarkdown();
 		this.onReconfigured();
+
+		window.requestAnimationFrame(() => {
+			this.restoreCursorPosition(this.view);
+		});
 	}
 
 	private userEventAllowed(event: string) {
-		const { isTypewriterOnlyUseCommandsEnabled } =
-			this.view.state.facet(pluginSettingsFacet);
-
 		let allowed = /^(select|input|delete|undo|redo)(\..+)?$/;
 		let disallowed = /^(select.pointer)$/;
 
-		if (isTypewriterOnlyUseCommandsEnabled) {
+		if (this.tm.settings.isTypewriterOnlyUseCommandsEnabled) {
 			allowed = /^(input|delete|undo|redo)(\..+)?$/;
 			disallowed = /^(select)(\..+)?$/;
 		}
@@ -173,8 +167,7 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private isDisabled() {
-		const { isPluginActivated } = this.view.state.facet(pluginSettingsFacet);
-		if (!isPluginActivated) return true;
+		if (!this.tm.settings.isPluginActivated) return true;
 		if (!this.isMarkdownFile()) return true;
 		if (this.isDisabledInFrontmatter()) return true;
 	}
@@ -195,7 +188,7 @@ class TypewriterModeCM6Plugin {
 
 	private watchEmbeddedMarkdown() {
 		const selector = ".markdown-embed-content iframe.embed-iframe";
-		const props = this.view.state.facet(perWindowProps);
+		const props = this.tm.perWindowProps;
 		const observer = new MutationObserver((mutations) => {
 			mutations.forEach((mutation) => {
 				[].forEach.call(mutation.addedNodes, (node: Node) => {
@@ -248,8 +241,8 @@ class TypewriterModeCM6Plugin {
 		this.isPerWindowPropsReloadRequired = false;
 
 		const bodies = this.getMarkdownBodies();
-		const props = this.view.state.facet(perWindowProps);
-		for (const b of bodies) this.loadPerWindowPropsOnElement(props, b);
+		for (const b of bodies)
+			this.loadPerWindowPropsOnElement(this.tm.perWindowProps, b);
 	}
 
 	private loadCurrentLine(view: EditorView = this.view) {
@@ -262,15 +255,13 @@ class TypewriterModeCM6Plugin {
 			`.${currentLineClass}`,
 		) as HTMLElement;
 
-		const settings = view.state.facet(pluginSettingsFacet);
-
 		if (!currentLine) {
 			currentLine = document.createElement("div");
-			currentLine.className = `${currentLineClass} ptm-current-line-highlight-${settings.currentLineHighlightStyle}`;
+			currentLine.className = `${currentLineClass} ptm-current-line-highlight-${this.tm.settings.currentLineHighlightStyle}`;
 			editorDom.appendChild(currentLine);
 		}
 
-		if (settings.isFadeLinesEnabled) {
+		if (this.tm.settings.isFadeLinesEnabled) {
 			let fadeBefore = editorDom.querySelector(
 				`.${fadeBeforeClass}`,
 			) as HTMLElement;
@@ -345,13 +336,30 @@ class TypewriterModeCM6Plugin {
 		}
 	}
 
+	private measureTypewriterPosition(
+		key: string,
+		write: (measure: TypewriterPositionData, view: EditorView) => void,
+	) {
+		this.view.requestMeasure({
+			key,
+			read: (view: EditorView) =>
+				new TypewriterOffsetCalculator(
+					this.tm,
+					view,
+				).getTypewriterPositionData(),
+			write: (measure, view) => {
+				if (!measure) return;
+				window.requestAnimationFrame(() => {
+					write(measure, view);
+				});
+			},
+		});
+	}
+
 	private updateAllowedUserEvent() {
 		console.debug("updateAllowedUserEvent");
 
 		this.removeScrollListener();
-
-		this.handleCursorStateUpdate(this.view);
-
 		this.applyDecorations();
 
 		const editorDom = getEditorDom(this.view);
@@ -369,13 +377,13 @@ class TypewriterModeCM6Plugin {
 
 		this.isRenderingAllowedUserEvent = true;
 
-		measureTypewriterPosition(
-			this.view,
+		this.measureTypewriterPosition(
 			"TypewriterModeUpdateAfterAllowedUserEvent",
 			(measure, view) => {
 				if (!measure) return;
 				this.recenterAndMoveCurrentLine(view, measure);
 				this.isRenderingAllowedUserEvent = false;
+				this.handleCursorStateUpdate(view);
 			},
 		);
 	}
@@ -384,8 +392,6 @@ class TypewriterModeCM6Plugin {
 		console.debug("updateDisallowedUserEvent");
 
 		if (this.isRenderingAllowedUserEvent) return;
-
-		this.handleCursorStateUpdate(this.view);
 
 		const editorDom = getEditorDom(this.view);
 
@@ -398,16 +404,17 @@ class TypewriterModeCM6Plugin {
 			editorDom.classList.add("ptm-select");
 		}
 
-		measureTypewriterPosition(
-			this.view,
+		this.measureTypewriterPosition(
 			"TypewriterModeUpdateAfterDisallowedUserEvent",
 			(measure, view) => {
 				if (!measure) return;
-				const { activeLineOffset, lineHeight, lineOffset } = measure;
+				this.handleCursorStateUpdate(view);
 
-				const { isHighlightCurrentLineEnabled, isFadeLinesEnabled } =
-					view.state.facet(pluginSettingsFacet);
-				if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
+				const { activeLineOffset, lineHeight, lineOffset } = measure;
+				if (
+					this.tm.settings.isHighlightCurrentLineEnabled ||
+					this.tm.settings.isFadeLinesEnabled
+				)
 					this.moveCurrentLine(view, activeLineOffset, lineOffset, lineHeight);
 			},
 		);
@@ -420,10 +427,7 @@ class TypewriterModeCM6Plugin {
 
 		if (!this.isInitialInteraction) return;
 
-		const { isOnlyActivateAfterFirstInteractionEnabled } =
-			this.view.state.facet(pluginSettingsFacet);
-
-		if (isOnlyActivateAfterFirstInteractionEnabled) {
+		if (this.tm.settings.isOnlyActivateAfterFirstInteractionEnabled) {
 			const editorDom = getEditorDom(this.view);
 			if (editorDom) editorDom.classList.add("ptm-first-open");
 		}
@@ -441,8 +445,7 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private onScroll() {
-		measureTypewriterPosition(
-			this.view,
+		this.measureTypewriterPosition(
 			"TypewriterModeOnScroll",
 			(measure, view) => {
 				// This is placed here to debounce DOM manipulation
@@ -462,9 +465,11 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private applyDecorations() {
-		const { isDimUnfocusedEnabled, dimUnfocusedMode } =
-			this.view.state.facet(pluginSettingsFacet);
-		if (!isDimUnfocusedEnabled || dimUnfocusedMode !== "sentences") return;
+		if (
+			!this.tm.settings.isDimUnfocusedEnabled ||
+			this.tm.settings.dimUnfocusedMode !== "sentences"
+		)
+			return;
 
 		this.decorations = getActiveSentenceDecos(this.view, {
 			sentenceDelimiters: ".!?",
@@ -484,18 +489,14 @@ class TypewriterModeCM6Plugin {
 		this.loadPerWindowProps();
 		this.applyDecorations();
 
-		const { isTypewriterScrollEnabled } =
-			this.view.state.facet(pluginSettingsFacet);
-
-		measureTypewriterPosition(
-			this.view,
+		this.measureTypewriterPosition(
 			"TypewriterModeUpdateAfterExternalEvent",
 			(measure, view) => {
 				this.setupScrollListener();
 
 				if (!measure) return;
 
-				if (isTypewriterScrollEnabled)
+				if (this.tm.settings.isTypewriterScrollEnabled)
 					this.setPadding(view, measure.typewriterOffset);
 
 				this.recenterAndMoveCurrentLine(view, measure);
@@ -527,16 +528,13 @@ class TypewriterModeCM6Plugin {
 	private setPadding(view: EditorView, offset: number) {
 		console.debug("setPadding", offset);
 
-		const { isOnlyMaintainTypewriterOffsetWhenReachedEnabled } =
-			view.state.facet(pluginSettingsFacet);
-
 		const sizerDom = getSizerDom(view);
 		if (!sizerDom) return;
 
-		(sizerDom as HTMLElement).style.padding =
-			isOnlyMaintainTypewriterOffsetWhenReachedEnabled
-				? `0 0 ${offset}px 0`
-				: `${offset}px 0`;
+		(sizerDom as HTMLElement).style.padding = this.tm.settings
+			.isOnlyMaintainTypewriterOffsetWhenReachedEnabled
+			? `0 0 ${offset}px 0`
+			: `${offset}px 0`;
 	}
 
 	private resetPadding(view: EditorView) {
@@ -567,7 +565,7 @@ class TypewriterModeCM6Plugin {
 			isKeepLinesAboveAndBelowEnabled,
 			isHighlightCurrentLineEnabled,
 			isFadeLinesEnabled,
-		} = view.state.facet(pluginSettingsFacet);
+		} = this.tm.settings;
 		if (isTypewriterScrollEnabled || isKeepLinesAboveAndBelowEnabled)
 			this.recenter(view, scrollOffset);
 		if (isHighlightCurrentLineEnabled || isFadeLinesEnabled)
@@ -577,23 +575,20 @@ class TypewriterModeCM6Plugin {
 	private handleCursorStateUpdate(view: EditorView) {
 		console.debug("handleCursorStateUpdate");
 
-		const { isRestoreCursorPositionEnabled } =
-			view.state.facet(pluginSettingsFacet);
-		if (!isRestoreCursorPositionEnabled) return;
+		if (!this.tm.settings.isRestoreCursorPositionEnabled) return;
 
-		const rcp = this.tm.features.restoreCursorPosition
-			.isRestoreCursorPositionEnabled as RestoreCursorPosition;
-		rcp.setCursorState(view.state.selection.main);
+		this.tm
+			.getRestoreCursorPositionFeature()
+			.setCursorState(view.state.selection.main);
 	}
 
 	private restoreCursorPosition(view: EditorView) {
 		console.debug("Start restoreCursorPosition");
 
-		const rcp = this.tm.features.restoreCursorPosition
-			.isRestoreCursorPositionEnabled as RestoreCursorPosition;
+		const rcp = this.tm.getRestoreCursorPositionFeature();
 
-		// Persite the state everytime a new file is opened
-		rcp.saveState();
+		// Persite the previous state everytime a new file is opened
+		rcp.saveState(); // NOTE: async function is intentionally not awaited
 
 		const fileName = this.tm.plugin.app.workspace.getActiveFile()?.path;
 

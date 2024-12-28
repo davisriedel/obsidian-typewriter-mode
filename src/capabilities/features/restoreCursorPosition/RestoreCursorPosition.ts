@@ -52,9 +52,9 @@ export default class RestoreCursorPosition extends FeatureToggle {
 		}
 	}
 
-	public saveState() {
+	public async saveState() {
 		console.debug("Save cursor state");
-		this.tm.plugin.app.vault.adapter.write(
+		await this.tm.plugin.app.vault.adapter.write(
 			this.stateFilePath,
 			JSON.stringify(this.state),
 		);

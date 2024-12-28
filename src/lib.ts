@@ -1,6 +1,4 @@
-import type { PerWindowProps } from "@/cm6/facets/perWindowProps";
-import { perWindowProps } from "@/cm6/facets/perWindowProps";
-import { pluginSettingsFacet } from "@/cm6/facets/pluginSettingsFacet";
+import type { PerWindowProps } from "@/cm6/perWindowProps";
 import createTypewriterModeViewPlugin from "@/cm6/plugin";
 import TypewriterModeSettingTab from "@/components/SettingsTab";
 import type { Extension } from "@codemirror/state";
@@ -10,6 +8,7 @@ import type { Feature } from "./capabilities/base/Feature";
 import { FeatureToggle } from "./capabilities/base/FeatureToggle";
 import { getCommands } from "./capabilities/commands";
 import { getFeatures } from "./capabilities/features";
+import type RestoreCursorPosition from "./capabilities/features/restoreCursorPosition/RestoreCursorPosition";
 import {
 	DEFAULT_SETTINGS,
 	type TypewriterModeSettings,
@@ -78,7 +77,11 @@ export default class TypewriterModeLib {
 			}
 		}
 		for (const command of Object.values(this.commands)) command.load();
-		this.updateFacets();
+	}
+
+	public getRestoreCursorPositionFeature(): RestoreCursorPosition {
+		return this.features.restoreCursorPosition
+			.isRestoreCursorPositionEnabled as RestoreCursorPosition;
 	}
 
 	public loadEditorExtension() {
@@ -99,13 +102,6 @@ export default class TypewriterModeLib {
 		}
 	}
 
-	private updateFacets() {
-		this.editorExtensions[1] = [
-			pluginSettingsFacet.of(this.settings),
-			perWindowProps.of(this.perWindowProps),
-		];
-	}
-
 	public async loadSettings() {
 		const settingsData = await this.loadData();
 		this.settings = Object.assign(DEFAULT_SETTINGS, settingsData);
@@ -113,7 +109,6 @@ export default class TypewriterModeLib {
 
 	public async saveSettings() {
 		await this.saveData(this.settings);
-		this.updateFacets();
 		this.plugin.app.workspace.updateOptions();
 	}
 
