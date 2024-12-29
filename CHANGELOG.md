@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0-beta.3
+
+- Fix live update of current line highlight style setting
+- Add commands to toggle/activate/deactivate the complete plugin
+
 ## 1.1.0-beta.2
 
 - Internal code restructuring
