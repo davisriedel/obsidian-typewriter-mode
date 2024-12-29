@@ -210,6 +210,8 @@ class TypewriterModeCM6Plugin {
 	}
 
 	private loadPerWindowPropsOnElement(props: PerWindowProps, el: HTMLElement) {
+		console.debug("loadPerWindowPropsOnElement", props, el);
+
 		// remove all classes set by this plugin
 		for (const c of props.allBodyClasses) el.classList.remove(c);
 
@@ -257,7 +259,7 @@ class TypewriterModeCM6Plugin {
 
 		if (!currentLine) {
 			currentLine = document.createElement("div");
-			currentLine.className = `${currentLineClass} ptm-current-line-highlight-${this.tm.settings.currentLineHighlightStyle}`;
+			currentLine.className = currentLineClass;
 			editorDom.appendChild(currentLine);
 		}
 

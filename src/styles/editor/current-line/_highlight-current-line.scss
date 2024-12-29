@@ -1,4 +1,4 @@
-@mixin ptm-current-line-highlight-theme-style($theme) {
+@mixin ptm-current-line-highlight-theme-style($theme, $style) {
   &.ptm-highlight-current-line {
     .ptm-current-line {
       @if $theme == "light" {
@@ -7,22 +7,31 @@
         mix-blend-mode: screen;
       }
 
-      &.ptm-current-line-highlight-box {
+      @if $style == "box" {
         background-color: var(--current-line-highlight-color-#{$theme});
-      }
-
-      &.ptm-current-line-highlight-underline {
-        border-bottom: var(--current-line-highlight-underline-thickness) solid
-          var(--current-line-highlight-color-#{$theme});
+      } @else if $style == "underline" {
+        border-bottom: var(--current-line-highlight-underline-thickness) solid var(--current-line-highlight-color-#{$theme});
       }
     }
   }
 }
 
 body.theme-light {
-  @include ptm-current-line-highlight-theme-style("light");
+  &.ptm-current-line-highlight-box {
+    @include ptm-current-line-highlight-theme-style("light", "box");
+  }
+
+  &.ptm-current-line-highlight-underline {
+    @include ptm-current-line-highlight-theme-style("light", "underline");
+  }
 }
 
 body.theme-dark {
-  @include ptm-current-line-highlight-theme-style("dark");
+  &.ptm-current-line-highlight-box {
+    @include ptm-current-line-highlight-theme-style("dark", "box");
+  }
+
+  &.ptm-current-line-highlight-underline {
+    @include ptm-current-line-highlight-theme-style("dark", "underline");
+  }
 }

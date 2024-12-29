@@ -5,7 +5,6 @@ import type { Extension } from "@codemirror/state";
 import type { Plugin } from "obsidian";
 import type { Command } from "./capabilities/base/Command";
 import type { Feature } from "./capabilities/base/Feature";
-import { FeatureToggle } from "./capabilities/base/FeatureToggle";
 import { getCommands } from "./capabilities/commands";
 import { getFeatures } from "./capabilities/features";
 import type RestoreCursorPosition from "./capabilities/features/restoreCursorPosition/RestoreCursorPosition";
@@ -64,18 +63,16 @@ export default class TypewriterModeLib {
 	}
 
 	public loadPerWindowProps() {
-		this.perWindowProps.allBodyClasses = [];
+		let allBodyClasses: string[] = [];
 		for (const category of Object.values(this.features)) {
 			for (const feature of Object.values(category)) {
 				feature.load();
-				if (feature instanceof FeatureToggle) {
-					const toggleClass = feature.getToggleClass();
-					if (toggleClass) {
-						this.perWindowProps.allBodyClasses.push(toggleClass);
-					}
-				}
+				console.debug(feature.settingKey, feature.getBodyClasses());
+				allBodyClasses = allBodyClasses.concat(feature.getBodyClasses());
 			}
 		}
+		console.debug("allBodyClasses", allBodyClasses);
+		this.perWindowProps.allBodyClasses = allBodyClasses;
 		for (const command of Object.values(this.commands)) command.load();
 	}
 

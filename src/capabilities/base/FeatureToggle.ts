@@ -9,6 +9,13 @@ export abstract class FeatureToggle extends Feature {
 	protected abstract settingTitle: string;
 	protected abstract settingDesc: string;
 
+	public override getBodyClasses(): string[] {
+		if (this.toggleClass) {
+			return [this.toggleClass];
+		}
+		return [];
+	}
+
 	protected isSettingEnabled() {
 		return true;
 	}

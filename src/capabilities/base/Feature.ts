@@ -13,6 +13,10 @@ export abstract class Feature extends Loadable {
 
 	abstract registerSetting(settingTab: PluginSettingTab): void;
 
+	public getBodyClasses(): string[] {
+		return [];
+	}
+
 	public getSettingKey() {
 		return this.settingKey;
 	}
