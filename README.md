@@ -1,15 +1,8 @@
 # Typewriter Mode for Obsidian
 
-<!-- markdownlint-disable-next-line -->
-[![](https://img.shields.io/badge/Obsidian-%23483699.svg?style=for-the-badge\&logo=obsidian\&logoColor=white)](https://obsidian.md/)
-<!-- markdownlint-disable-next-line -->
-[![](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge\&logo=typescript\&logoColor=white)](https://www.typescriptlang.org/)
-<!-- markdownlint-disable-next-line -->
-[![](https://img.shields.io/badge/Version-0.0.11-blue?style=for-the-badge)](https://github.com/davisriedel/obsidian-typewriter-mode/releases)
-<!-- markdownlint-disable-next-line -->
-[![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)
-<!-- markdownlint-disable-next-line -->
-[![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge\&logo=GitHub-Sponsors\&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)
+| | | | | |
+| -- | -- | -- | -- | -- |
+|[![](https://img.shields.io/badge/GitHub-%2330363E.svg?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/davisriedel/obsidian-typewriter-mode)|[![](https://img.shields.io/badge/Obsidian-%23483699.svg?style=for-the-badge\&logo=obsidian\&logoColor=white)](https://obsidian.md/)|[![](https://img.shields.io/github/v/release/davisriedel/obsidian-typewriter-mode?style=for-the-badge)](https://github.com/davisriedel/obsidian-typewriter-mode/releases)|[![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)|[![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge\&logo=GitHub-Sponsors\&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)|
 
 Typewriter Mode is plugin that adds several features to turn [Obsidian](https://obsidian.md) into a typewriter-like, distraction-free writing environment, including:
 
