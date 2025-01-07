@@ -18,6 +18,7 @@
    - Build with `just build`
    - Create / update test vault with `just test-vault`
    - Use `just dev` to build and update test vault in one step
+   - Use `just debug` to print `console.debug` statements (all other commands strip these)
 
 2. Test in Obsidian
    - Open the test vault in Obsidian

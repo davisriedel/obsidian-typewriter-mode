@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.0
+
+This update adds a `restore cursor position` functionality. When you open a file the
+cursor will automatically jump to the position it was at when you edited the file the last
+time. This lets you continue right where you left off. **The feature is _not_ enabled by
+default. You can enable it in the plugin's settings.**
+
+The feature is similar to the incredible [Remember Cursor Position](https://arc.net/l/quote/jmvjfrza) by [dy-sh](https://github.com/dy-sh) and loosely based on it. But it should provide a better performance, because it does not store the cursor position based on a timer, but only when the cursor actually moves (which is when the Typewriter Mode plugin runs its updates anyway).
+
+_Other minor changes include:_
+
+- Fix live update of current line highlight style setting
+- Add commands to toggle/activate/deactivate the complete plugin
+- Internal code restructuring
+- Bug fixes
+
 ## 1.1.0-beta.3
 
 - Fix live update of current line highlight style setting
