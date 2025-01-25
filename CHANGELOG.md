@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1-beta.1
+
+Switch to grass for compiling sass faster.
+
 ## 1.1.0
 
 This update adds a `restore cursor position` functionality. When you open a file the
