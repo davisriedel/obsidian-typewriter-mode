@@ -1,6 +1,5 @@
 /// <reference types="bun-types" />
 
-import { stripDebug as stripDebugPlugin } from "@namchee/bun-plugin-strip-debug";
 import builtins from "builtin-modules";
 import { $ } from "bun";
 import * as sass from "sass-embedded";
@@ -25,9 +24,8 @@ async function build(
 		outdir,
 		minify: true,
 		target: "browser",
-		// @ts-ignore - cjs is experimental and only works on canary build of bun
 		format,
-		plugins: stripDebug ? [stripDebugPlugin()] : [],
+		drop: stripDebug ? ["console"] : [],
 		external: [
 			"obsidian",
 			"electron",
