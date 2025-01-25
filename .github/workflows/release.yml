@@ -18,8 +18,13 @@ jobs:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: canary # needed for experimental bundling of cjs files with bun
+          bun-version: latest
       - uses: extractions/setup-just@v2
+
+      - name: Install grass from crates.io
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: grass
 
       - name: Build
         id: build

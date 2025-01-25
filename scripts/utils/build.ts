@@ -2,7 +2,6 @@
 
 import builtins from "builtin-modules";
 import { $ } from "bun";
-import * as sass from "sass-embedded";
 
 async function build(
 	entrypoint: string,
@@ -12,10 +11,8 @@ async function build(
 ) {
 	// Build scss
 	console.log("Building styles");
-	const contents = await sass.compileAsync("src/styles/index.scss", {
-		style: "compressed",
-	});
-	await Bun.write(`${outdir}/styles.css`, contents.css);
+	await $`mkdir -p ${outdir}`;
+	await $`grass src/styles/index.scss --style compressed > ${Bun.file(`${outdir}/styles.css`)}`;
 
 	// Build js
 	console.log("Building main");
