@@ -2,12 +2,11 @@
 
 import { parseArgs } from "node:util";
 import { build } from "./common/scripts/build";
-import { setupTestVault } from './common/scripts/setupTestVault';
 
 const { values: args } = parseArgs({
 	args: Bun.argv,
 	options: {
-		debug: {
+		lib: {
 			type: "boolean",
 		},
 	},
@@ -15,6 +14,4 @@ const { values: args } = parseArgs({
 	allowPositionals: true,
 });
 
-await build("src", { main: "main.ts", styles: "styles/index.scss" }, "dist", "cjs", args.debug, false);
-
-await setupTestVault("obsidian-typewriter-mode", "./test-vault");
+await build("src", { main: args.lib ? "lib.ts" : "main.ts", styles: "styles/index.scss" }, args.lib ? "lib-dist" : "dist", args.lib ? "esm" : "cjs", true, args.lib);
