@@ -6,7 +6,7 @@
   "description": "Typewriter scroll, highlight current line, dim unfocused paragraphs and sentences, writing focus, restore cursor position and more.",
   "isDesktopOnly": false,
   "minAppVersion": "0.15.0",
-  "version": "1.1.1-beta.1",
+  "version": "1.2.0-beta.1",
   "fundingUrl": {
     "Buy Me a Coffee": "https://www.buymeacoffee.com/davis.riedel",
     "GitHub Sponsors": "https://github.com/sponsors/davisriedel"

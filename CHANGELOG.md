@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0-beta.1
+
+- Add custom font size option for writing focus mode
+- Fix cursor position restoration when typewriter scrolling is disabled
+- Cursor position data is now stored in data.json instead of cursor-positions.json to enable syncing across devices via Obsidian Sync
+- Update dependencies
+- Add Ultracite for automated code quality enforcement
+- Codebase refactoring and improvements
+
 ## 1.1.1-beta.1
 
 Switch to grass for compiling sass faster.
