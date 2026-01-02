@@ -20,20 +20,23 @@ typecheck:
 check: typecheck lint stylelint markdownlint
 
 
+[private]
+build:
+  bun ./scripts/build.ts
+
 dev:
   bun ./scripts/dev.ts
 
 debug:
   bun ./scripts/dev.ts --debug
 
-
-lib:
-  bun ./scripts/lib.ts
+build-lib:
+  bun ./scripts/build.ts --lib
 
 
 release: check
   bun ./scripts/release.ts
 
-ci:
-  bun ./scripts/ci.ts
+ci: build
+  bun ./scripts/generate-ci-artefacts.ts
 
