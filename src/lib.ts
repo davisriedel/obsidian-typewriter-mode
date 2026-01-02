@@ -11,6 +11,7 @@ import type RestoreCursorPosition from "./capabilities/features/restore-cursor-p
 import {
   DEFAULT_SETTINGS,
   type LegacyTypewriterModeSettings,
+  migrateCursorPositions,
   migrateSettings,
   type TypewriterModeSettings,
 } from "./capabilities/settings";
@@ -106,6 +107,20 @@ export default class TypewriterModeLib {
   async loadSettings() {
     const settingsData = await this.loadData();
     this.settings = migrateSettings(settingsData ?? {});
+
+    const manifestDir = this.plugin.manifest.dir;
+    if (!manifestDir) {
+      console.error(
+        "Typewriter Mode: Unable to determine plugin manifest directory."
+      );
+      return;
+    }
+
+    this.settings = await migrateCursorPositions(
+      this.settings,
+      this.plugin.app.vault,
+      manifestDir
+    );
   }
 
   async saveSettings() {

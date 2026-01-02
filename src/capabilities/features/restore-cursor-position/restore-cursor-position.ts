@@ -11,14 +11,19 @@ export default class RestoreCursorPosition extends FeatureToggle {
   protected settingTitle = "Restore cursor position";
   protected settingDesc = "Restore the last cursor position when opening files";
 
-  private stateFilePath =
-    `${this.tm.plugin.manifest.dir}/cursor-positions.json`;
-  state: Record<string, SelectionRange> = {};
+  get state(): Record<string, SelectionRange> {
+    return this.tm.settings.restoreCursorPosition.cursorPositions as Record<
+      string,
+      SelectionRange
+    >;
+  }
+
+  set state(value: Record<string, SelectionRange>) {
+    this.tm.settings.restoreCursorPosition.cursorPositions = value;
+  }
 
   override enable(): void {
     super.enable();
-
-    this.loadState();
 
     this.tm.plugin.registerEvent(
       this.tm.plugin.app.workspace.on("quit", this.saveState)
@@ -42,22 +47,9 @@ export default class RestoreCursorPosition extends FeatureToggle {
     this.tm.plugin.app.workspace.off("delete", this.onDeleteFile);
   }
 
-  private async loadState() {
-    if (await this.tm.plugin.app.vault.adapter.exists(this.stateFilePath)) {
-      const data = await this.tm.plugin.app.vault.adapter.read(
-        this.stateFilePath
-      );
-      this.state = JSON.parse(data);
-      console.debug("Cursor state loaded", this.state);
-    }
-  }
-
   async saveState() {
     console.debug("Save cursor state");
-    await this.tm.plugin.app.vault.adapter.write(
-      this.stateFilePath,
-      JSON.stringify(this.state)
-    );
+    await this.tm.saveSettings();
   }
 
   private onRenameFile(file: TAbstractFile, oldPath: string) {

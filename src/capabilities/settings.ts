@@ -61,6 +61,7 @@ export interface WritingFocusSettings {
 
 export interface RestoreCursorPositionSettings {
   isRestoreCursorPositionEnabled: boolean;
+  cursorPositions: Record<string, unknown>;
 }
 
 export interface TypewriterModeSettings {
@@ -162,6 +163,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   },
   restoreCursorPosition: {
     isRestoreCursorPositionEnabled: false,
+    cursorPositions: {},
   },
 };
 
@@ -437,6 +439,41 @@ export function migrateSettings(
       isRestoreCursorPositionEnabled:
         legacy.isRestoreCursorPositionEnabled ??
         DEFAULT_SETTINGS.restoreCursorPosition.isRestoreCursorPositionEnabled,
+      cursorPositions: {},
     },
   };
+}
+
+// Migration function to copy cursor positions from old file to settings
+export async function migrateCursorPositions(
+  settings: TypewriterModeSettings,
+  vault: {
+    adapter: {
+      exists: (path: string) => Promise<boolean>;
+      read: (path: string) => Promise<string>;
+    };
+  },
+  manifestDir: string
+): Promise<TypewriterModeSettings> {
+  // Skip if cursor positions already exist in settings (already migrated)
+  if (Object.keys(settings.restoreCursorPosition.cursorPositions).length > 0) {
+    return settings;
+  }
+
+  const oldFilePath = `${manifestDir}/cursor-positions.json`;
+
+  try {
+    if (await vault.adapter.exists(oldFilePath)) {
+      const data = await vault.adapter.read(oldFilePath);
+      const cursorPositions = JSON.parse(data);
+      settings.restoreCursorPosition.cursorPositions = cursorPositions;
+      console.debug(
+        "Migrated cursor positions from cursor-positions.json to data.json"
+      );
+    }
+  } catch (error) {
+    console.error("Failed to migrate cursor positions:", error);
+  }
+
+  return settings;
 }
