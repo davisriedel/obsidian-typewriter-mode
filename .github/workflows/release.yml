@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
