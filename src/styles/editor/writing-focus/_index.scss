@@ -4,4 +4,11 @@
 body.ptm-focus-mode {
   @include hide-elements.writing-focus-hide-elements;
   @include vignette.writing-focus-vignette;
+
+  .markdown-source-view.cm-s-obsidian,
+  .cm-editor .cm-scroller .cm-content,
+  .cm-editor .cm-scroller .cm-content table,
+  .cm-editor .cm-scroller .cm-content table * {
+    font-size: var(--writing-focus-font-size);
+  }
 }

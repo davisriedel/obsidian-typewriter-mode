@@ -1,4 +1,5 @@
 import type TypewriterModeLib from "@/lib";
+import WritingFocusFontSize from "./writing-focus-font-size";
 import WritingFocusIsFullScreen from "./writing-focus-is-fullscreen";
 import WritingFocusShowsHeader from "./writing-focus-shows-header";
 import WritingFocusShowsStatusBar from "./writing-focus-shows-status-bar";
@@ -13,6 +14,7 @@ export default function getWritingFocusFeatures(tm: TypewriterModeLib) {
       new WritingFocusIsFullScreen(tm),
       new WritingFocusVignette(tm),
       new WritingFocusVignetteStyle(tm),
+      new WritingFocusFontSize(tm),
     ].map((feature) => [feature.getSettingKey(), feature])
   );
 }

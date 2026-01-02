@@ -57,6 +57,7 @@ export interface WritingFocusSettings {
   doesWritingFocusShowStatusBar: boolean;
   isWritingFocusFullscreen: boolean;
   writingFocusVignetteStyle: WritingFocusVignetteStyle;
+  writingFocusFontSize: number;
 }
 
 export interface RestoreCursorPositionSettings {
@@ -110,6 +111,7 @@ export interface LegacyTypewriterModeSettings {
   doesWritingFocusShowStatusBar: boolean;
   isWritingFocusFullscreen: boolean;
   writingFocusVignetteStyle: WritingFocusVignetteStyle;
+  writingFocusFontSize: number;
   isRestoreCursorPositionEnabled: boolean;
 }
 
@@ -160,6 +162,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     doesWritingFocusShowVignette: true,
     isWritingFocusFullscreen: true,
     writingFocusVignetteStyle: "box",
+    writingFocusFontSize: 0,
   },
   restoreCursorPosition: {
     isRestoreCursorPositionEnabled: false,
@@ -281,6 +284,10 @@ export const SETTINGS_PATHS: Record<
   writingFocusVignetteStyle: {
     category: "writingFocus",
     key: "writingFocusVignetteStyle",
+  },
+  writingFocusFontSize: {
+    category: "writingFocus",
+    key: "writingFocusFontSize",
   },
   isRestoreCursorPositionEnabled: {
     category: "restoreCursorPosition",
@@ -434,6 +441,9 @@ export function migrateSettings(
       writingFocusVignetteStyle:
         legacy.writingFocusVignetteStyle ??
         DEFAULT_SETTINGS.writingFocus.writingFocusVignetteStyle,
+      writingFocusFontSize:
+        legacy.writingFocusFontSize ??
+        DEFAULT_SETTINGS.writingFocus.writingFocusFontSize,
     },
     restoreCursorPosition: {
       isRestoreCursorPositionEnabled:
