@@ -1,25 +1,24 @@
 import type TypewriterModeLib from "@/lib";
-import type { AbstractCommand } from "../base/AbstractCommand";
-import type { Command } from "../base/Command";
-import { MoveTypewriter } from "./MoveTypewriter";
-import { ToggleDimming } from "./ToggleDimming";
-import { TogglePlugin } from "./TogglePlugin";
-import { ToggleTypewriter } from "./ToggleTypewriter";
-import { ToggleTypewriterAndDimming } from "./ToggleTypewriterAndDimming";
-import { WritingFocusCommand } from "./writingFocus";
+import type { AbstractCommand } from "../base/abstract-command";
+import { MoveTypewriterDown, MoveTypewriterUp } from "./move-typewriter";
+import { ToggleDimming } from "./toggle-dimming";
+import { TogglePlugin } from "./toggle-plugin";
+import { ToggleTypewriter } from "./toggle-typewriter";
+import { ToggleTypewriterAndDimming } from "./toggle-typewriter-and-dimming";
+import { WritingFocusCommand } from "./writing-focus";
 
-export function getCommands(tm: TypewriterModeLib): Record<string, Command> {
-	return [
-		TogglePlugin,
-		ToggleTypewriter,
-		ToggleDimming,
-		ToggleTypewriterAndDimming,
-		MoveTypewriter,
-		WritingFocusCommand,
-	].reduce((a, v) => {
-		const command = new v(tm) as AbstractCommand;
-		// @ts-ignore
-		a[command.commandKey] = new v(tm);
-		return a;
-	}, {});
+export function getCommands(
+  tm: TypewriterModeLib
+): Record<string, AbstractCommand> {
+  return Object.fromEntries(
+    [
+      new TogglePlugin(tm),
+      new ToggleTypewriter(tm),
+      new ToggleDimming(tm),
+      new ToggleTypewriterAndDimming(tm),
+      new MoveTypewriterUp(tm),
+      new MoveTypewriterDown(tm),
+      new WritingFocusCommand(tm),
+    ].map((cmd) => [cmd.commandKey, cmd])
+  );
 }

@@ -4,36 +4,34 @@ import { parseArgs } from "node:util";
 import { $ } from "bun";
 
 import { buildPlugin } from "./utils/build";
-import { getPackageMetadata } from "./utils/getPackageMetadata";
-import { updateManifests } from "./utils/updateManifests";
+import { getPackageMetadata } from "./utils/get-package-metadata";
+import { updateManifests } from "./utils/update-manifests";
 
 const obsidianConfigPath = "./test-vault/.obsidian";
 const pluginPath = `${obsidianConfigPath}/plugins/obsidian-typewriter-mode`;
 
 const { values: args } = parseArgs({
-	args: Bun.argv,
-	options: {
-		debug: {
-			type: "boolean",
-		},
-	},
-	strict: true,
-	allowPositionals: true,
+  args: Bun.argv,
+  options: {
+    debug: {
+      type: "boolean",
+    },
+  },
+  strict: true,
+  allowPositionals: true,
 });
 
 console.log("Creating test vault");
 await $`mkdir -p ${pluginPath}`.quiet();
 
-if (
-	!(await Bun.file(`${obsidianConfigPath}/community-plugins.json`).exists())
-) {
-	console.log("Creating community-plugins.json");
-	await Bun.write(
-		`${obsidianConfigPath}/community-plugins.json`,
-		'["typewriter-mode"]',
-	);
+if (await Bun.file(`${obsidianConfigPath}/community-plugins.json`).exists()) {
+  console.log("Community plugins already configured in test vault");
 } else {
-	console.log("Community plugins already configured in test vault");
+  console.log("Creating community-plugins.json");
+  await Bun.write(
+    `${obsidianConfigPath}/community-plugins.json`,
+    '["typewriter-mode"]'
+  );
 }
 
 console.log("Cleaning test vault");
@@ -49,9 +47,9 @@ await updateManifests(targetVersion, minAppVersion, pluginPath);
 
 console.log("Selecting manifest");
 if (isBeta) {
-	await $`mv ${pluginPath}/manifest-beta.json ${pluginPath}/manifest.json`.quiet();
+  await $`mv ${pluginPath}/manifest-beta.json ${pluginPath}/manifest.json`.quiet();
 } else {
-	await $`rm ${pluginPath}/manifest-beta.json`.quiet();
+  await $`rm ${pluginPath}/manifest-beta.json`.quiet();
 }
 
 console.log("Test vault successfully prepared");

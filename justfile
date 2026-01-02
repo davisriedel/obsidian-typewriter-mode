@@ -3,7 +3,7 @@ default:
 
 
 [private]
-biome:
+lint:
   bun biome check --write ./src ./scripts
 
 [private]
@@ -14,10 +14,10 @@ stylelint:
 markdownlint:
   bun markdownlint --disable MD013 --fix "**/*.md"
 
-tsc:
-  bun tsc --noEmit
+typecheck:
+  bun tsgo --noEmit
 
-check: tsc biome stylelint markdownlint
+check: typecheck lint stylelint markdownlint
 
 
 dev:

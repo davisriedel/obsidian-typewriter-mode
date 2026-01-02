@@ -1,0 +1,15 @@
+.workspace-leaf.mod-active .cm-sizer, .mod-inside-iframe .cm-sizer {
+  position: relative;
+  z-index: 1;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background: transparent;
+    z-index: -1;
+  }
+}

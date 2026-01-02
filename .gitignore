@@ -18,3 +18,5 @@ test-vault
 # MacOS
 .DS_Store
 
+# Claude
+.claude/settings.local.json

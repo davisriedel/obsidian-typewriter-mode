@@ -1,28 +1,27 @@
 import type TypewriterModeLib from "@/lib";
-import type { Feature } from "../base/Feature";
-import { loadCapabilityGroups } from "../base/loadCapabilityGroups";
-import currentLine from "./currentLine";
+import type { Feature } from "../base/feature";
+import currentLine from "./current-line";
 import dimming from "./dimming";
 import general from "./general";
-import keepAboveAndBelow from "./keepAboveAndBelow";
-import maxChar from "./maxChar";
-import restoreCursorPosition from "./restoreCursorPosition";
+import keepAboveAndBelow from "./keep-above-and-below";
+import maxChar from "./max-char";
+import restoreCursorPosition from "./restore-cursor-position";
 import typewriter from "./typewriter";
 import updates from "./updates";
-import writingFocus from "./writingFocus";
+import writingFocus from "./writing-focus";
 
 export function getFeatures(
-	tm: TypewriterModeLib,
+  tm: TypewriterModeLib
 ): Record<string, Record<string, Feature>> {
-	return loadCapabilityGroups<Feature>(tm, {
-		currentLine,
-		dimming,
-		general,
-		keepAboveAndBelow,
-		maxChar,
-		typewriter,
-		updates,
-		writingFocus,
-		restoreCursorPosition,
-	});
+  return {
+    currentLine: currentLine(tm),
+    dimming: dimming(tm),
+    general: general(tm),
+    keepAboveAndBelow: keepAboveAndBelow(tm),
+    maxChar: maxChar(tm),
+    typewriter: typewriter(tm),
+    updates: updates(tm),
+    writingFocus: writingFocus(tm),
+    restoreCursorPosition: restoreCursorPosition(tm),
+  };
 }
