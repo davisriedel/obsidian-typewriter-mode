@@ -1,4 +1,4 @@
-import type { PluginSettingTab } from "obsidian";
+import type { SettingGroup } from "obsidian";
 import {
   getSetting,
   type LegacyTypewriterModeSettings,
@@ -17,7 +17,7 @@ export abstract class Feature extends Loadable {
     // Hook for disabling feature - override in subclass if needed
   }
 
-  abstract registerSetting(settingTab: PluginSettingTab): void;
+  abstract registerSetting(settingGroup: SettingGroup): void;
 
   getBodyClasses(): string[] {
     return [];

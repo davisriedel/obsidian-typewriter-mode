@@ -3,7 +3,7 @@ import {
   Component,
   MarkdownRenderer,
   PluginSettingTab,
-  Setting,
+  SettingGroup,
 } from "obsidian";
 import type TypewriterModeLib from "@/lib";
 import fundingText from "@/texts/Funding.md" with { type: "text" };
@@ -16,72 +16,95 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
     this.tm = tm;
   }
 
-  private addHeading(text: string) {
-    return new Setting(this.containerEl).setName(text).setHeading();
-  }
-
-  private addText(text: string) {
-    return new Setting(this.containerEl).setName(text);
+  private registerFeaturesInGroup(
+    group: SettingGroup,
+    features: Record<string, { registerSetting: (group: SettingGroup) => void }>
+  ) {
+    for (const feature of Object.values(features)) {
+      feature.registerSetting(group);
+    }
   }
 
   display(): void {
     this.containerEl.empty();
 
-    for (const feature of Object.values(this.tm.features.general)) {
-      feature.registerSetting(this);
-    }
+    // General settings (no heading)
+    const generalGroup = new SettingGroup(this.containerEl);
+    this.registerFeaturesInGroup(generalGroup, this.tm.features.general);
 
-    this.addHeading("Typewriter");
+    // Typewriter group
+    const typewriterGroup = new SettingGroup(this.containerEl).setHeading(
+      "Typewriter"
+    );
     if (
       this.tm.settings.keepLinesAboveAndBelow.isKeepLinesAboveAndBelowEnabled
     ) {
-      this.addText(
-        'Not available if "keep lines above and below" is activated'
+      typewriterGroup.addSetting((setting) =>
+        setting.setName(
+          'Not available if "keep lines above and below" is activated'
+        )
       );
     }
-    for (const feature of Object.values(this.tm.features.typewriter)) {
-      feature.registerSetting(this);
-    }
+    this.registerFeaturesInGroup(typewriterGroup, this.tm.features.typewriter);
 
-    this.addHeading("Keep lines above and below");
+    // Keep lines above and below group
+    const keepLinesGroup = new SettingGroup(this.containerEl).setHeading(
+      "Keep lines above and below"
+    );
     if (this.tm.settings.typewriter.isTypewriterScrollEnabled) {
-      this.addText("Not available if typewriter scrolling is activated");
+      keepLinesGroup.addSetting((setting) =>
+        setting.setName("Not available if typewriter scrolling is activated")
+      );
     }
-    for (const feature of Object.values(this.tm.features.keepAboveAndBelow)) {
-      feature.registerSetting(this);
-    }
+    this.registerFeaturesInGroup(
+      keepLinesGroup,
+      this.tm.features.keepAboveAndBelow
+    );
 
-    this.addHeading("Highlight current line");
-    for (const feature of Object.values(this.tm.features.currentLine)) {
-      feature.registerSetting(this);
-    }
+    // Highlight current line group
+    const currentLineGroup = new SettingGroup(this.containerEl).setHeading(
+      "Highlight current line"
+    );
+    this.registerFeaturesInGroup(
+      currentLineGroup,
+      this.tm.features.currentLine
+    );
 
-    this.addHeading("Dimming");
-    for (const feature of Object.values(this.tm.features.dimming)) {
-      feature.registerSetting(this);
-    }
+    // Dimming group
+    const dimmingGroup = new SettingGroup(this.containerEl).setHeading(
+      "Dimming"
+    );
+    this.registerFeaturesInGroup(dimmingGroup, this.tm.features.dimming);
 
-    this.addHeading("Limit line width");
-    for (const feature of Object.values(this.tm.features.maxChar)) {
-      feature.registerSetting(this);
-    }
+    // Limit line width group
+    const maxCharGroup = new SettingGroup(this.containerEl).setHeading(
+      "Limit line width"
+    );
+    this.registerFeaturesInGroup(maxCharGroup, this.tm.features.maxChar);
 
-    this.addHeading("Restore cursor position");
-    for (const feature of Object.values(
+    // Restore cursor position group
+    const restoreCursorGroup = new SettingGroup(this.containerEl).setHeading(
+      "Restore cursor position"
+    );
+    this.registerFeaturesInGroup(
+      restoreCursorGroup,
       this.tm.features.restoreCursorPosition
-    )) {
-      feature.registerSetting(this);
-    }
+    );
 
-    this.addHeading("Writing focus");
-    for (const feature of Object.values(this.tm.features.writingFocus)) {
-      feature.registerSetting(this);
-    }
+    // Writing focus group
+    const writingFocusGroup = new SettingGroup(this.containerEl).setHeading(
+      "Writing focus"
+    );
+    this.registerFeaturesInGroup(
+      writingFocusGroup,
+      this.tm.features.writingFocus
+    );
 
-    this.addHeading("Update notice and funding");
-    for (const feature of Object.values(this.tm.features.updates)) {
-      feature.registerSetting(this);
-    }
+    // Update notice and funding group
+    const updatesGroup = new SettingGroup(this.containerEl).setHeading(
+      "Update notice and funding"
+    );
+    this.registerFeaturesInGroup(updatesGroup, this.tm.features.updates);
 
     const updateNoticeDiv = this.containerEl.createDiv();
     this.containerEl.appendChild(updateNoticeDiv);

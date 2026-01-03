@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0-beta.2
+
+- Add color picker and opacity slider for current line highlight color, instead of plain
+text field
+- Group settings using the new `SettingGroup` from Obsidian API
+
 ## 1.2.0-beta.1
 
 - Add custom font size option for writing focus mode

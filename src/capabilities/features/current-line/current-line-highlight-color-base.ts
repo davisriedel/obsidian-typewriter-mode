@@ -1,5 +1,4 @@
-import type { PluginSettingTab } from "obsidian";
-import { Setting } from "obsidian";
+import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import type TypewriterModeLib from "@/lib";
 
@@ -19,36 +18,38 @@ export default abstract class CurrentLineHighlightColor extends Feature {
     this.settingKey = `currentLineHighlightColor-${themeMode}`;
   }
 
-  registerSetting(settingTab: PluginSettingTab): void {
+  registerSetting(settingGroup: SettingGroup): void {
     const currentValue = this.getSettingValue() as string;
     const { color, opacity } = this.parseColor(currentValue);
 
-    new Setting(settingTab.containerEl)
-      .setName(`Current line highlight color in ${this.themeMode} themes`)
-      .setDesc(
-        `The color and opacity of the current line highlight in ${this.themeMode} themes`
-      )
-      .setClass("typewriter-mode-setting")
-      .addColorPicker((colorPicker) =>
-        colorPicker.setValue(color).onChange((newColor) => {
-          const currentOpacity = this.parseColor(
-            this.getSettingValue() as string
-          ).opacity;
-          this.changeCurrentLineHighlightColor(newColor, currentOpacity);
-        })
-      )
-      .addSlider((slider) =>
-        slider
-          .setLimits(0, 1, 0.01)
-          .setValue(opacity)
-          .setDynamicTooltip()
-          .onChange((newOpacity) => {
-            const currentColor = this.parseColor(
+    settingGroup.addSetting((setting) =>
+      setting
+        .setName(`Current line highlight color in ${this.themeMode} themes`)
+        .setDesc(
+          `The color and opacity of the current line highlight in ${this.themeMode} themes`
+        )
+        .setClass("typewriter-mode-setting")
+        .addColorPicker((colorPicker) =>
+          colorPicker.setValue(color).onChange((newColor) => {
+            const currentOpacity = this.parseColor(
               this.getSettingValue() as string
-            ).color;
-            this.changeCurrentLineHighlightColor(currentColor, newOpacity);
+            ).opacity;
+            this.changeCurrentLineHighlightColor(newColor, currentOpacity);
           })
-      );
+        )
+        .addSlider((slider) =>
+          slider
+            .setLimits(0, 1, 0.01)
+            .setValue(opacity)
+            .setDynamicTooltip()
+            .onChange((newOpacity) => {
+              const currentColor = this.parseColor(
+                this.getSettingValue() as string
+              ).color;
+              this.changeCurrentLineHighlightColor(currentColor, newOpacity);
+            })
+        )
+    );
   }
 
   override load() {

@@ -1,5 +1,4 @@
-import type { PluginSettingTab } from "obsidian";
-import { Setting } from "obsidian";
+import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import {
   CURRENT_LINE_HIGHLIGHT_STYLE,
@@ -17,23 +16,24 @@ export default class CurrentLineHighlightStyle extends Feature {
     ];
   }
 
-  registerSetting(settingTab: PluginSettingTab): void {
-    new Setting(settingTab.containerEl)
-      .setName("Current line highlight style")
-      .setDesc("The style of the current line highlight")
-      .setClass("typewriter-mode-setting")
-      .addDropdown((dropdown) =>
-        dropdown
-          .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, "Box")
-          .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, "Underline")
-          .setValue(this.getSettingValue() as CurrentLineHighlightStyleType)
-          .onChange((newValue) => {
-            this.changeCurrentLineHighlightStyle(
-              newValue as CurrentLineHighlightStyleType
-            );
-            settingTab.display();
-          })
-      );
+  registerSetting(settingGroup: SettingGroup): void {
+    settingGroup.addSetting((setting) =>
+      setting
+        .setName("Current line highlight style")
+        .setDesc("The style of the current line highlight")
+        .setClass("typewriter-mode-setting")
+        .addDropdown((dropdown) =>
+          dropdown
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, "Box")
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, "Underline")
+            .setValue(this.getSettingValue() as CurrentLineHighlightStyleType)
+            .onChange((newValue) => {
+              this.changeCurrentLineHighlightStyle(
+                newValue as CurrentLineHighlightStyleType
+              );
+            })
+        )
+    );
   }
 
   override load() {

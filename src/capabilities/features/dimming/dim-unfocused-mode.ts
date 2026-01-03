@@ -1,5 +1,4 @@
-import type { PluginSettingTab } from "obsidian";
-import { Setting } from "obsidian";
+import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import {
   DIM_UNFOCUSED_MODE,
@@ -10,21 +9,22 @@ import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 export default class DimUnfocusedMode extends Feature {
   settingKey: keyof LegacyTypewriterModeSettings = "dimUnfocusedMode";
 
-  registerSetting(settingTab: PluginSettingTab): void {
-    new Setting(settingTab.containerEl)
-      .setName("Dim unfocused mode")
-      .setDesc("Choose to dim unfocused paragraphs or sentences")
-      .setClass("typewriter-mode-setting")
-      .addDropdown((dropdown) =>
-        dropdown
-          .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, "Paragraphs")
-          .addOption(DIM_UNFOCUSED_MODE.SENTENCES, "Sentences")
-          .setValue(this.getSettingValue() as DimUnfocusedModeType)
-          .onChange((newValue) => {
-            this.change(newValue as DimUnfocusedModeType);
-            settingTab.display();
-          })
-      );
+  registerSetting(settingGroup: SettingGroup): void {
+    settingGroup.addSetting((setting) =>
+      setting
+        .setName("Dim unfocused mode")
+        .setDesc("Choose to dim unfocused paragraphs or sentences")
+        .setClass("typewriter-mode-setting")
+        .addDropdown((dropdown) =>
+          dropdown
+            .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, "Paragraphs")
+            .addOption(DIM_UNFOCUSED_MODE.SENTENCES, "Sentences")
+            .setValue(this.getSettingValue() as DimUnfocusedModeType)
+            .onChange((newValue) => {
+              this.change(newValue as DimUnfocusedModeType);
+            })
+        )
+    );
   }
 
   override load() {

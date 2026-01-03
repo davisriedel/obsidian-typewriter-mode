@@ -1,5 +1,4 @@
-import type { PluginSettingTab } from "obsidian";
-import { Setting } from "obsidian";
+import type { SettingGroup } from "obsidian";
 import { Feature } from "./feature";
 
 export abstract class FeatureToggle extends Feature {
@@ -24,20 +23,21 @@ export abstract class FeatureToggle extends Feature {
     return this.toggleClass;
   }
 
-  registerSetting(settingTab: PluginSettingTab) {
-    new Setting(settingTab.containerEl)
-      .setName(this.settingTitle)
-      .setDesc(this.settingDesc)
-      .setClass("typewriter-mode-setting")
-      .addToggle((toggle) =>
-        toggle
-          .setValue(this.getSettingValue() as boolean)
-          .onChange((newValue) => {
-            this.toggle(newValue);
-            settingTab.display();
-          })
-      )
-      .setDisabled(!this.isSettingEnabled());
+  registerSetting(settingGroup: SettingGroup) {
+    settingGroup.addSetting((setting) =>
+      setting
+        .setName(this.settingTitle)
+        .setDesc(this.settingDesc)
+        .setClass("typewriter-mode-setting")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.getSettingValue() as boolean)
+            .onChange((newValue) => {
+              this.toggle(newValue);
+            })
+        )
+        .setDisabled(!this.isSettingEnabled())
+    );
   }
 
   override load() {
