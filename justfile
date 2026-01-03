@@ -4,7 +4,7 @@ default:
 
 [private]
 lint:
-  bun biome check --write ./src ./scripts
+  bun biome check --write
 
 [private]
 stylelint:

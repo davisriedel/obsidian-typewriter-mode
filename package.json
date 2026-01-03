@@ -14,7 +14,7 @@
     "@types/bun": "^1.3.5",
     "@types/codemirror": "^5.60.17",
     "@types/node": "^25.0.3",
-    "@typescript/native-preview": "^7.0.0-dev.20260101.1",
+    "@typescript/native-preview": "^7.0.0-dev.20260103.1",
     "builtin-modules": "^5.0.0",
     "electron": "^39.2.7",
     "lefthook": "^2.0.13",
@@ -24,7 +24,7 @@
     "stylelint": "^16.26.1",
     "stylelint-config-standard-scss": "^16.0.0",
     "typescript": "^5.9.3",
-    "ultracite": "7.0.4"
+    "ultracite": "7.0.5"
   },
   "description": "Typewriter scrolling, highlight of the current line, dimming of unfocused paragraphs and more",
   "keywords": [
