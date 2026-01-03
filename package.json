@@ -1,7 +1,7 @@
 {
   "name": "obsidian-typewriter-mode",
   "version": "1.2.0-beta.2",
-  "obsidianMinAppVersion": "0.15.0",
+  "obsidianMinAppVersion": "1.11.0",
   "author": "Davis Riedel",
   "repository": {
     "type": "git",
