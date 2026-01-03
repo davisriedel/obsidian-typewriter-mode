@@ -2,7 +2,7 @@
 
 import { parseArgs } from "node:util";
 import { build } from "./common/scripts/build";
-import { setupTestVault } from "./common/scripts/setupTestVault";
+import { setupTestVault } from "./common/scripts/setup-test-vault";
 
 const { values: args } = parseArgs({
   args: Bun.argv,
@@ -24,4 +24,4 @@ await build(
   false
 );
 
-await setupTestVault("obsidian-typewriter-mode", "./test-vault");
+await setupTestVault("./dist", "obsidian-typewriter-mode", "./test-vault");
