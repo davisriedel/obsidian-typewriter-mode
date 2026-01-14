@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0-beta.1
+
+- Add hemingway mode which disables editing text and only allows writing forwards
+
 ## 1.2.0-beta.2
 
 - Add color picker and opacity slider for current line highlight color, instead of plain
