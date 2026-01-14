@@ -54,6 +54,9 @@ The writing focus was derived from [Obsidian Focus Mode](https://github.com/ryan
 
 The restore cursor position feature was derived from [Remember Cursor Position](https://arc.net/l/quote/jmvjfrza) by [dy-sh](https://github.com/dy-sh).
 
+The hemingway mode feature was derived from [Obsidian Hemingway
+Mode](https://github.com/jobedom/obsidian-hemingway-mode) by [jobedom](https://github.com/jobedom).
+
 Many thanks to the developers of these fantastic plugins. Please also consider supporting them.
 
 ## Support this project

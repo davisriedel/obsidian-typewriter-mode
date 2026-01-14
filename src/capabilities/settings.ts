@@ -65,6 +65,13 @@ export interface RestoreCursorPositionSettings {
   cursorPositions: Record<string, unknown>;
 }
 
+export interface HemingwayModeSettings {
+  isHemingwayModeEnabled: boolean;
+  isAllowBackspaceInHemingwayModeEnabled: boolean;
+  isShowHemingwayModeStatusBarEnabled: boolean;
+  hemingwayModeStatusBarText: string;
+}
+
 export interface TypewriterModeSettings {
   general: GeneralSettings;
   typewriter: TypewriterSettings;
@@ -74,6 +81,7 @@ export interface TypewriterModeSettings {
   currentLine: CurrentLineSettings;
   writingFocus: WritingFocusSettings;
   restoreCursorPosition: RestoreCursorPositionSettings;
+  hemingwayMode: HemingwayModeSettings;
 }
 
 // Legacy flat settings structure for migration
@@ -113,6 +121,10 @@ export interface LegacyTypewriterModeSettings {
   writingFocusVignetteStyle: WritingFocusVignetteStyle;
   writingFocusFontSize: number;
   isRestoreCursorPositionEnabled: boolean;
+  isHemingwayModeEnabled: boolean;
+  isAllowBackspaceInHemingwayModeEnabled: boolean;
+  isShowHemingwayModeStatusBarEnabled: boolean;
+  hemingwayModeStatusBarText: string;
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
@@ -167,6 +179,12 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   restoreCursorPosition: {
     isRestoreCursorPositionEnabled: false,
     cursorPositions: {},
+  },
+  hemingwayMode: {
+    isHemingwayModeEnabled: false,
+    isAllowBackspaceInHemingwayModeEnabled: false,
+    isShowHemingwayModeStatusBarEnabled: true,
+    hemingwayModeStatusBarText: "Hemingway",
   },
 };
 
@@ -292,6 +310,22 @@ export const SETTINGS_PATHS: Record<
   isRestoreCursorPositionEnabled: {
     category: "restoreCursorPosition",
     key: "isRestoreCursorPositionEnabled",
+  },
+  isHemingwayModeEnabled: {
+    category: "hemingwayMode",
+    key: "isHemingwayModeEnabled",
+  },
+  isAllowBackspaceInHemingwayModeEnabled: {
+    category: "hemingwayMode",
+    key: "isAllowBackspaceInHemingwayModeEnabled",
+  },
+  isShowHemingwayModeStatusBarEnabled: {
+    category: "hemingwayMode",
+    key: "isShowHemingwayModeStatusBarEnabled",
+  },
+  hemingwayModeStatusBarText: {
+    category: "hemingwayMode",
+    key: "hemingwayModeStatusBarText",
   },
 };
 
@@ -450,6 +484,20 @@ export function migrateSettings(
         legacy.isRestoreCursorPositionEnabled ??
         DEFAULT_SETTINGS.restoreCursorPosition.isRestoreCursorPositionEnabled,
       cursorPositions: {},
+    },
+    hemingwayMode: {
+      isHemingwayModeEnabled:
+        legacy.isHemingwayModeEnabled ??
+        DEFAULT_SETTINGS.hemingwayMode.isHemingwayModeEnabled,
+      isAllowBackspaceInHemingwayModeEnabled:
+        legacy.isAllowBackspaceInHemingwayModeEnabled ??
+        DEFAULT_SETTINGS.hemingwayMode.isAllowBackspaceInHemingwayModeEnabled,
+      isShowHemingwayModeStatusBarEnabled:
+        legacy.isShowHemingwayModeStatusBarEnabled ??
+        DEFAULT_SETTINGS.hemingwayMode.isShowHemingwayModeStatusBarEnabled,
+      hemingwayModeStatusBarText:
+        legacy.hemingwayModeStatusBarText ??
+        DEFAULT_SETTINGS.hemingwayMode.hemingwayModeStatusBarText,
     },
   };
 }

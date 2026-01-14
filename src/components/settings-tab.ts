@@ -9,6 +9,8 @@ import type TypewriterModeLib from "@/lib";
 import fundingText from "@/texts/Funding.md" with { type: "text" };
 
 export default class TypewriterModeSettingTab extends PluginSettingTab {
+  override icon = "type-outline";
+
   private tm: TypewriterModeLib;
 
   constructor(app: App, tm: TypewriterModeLib) {
@@ -70,26 +72,17 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       this.tm.features.currentLine
     );
 
-    // Dimming group
-    const dimmingGroup = new SettingGroup(this.containerEl).setHeading(
-      "Dimming"
-    );
-    this.registerFeaturesInGroup(dimmingGroup, this.tm.features.dimming);
-
     // Limit line width group
     const maxCharGroup = new SettingGroup(this.containerEl).setHeading(
       "Limit line width"
     );
     this.registerFeaturesInGroup(maxCharGroup, this.tm.features.maxChar);
 
-    // Restore cursor position group
-    const restoreCursorGroup = new SettingGroup(this.containerEl).setHeading(
-      "Restore cursor position"
+    // Dimming group
+    const dimmingGroup = new SettingGroup(this.containerEl).setHeading(
+      "Dimming"
     );
-    this.registerFeaturesInGroup(
-      restoreCursorGroup,
-      this.tm.features.restoreCursorPosition
-    );
+    this.registerFeaturesInGroup(dimmingGroup, this.tm.features.dimming);
 
     // Writing focus group
     const writingFocusGroup = new SettingGroup(this.containerEl).setHeading(
@@ -98,6 +91,24 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
     this.registerFeaturesInGroup(
       writingFocusGroup,
       this.tm.features.writingFocus
+    );
+
+    // Hemingway mode group
+    const hemingwayGroup = new SettingGroup(this.containerEl).setHeading(
+      "Hemingway mode"
+    );
+    this.registerFeaturesInGroup(
+      hemingwayGroup,
+      this.tm.features.hemingwayMode
+    );
+
+    // Restore cursor position group
+    const restoreCursorGroup = new SettingGroup(this.containerEl).setHeading(
+      "Restore cursor position"
+    );
+    this.registerFeaturesInGroup(
+      restoreCursorGroup,
+      this.tm.features.restoreCursorPosition
     );
 
     // Update notice and funding group
