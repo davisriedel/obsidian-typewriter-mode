@@ -190,11 +190,41 @@ class TypewriterModeCM6Plugin {
     return !frontmatter["typewriter-mode"];
   }
 
+  private isDisabledByFilePaths() {
+    const file = this.tm.plugin.app.workspace.getActiveFile();
+    if (!file) {
+      // We currently do not have an active file. After a new file gets active, the per window props must be reloaded.
+      this.isPerWindowPropsReloadRequired = true;
+      return false;
+    }
+
+    const paths = this.tm.settings.general.enabledFilePaths;
+    if (!paths || paths.length === 0) {
+      return false;
+    }
+
+    const filePath = file.path;
+
+    for (const path of paths) {
+      if (path === "") {
+        return false;
+      }
+      if (filePath === path || filePath.startsWith(`${path}/`)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   private isDisabled() {
     if (!this.tm.settings.general.isPluginActivated) {
       return true;
     }
     if (!this.isMarkdownFile()) {
+      return true;
+    }
+    if (this.isDisabledByFilePaths()) {
       return true;
     }
     if (this.isDisabledInFrontmatter()) {
