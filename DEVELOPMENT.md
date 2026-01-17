@@ -10,7 +10,8 @@
 ## Setup
 
 1. Fork this repo and clone your fork
-2. Install dependencies with `bun install`
+2. Initialize the build-scripts submodule: `git submodule update --init`
+3. Install dependencies with `bun install`
 
 ## Building and Testing
 
