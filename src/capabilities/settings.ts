@@ -10,6 +10,7 @@ export interface GeneralSettings {
   isAnnounceUpdatesEnabled: boolean;
   isPluginActivated: boolean;
   isOnlyActivateAfterFirstInteractionEnabled: boolean;
+  enabledFilePaths: string[];
 }
 
 export interface TypewriterSettings {
@@ -125,6 +126,7 @@ export interface LegacyTypewriterModeSettings {
   isAllowBackspaceInHemingwayModeEnabled: boolean;
   isShowHemingwayModeStatusBarEnabled: boolean;
   hemingwayModeStatusBarText: string;
+  enabledFilePaths: string[];
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
@@ -133,6 +135,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isAnnounceUpdatesEnabled: true,
     isPluginActivated: true,
     isOnlyActivateAfterFirstInteractionEnabled: false,
+    enabledFilePaths: [],
   },
   typewriter: {
     isTypewriterScrollEnabled: true,
@@ -327,6 +330,7 @@ export const SETTINGS_PATHS: Record<
     category: "hemingwayMode",
     key: "hemingwayModeStatusBarText",
   },
+  enabledFilePaths: { category: "general", key: "enabledFilePaths" },
 };
 
 // Helper functions for accessing nested settings with flat keys
@@ -359,10 +363,22 @@ export function migrateSettings(
 ): TypewriterModeSettings {
   // Check if settings are already in new format
   if ("general" in settings && settings.general !== undefined) {
-    return {
+    const result = {
       ...DEFAULT_SETTINGS,
       ...settings,
     } as TypewriterModeSettings;
+    const g = settings.general as unknown as
+      | Record<string, unknown>
+      | undefined;
+    if (g?.enabledFilePathsRegex !== undefined) {
+      result.general.enabledFilePaths = Array.isArray(g.enabledFilePathsRegex)
+        ? g.enabledFilePathsRegex
+        : [];
+    }
+    (
+      result.general as unknown as Record<string, unknown>
+    ).enabledFilePathsRegex = undefined;
+    return result;
   }
 
   // Migrate from legacy flat format
@@ -378,6 +394,7 @@ export function migrateSettings(
       isOnlyActivateAfterFirstInteractionEnabled:
         legacy.isOnlyActivateAfterFirstInteractionEnabled ??
         DEFAULT_SETTINGS.general.isOnlyActivateAfterFirstInteractionEnabled,
+      enabledFilePaths: [],
     },
     typewriter: {
       isTypewriterScrollEnabled:
