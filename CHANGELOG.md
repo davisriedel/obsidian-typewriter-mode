@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0-beta.2
+
+- Add ability to disable on certain platforms (e.g. only on desktop, disable on mobile)
+- Update legacy settings handling
+
 ## 1.3.0-beta.1
 
 - Add hemingway mode which disables editing text and only allows writing forwards
