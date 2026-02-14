@@ -30,3 +30,12 @@ export const WRITING_FOCUS_VIGNETTE_STYLE = {
 
 export type WritingFocusVignetteStyle =
   (typeof WRITING_FOCUS_VIGNETTE_STYLE)[keyof typeof WRITING_FOCUS_VIGNETTE_STYLE];
+
+export const ENABLED_PLATFORMS = {
+  BOTH: "both",
+  DESKTOP: "desktop",
+  MOBILE: "mobile",
+} as const;
+
+export type EnabledPlatforms =
+  (typeof ENABLED_PLATFORMS)[keyof typeof ENABLED_PLATFORMS];

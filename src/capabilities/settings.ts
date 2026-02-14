@@ -1,9 +1,15 @@
 import type { Vault } from "obsidian";
-import type {
-  CurrentLineHighlightStyle,
-  DimUnfocusedEditorsBehavior,
-  DimUnfocusedMode,
-  WritingFocusVignetteStyle,
+import {
+  CURRENT_LINE_HIGHLIGHT_STYLE,
+  type CurrentLineHighlightStyle,
+  DIM_UNFOCUSED_EDITORS_BEHAVIOR,
+  DIM_UNFOCUSED_MODE,
+  type DimUnfocusedEditorsBehavior,
+  type DimUnfocusedMode,
+  ENABLED_PLATFORMS,
+  type EnabledPlatforms,
+  WRITING_FOCUS_VIGNETTE_STYLE,
+  type WritingFocusVignetteStyle,
 } from "./constants";
 
 export interface GeneralSettings {
@@ -11,6 +17,7 @@ export interface GeneralSettings {
   isAnnounceUpdatesEnabled: boolean;
   isPluginActivated: boolean;
   isOnlyActivateAfterFirstInteractionEnabled: boolean;
+  enabledPlatforms: EnabledPlatforms;
 }
 
 export interface TypewriterSettings {
@@ -128,6 +135,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isAnnounceUpdatesEnabled: true,
     isPluginActivated: true,
     isOnlyActivateAfterFirstInteractionEnabled: false,
+    enabledPlatforms: ENABLED_PLATFORMS.BOTH,
   },
   typewriter: {
     isTypewriterScrollEnabled: true,
@@ -147,8 +155,8 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isDimUnfocusedEnabled: false,
     isDimHighlightListParentEnabled: false,
     isDimTableAsOneEnabled: true,
-    dimUnfocusedMode: "paragraphs",
-    dimUnfocusedEditorsBehavior: "dim",
+    dimUnfocusedMode: DIM_UNFOCUSED_MODE.PARAGRAPHS,
+    dimUnfocusedEditorsBehavior: DIM_UNFOCUSED_EDITORS_BEHAVIOR.DIM,
     dimmedOpacity: 0.25,
     isPauseDimUnfocusedWhileScrollingEnabled: true,
     isPauseDimUnfocusedWhileSelectingEnabled: true,
@@ -158,7 +166,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isFadeLinesEnabled: false,
     fadeLinesIntensity: 0.5,
     isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
-    currentLineHighlightStyle: "box",
+    currentLineHighlightStyle: CURRENT_LINE_HIGHLIGHT_STYLE.BOX,
     currentLineHighlightUnderlineThickness: 1,
     "currentLineHighlightColor-dark": "#444",
     "currentLineHighlightColor-light": "#ddd",
@@ -168,7 +176,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     doesWritingFocusShowStatusBar: false,
     doesWritingFocusShowVignette: true,
     isWritingFocusFullscreen: true,
-    writingFocusVignetteStyle: "box",
+    writingFocusVignetteStyle: WRITING_FOCUS_VIGNETTE_STYLE.BOX,
     writingFocusFontSize: 0,
   },
   restoreCursorPosition: {
@@ -242,6 +250,7 @@ function migrateSettings(
       isOnlyActivateAfterFirstInteractionEnabled:
         legacy.isOnlyActivateAfterFirstInteractionEnabled ??
         DEFAULT_SETTINGS.general.isOnlyActivateAfterFirstInteractionEnabled,
+      enabledPlatforms: DEFAULT_SETTINGS.general.enabledPlatforms,
     },
     typewriter: {
       isTypewriterScrollEnabled:

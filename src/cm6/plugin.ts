@@ -190,8 +190,19 @@ class TypewriterModeCM6Plugin {
     return !frontmatter["typewriter-mode"];
   }
 
+  private isDisabledByPlatform() {
+    const { enabledPlatforms } = this.tm.settings.general;
+    return (
+      (enabledPlatforms === "desktop" && Platform.isMobile) ||
+      (enabledPlatforms === "mobile" && Platform.isDesktop)
+    );
+  }
+
   private isDisabled() {
     if (!this.tm.settings.general.isPluginActivated) {
+      return true;
+    }
+    if (this.isDisabledByPlatform()) {
       return true;
     }
     if (!this.isMarkdownFile()) {
