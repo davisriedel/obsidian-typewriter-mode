@@ -1,6 +1,8 @@
 # From https://marcus.se.net/obsidian-plugin-docs/publishing/release-your-plugin-with-github-actions
 
 name: Release Obsidian plugin
+permissions:
+  contents: write
 
 on:
   push:
