@@ -1,9 +1,8 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class KeepLinesAboveAndBelow extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isKeepLinesAboveAndBelowEnabled";
+  readonly settingKey =
+    "keepLinesAboveAndBelow.isKeepLinesAboveAndBelowEnabled" as const;
   protected settingTitle = "Keep lines above and below";
   protected settingDesc =
     "When enabled, always keeps the specified amount of lines above and below the current line in view";

@@ -4,11 +4,9 @@ import {
   DIM_UNFOCUSED_EDITORS_BEHAVIOR,
   type DimUnfocusedEditorsBehavior as DimUnfocusedEditorsBehaviorType,
 } from "@/capabilities/constants";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class DimUnfocusedEditorsBehavior extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "dimUnfocusedEditorsBehavior";
+  readonly settingKey = "dimming.dimUnfocusedEditorsBehavior" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

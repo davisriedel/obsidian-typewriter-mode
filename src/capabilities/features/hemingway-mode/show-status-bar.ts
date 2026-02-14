@@ -1,10 +1,9 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 import type HemingwayMode from "./hemingway-mode";
 
 export default class ShowHemingwayModeStatusBar extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isShowHemingwayModeStatusBarEnabled";
+  readonly settingKey =
+    "hemingwayMode.isShowHemingwayModeStatusBarEnabled" as const;
   protected override toggleClass = null;
   protected settingTitle = "Show status bar indicator";
   protected settingDesc =
@@ -21,8 +20,9 @@ export default class ShowHemingwayModeStatusBar extends FeatureToggle {
   }
 
   private updateHemingwayModeStatusBar() {
-    const hemingwayMode = this.tm.features.hemingwayMode
-      .isHemingwayModeEnabled as HemingwayMode;
+    const hemingwayMode = this.tm.features.hemingwayMode[
+      "hemingwayMode.isHemingwayModeEnabled"
+    ] as HemingwayMode;
     hemingwayMode.updateStatusBarText();
   }
 }

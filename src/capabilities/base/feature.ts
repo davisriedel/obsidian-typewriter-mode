@@ -1,13 +1,14 @@
 import type { SettingGroup } from "obsidian";
 import {
-  getSetting,
-  type LegacyTypewriterModeSettings,
-  setSetting,
+  getSettingByPath,
+  type SettingsPath,
+  type SettingValueAtPath,
+  setSettingByPath,
 } from "../settings";
 import Loadable from "./loadable";
 
 export abstract class Feature extends Loadable {
-  abstract readonly settingKey: keyof LegacyTypewriterModeSettings;
+  abstract readonly settingKey: SettingsPath;
 
   enable() {
     // Hook for enabling feature - override in subclass if needed
@@ -27,11 +28,14 @@ export abstract class Feature extends Loadable {
     return this.settingKey;
   }
 
-  getSettingValue() {
-    return getSetting(this.tm.settings, this.settingKey);
+  getSettingValue(): SettingValueAtPath<this["settingKey"]> {
+    return getSettingByPath(
+      this.tm.settings,
+      this.settingKey
+    ) as SettingValueAtPath<this["settingKey"]>;
   }
 
-  setSettingValue(value: string | boolean | number) {
-    setSetting(this.tm.settings, this.settingKey, value);
+  setSettingValue(value: SettingValueAtPath<SettingsPath>): void {
+    setSettingByPath(this.tm.settings, this.settingKey, value);
   }
 }

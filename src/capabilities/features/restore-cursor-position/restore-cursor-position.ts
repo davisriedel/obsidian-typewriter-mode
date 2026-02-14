@@ -4,11 +4,10 @@ import type { SelectionRange } from "@codemirror/state";
 import type { EditorView } from "@codemirror/view";
 import type { TAbstractFile, TFile } from "obsidian";
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class RestoreCursorPosition extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isRestoreCursorPositionEnabled";
+  readonly settingKey =
+    "restoreCursorPosition.isRestoreCursorPositionEnabled" as const;
   protected settingTitle = "Restore cursor position";
   protected settingDesc = "Restore the last cursor position when opening files";
 

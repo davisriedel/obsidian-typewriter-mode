@@ -1,9 +1,8 @@
 import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class MaxCharsPerLine extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "maxCharsPerLine";
+  readonly settingKey = "maxChars.maxCharsPerLine" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

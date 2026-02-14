@@ -1,8 +1,7 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class FadeLines extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings = "isFadeLinesEnabled";
+  readonly settingKey = "currentLine.isFadeLinesEnabled" as const;
   protected override toggleClass = "ptm-fade-lines";
   protected settingTitle = "Fade lines";
   protected settingDesc =

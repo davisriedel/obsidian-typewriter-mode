@@ -1,9 +1,8 @@
 import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class DimmedOpacity extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "dimmedOpacity";
+  readonly settingKey = "dimming.dimmedOpacity" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

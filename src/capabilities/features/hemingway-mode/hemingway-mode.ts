@@ -1,8 +1,7 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class HemingwayMode extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings = "isHemingwayModeEnabled";
+  readonly settingKey = "hemingwayMode.isHemingwayModeEnabled" as const;
   protected override toggleClass = "ptm-hemingway-mode-enabled";
   protected settingTitle = "Hemingway mode";
   protected settingDesc =

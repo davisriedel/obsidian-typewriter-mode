@@ -3,19 +3,20 @@ import { Feature } from "@/capabilities/base/feature";
 import type TypewriterModeLib from "@/lib";
 
 type ThemeMode = "light" | "dark";
-type SettingKey<T extends ThemeMode> = `currentLineHighlightColor-${T}`;
+type ColorSettingKey<T extends ThemeMode> =
+  `currentLine.currentLineHighlightColor-${T}`;
 
 const RGBA_REGEX =
   /rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([0-9.]+))?\s*\)/;
 
 export default abstract class CurrentLineHighlightColor extends Feature {
-  settingKey: SettingKey<ThemeMode>;
+  readonly settingKey: ColorSettingKey<ThemeMode>;
   protected themeMode: ThemeMode;
 
   constructor(tm: TypewriterModeLib, themeMode: ThemeMode) {
     super(tm);
     this.themeMode = themeMode;
-    this.settingKey = `currentLineHighlightColor-${themeMode}`;
+    this.settingKey = `currentLine.currentLineHighlightColor-${themeMode}`;
   }
 
   registerSetting(settingGroup: SettingGroup): void {
@@ -90,7 +91,7 @@ export default abstract class CurrentLineHighlightColor extends Feature {
     const b = Number.parseInt(hex.substring(4, 6), 16);
 
     const newValue = `rgba(${r}, ${g}, ${b}, ${opacity})`;
-    this.tm.settings.currentLine[this.settingKey] = newValue;
+    this.setSettingValue(newValue);
     this.tm.setCSSVariable(
       `--current-line-highlight-color-${this.themeMode}`,
       `${newValue}`

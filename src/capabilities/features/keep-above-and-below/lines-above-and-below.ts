@@ -1,9 +1,8 @@
 import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class LinesAboveAndBelow extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "linesAboveAndBelow";
+  readonly settingKey = "keepLinesAboveAndBelow.linesAboveAndBelow" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

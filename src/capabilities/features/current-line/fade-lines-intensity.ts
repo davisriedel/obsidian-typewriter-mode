@@ -1,9 +1,8 @@
 import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class FadeLinesIntensity extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "fadeLinesIntensity";
+  readonly settingKey = "currentLine.fadeLinesIntensity" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

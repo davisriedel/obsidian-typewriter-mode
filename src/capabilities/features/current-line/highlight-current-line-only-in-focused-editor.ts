@@ -1,9 +1,8 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class HighlightCurrentLineOnlyInFocusedEditor extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isHighlightCurrentLineOnlyInFocusedEditorEnabled";
+  readonly settingKey =
+    "currentLine.isHighlightCurrentLineOnlyInFocusedEditorEnabled" as const;
   protected override toggleClass =
     "ptm-highlight-current-line-only-in-active-editor";
   protected hasCommand = false;

@@ -4,10 +4,9 @@ import {
   WRITING_FOCUS_VIGNETTE_STYLE,
   type WritingFocusVignetteStyle as WritingFocusVignetteStyleType,
 } from "@/capabilities/constants";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class WritingFocusVignetteStyle extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "writingFocusVignetteStyle";
+  readonly settingKey = "writingFocus.writingFocusVignetteStyle" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

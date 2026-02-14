@@ -9,10 +9,8 @@ import { getCommands } from "./capabilities/commands";
 import { getFeatures } from "./capabilities/features";
 import type RestoreCursorPosition from "./capabilities/features/restore-cursor-position/restore-cursor-position";
 import {
+  applyStartupMigrations,
   DEFAULT_SETTINGS,
-  type LegacyTypewriterModeSettings,
-  migrateCursorPositions,
-  migrateSettings,
   type TypewriterModeSettings,
 } from "./capabilities/settings";
 
@@ -35,10 +33,7 @@ export default class TypewriterModeLib {
 
   private editorExtensions: Extension[];
 
-  readonly features: Record<
-    string,
-    Record<keyof LegacyTypewriterModeSettings, Feature>
-  >;
+  readonly features: Record<string, Record<string, Feature>>;
   readonly commands: Record<string, AbstractCommand>;
 
   constructor(
@@ -82,8 +77,9 @@ export default class TypewriterModeLib {
   }
 
   getRestoreCursorPositionFeature(): RestoreCursorPosition {
-    return this.features.restoreCursorPosition
-      .isRestoreCursorPositionEnabled as RestoreCursorPosition;
+    return this.features.restoreCursorPosition[
+      "restoreCursorPosition.isRestoreCursorPositionEnabled"
+    ] as RestoreCursorPosition;
   }
 
   loadEditorExtension() {
@@ -105,9 +101,6 @@ export default class TypewriterModeLib {
   }
 
   async loadSettings() {
-    const settingsData = await this.loadData();
-    this.settings = migrateSettings(settingsData ?? {});
-
     const manifestDir = this.plugin.manifest.dir;
     if (!manifestDir) {
       console.error(
@@ -116,8 +109,9 @@ export default class TypewriterModeLib {
       return;
     }
 
-    this.settings = await migrateCursorPositions(
-      this.settings,
+    const rawData = await this.loadData();
+    this.settings = await applyStartupMigrations(
+      rawData ?? {},
       this.plugin.app.vault,
       manifestDir
     );

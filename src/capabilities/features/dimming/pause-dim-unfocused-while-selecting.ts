@@ -1,9 +1,8 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class PauseDimUnfocusedWhileSelecting extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isPauseDimUnfocusedWhileSelectingEnabled";
+  readonly settingKey =
+    "dimming.isPauseDimUnfocusedWhileSelectingEnabled" as const;
   protected override toggleClass = "ptm-dim-unfocused-pause-while-selecting";
   protected settingTitle = "Pause dimming while selecting text";
   protected settingDesc =

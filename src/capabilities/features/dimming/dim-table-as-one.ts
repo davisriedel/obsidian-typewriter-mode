@@ -1,8 +1,7 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class DimTableAsOne extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings = "isDimTableAsOneEnabled";
+  readonly settingKey = "dimming.isDimTableAsOneEnabled" as const;
   protected override toggleClass = "ptm-dim-table-as-one";
   protected settingTitle = "Undim all table cells when editing";
   protected settingDesc =

@@ -1,3 +1,4 @@
+import type { Vault } from "obsidian";
 import type {
   CurrentLineHighlightStyle,
   DimUnfocusedEditorsBehavior,
@@ -84,47 +85,41 @@ export interface TypewriterModeSettings {
   hemingwayMode: HemingwayModeSettings;
 }
 
-// Legacy flat settings structure for migration
-export interface LegacyTypewriterModeSettings {
-  version: string | null;
-  isAnnounceUpdatesEnabled: boolean;
-  isPluginActivated: boolean;
-  isTypewriterScrollEnabled: boolean;
-  isOnlyActivateAfterFirstInteractionEnabled: boolean;
-  isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
-  isTypewriterOnlyUseCommandsEnabled: boolean;
-  typewriterOffset: number;
-  isKeepLinesAboveAndBelowEnabled: boolean;
-  linesAboveAndBelow: number;
-  isMaxCharsPerLineEnabled: boolean;
-  maxCharsPerLine: number;
-  isDimUnfocusedEnabled: boolean;
-  isDimHighlightListParentEnabled: boolean;
-  isDimTableAsOneEnabled: boolean;
-  dimUnfocusedMode: DimUnfocusedMode;
-  dimUnfocusedEditorsBehavior: DimUnfocusedEditorsBehavior;
-  dimmedOpacity: number;
-  isPauseDimUnfocusedWhileScrollingEnabled: boolean;
-  isPauseDimUnfocusedWhileSelectingEnabled: boolean;
-  isHighlightCurrentLineEnabled: boolean;
-  isFadeLinesEnabled: boolean;
-  fadeLinesIntensity: number;
-  isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
-  currentLineHighlightStyle: CurrentLineHighlightStyle;
-  currentLineHighlightUnderlineThickness: number;
-  "currentLineHighlightColor-dark": string;
-  "currentLineHighlightColor-light": string;
-  doesWritingFocusShowHeader: boolean;
-  doesWritingFocusShowVignette: boolean;
-  doesWritingFocusShowStatusBar: boolean;
-  isWritingFocusFullscreen: boolean;
-  writingFocusVignetteStyle: WritingFocusVignetteStyle;
-  writingFocusFontSize: number;
-  isRestoreCursorPositionEnabled: boolean;
-  isHemingwayModeEnabled: boolean;
-  isAllowBackspaceInHemingwayModeEnabled: boolean;
-  isShowHemingwayModeStatusBarEnabled: boolean;
-  hemingwayModeStatusBarText: string;
+// Typesafe dotted-path type for accessing nested settings
+// e.g. "typewriter.isTypewriterScrollEnabled", "general.version"
+export type SettingsPath = {
+  [C in keyof TypewriterModeSettings]: `${C & string}.${keyof TypewriterModeSettings[C] & string}`;
+}[keyof TypewriterModeSettings];
+
+export type SettingValueAtPath<P extends SettingsPath> =
+  P extends `${infer C}.${infer K}`
+    ? C extends keyof TypewriterModeSettings
+      ? K extends keyof TypewriterModeSettings[C]
+        ? TypewriterModeSettings[C][K]
+        : never
+      : never
+    : never;
+
+export function getSettingByPath<P extends SettingsPath>(
+  settings: TypewriterModeSettings,
+  path: P
+): SettingValueAtPath<P> {
+  const dot = path.indexOf(".");
+  const category = path.slice(0, dot) as keyof TypewriterModeSettings;
+  const key = path.slice(dot + 1);
+  return settings[category][key as never] as SettingValueAtPath<P>;
+}
+
+export function setSettingByPath<P extends SettingsPath>(
+  settings: TypewriterModeSettings,
+  path: P,
+  value: SettingValueAtPath<P>
+): void {
+  const dot = path.indexOf(".");
+  const category = path.slice(0, dot) as keyof TypewriterModeSettings;
+  const key = path.slice(dot + 1);
+  // @ts-expect-error
+  settings[category][key] = value;
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
@@ -188,185 +183,54 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   },
 };
 
-// Settings path mapping for compatibility
-interface SettingsPath {
-  category: keyof TypewriterModeSettings;
-  key: string;
-}
-
-export const SETTINGS_PATHS: Record<
-  keyof LegacyTypewriterModeSettings,
-  SettingsPath
-> = {
-  version: { category: "general", key: "version" },
-  isAnnounceUpdatesEnabled: {
-    category: "general",
-    key: "isAnnounceUpdatesEnabled",
-  },
-  isPluginActivated: { category: "general", key: "isPluginActivated" },
-  isOnlyActivateAfterFirstInteractionEnabled: {
-    category: "general",
-    key: "isOnlyActivateAfterFirstInteractionEnabled",
-  },
-  isTypewriterScrollEnabled: {
-    category: "typewriter",
-    key: "isTypewriterScrollEnabled",
-  },
-  isOnlyMaintainTypewriterOffsetWhenReachedEnabled: {
-    category: "typewriter",
-    key: "isOnlyMaintainTypewriterOffsetWhenReachedEnabled",
-  },
-  isTypewriterOnlyUseCommandsEnabled: {
-    category: "typewriter",
-    key: "isTypewriterOnlyUseCommandsEnabled",
-  },
-  typewriterOffset: { category: "typewriter", key: "typewriterOffset" },
-  isKeepLinesAboveAndBelowEnabled: {
-    category: "keepLinesAboveAndBelow",
-    key: "isKeepLinesAboveAndBelowEnabled",
-  },
-  linesAboveAndBelow: {
-    category: "keepLinesAboveAndBelow",
-    key: "linesAboveAndBelow",
-  },
-  isMaxCharsPerLineEnabled: {
-    category: "maxChars",
-    key: "isMaxCharsPerLineEnabled",
-  },
-  maxCharsPerLine: { category: "maxChars", key: "maxCharsPerLine" },
-  isDimUnfocusedEnabled: { category: "dimming", key: "isDimUnfocusedEnabled" },
-  isDimHighlightListParentEnabled: {
-    category: "dimming",
-    key: "isDimHighlightListParentEnabled",
-  },
-  isDimTableAsOneEnabled: {
-    category: "dimming",
-    key: "isDimTableAsOneEnabled",
-  },
-  dimUnfocusedMode: { category: "dimming", key: "dimUnfocusedMode" },
-  dimUnfocusedEditorsBehavior: {
-    category: "dimming",
-    key: "dimUnfocusedEditorsBehavior",
-  },
-  dimmedOpacity: { category: "dimming", key: "dimmedOpacity" },
-  isPauseDimUnfocusedWhileScrollingEnabled: {
-    category: "dimming",
-    key: "isPauseDimUnfocusedWhileScrollingEnabled",
-  },
-  isPauseDimUnfocusedWhileSelectingEnabled: {
-    category: "dimming",
-    key: "isPauseDimUnfocusedWhileSelectingEnabled",
-  },
-  isHighlightCurrentLineEnabled: {
-    category: "currentLine",
-    key: "isHighlightCurrentLineEnabled",
-  },
-  isFadeLinesEnabled: { category: "currentLine", key: "isFadeLinesEnabled" },
-  fadeLinesIntensity: { category: "currentLine", key: "fadeLinesIntensity" },
-  isHighlightCurrentLineOnlyInFocusedEditorEnabled: {
-    category: "currentLine",
-    key: "isHighlightCurrentLineOnlyInFocusedEditorEnabled",
-  },
-  currentLineHighlightStyle: {
-    category: "currentLine",
-    key: "currentLineHighlightStyle",
-  },
-  currentLineHighlightUnderlineThickness: {
-    category: "currentLine",
-    key: "currentLineHighlightUnderlineThickness",
-  },
-  "currentLineHighlightColor-dark": {
-    category: "currentLine",
-    key: "currentLineHighlightColor-dark",
-  },
-  "currentLineHighlightColor-light": {
-    category: "currentLine",
-    key: "currentLineHighlightColor-light",
-  },
-  doesWritingFocusShowHeader: {
-    category: "writingFocus",
-    key: "doesWritingFocusShowHeader",
-  },
-  doesWritingFocusShowVignette: {
-    category: "writingFocus",
-    key: "doesWritingFocusShowVignette",
-  },
-  doesWritingFocusShowStatusBar: {
-    category: "writingFocus",
-    key: "doesWritingFocusShowStatusBar",
-  },
-  isWritingFocusFullscreen: {
-    category: "writingFocus",
-    key: "isWritingFocusFullscreen",
-  },
-  writingFocusVignetteStyle: {
-    category: "writingFocus",
-    key: "writingFocusVignetteStyle",
-  },
-  writingFocusFontSize: {
-    category: "writingFocus",
-    key: "writingFocusFontSize",
-  },
-  isRestoreCursorPositionEnabled: {
-    category: "restoreCursorPosition",
-    key: "isRestoreCursorPositionEnabled",
-  },
-  isHemingwayModeEnabled: {
-    category: "hemingwayMode",
-    key: "isHemingwayModeEnabled",
-  },
-  isAllowBackspaceInHemingwayModeEnabled: {
-    category: "hemingwayMode",
-    key: "isAllowBackspaceInHemingwayModeEnabled",
-  },
-  isShowHemingwayModeStatusBarEnabled: {
-    category: "hemingwayMode",
-    key: "isShowHemingwayModeStatusBarEnabled",
-  },
-  hemingwayModeStatusBarText: {
-    category: "hemingwayMode",
-    key: "hemingwayModeStatusBarText",
-  },
-};
-
-// Helper functions for accessing nested settings with flat keys
-export function getSetting<K extends keyof LegacyTypewriterModeSettings>(
-  settings: TypewriterModeSettings,
-  key: K
-): LegacyTypewriterModeSettings[K] {
-  const path = SETTINGS_PATHS[key];
-  return settings[path.category][
-    path.key as keyof (typeof settings)[typeof path.category]
-  ];
-}
-
-export function setSetting<K extends keyof LegacyTypewriterModeSettings>(
-  settings: TypewriterModeSettings,
-  key: K,
-  value: LegacyTypewriterModeSettings[K]
-): void {
-  const path = SETTINGS_PATHS[key];
-  // biome-ignore lint/suspicious/noExplicitAny: simple workaround
-  // @ts-expect-error
-  settings[path.category][path.key] = value;
+// Legacy flat settings structure for migration
+interface LegacyTypewriterModeSettings {
+  version: string | null;
+  isAnnounceUpdatesEnabled: boolean;
+  isPluginActivated: boolean;
+  isTypewriterScrollEnabled: boolean;
+  isOnlyActivateAfterFirstInteractionEnabled: boolean;
+  isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
+  isTypewriterOnlyUseCommandsEnabled: boolean;
+  typewriterOffset: number;
+  isKeepLinesAboveAndBelowEnabled: boolean;
+  linesAboveAndBelow: number;
+  isMaxCharsPerLineEnabled: boolean;
+  maxCharsPerLine: number;
+  isDimUnfocusedEnabled: boolean;
+  isDimHighlightListParentEnabled: boolean;
+  isDimTableAsOneEnabled: boolean;
+  dimUnfocusedMode: DimUnfocusedMode;
+  dimUnfocusedEditorsBehavior: DimUnfocusedEditorsBehavior;
+  dimmedOpacity: number;
+  isPauseDimUnfocusedWhileScrollingEnabled: boolean;
+  isPauseDimUnfocusedWhileSelectingEnabled: boolean;
+  isHighlightCurrentLineEnabled: boolean;
+  isFadeLinesEnabled: boolean;
+  fadeLinesIntensity: number;
+  isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
+  currentLineHighlightStyle: CurrentLineHighlightStyle;
+  currentLineHighlightUnderlineThickness: number;
+  "currentLineHighlightColor-dark": string;
+  "currentLineHighlightColor-light": string;
+  doesWritingFocusShowHeader: boolean;
+  doesWritingFocusShowVignette: boolean;
+  doesWritingFocusShowStatusBar: boolean;
+  isWritingFocusFullscreen: boolean;
+  writingFocusVignetteStyle: WritingFocusVignetteStyle;
+  writingFocusFontSize: number;
+  isRestoreCursorPositionEnabled: boolean;
+  isHemingwayModeEnabled: boolean;
+  isAllowBackspaceInHemingwayModeEnabled: boolean;
+  isShowHemingwayModeStatusBarEnabled: boolean;
+  hemingwayModeStatusBarText: string;
 }
 
 // Migration function to convert legacy flat settings to new grouped settings
-export function migrateSettings(
-  settings:
-    | Partial<LegacyTypewriterModeSettings>
-    | Partial<TypewriterModeSettings>
+function migrateSettings(
+  legacy: Partial<LegacyTypewriterModeSettings>
 ): TypewriterModeSettings {
-  // Check if settings are already in new format
-  if ("general" in settings && settings.general !== undefined) {
-    return {
-      ...DEFAULT_SETTINGS,
-      ...settings,
-    } as TypewriterModeSettings;
-  }
-
   // Migrate from legacy flat format
-  const legacy = settings as Partial<LegacyTypewriterModeSettings>;
   return {
     general: {
       version: legacy.version ?? DEFAULT_SETTINGS.general.version,
@@ -503,21 +367,12 @@ export function migrateSettings(
 }
 
 // Migration function to copy cursor positions from old file to settings
-export async function migrateCursorPositions(
+// Only needed when coming from pre-v1.2.0 (legacy flat format)
+async function migrateCursorPositions(
   settings: TypewriterModeSettings,
-  vault: {
-    adapter: {
-      exists: (path: string) => Promise<boolean>;
-      read: (path: string) => Promise<string>;
-    };
-  },
+  vault: Vault,
   manifestDir: string
 ): Promise<TypewriterModeSettings> {
-  // Skip if cursor positions already exist in settings (already migrated)
-  if (Object.keys(settings.restoreCursorPosition.cursorPositions).length > 0) {
-    return settings;
-  }
-
   const oldFilePath = `${manifestDir}/cursor-positions.json`;
 
   try {
@@ -534,4 +389,28 @@ export async function migrateCursorPositions(
   }
 
   return settings;
+}
+
+// Apply all startup migrations in a single pass, version-gated via the general.version key.
+// Cursor position migration (from cursor-positions.json) is only needed for pre-v1.2.0 data
+// which is identified by the absence of the top-level "general" key.
+export async function applyStartupMigrations(
+  rawData:
+    | Partial<LegacyTypewriterModeSettings>
+    | Partial<TypewriterModeSettings>,
+  vault: Vault,
+  manifestDir: string
+): Promise<TypewriterModeSettings> {
+  const isLegacyFormat = !("general" in rawData);
+
+  // Cursor positions migration only needed when coming from pre-v1.2.0 (legacy flat format).
+  // Since v1.2.0 cursor positions are stored directly in data.json.
+  if (isLegacyFormat) {
+    const settings = migrateSettings(
+      rawData as Partial<LegacyTypewriterModeSettings>
+    );
+    return await migrateCursorPositions(settings, vault, manifestDir);
+  }
+
+  return rawData as TypewriterModeSettings;
 }

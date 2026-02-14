@@ -1,8 +1,7 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class LimitMaxCharsPerLine extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings = "isMaxCharsPerLineEnabled";
+  readonly settingKey = "maxChars.isMaxCharsPerLineEnabled" as const;
   protected override toggleClass = "ptm-max-chars-per-line";
   override isToggleClassPersistent = true;
   protected settingTitle = "Limit maximum number of characters per line";

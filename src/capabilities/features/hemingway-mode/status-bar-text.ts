@@ -1,10 +1,9 @@
 import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 import type HemingwayMode from "./hemingway-mode";
 
 export default class HemingwayModeStatusBarText extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "hemingwayModeStatusBarText";
+  readonly settingKey = "hemingwayMode.hemingwayModeStatusBarText" as const;
   protected settingTitle = "Status bar text";
   protected settingDesc =
     "Text to display in the status bar when Hemingway mode is active.";
@@ -30,8 +29,9 @@ export default class HemingwayModeStatusBarText extends Feature {
   }
 
   private updateHemingwayModeStatusBar() {
-    const hemingwayMode = this.tm.features.hemingwayMode
-      .isHemingwayModeEnabled as HemingwayMode;
+    const hemingwayMode = this.tm.features.hemingwayMode[
+      "hemingwayMode.isHemingwayModeEnabled"
+    ] as HemingwayMode;
     hemingwayMode.updateStatusBarText();
   }
 }

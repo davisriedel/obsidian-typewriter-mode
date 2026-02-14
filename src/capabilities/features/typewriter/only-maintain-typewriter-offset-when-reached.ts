@@ -1,9 +1,8 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class OnlyMaintainTypewriterOffsetWhenReached extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isOnlyMaintainTypewriterOffsetWhenReachedEnabled";
+  readonly settingKey =
+    "typewriter.isOnlyMaintainTypewriterOffsetWhenReachedEnabled" as const;
   protected hasCommand = false;
   protected settingTitle = "Only maintain typewriter offset when reached";
   protected settingDesc =

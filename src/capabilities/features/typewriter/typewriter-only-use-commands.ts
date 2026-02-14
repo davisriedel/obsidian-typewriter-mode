@@ -1,9 +1,8 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class TypewriterOnlyUseCommands extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isTypewriterOnlyUseCommandsEnabled";
+  readonly settingKey =
+    "typewriter.isTypewriterOnlyUseCommandsEnabled" as const;
   protected override toggleClass = "ptm-typewriter-only-use-commands";
   protected settingTitle = "Do not snap typewriter with arrow keys";
   protected settingDesc =

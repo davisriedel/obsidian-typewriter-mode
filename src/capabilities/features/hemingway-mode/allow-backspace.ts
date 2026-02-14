@@ -1,9 +1,8 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class AllowBackspaceInHemingwayMode extends FeatureToggle {
-  settingKey: keyof LegacyTypewriterModeSettings =
-    "isAllowBackspaceInHemingwayModeEnabled";
+  readonly settingKey =
+    "hemingwayMode.isAllowBackspaceInHemingwayModeEnabled" as const;
   protected override toggleClass = null;
   protected settingTitle = "Allow using Backspace key in Hemingway mode";
   protected settingDesc =

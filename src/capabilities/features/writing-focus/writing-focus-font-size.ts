@@ -1,9 +1,8 @@
 import type { SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class WritingFocusFontSize extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "writingFocusFontSize";
+  readonly settingKey = "writingFocus.writingFocusFontSize" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

@@ -4,10 +4,9 @@ import {
   CURRENT_LINE_HIGHLIGHT_STYLE,
   type CurrentLineHighlightStyle as CurrentLineHighlightStyleType,
 } from "@/capabilities/constants";
-import type { LegacyTypewriterModeSettings } from "@/capabilities/settings";
 
 export default class CurrentLineHighlightStyle extends Feature {
-  settingKey: keyof LegacyTypewriterModeSettings = "currentLineHighlightStyle";
+  readonly settingKey = "currentLine.currentLineHighlightStyle" as const;
 
   override getBodyClasses(): string[] {
     return [
