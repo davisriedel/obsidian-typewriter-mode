@@ -7,23 +7,20 @@
 |[![](https://img.shields.io/badge/GitHub-%2330363E.svg?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/davisriedel/obsidian-typewriter-mode)|[![](https://img.shields.io/badge/Obsidian-%23483699.svg?style=for-the-badge\&logo=obsidian\&logoColor=white)](https://obsidian.md/)|[![](https://img.shields.io/github/v/release/davisriedel/obsidian-typewriter-mode?style=for-the-badge)](https://github.com/davisriedel/obsidian-typewriter-mode/releases)|[![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)|[![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge\&logo=GitHub-Sponsors\&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)|
 <!-- markdownlint-restore -->
 
-Typewriter Mode is plugin that adds several features to turn [Obsidian](https://obsidian.md) into a typewriter-like, distraction-free writing environment, including:
+Typewriter Mode turns [Obsidian](https://obsidian.md) into a distraction-free writing environment.
 
 - Typewriter scrolling (current line stays at a fixed position on the screen)
-- Highlighting the current line
-- Keeping a set number of lines above and below the cursor
-- Dimming unfocused paragraphs / sentences
+- Current line highlighting
+- Configurable number of lines kept above and below the cursor
+- Dimming of unfocused paragraphs / sentences
 - Fullscreen writing focus
-- Limit line length to set number of characters
-- Restore the cursor's position when opening files
-
-## Compatibility
-
-This plugin is compatible with Obsidian v0.15.0 and above. It does not support the legacy editor.
+- Limit line length
+- Restore cursor position when opening files
+- Hemingway mode (disables editing previous text — write forwards only)
 
 ## Installation
 
-To install community plugins, make sure _safe mode_ is turned off in Obsidian's settings.
+To install community plugins, make sure _Restricted mode_ is turned off in Obsidian's settings.
 
 ### Obsidian
 
@@ -38,7 +35,7 @@ You can install this plugin within Obsidian by doing the following:
 
 1. Download the latest release from GitHub: [https://github.com/davisriedel/obsidian-typewriter-mode/releases](https://github.com/davisriedel/obsidian-typewriter-mode/releases)
 2. Extract the plugin folder from the zip to your vault's plugins folder: `<vault>/.obsidian/plugins/`. _Note: On some machines, the `.obsidian` folder may be hidden. On macOS, you should be able to press `Command+Shift+Dot` to show the folder in Finder._
-3. Force reload Obsidian
+3. Force reload Obsidian (Ctrl/Cmd+P → "Reload app without saving")
 
 ### Beta Versions With BRAT
 
@@ -52,7 +49,7 @@ The sentence highlighting was derived from [Focus Active Sentence](https://githu
 
 The writing focus was derived from [Obsidian Focus Mode](https://github.com/ryanpcmcquen/obsidian-focus-mode) by [ryanpcmcquen](https://github.com/ryanpcmcquen).
 
-The restore cursor position feature was derived from [Remember Cursor Position](https://arc.net/l/quote/jmvjfrza) by [dy-sh](https://github.com/dy-sh).
+The restore cursor position feature was derived from [Remember Cursor Position](https://github.com/dy-sh/obsidian-remember-cursor-position) by [dy-sh](https://github.com/dy-sh).
 
 The hemingway mode feature was derived from [Obsidian Hemingway
 Mode](https://github.com/jobedom/obsidian-hemingway-mode) by [jobedom](https://github.com/jobedom).
@@ -61,7 +58,7 @@ Many thanks to the developers of these fantastic plugins. Please also consider s
 
 ## Support this project
 
-I am studying Computer Science at Karlsruhe Institute of Technology (KIT) in Germany. I develop this plugin in my spare time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors or Buy Me a Coffee. I am truly thankful for your support.
+I am a student at the University of Tübingen and develop this plugin in my spare time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors or Buy Me a Coffee. Any support is greatly appreciated.
 
 <!-- markdownlint-disable-next-line -->
 [![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)
