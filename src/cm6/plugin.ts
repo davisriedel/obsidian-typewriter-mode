@@ -444,6 +444,7 @@ class TypewriterModeCM6Plugin {
         this.recenterAndMoveCurrentLine(view, measure);
         this.isRenderingAllowedUserEvent = false;
         this.handleCursorStateUpdate(view);
+        this.setupScrollListener();
       }
     );
   }

@@ -7,6 +7,8 @@ import FadeLines from "./fade-lines";
 import FadeLinesIntensity from "./fade-lines-intensity";
 import HighlightCurrentLine from "./highlight-current-line";
 import HighlightCurrentLineOnlyInFocusedEditor from "./highlight-current-line-only-in-focused-editor";
+import PauseCurrentLineHighlightWhileScrolling from "./pause-current-line-highlight-while-scrolling";
+import PauseCurrentLineHighlightWhileSelecting from "./pause-current-line-highlight-while-selecting";
 
 export default function getCurrentLineFeatures(tm: TypewriterModeLib) {
   return Object.fromEntries(
@@ -19,6 +21,8 @@ export default function getCurrentLineFeatures(tm: TypewriterModeLib) {
       new CurrentLineHighlightStyle(tm),
       new CurrentLineHighlightUnderlineThickness(tm),
       new HighlightCurrentLineOnlyInFocusedEditor(tm),
+      new PauseCurrentLineHighlightWhileScrolling(tm),
+      new PauseCurrentLineHighlightWhileSelecting(tm),
     ].map((feature) => [feature.getSettingKey(), feature])
   );
 }

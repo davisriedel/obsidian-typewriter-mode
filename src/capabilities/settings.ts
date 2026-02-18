@@ -53,6 +53,8 @@ export interface CurrentLineSettings {
   isFadeLinesEnabled: boolean;
   fadeLinesIntensity: number;
   isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
+  isPauseCurrentLineHighlightWhileScrollingEnabled: boolean;
+  isPauseCurrentLineHighlightWhileSelectingEnabled: boolean;
   currentLineHighlightStyle: CurrentLineHighlightStyle;
   currentLineHighlightUnderlineThickness: number;
   "currentLineHighlightColor-dark": string;
@@ -166,6 +168,8 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isFadeLinesEnabled: false,
     fadeLinesIntensity: 0.5,
     isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
+    isPauseCurrentLineHighlightWhileScrollingEnabled: false,
+    isPauseCurrentLineHighlightWhileSelectingEnabled: false,
     currentLineHighlightStyle: CURRENT_LINE_HIGHLIGHT_STYLE.BOX,
     currentLineHighlightUnderlineThickness: 1,
     "currentLineHighlightColor-dark": "#444",
@@ -319,6 +323,12 @@ function migrateSettings(
         legacy.isHighlightCurrentLineOnlyInFocusedEditorEnabled ??
         DEFAULT_SETTINGS.currentLine
           .isHighlightCurrentLineOnlyInFocusedEditorEnabled,
+      isPauseCurrentLineHighlightWhileScrollingEnabled:
+        DEFAULT_SETTINGS.currentLine
+          .isPauseCurrentLineHighlightWhileScrollingEnabled,
+      isPauseCurrentLineHighlightWhileSelectingEnabled:
+        DEFAULT_SETTINGS.currentLine
+          .isPauseCurrentLineHighlightWhileSelectingEnabled,
       currentLineHighlightStyle:
         legacy.currentLineHighlightStyle ??
         DEFAULT_SETTINGS.currentLine.currentLineHighlightStyle,

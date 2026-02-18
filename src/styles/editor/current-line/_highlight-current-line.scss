@@ -35,3 +35,19 @@ body.theme-dark {
     @include ptm-current-line-highlight-theme-style("dark", "underline");
   }
 }
+
+body.ptm-current-line-pause-while-scrolling {
+  .cm-editor.ptm-scroll {
+    .ptm-current-line {
+      opacity: 0;
+    }
+  }
+}
+
+body.ptm-current-line-pause-while-selecting {
+  .cm-editor.ptm-select {
+    .ptm-current-line {
+      opacity: 0;
+    }
+  }
+}
