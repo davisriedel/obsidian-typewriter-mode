@@ -130,9 +130,9 @@ export class TypewriterOffsetCalculator {
 }
 
 export interface TypewriterPositionData {
-  typewriterOffset: number;
-  scrollOffset: number;
   activeLineOffset: number;
   lineHeight: number;
   lineOffset: number;
+  scrollOffset: number;
+  typewriterOffset: number;
 }

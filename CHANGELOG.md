@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0-beta.3
+
+- Add feature to disable current line highlight while scrolling or selecting text
+- Update README, funding info and update notice
+
 ## 1.3.0-beta.2
 
 - Add ability to disable on certain platforms (e.g. only on desktop, disable on mobile)

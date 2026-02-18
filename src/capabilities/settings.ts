@@ -13,17 +13,17 @@ import {
 } from "./constants";
 
 export interface GeneralSettings {
-  version: string | null;
-  isAnnounceUpdatesEnabled: boolean;
-  isPluginActivated: boolean;
-  isOnlyActivateAfterFirstInteractionEnabled: boolean;
   enabledPlatforms: EnabledPlatforms;
+  isAnnounceUpdatesEnabled: boolean;
+  isOnlyActivateAfterFirstInteractionEnabled: boolean;
+  isPluginActivated: boolean;
+  version: string | null;
 }
 
 export interface TypewriterSettings {
-  isTypewriterScrollEnabled: boolean;
   isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
   isTypewriterOnlyUseCommandsEnabled: boolean;
+  isTypewriterScrollEnabled: boolean;
   typewriterOffset: number;
 }
 
@@ -38,60 +38,60 @@ export interface MaxCharsSettings {
 }
 
 export interface DimmingSettings {
-  isDimUnfocusedEnabled: boolean;
+  dimmedOpacity: number;
+  dimUnfocusedEditorsBehavior: DimUnfocusedEditorsBehavior;
+  dimUnfocusedMode: DimUnfocusedMode;
   isDimHighlightListParentEnabled: boolean;
   isDimTableAsOneEnabled: boolean;
-  dimUnfocusedMode: DimUnfocusedMode;
-  dimUnfocusedEditorsBehavior: DimUnfocusedEditorsBehavior;
-  dimmedOpacity: number;
+  isDimUnfocusedEnabled: boolean;
   isPauseDimUnfocusedWhileScrollingEnabled: boolean;
   isPauseDimUnfocusedWhileSelectingEnabled: boolean;
 }
 
 export interface CurrentLineSettings {
-  isHighlightCurrentLineEnabled: boolean;
-  isFadeLinesEnabled: boolean;
+  "currentLineHighlightColor-dark": string;
+  "currentLineHighlightColor-light": string;
+  currentLineHighlightStyle: CurrentLineHighlightStyle;
+  currentLineHighlightUnderlineThickness: number;
   fadeLinesIntensity: number;
+  isFadeLinesEnabled: boolean;
+  isHighlightCurrentLineEnabled: boolean;
   isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
   isPauseCurrentLineHighlightWhileScrollingEnabled: boolean;
   isPauseCurrentLineHighlightWhileSelectingEnabled: boolean;
-  currentLineHighlightStyle: CurrentLineHighlightStyle;
-  currentLineHighlightUnderlineThickness: number;
-  "currentLineHighlightColor-dark": string;
-  "currentLineHighlightColor-light": string;
 }
 
 export interface WritingFocusSettings {
   doesWritingFocusShowHeader: boolean;
-  doesWritingFocusShowVignette: boolean;
   doesWritingFocusShowStatusBar: boolean;
+  doesWritingFocusShowVignette: boolean;
   isWritingFocusFullscreen: boolean;
-  writingFocusVignetteStyle: WritingFocusVignetteStyle;
   writingFocusFontSize: number;
+  writingFocusVignetteStyle: WritingFocusVignetteStyle;
 }
 
 export interface RestoreCursorPositionSettings {
-  isRestoreCursorPositionEnabled: boolean;
   cursorPositions: Record<string, unknown>;
+  isRestoreCursorPositionEnabled: boolean;
 }
 
 export interface HemingwayModeSettings {
-  isHemingwayModeEnabled: boolean;
-  isAllowBackspaceInHemingwayModeEnabled: boolean;
-  isShowHemingwayModeStatusBarEnabled: boolean;
   hemingwayModeStatusBarText: string;
+  isAllowBackspaceInHemingwayModeEnabled: boolean;
+  isHemingwayModeEnabled: boolean;
+  isShowHemingwayModeStatusBarEnabled: boolean;
 }
 
 export interface TypewriterModeSettings {
+  currentLine: CurrentLineSettings;
+  dimming: DimmingSettings;
   general: GeneralSettings;
-  typewriter: TypewriterSettings;
+  hemingwayMode: HemingwayModeSettings;
   keepLinesAboveAndBelow: KeepLinesAboveAndBelowSettings;
   maxChars: MaxCharsSettings;
-  dimming: DimmingSettings;
-  currentLine: CurrentLineSettings;
-  writingFocus: WritingFocusSettings;
   restoreCursorPosition: RestoreCursorPositionSettings;
-  hemingwayMode: HemingwayModeSettings;
+  typewriter: TypewriterSettings;
+  writingFocus: WritingFocusSettings;
 }
 
 // Typesafe dotted-path type for accessing nested settings
@@ -197,45 +197,45 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
 
 // Legacy flat settings structure for migration
 interface LegacyTypewriterModeSettings {
-  version: string | null;
-  isAnnounceUpdatesEnabled: boolean;
-  isPluginActivated: boolean;
-  isTypewriterScrollEnabled: boolean;
-  isOnlyActivateAfterFirstInteractionEnabled: boolean;
-  isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
-  isTypewriterOnlyUseCommandsEnabled: boolean;
-  typewriterOffset: number;
-  isKeepLinesAboveAndBelowEnabled: boolean;
-  linesAboveAndBelow: number;
-  isMaxCharsPerLineEnabled: boolean;
-  maxCharsPerLine: number;
-  isDimUnfocusedEnabled: boolean;
-  isDimHighlightListParentEnabled: boolean;
-  isDimTableAsOneEnabled: boolean;
-  dimUnfocusedMode: DimUnfocusedMode;
-  dimUnfocusedEditorsBehavior: DimUnfocusedEditorsBehavior;
-  dimmedOpacity: number;
-  isPauseDimUnfocusedWhileScrollingEnabled: boolean;
-  isPauseDimUnfocusedWhileSelectingEnabled: boolean;
-  isHighlightCurrentLineEnabled: boolean;
-  isFadeLinesEnabled: boolean;
-  fadeLinesIntensity: number;
-  isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
-  currentLineHighlightStyle: CurrentLineHighlightStyle;
-  currentLineHighlightUnderlineThickness: number;
   "currentLineHighlightColor-dark": string;
   "currentLineHighlightColor-light": string;
+  currentLineHighlightStyle: CurrentLineHighlightStyle;
+  currentLineHighlightUnderlineThickness: number;
+  dimmedOpacity: number;
+  dimUnfocusedEditorsBehavior: DimUnfocusedEditorsBehavior;
+  dimUnfocusedMode: DimUnfocusedMode;
   doesWritingFocusShowHeader: boolean;
-  doesWritingFocusShowVignette: boolean;
   doesWritingFocusShowStatusBar: boolean;
-  isWritingFocusFullscreen: boolean;
-  writingFocusVignetteStyle: WritingFocusVignetteStyle;
-  writingFocusFontSize: number;
-  isRestoreCursorPositionEnabled: boolean;
-  isHemingwayModeEnabled: boolean;
-  isAllowBackspaceInHemingwayModeEnabled: boolean;
-  isShowHemingwayModeStatusBarEnabled: boolean;
+  doesWritingFocusShowVignette: boolean;
+  fadeLinesIntensity: number;
   hemingwayModeStatusBarText: string;
+  isAllowBackspaceInHemingwayModeEnabled: boolean;
+  isAnnounceUpdatesEnabled: boolean;
+  isDimHighlightListParentEnabled: boolean;
+  isDimTableAsOneEnabled: boolean;
+  isDimUnfocusedEnabled: boolean;
+  isFadeLinesEnabled: boolean;
+  isHemingwayModeEnabled: boolean;
+  isHighlightCurrentLineEnabled: boolean;
+  isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
+  isKeepLinesAboveAndBelowEnabled: boolean;
+  isMaxCharsPerLineEnabled: boolean;
+  isOnlyActivateAfterFirstInteractionEnabled: boolean;
+  isOnlyMaintainTypewriterOffsetWhenReachedEnabled: boolean;
+  isPauseDimUnfocusedWhileScrollingEnabled: boolean;
+  isPauseDimUnfocusedWhileSelectingEnabled: boolean;
+  isPluginActivated: boolean;
+  isRestoreCursorPositionEnabled: boolean;
+  isShowHemingwayModeStatusBarEnabled: boolean;
+  isTypewriterOnlyUseCommandsEnabled: boolean;
+  isTypewriterScrollEnabled: boolean;
+  isWritingFocusFullscreen: boolean;
+  linesAboveAndBelow: number;
+  maxCharsPerLine: number;
+  typewriterOffset: number;
+  version: string | null;
+  writingFocusFontSize: number;
+  writingFocusVignetteStyle: WritingFocusVignetteStyle;
 }
 
 // Migration function to convert legacy flat settings to new grouped settings

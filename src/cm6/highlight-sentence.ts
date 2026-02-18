@@ -21,9 +21,9 @@ function textStartsWithIgnored(
 }
 
 interface Settings {
-  sentenceDelimiters: string;
   extraCharacters: string;
   ignoredPatterns: string;
+  sentenceDelimiters: string;
 }
 
 function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {

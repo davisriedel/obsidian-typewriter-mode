@@ -7,10 +7,10 @@ import fundingText from "@/texts/Funding.md" with { type: "text" };
 import updateNotice from "@/texts/UpdateNotice.md" with { type: "text" };
 
 interface Release {
-  tag_name: string;
   body: string;
   draft: boolean;
   prerelease: boolean;
+  tag_name: string;
 }
 
 /**
