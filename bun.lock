@@ -17,6 +17,7 @@
         "lefthook": "^2.1.1",
         "obsidian": "^1.12.0",
         "resolve-tspaths": "^0.8.23",
+        "rumdl": "^0.1.33",
         "stylelint": "^17.3.0",
         "stylelint-config-standard-scss": "^17.0.0",
         "typescript": "^5.9.3",
@@ -90,6 +91,20 @@
     "@nodelib/fs.stat": ["@nodelib/fs.stat@2.0.5", "", {}, "sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A=="],
 
     "@nodelib/fs.walk": ["@nodelib/fs.walk@1.2.8", "", { "dependencies": { "@nodelib/fs.scandir": "2.1.5", "fastq": "^1.6.0" } }, "sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg=="],
+
+    "@rumdl/cli-darwin-arm64": ["@rumdl/cli-darwin-arm64@0.1.33", "", { "os": "darwin", "cpu": "arm64" }, "sha512-gVx9aV9VKb/FMfF54D7FsimuWtYKko3LShZlf9C517sJ/8qaWDQzyZ+v6JO3z756x1b1SbSLpQZWrDgFfdnjyA=="],
+
+    "@rumdl/cli-darwin-x64": ["@rumdl/cli-darwin-x64@0.1.33", "", { "os": "darwin", "cpu": "x64" }, "sha512-oRiOCug24aB48lh19RNECAcBDrrFuPifdX0EVbBw2qWJRMd2n15Zvywpusnt7rqhJsU4XBu86QWCMACaMNM+JQ=="],
+
+    "@rumdl/cli-linux-arm64": ["@rumdl/cli-linux-arm64@0.1.33", "", { "os": "linux", "cpu": "arm64" }, "sha512-YTf1fRwh0vR4sQxmNTsNdbfBwX4WrgZKB6zCb8rjj7/1i4Pyx7dKDQORqSvOet/Z/vTliS6kCiXlGkKY/EbA/A=="],
+
+    "@rumdl/cli-linux-arm64-musl": ["@rumdl/cli-linux-arm64-musl@0.1.33", "", { "os": "linux", "cpu": "arm64" }, "sha512-79x9DgZEM9E9fEKom6ymZchYZ9X002hYz6efkoy+V65tEXlxYV3ReBIyb/vrt/u0QJEqfV22B0w+vSHKPp4BNw=="],
+
+    "@rumdl/cli-linux-x64": ["@rumdl/cli-linux-x64@0.1.33", "", { "os": "linux", "cpu": "x64" }, "sha512-deOeI5XUKoj/epUsXHJ2OQQPa6ffgrYYxbu+9ZpN6/FFPg8JsaI67/GkUE7G/002Ev/ALra2iiazxbYb6HocHw=="],
+
+    "@rumdl/cli-linux-x64-musl": ["@rumdl/cli-linux-x64-musl@0.1.33", "", { "os": "linux", "cpu": "x64" }, "sha512-hD11ZVL0eXI7I9uzO2AwYabBHZ5wU81VsWdpbrdiey9cf+xpeaY2Wf1gfQmE69z3SPNQzIfBjkQTBAFQHDEsjg=="],
+
+    "@rumdl/cli-win32-x64": ["@rumdl/cli-win32-x64@0.1.33", "", { "os": "win32", "cpu": "x64" }, "sha512-6DS4Jmt2bx3RrF5bjgv769grn3jw7ido8RvuftCQlg1VvJzJzUxTkMG46hAp9woDCf+dijlKAibau61rXGCX4g=="],
 
     "@sindresorhus/is": ["@sindresorhus/is@4.6.0", "", {}, "sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw=="],
 
@@ -452,6 +467,8 @@
     "reusify": ["reusify@1.1.0", "", {}, "sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw=="],
 
     "roarr": ["roarr@2.15.4", "", { "dependencies": { "boolean": "^3.0.1", "detect-node": "^2.0.4", "globalthis": "^1.0.1", "json-stringify-safe": "^5.0.1", "semver-compare": "^1.0.0", "sprintf-js": "^1.1.2" } }, "sha512-CHhPh+UNHD2GTXNYhPWLnU8ONHdI+5DI+4EYIAOaiD63rHeYlZvyh8P+in5999TTSFgUYuKUAjzRI4mdh/p+2A=="],
+
+    "rumdl": ["rumdl@0.1.33", "", { "optionalDependencies": { "@rumdl/cli-darwin-arm64": "0.1.33", "@rumdl/cli-darwin-x64": "0.1.33", "@rumdl/cli-linux-arm64": "0.1.33", "@rumdl/cli-linux-arm64-musl": "0.1.33", "@rumdl/cli-linux-x64": "0.1.33", "@rumdl/cli-linux-x64-musl": "0.1.33", "@rumdl/cli-win32-x64": "0.1.33" }, "bin": { "rumdl": "bin/rumdl" } }, "sha512-uZLtyLLB1WPe2Jvkk46OQlgA6BfsPggiLZdrGudV1B/VL4JDQCxcyWViJHQwVqjGj9HgXCKgTg/HV0GU5CiiEw=="],
 
     "run-parallel": ["run-parallel@1.2.0", "", { "dependencies": { "queue-microtask": "^1.2.2" } }, "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="],
 

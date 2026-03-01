@@ -9,7 +9,7 @@ lint-styles:
   bun stylelint --fix "src/**/*.scss"
 
 lint-md:
-  rumdl check --fix .
+  bun rumdl check --fix .
 
 typecheck:
   bun tsgo --noEmit
@@ -17,18 +17,17 @@ typecheck:
 check: typecheck lint lint-styles lint-md
 
 
-[private]
 build:
   bun ./scripts/build.ts
+
+build-lib:
+  bun ./scripts/build.ts --lib
 
 dev:
   bun ./scripts/dev.ts
 
 debug:
   bun ./scripts/dev.ts --debug
-
-build-lib:
-  bun ./scripts/build.ts --lib
 
 
 release: check
