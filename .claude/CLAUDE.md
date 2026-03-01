@@ -29,7 +29,7 @@ Path alias: `@/*` → `./src/*`
 
 ## Project Structure
 
-```
+```text
 src/
 ├── main.ts                        # Plugin entry point (onload/onunload)
 ├── lib.ts                         # Core coordinator: features, commands, settings, CM6 extensions
@@ -65,7 +65,8 @@ dist/                              # Compiled output (main.js, styles.css, manif
 **`TypewriterModeLib`** (`lib.ts`) is the central coordinator. It loads features and commands, manages CM6 extensions, handles settings persistence, and coordinates per-window CSS variables and body classes.
 
 **Feature hierarchy:**
-```
+
+```text
 Loadable → Feature (typed settings path) → FeatureToggle (CSS class toggle)
                                                └── Concrete features
 ```
@@ -73,7 +74,8 @@ Loadable → Feature (typed settings path) → FeatureToggle (CSS class toggle)
 Each feature lives in `src/capabilities/features/` and self-registers its settings UI.
 
 **Command hierarchy:**
-```
+
+```text
 AbstractCommand → Command | EditorCommand | ToggleCommand
 ```
 
@@ -87,6 +89,7 @@ AbstractCommand → Command | EditorCommand | ToggleCommand
 ### CodeMirror 6 Integration
 
 **`TypewriterModeCM6Plugin`** (`cm6/plugin.ts`) is a `ViewPlugin` that:
+
 - Applies decorations for current-line highlighting and fading (not direct DOM manipulation)
 - Calculates typewriter scroll offset
 - Tracks cursor position changes for restoration
@@ -132,7 +135,7 @@ Output artifacts: `dist/main.js`, `dist/styles.css`, `dist/manifest.json`
 
 ---
 
-# Ultracite Code Standards
+## Ultracite Code Standards
 
 This project uses **Ultracite**, a zero-config Biome preset that enforces strict code quality standards through automated formatting and linting.
 

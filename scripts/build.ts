@@ -14,11 +14,10 @@ const { values: args } = parseArgs({
   allowPositionals: true,
 });
 
-await build(
-  "src",
-  { main: args.lib ? "lib.ts" : "main.ts", styles: "styles/index.scss" },
-  args.lib ? "lib-dist" : "dist",
-  args.lib ? "esm" : "cjs",
-  true,
-  args.lib
-);
+await build({
+  entrypoints: { main: args.lib ? "lib.ts" : "main.ts" },
+  outDir: args.lib ? "lib-dist" : "dist",
+  format: args.lib ? "esm" : "cjs",
+  stripDebug: true,
+  generateTypes: !!args.lib,
+});

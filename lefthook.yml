@@ -8,6 +8,7 @@ pre-commit:
         - "*.tsx"
         - "*.json"
         - "*.jsonc"
+        - "*.scss"
         - "*.css"
         - "*.md"
       stage_fixed: true

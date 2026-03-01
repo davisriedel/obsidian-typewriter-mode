@@ -1,8 +1,5 @@
 # npm
 node_modules
-package-lock.json
-package-lock.yml
-bun.lockb
 
 # Build
 dist
@@ -19,4 +16,7 @@ test-vault
 .DS_Store
 
 # Claude
-.claude/settings.local.json
+.claude
+
+# rumdl
+.rumdl_cache

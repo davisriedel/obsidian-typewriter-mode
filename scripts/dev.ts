@@ -15,13 +15,6 @@ const { values: args } = parseArgs({
   allowPositionals: true,
 });
 
-await build(
-  "src",
-  { main: "main.ts", styles: "styles/index.scss" },
-  "dist",
-  "cjs",
-  args.debug,
-  false
-);
+await build({ stripDebug: args.debug });
 
 await setupTestVault("./dist", "obsidian-typewriter-mode", "./test-vault");

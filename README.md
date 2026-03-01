@@ -1,11 +1,8 @@
 # Typewriter Mode for Obsidian
 
-<!-- markdownlint-capture -->
-<!-- markdownlint-disable -->
 | | | | | |
 | -- | -- | -- | -- | -- |
 |[![](https://img.shields.io/badge/GitHub-%2330363E.svg?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/davisriedel/obsidian-typewriter-mode)|[![](https://img.shields.io/badge/Obsidian-%23483699.svg?style=for-the-badge\&logo=obsidian\&logoColor=white)](https://obsidian.md/)|[![](https://img.shields.io/github/v/release/davisriedel/obsidian-typewriter-mode?style=for-the-badge)](https://github.com/davisriedel/obsidian-typewriter-mode/releases)|[![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)|[![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge\&logo=GitHub-Sponsors\&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)|
-<!-- markdownlint-restore -->
 
 Typewriter Mode turns [Obsidian](https://obsidian.md) into a distraction-free writing environment.
 
@@ -60,9 +57,7 @@ Many thanks to the developers of these fantastic plugins. Please also consider s
 
 I am a student at the University of Tübingen and develop this plugin in my spare time. If you wish to support me and the continuous development of this plugin, you can donate via GitHub Sponsors or Buy Me a Coffee. Any support is greatly appreciated.
 
-<!-- markdownlint-disable-next-line -->
 [![](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge\&logo=buy-me-a-coffee\&logoColor=black)](https://www.buymeacoffee.com/davis.riedel)
-<!-- markdownlint-disable-next-line -->
 [![](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge\&logo=GitHub-Sponsors\&logoColor=#EA4AAA)](https://github.com/sponsors/davisriedel)
 
 ## Changelog

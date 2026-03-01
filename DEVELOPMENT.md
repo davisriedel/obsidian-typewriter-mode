@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-1. Install the `canary` version of `Bun` on your system: <https://bun.sh/>
+1. Install `Bun`: <https://bun.sh/>
 2. Install `Just` command runner: <https://just.systems/man/en/>
 
 ## Setup
@@ -19,7 +19,7 @@
    - Build with `just build`
    - Create / update test vault with `just test-vault`
    - Use `just dev` to build and update test vault in one step
-   - Use `just debug` to print `console.debug` statements (all other commands strip these)
+   - Use `just debug` to print `console.debug` statements _(all other commands strip these)_
 
 2. Test in Obsidian
    - Open the test vault in Obsidian

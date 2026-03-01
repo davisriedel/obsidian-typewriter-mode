@@ -1,0 +1,18 @@
+[global]
+
+disable = ["MD013", "MD045"]
+
+exclude = [
+  ".git",
+  ".github",
+  "node_modules",
+  "vendor",
+  "lib-dist",
+  "dist",
+  "build",
+  ".claude",
+  "src/texts",
+  "LICENSE.md"
+]
+
+respect-gitignore = true

@@ -1,4 +1,3 @@
-<!-- markdownlint-disable -->
 **Thank you for using Typewriter Mode!** I am a student at the University of Tübingen and develop this plugin in my spare time. If you like the plugin, please consider supporting me on [GitHub Sponsors](https://github.com/sponsors/davisriedel) or [Buy Me a Coffee](https://www.buymeacoffee.com/davis.riedel). Your support ensures the continuous development and maintenance of the plugin. <br> <a href="https://www.buymeacoffee.com/davis.riedel" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;"></a> <br>
 
 If you find any bugs or have a feature request, please [open an issue on GitHub](https://github.com/davisriedel/obsidian-typewriter-mode/issues). Contributions are welcome too.

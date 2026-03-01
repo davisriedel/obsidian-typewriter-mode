@@ -2,22 +2,19 @@ default:
   just --list
 
 
-[private]
 lint:
   bun biome check --write
 
-[private]
-stylelint:
+lint-styles:
   bun stylelint --fix "src/**/*.scss"
 
-[private]
-markdownlint:
-  bun markdownlint --disable MD013 --fix "**/*.md"
+lint-md:
+  rumdl check --fix .
 
 typecheck:
   bun tsgo --noEmit
 
-check: typecheck lint stylelint markdownlint
+check: typecheck lint lint-styles lint-md
 
 
 [private]
