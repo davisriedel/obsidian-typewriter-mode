@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.0
+
+- This update introduces Hemingway mode — a new writing tool that prevents you from editing or deleting existing text, keeping you moving forward without second-guessing yourself.
+- You can now choose which platforms the plugin is active on (e.g. desktop only, or mobile only)
+- Current line highlight can now be automatically hidden while scrolling or selecting text
+- The current line highlight color now has a color picker and opacity slider instead of a plain text field
+- You can now set a custom font size for writing focus mode
+- Settings panel is now organized into collapsible groups for easier navigation
+- Fixed cursor position not being restored correctly when typewriter scrolling was disabled
+- Cursor position data is now stored in `data.json`, enabling sync across devices via Obsidian Sync
+
 ## 1.3.0-beta.3
 
 - Add feature to disable current line highlight while scrolling or selecting text

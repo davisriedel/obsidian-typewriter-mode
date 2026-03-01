@@ -64,9 +64,13 @@ async function getReleaseNotesAfter(
 
 export class UpdateModal extends Modal {
   private readonly currentVersion: string;
-  private readonly previousVersion: string;
+  private readonly previousVersion: string | null;
 
-  constructor(app: App, currentVersion: string, previousVersion: string) {
+  constructor(
+    app: App,
+    currentVersion: string,
+    previousVersion: string | null
+  ) {
     super(app);
     this.currentVersion = currentVersion;
     this.previousVersion = previousVersion;
