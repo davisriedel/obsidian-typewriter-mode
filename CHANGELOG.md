@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+
+- Hot fix for commands not working properly since 1.2.0-beta.2
+
 ## 1.3.0
 
 - This update introduces Hemingway mode — a new writing tool that prevents you from editing or deleting existing text, keeping you moving forward without second-guessing yourself.

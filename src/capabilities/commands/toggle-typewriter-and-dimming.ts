@@ -8,10 +8,12 @@ export class ToggleTypewriterAndDimming extends ToggleCommand {
   readonly commandTitle = "typewriter scrolling and paragraph dimming";
 
   protected override onCommand(): void {
-    const typewriterScrollFeature = this.tm.features.typewriter
-      .isTypewriterScrollEnabled as FeatureToggle;
-    const dimUnfocusedFeature = this.tm.features.dimming
-      .isDimUnfocusedEnabled as FeatureToggle;
+    const typewriterScrollFeature = this.tm.features.typewriter[
+      "typewriter.isTypewriterScrollEnabled"
+    ] as FeatureToggle;
+    const dimUnfocusedFeature = this.tm.features.dimming[
+      "dimming.isDimUnfocusedEnabled"
+    ] as FeatureToggle;
     const isOn =
       typewriterScrollFeature.getSettingValue() &&
       dimUnfocusedFeature.getSettingValue();
@@ -21,19 +23,23 @@ export class ToggleTypewriterAndDimming extends ToggleCommand {
 
   protected override onEnable(): void {
     (
-      this.tm.features.typewriter.isTypewriterScrollEnabled as FeatureToggle
+      this.tm.features.typewriter[
+        "typewriter.isTypewriterScrollEnabled"
+      ] as FeatureToggle
     ).toggle(true);
-    (this.tm.features.dimming.isDimUnfocusedEnabled as FeatureToggle).toggle(
-      true
-    );
+    (
+      this.tm.features.dimming["dimming.isDimUnfocusedEnabled"] as FeatureToggle
+    ).toggle(true);
   }
 
   protected override onDisable(): void {
     (
-      this.tm.features.typewriter.isTypewriterScrollEnabled as FeatureToggle
+      this.tm.features.typewriter[
+        "typewriter.isTypewriterScrollEnabled"
+      ] as FeatureToggle
     ).toggle(false);
-    (this.tm.features.dimming.isDimUnfocusedEnabled as FeatureToggle).toggle(
-      false
-    );
+    (
+      this.tm.features.dimming["dimming.isDimUnfocusedEnabled"] as FeatureToggle
+    ).toggle(false);
   }
 }
