@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0-beta.1
+
+- New setting to enable typewriter mode only in some files/folders or disable it
+in specific files/folders
+- Fix cursor in vim mode not visible
+
 ## 1.3.1
 
 - Hot fix for commands not working properly since 1.2.0-beta.2
