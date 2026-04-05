@@ -4,6 +4,11 @@
   left: 0;
   width: 100%;
   pointer-events: none;
+  z-index: 1;
+}
+
+.cm-editor .cm-cursorLayer { /* stylelint-disable-line selector-class-pattern */
+  z-index: 200;
 }
 
 .ptm-first-open {
