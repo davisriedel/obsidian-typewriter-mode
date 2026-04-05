@@ -13,6 +13,8 @@ import {
 } from "./constants";
 
 export interface GeneralSettings {
+  disabledFilePaths: string[];
+  enabledFilePaths: string[];
   enabledPlatforms: EnabledPlatforms;
   isAnnounceUpdatesEnabled: boolean;
   isOnlyActivateAfterFirstInteractionEnabled: boolean;
@@ -138,6 +140,8 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isPluginActivated: true,
     isOnlyActivateAfterFirstInteractionEnabled: false,
     enabledPlatforms: ENABLED_PLATFORMS.BOTH,
+    enabledFilePaths: [],
+    disabledFilePaths: [],
   },
   typewriter: {
     isTypewriterScrollEnabled: true,
@@ -255,6 +259,8 @@ function migrateSettings(
         legacy.isOnlyActivateAfterFirstInteractionEnabled ??
         DEFAULT_SETTINGS.general.isOnlyActivateAfterFirstInteractionEnabled,
       enabledPlatforms: DEFAULT_SETTINGS.general.enabledPlatforms,
+      enabledFilePaths: DEFAULT_SETTINGS.general.enabledFilePaths,
+      disabledFilePaths: DEFAULT_SETTINGS.general.disabledFilePaths,
     },
     typewriter: {
       isTypewriterScrollEnabled:

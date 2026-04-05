@@ -190,6 +190,45 @@ class TypewriterModeCM6Plugin {
     return !frontmatter["typewriter-mode"];
   }
 
+  private matchesPath(filePath: string, configuredPath: string): boolean {
+    return (
+      configuredPath === "" ||
+      filePath === configuredPath ||
+      filePath.startsWith(`${configuredPath}/`)
+    );
+  }
+
+  private isDisabledByFilePaths() {
+    const file = this.tm.plugin.app.workspace.getActiveFile();
+    if (!file) {
+      // We currently do not have an active file. After a new file gets active, the per window props must be reloaded.
+      this.isPerWindowPropsReloadRequired = true;
+      return false;
+    }
+
+    const { path: filePath } = file;
+    const { enabledFilePaths, disabledFilePaths } = this.tm.settings.general;
+
+    if (disabledFilePaths?.length > 0) {
+      for (const path of disabledFilePaths) {
+        if (this.matchesPath(filePath, path)) {
+          return true;
+        }
+      }
+    }
+
+    if (enabledFilePaths?.length > 0) {
+      for (const path of enabledFilePaths) {
+        if (this.matchesPath(filePath, path)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return false;
+  }
+
   private isDisabledByPlatform() {
     const { enabledPlatforms } = this.tm.settings.general;
     return (
@@ -206,6 +245,9 @@ class TypewriterModeCM6Plugin {
       return true;
     }
     if (!this.isMarkdownFile()) {
+      return true;
+    }
+    if (this.isDisabledByFilePaths()) {
       return true;
     }
     if (this.isDisabledInFrontmatter()) {
