@@ -3,6 +3,7 @@ import type { AbstractCommand } from "../base/abstract-command";
 import { MoveTypewriterDown, MoveTypewriterUp } from "./move-typewriter";
 import { ToggleDimming } from "./toggle-dimming";
 import { ToggleHemingwayMode } from "./toggle-hemingway-mode";
+import { ToggleMaxCharsPerLine } from "./toggle-max-chars-per-line";
 import { TogglePlugin } from "./toggle-plugin";
 import { ToggleTypewriter } from "./toggle-typewriter";
 import { ToggleTypewriterAndDimming } from "./toggle-typewriter-and-dimming";
@@ -21,6 +22,7 @@ export function getCommands(
       new MoveTypewriterDown(tm),
       new WritingFocusCommand(tm),
       new ToggleHemingwayMode(tm),
+      new ToggleMaxCharsPerLine(tm),
     ].map((cmd) => [cmd.commandKey, cmd])
   );
 }
