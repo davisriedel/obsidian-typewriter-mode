@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0-beta.2
+
+- Add more granular platform options: tablet only, phone only, and desktop and tablet
+- Add command to toggle the maximum characters per line limit from the command palette
+- Fix typewriter mode not activating when opening a link in a new tab or window
+
 ## 1.4.0-beta.1
 
 - New setting to enable typewriter mode only in some files/folders or disable it
