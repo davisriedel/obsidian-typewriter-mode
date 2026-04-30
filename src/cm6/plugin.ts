@@ -141,6 +141,11 @@ class TypewriterModeCM6Plugin {
       return;
     }
 
+    if (this.isPerWindowPropsReloadRequired) {
+      this.updateAfterExternalEvent();
+      return;
+    }
+
     if (!isUserEvent) {
       this.updateNonUserEvent();
       return;
