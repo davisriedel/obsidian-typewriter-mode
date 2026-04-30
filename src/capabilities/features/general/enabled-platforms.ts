@@ -19,9 +19,18 @@ export default class EnabledPlatforms extends Feature {
         .setClass("typewriter-mode-setting")
         .addDropdown((dropdown) =>
           dropdown
-            .addOption(ENABLED_PLATFORMS.BOTH, "Desktop and mobile")
+            .addOption(ENABLED_PLATFORMS.BOTH, "All platforms")
             .addOption(ENABLED_PLATFORMS.DESKTOP, "Desktop only")
-            .addOption(ENABLED_PLATFORMS.MOBILE, "Mobile only")
+            .addOption(
+              ENABLED_PLATFORMS.MOBILE,
+              "Mobile only (tablet and phone)"
+            )
+            .addOption(ENABLED_PLATFORMS.TABLET, "Tablet only")
+            .addOption(ENABLED_PLATFORMS.PHONE, "Phone only")
+            .addOption(
+              ENABLED_PLATFORMS.DESKTOP_AND_TABLET,
+              "Desktop and tablet"
+            )
             .setValue(this.getSettingValue() as EnabledPlatformsType)
             .onChange((newValue) => {
               this.setSettingValue(newValue as EnabledPlatformsType);

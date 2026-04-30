@@ -231,10 +231,20 @@ class TypewriterModeCM6Plugin {
 
   private isDisabledByPlatform() {
     const { enabledPlatforms } = this.tm.settings.general;
-    return (
-      (enabledPlatforms === "desktop" && Platform.isMobile) ||
-      (enabledPlatforms === "mobile" && Platform.isDesktop)
-    );
+    switch (enabledPlatforms) {
+      case "desktop":
+        return Platform.isMobile;
+      case "mobile":
+        return Platform.isDesktop;
+      case "tablet":
+        return !Platform.isTablet;
+      case "phone":
+        return !Platform.isPhone;
+      case "desktop-and-tablet":
+        return Platform.isPhone;
+      default:
+        return false;
+    }
   }
 
   private isDisabled() {

@@ -35,6 +35,9 @@ export const ENABLED_PLATFORMS = {
   BOTH: "both",
   DESKTOP: "desktop",
   MOBILE: "mobile",
+  TABLET: "tablet",
+  PHONE: "phone",
+  DESKTOP_AND_TABLET: "desktop-and-tablet",
 } as const;
 
 export type EnabledPlatforms =
