@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0-beta.3
+
+- Improve sentence detection around abbreviations and parenthesis
+- Add settings to toggle several features only in writing focus
+
 ## 1.4.0-beta.2
 
 - Add more granular platform options: tablet only, phone only, and desktop and tablet
