@@ -25,3 +25,9 @@ body.ptm-highlight-current-line-only-in-active-editor {
   }
 }
 
+body.ptm-highlight-current-line-only-in-writing-focus-mode:not(.ptm-focus-mode) {
+  .ptm-current-line {
+    display: none;
+  }
+}
+

@@ -1,3 +1,10 @@
+body.ptm-fade-lines-only-in-writing-focus-mode:not(.ptm-focus-mode) {
+  .ptm-current-line-fade-before,
+  .ptm-current-line-fade-after {
+    display: none;
+  }
+}
+
 body.ptm-fade-lines {
   .ptm-current-line-fade-before {
     display: block;

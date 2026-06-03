@@ -45,6 +45,7 @@ export class TypewriterOffsetCalculator {
     );
   }
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: scroll position calculation requires handling many layout edge cases
   getTypewriterPositionData() {
     const caretCoords = this.view.coordsAtPos(
       this.view.state.selection.main.head

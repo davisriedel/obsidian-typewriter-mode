@@ -14,6 +14,7 @@ export default class HemingwayMode extends FeatureToggle {
     this.statusBarItem = this.tm.plugin.addStatusBarItem();
     this.statusBarItem.addClass("ptm-hemingway-mode-status");
     this.updateStatusBar();
+    this.registerFocusModeObserver();
   }
 
   override enable() {
@@ -38,13 +39,28 @@ export default class HemingwayMode extends FeatureToggle {
       this.tm.settings.hemingwayMode.isShowHemingwayModeStatusBarEnabled;
     const statusBarText =
       this.tm.settings.hemingwayMode.hemingwayModeStatusBarText;
+    const onlyInFocusMode =
+      this.tm.settings.hemingwayMode
+        .isHemingwayModeOnlyInWritingFocusModeEnabled;
+    const focusModeActive = document.body.hasClass("ptm-focus-mode");
 
-    if (isEnabled && showStatusBar) {
+    if (isEnabled && showStatusBar && (!onlyInFocusMode || focusModeActive)) {
       this.statusBarItem.setText(statusBarText);
       this.statusBarItem.show();
     } else {
       this.statusBarItem.hide();
     }
+  }
+
+  private registerFocusModeObserver() {
+    const observer = new MutationObserver(() => {
+      this.updateStatusBar();
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    this.tm.plugin.register(() => observer.disconnect());
   }
 
   updateStatusBarText() {
@@ -53,6 +69,13 @@ export default class HemingwayMode extends FeatureToggle {
 
   private keyboardHandler = (event: KeyboardEvent) => {
     if (!this.getSettingValue()) {
+      return;
+    }
+
+    const onlyInFocusMode =
+      this.tm.settings.hemingwayMode
+        .isHemingwayModeOnlyInWritingFocusModeEnabled;
+    if (onlyInFocusMode && !document.body.hasClass("ptm-focus-mode")) {
       return;
     }
 

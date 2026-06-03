@@ -108,7 +108,8 @@ $bahaviors: 'dim', 'dim-none', 'dim-all';
   }
 }
 
-body.ptm-dim-unfocused {
+body.ptm-dim-unfocused:not(.ptm-dim-unfocused-only-in-writing-focus-mode),
+body.ptm-dim-unfocused.ptm-focus-mode {
   &:not(.ptm-dim-highlight-list-parent) {
     &:not(.ptm-dim-table-as-one) {
       @include dim-unfocused(false, false);

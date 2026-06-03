@@ -46,6 +46,7 @@ export interface DimmingSettings {
   isDimHighlightListParentEnabled: boolean;
   isDimTableAsOneEnabled: boolean;
   isDimUnfocusedEnabled: boolean;
+  isDimUnfocusedOnlyInWritingFocusModeEnabled: boolean;
   isPauseDimUnfocusedWhileScrollingEnabled: boolean;
   isPauseDimUnfocusedWhileSelectingEnabled: boolean;
 }
@@ -57,8 +58,10 @@ export interface CurrentLineSettings {
   currentLineHighlightUnderlineThickness: number;
   fadeLinesIntensity: number;
   isFadeLinesEnabled: boolean;
+  isFadeLinesOnlyInWritingFocusModeEnabled: boolean;
   isHighlightCurrentLineEnabled: boolean;
   isHighlightCurrentLineOnlyInFocusedEditorEnabled: boolean;
+  isHighlightCurrentLineOnlyInWritingFocusModeEnabled: boolean;
   isPauseCurrentLineHighlightWhileScrollingEnabled: boolean;
   isPauseCurrentLineHighlightWhileSelectingEnabled: boolean;
 }
@@ -81,6 +84,7 @@ export interface HemingwayModeSettings {
   hemingwayModeStatusBarText: string;
   isAllowBackspaceInHemingwayModeEnabled: boolean;
   isHemingwayModeEnabled: boolean;
+  isHemingwayModeOnlyInWritingFocusModeEnabled: boolean;
   isShowHemingwayModeStatusBarEnabled: boolean;
 }
 
@@ -159,6 +163,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   },
   dimming: {
     isDimUnfocusedEnabled: false,
+    isDimUnfocusedOnlyInWritingFocusModeEnabled: false,
     isDimHighlightListParentEnabled: false,
     isDimTableAsOneEnabled: true,
     dimUnfocusedMode: DIM_UNFOCUSED_MODE.PARAGRAPHS,
@@ -169,7 +174,9 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   },
   currentLine: {
     isHighlightCurrentLineEnabled: true,
+    isHighlightCurrentLineOnlyInWritingFocusModeEnabled: false,
     isFadeLinesEnabled: false,
+    isFadeLinesOnlyInWritingFocusModeEnabled: false,
     fadeLinesIntensity: 0.5,
     isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
     isPauseCurrentLineHighlightWhileScrollingEnabled: false,
@@ -193,6 +200,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
   },
   hemingwayMode: {
     isHemingwayModeEnabled: false,
+    isHemingwayModeOnlyInWritingFocusModeEnabled: false,
     isAllowBackspaceInHemingwayModeEnabled: false,
     isShowHemingwayModeStatusBarEnabled: true,
     hemingwayModeStatusBarText: "Hemingway",
@@ -243,6 +251,7 @@ interface LegacyTypewriterModeSettings {
 }
 
 // Migration function to convert legacy flat settings to new grouped settings
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: migration function necessarily handles many legacy fields
 function migrateSettings(
   legacy: Partial<LegacyTypewriterModeSettings>
 ): TypewriterModeSettings {
@@ -295,6 +304,8 @@ function migrateSettings(
       isDimUnfocusedEnabled:
         legacy.isDimUnfocusedEnabled ??
         DEFAULT_SETTINGS.dimming.isDimUnfocusedEnabled,
+      isDimUnfocusedOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.dimming.isDimUnfocusedOnlyInWritingFocusModeEnabled,
       isDimHighlightListParentEnabled:
         legacy.isDimHighlightListParentEnabled ??
         DEFAULT_SETTINGS.dimming.isDimHighlightListParentEnabled,
@@ -319,9 +330,14 @@ function migrateSettings(
       isHighlightCurrentLineEnabled:
         legacy.isHighlightCurrentLineEnabled ??
         DEFAULT_SETTINGS.currentLine.isHighlightCurrentLineEnabled,
+      isHighlightCurrentLineOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.currentLine
+          .isHighlightCurrentLineOnlyInWritingFocusModeEnabled,
       isFadeLinesEnabled:
         legacy.isFadeLinesEnabled ??
         DEFAULT_SETTINGS.currentLine.isFadeLinesEnabled,
+      isFadeLinesOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.currentLine.isFadeLinesOnlyInWritingFocusModeEnabled,
       fadeLinesIntensity:
         legacy.fadeLinesIntensity ??
         DEFAULT_SETTINGS.currentLine.fadeLinesIntensity,
@@ -378,6 +394,9 @@ function migrateSettings(
       isHemingwayModeEnabled:
         legacy.isHemingwayModeEnabled ??
         DEFAULT_SETTINGS.hemingwayMode.isHemingwayModeEnabled,
+      isHemingwayModeOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.hemingwayMode
+          .isHemingwayModeOnlyInWritingFocusModeEnabled,
       isAllowBackspaceInHemingwayModeEnabled:
         legacy.isAllowBackspaceInHemingwayModeEnabled ??
         DEFAULT_SETTINGS.hemingwayMode.isAllowBackspaceInHemingwayModeEnabled,
