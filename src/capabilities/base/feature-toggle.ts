@@ -41,7 +41,11 @@ export abstract class FeatureToggle extends Feature {
   }
 
   override load() {
-    this.getSettingValue() ? this.enable() : this.disable();
+    if (this.getSettingValue()) {
+      this.enable();
+    } else {
+      this.disable();
+    }
   }
 
   toggle(pNewValue: boolean | null = null) {
@@ -53,7 +57,11 @@ export abstract class FeatureToggle extends Feature {
 
     // assign the new value and call the correct enable / disable function
     this.setSettingValue(newValue);
-    newValue ? this.enable() : this.disable();
+    if (newValue) {
+      this.enable();
+    } else {
+      this.disable();
+    }
 
     this.tm.saveSettings().catch((error) => {
       console.error("Failed to save settings:", error);

@@ -11,7 +11,7 @@ import fundingText from "@/texts/Funding.md" with { type: "text" };
 export default class TypewriterModeSettingTab extends PluginSettingTab {
   override icon = "type-outline";
 
-  private tm: TypewriterModeLib;
+  private readonly tm: TypewriterModeLib;
 
   constructor(app: App, tm: TypewriterModeLib) {
     super(app, tm.plugin);
@@ -27,7 +27,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
     }
   }
 
-  display(): void {
+  override display(): void {
     this.containerEl.empty();
 
     // General settings (no heading)

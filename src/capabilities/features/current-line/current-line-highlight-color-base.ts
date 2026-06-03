@@ -86,9 +86,9 @@ export default abstract class CurrentLineHighlightColor extends Feature {
   private changeCurrentLineHighlightColor(color: string, opacity: number) {
     // Convert hex to rgb
     const hex = color.replace("#", "");
-    const r = Number.parseInt(hex.substring(0, 2), 16);
-    const g = Number.parseInt(hex.substring(2, 4), 16);
-    const b = Number.parseInt(hex.substring(4, 6), 16);
+    const r = Number.parseInt(hex.slice(0, 2), 16);
+    const g = Number.parseInt(hex.slice(2, 4), 16);
+    const b = Number.parseInt(hex.slice(4, 6), 16);
 
     const newValue = `rgba(${r}, ${g}, ${b}, ${opacity})`;
     this.setSettingValue(newValue);

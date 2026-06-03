@@ -115,9 +115,10 @@ class TypewriterModeCM6Plugin {
       };
     }
 
-    const allowedUserEvents = userEvents.reduce<boolean>((result, event) => {
-      return result && this.userEventAllowed(event);
-    }, userEvents.length > 0);
+    const allowedUserEvents = userEvents.reduce<boolean>(
+      (result, event) => result && this.userEventAllowed(event),
+      userEvents.length > 0
+    );
     return {
       isReconfigured: false,
       isUserEvent: true,
@@ -151,9 +152,11 @@ class TypewriterModeCM6Plugin {
       return;
     }
 
-    allowedUserEvents
-      ? this.updateAllowedUserEvent()
-      : this.updateDisallowedUserEvent();
+    if (allowedUserEvents) {
+      this.updateAllowedUserEvent();
+    } else {
+      this.updateDisallowedUserEvent();
+    }
   }
 
   private isTableCell() {
@@ -771,9 +774,7 @@ class TypewriterModeCM6Plugin {
 
 export default function createTypewriterModeViewPlugin(tm: TypewriterModeLib) {
   return ViewPlugin.define(
-    (view: EditorView) => {
-      return new TypewriterModeCM6Plugin(tm, view);
-    },
+    (view: EditorView) => new TypewriterModeCM6Plugin(tm, view),
     { decorations: (v) => v.decorations }
   );
 }

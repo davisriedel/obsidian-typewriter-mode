@@ -199,6 +199,10 @@ export class WritingFocus {
   }
 
   toggleFocusMode() {
-    this.focusModeActive ? this.disableFocusMode() : this.enableFocusMode();
+    if (this.focusModeActive) {
+      this.disableFocusMode();
+    } else {
+      this.enableFocusMode();
+    }
   }
 }

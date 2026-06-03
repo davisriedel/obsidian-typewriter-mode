@@ -79,7 +79,7 @@ export default class RestoreCursorPosition extends FeatureToggle {
     console.debug("setCursorState", fileName, st);
   }
 
-  private onFileOpen = (file: TFile | null): void => {
+  private readonly onFileOpen = (file: TFile | null): void => {
     if (!file) {
       return;
     }
