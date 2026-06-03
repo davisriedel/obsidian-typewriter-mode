@@ -3,21 +3,47 @@
 import type { Line, Range } from "@codemirror/state";
 import { Decoration, type EditorView } from "@codemirror/view";
 
-function textStartsWithIgnored(
+const CLOSING_BRACKETS = new Set([")", "]", "}"]);
+
+function isIgnoredDelimiter(
   lineText: string,
   ignoredPatterns: string[],
   i: number
 ) {
-  let foundTitle = false;
+  return ignoredPatterns.some(
+    (pattern) => lineText.slice(i + 1 - pattern.length, i + 1) === pattern
+  );
+}
 
-  for (const title of ignoredPatterns) {
-    if (lineText.slice(i + 1 - title.length, i + 1) === title) {
-      foundTitle = true;
-      break;
-    }
+function isFollowedByClosingBracket(lineText: string, i: number) {
+  return CLOSING_BRACKETS.has(lineText[i + 1]);
+}
+
+function isLetter(c: string | undefined): boolean {
+  return !!c && ((c >= "a" && c <= "z") || (c >= "A" && c <= "Z"));
+}
+
+// A delimiter preceded by a single letter (itself preceded by a non-letter)
+// is an abbreviation like "e.g." or "i.e." — not a sentence boundary.
+function isPrecededBySingleLetter(lineText: string, i: number) {
+  return isLetter(lineText[i - 1]) && !isLetter(lineText[i - 2]);
+}
+
+function isRealSentenceBoundary(
+  lineText: string,
+  ignoredPatterns: string[],
+  i: number
+) {
+  if (isIgnoredDelimiter(lineText, ignoredPatterns, i)) {
+    return false;
   }
-
-  return foundTitle;
+  if (isFollowedByClosingBracket(lineText, i)) {
+    return false;
+  }
+  if (isPrecededBySingleLetter(lineText, i)) {
+    return false;
+  }
+  return true;
 }
 
 interface Settings {
@@ -26,6 +52,7 @@ interface Settings {
   sentenceDelimiters: string;
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: sentence boundary detection requires branching logic
 function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
   const sentenceDelimiters = settings.sentenceDelimiters.split("");
   const extraCharacters = settings.extraCharacters.split("");
@@ -37,32 +64,33 @@ function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
   let start = -1;
 
   for (let i = pos - lineStart - 1; i >= 0; i--) {
-    if (sentenceDelimiters.contains(lineText[i])) {
-      if (textStartsWithIgnored(lineText, ignoredPatterns, i)) {
-        continue;
-      }
-
-      let offset = 1;
-
-      // Don't highlight spaces between sentences
-      while (lineText[i + offset] === " " && offset < pos - lineStart - 1) {
-        offset += 1;
-      }
-
-      // Account for markdown syntax at the end of sentences (*)
-      while (
-        extraCharacters.contains(lineText[i + offset]) &&
-        sentenceDelimiters.contains(lineText[i + offset - 1]) &&
-        offset < pos - lineStart - 1
-      ) {
-        offset += 1;
-      }
-
-      start = i + offset;
-
-      break;
+    if (!sentenceDelimiters.contains(lineText[i])) {
+      continue;
     }
+    if (!isRealSentenceBoundary(lineText, ignoredPatterns, i)) {
+      continue;
+    }
+
+    let offset = 1;
+
+    // Don't highlight spaces between sentences
+    while (lineText[i + offset] === " " && offset < pos - lineStart - 1) {
+      offset += 1;
+    }
+
+    // Account for markdown syntax at the end of sentences (*)
+    while (
+      extraCharacters.contains(lineText[i + offset]) &&
+      sentenceDelimiters.contains(lineText[i + offset - 1]) &&
+      offset < pos - lineStart - 1
+    ) {
+      offset += 1;
+    }
+
+    start = i + offset;
+    break;
   }
+
   if (start === -1) {
     start = 0;
   }
@@ -70,33 +98,33 @@ function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
   let end = -1;
 
   for (let i = pos - lineStart; i < line.length; i++) {
-    if (sentenceDelimiters.contains(lineText[i])) {
-      if (textStartsWithIgnored(lineText, ignoredPatterns, i)) {
-        continue;
-      }
-
-      let offset = 1;
-
-      // Account for ellipses, "!?", etc.
-      while (
-        sentenceDelimiters.contains(lineText[i + offset]) &&
-        offset < line.length
-      ) {
-        offset += 1;
-      }
-
-      // Account for markdown syntax at the end of sentences (*)
-      while (
-        extraCharacters.contains(lineText[i + offset]) &&
-        offset < line.length
-      ) {
-        offset += 1;
-      }
-
-      end = i + offset;
-
-      break;
+    if (!sentenceDelimiters.contains(lineText[i])) {
+      continue;
     }
+    if (!isRealSentenceBoundary(lineText, ignoredPatterns, i)) {
+      continue;
+    }
+
+    let offset = 1;
+
+    // Account for ellipses, "!?", etc.
+    while (
+      sentenceDelimiters.contains(lineText[i + offset]) &&
+      offset < line.length
+    ) {
+      offset += 1;
+    }
+
+    // Account for markdown syntax at the end of sentences (*)
+    while (
+      extraCharacters.contains(lineText[i + offset]) &&
+      offset < line.length
+    ) {
+      offset += 1;
+    }
+
+    end = i + offset;
+    break;
   }
 
   if (end !== -1) {
