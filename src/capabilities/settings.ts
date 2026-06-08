@@ -183,8 +183,8 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isPauseCurrentLineHighlightWhileSelectingEnabled: false,
     currentLineHighlightStyle: CURRENT_LINE_HIGHLIGHT_STYLE.BOX,
     currentLineHighlightUnderlineThickness: 1,
-    "currentLineHighlightColor-dark": "#444",
-    "currentLineHighlightColor-light": "#ddd",
+    "currentLineHighlightColor-dark": "#444444",
+    "currentLineHighlightColor-light": "#dddddd",
   },
   writingFocus: {
     doesWritingFocusShowHeader: false,

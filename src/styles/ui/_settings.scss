@@ -1,3 +1,7 @@
 .typewriter-mode-setting.setting-item.is-disabled {
   opacity: 0.5;
 }
+
+.vertical-tab-nav-item[data-setting-id="typewriter-mode"] .vertical-tab-nav-item-icon {
+  display: flex;
+}

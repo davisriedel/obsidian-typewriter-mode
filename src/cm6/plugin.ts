@@ -760,7 +760,7 @@ class TypewriterModeCM6Plugin {
           this.tm.plugin.app.workspace.containerEl.querySelector(
             "span.is-flashing"
           );
-        console.log("containsFlashingSpan", containsFlashingSpan);
+        console.debug("containsFlashingSpan", containsFlashingSpan);
 
         if (!containsFlashingSpan) {
           console.debug("Dispatch restoreCursorPosition", fileName, st);

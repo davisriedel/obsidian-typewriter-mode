@@ -112,6 +112,13 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 
     // If it's already a hex color, return it with opacity 1
     if (colorString.startsWith("#")) {
+      // Expand 3-char shorthand to 6-char hex for color picker compatibility
+      if (colorString.length === 4) {
+        const r = colorString[1];
+        const g = colorString[2];
+        const b = colorString[3];
+        return { color: `#${r}${r}${g}${g}${b}${b}`, opacity: 1 };
+      }
       return { color: colorString, opacity: 1 };
     }
 
