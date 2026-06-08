@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.0-beta.1
+
+- Plugin settings are now searchable via Obsidian's settings search on Obsidian version
+  `1.13.0` and newer.
+- Fixed: the current line highlight color picker and icon not displaying correctly.
+- Fixed: the update notice dialog not scrolling properly on long content.
+
 ## 1.4.0
 
 - You can now limit typewriter mode to specific files or folders — or exclude certain files/folders from it entirely.
