@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import type TypewriterModeLib from "@/lib";
 
@@ -51,6 +51,42 @@ export default abstract class CurrentLineHighlightColor extends Feature {
             })
         )
     );
+  }
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    const currentValue = this.getSettingValue() as string;
+    const { color, opacity } = this.parseColor(currentValue);
+
+    return {
+      name: `Current line highlight color in ${this.themeMode} themes`,
+      desc: `The color and opacity of the current line highlight in ${this.themeMode} themes`,
+      render: (setting) => {
+        setting
+          .setClass("typewriter-mode-setting")
+          .addColorPicker((colorPicker) =>
+            colorPicker.setValue(color).onChange((newColor) => {
+              const currentOpacity = this.parseColor(
+                this.getSettingValue() as string
+              ).opacity;
+              this.changeCurrentLineHighlightColor(newColor, currentOpacity);
+              onChanged?.();
+            })
+          )
+          .addSlider((slider) =>
+            slider
+              .setLimits(0, 1, 0.01)
+              .setValue(opacity)
+              .setDynamicTooltip()
+              .onChange((newOpacity) => {
+                const currentColor = this.parseColor(
+                  this.getSettingValue() as string
+                ).color;
+                this.changeCurrentLineHighlightColor(currentColor, newOpacity);
+                onChanged?.();
+              })
+          );
+      },
+    };
   }
 
   override load() {

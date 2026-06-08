@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import type HemingwayMode from "./hemingway-mode";
 
@@ -7,6 +7,27 @@ export default class HemingwayModeStatusBarText extends Feature {
   protected settingTitle = "Status bar text";
   protected settingDesc =
     "Text to display in the status bar when Hemingway mode is active.";
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: this.settingTitle,
+      desc: this.settingDesc,
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addText((text) =>
+          text
+            .setValue(this.getSettingValue() as string)
+            .onChange((newValue) => {
+              this.setSettingValue(newValue);
+              this.tm.saveSettings().catch((error) => {
+                console.error("Failed to save settings:", error);
+              });
+              this.updateHemingwayModeStatusBar();
+              onChanged?.();
+            })
+        );
+      },
+    };
+  }
 
   registerSetting(settingGroup: SettingGroup) {
     settingGroup.addSetting((setting) =>

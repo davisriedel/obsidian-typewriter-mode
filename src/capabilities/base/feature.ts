@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import {
   getSettingByPath,
   type SettingsPath,
@@ -19,6 +19,8 @@ export abstract class Feature extends Loadable {
   }
 
   abstract registerSetting(settingGroup: SettingGroup): void;
+
+  abstract getDefinition(onChanged?: () => void): SettingDefinition;
 
   getBodyClasses(): string[] {
     return [];

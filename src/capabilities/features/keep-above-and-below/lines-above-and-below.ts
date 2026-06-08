@@ -1,8 +1,27 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 
 export default class LinesAboveAndBelow extends Feature {
   readonly settingKey = "keepLinesAboveAndBelow.linesAboveAndBelow" as const;
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Amount of lines above and below the current line",
+      desc: "The amount of lines to always keep above and below the current line",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addText((text) =>
+          text
+            .setValue((this.getSettingValue() as number).toString())
+            .onChange((newValue) => {
+              this.changeAmountOfLinesAboveAndBelow(
+                Number.parseInt(newValue, 10)
+              );
+              onChanged?.();
+            })
+        );
+      },
+    };
+  }
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

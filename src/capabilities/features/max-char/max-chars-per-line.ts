@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 
 export default class MaxCharsPerLine extends Feature {
@@ -18,6 +18,23 @@ export default class MaxCharsPerLine extends Feature {
             })
         )
     );
+  }
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Maximum number of characters per line",
+      desc: "The maximum number of characters per line",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addText((text) =>
+          text
+            .setValue((this.getSettingValue() as number).toString())
+            .onChange((newValue) => {
+              this.changeMaxCharsPerLine(Number.parseInt(newValue, 10));
+              onChanged?.();
+            })
+        );
+      },
+    };
   }
 
   override load() {

@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import {
   CURRENT_LINE_HIGHLIGHT_STYLE,
@@ -33,6 +33,27 @@ export default class CurrentLineHighlightStyle extends Feature {
             })
         )
     );
+  }
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Current line highlight style",
+      desc: "The style of the current line highlight",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
+          dropdown
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, "Box")
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, "Underline")
+            .setValue(this.getSettingValue() as CurrentLineHighlightStyleType)
+            .onChange((newValue) => {
+              this.changeCurrentLineHighlightStyle(
+                newValue as CurrentLineHighlightStyleType
+              );
+              onChanged?.();
+            })
+        );
+      },
+    };
   }
 
   override load() {

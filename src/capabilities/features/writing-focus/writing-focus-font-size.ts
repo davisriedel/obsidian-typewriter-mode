@@ -1,8 +1,27 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 
 export default class WritingFocusFontSize extends Feature {
   readonly settingKey = "writingFocus.writingFocusFontSize" as const;
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Writing focus font size",
+      desc: "Custom font size in points for writing focus mode (0 = use default font size)",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addSlider((slider) =>
+          slider
+            .setLimits(0, 36, 1)
+            .setDynamicTooltip()
+            .setValue(this.getSettingValue() as number)
+            .onChange((newValue) => {
+              this.changeFontSize(newValue);
+              onChanged?.();
+            })
+        );
+      },
+    };
+  }
 
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>

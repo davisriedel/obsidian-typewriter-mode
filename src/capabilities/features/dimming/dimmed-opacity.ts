@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 
 export default class DimmedOpacity extends Feature {
@@ -20,6 +20,25 @@ export default class DimmedOpacity extends Feature {
             })
         )
     );
+  }
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Opacity of dimmed elements",
+      desc: "The opacity of dimmed elements",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addSlider((slider) =>
+          slider
+            .setLimits(0, 100, 5)
+            .setDynamicTooltip()
+            .setValue((this.getSettingValue() as number) * 100)
+            .onChange((newValue) => {
+              this.changeDimmedOpacity(newValue / 100);
+              onChanged?.();
+            })
+        );
+      },
+    };
   }
 
   override load() {

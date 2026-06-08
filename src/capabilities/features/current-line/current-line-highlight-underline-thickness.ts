@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 
 export default class CurrentLineHighlightUnderlineThickness extends Feature {
@@ -23,6 +23,25 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
             })
         )
     );
+  }
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Current line underline thickness",
+      desc: "The thickness of the underline that highlights the current line",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addSlider((slider) =>
+          slider
+            .setLimits(1, 5, 1)
+            .setDynamicTooltip()
+            .setValue(this.getSettingValue() as number)
+            .onChange((newValue) => {
+              this.changeCurrentLineHighlightUnderlineThickness(newValue);
+              onChanged?.();
+            })
+        );
+      },
+    };
   }
 
   override load() {

@@ -1,4 +1,4 @@
-import type { App } from "obsidian";
+import type { App, SettingDefinition, SettingDefinitionItem } from "obsidian";
 import {
   Component,
   MarkdownRenderer,
@@ -25,6 +25,122 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
     for (const feature of Object.values(features)) {
       feature.registerSetting(group);
     }
+  }
+
+  private featureDefs(
+    features: Record<
+      string,
+      { getDefinition: (cb?: () => void) => SettingDefinition }
+    >,
+    onChanged: () => void
+  ): SettingDefinition[] {
+    return Object.values(features).map((f) => f.getDefinition(onChanged));
+  }
+
+  override getSettingDefinitions(): SettingDefinitionItem[] {
+    const refresh = () => this.refreshDomState();
+
+    return [
+      // General — no heading
+      ...this.featureDefs(this.tm.features.general, refresh),
+
+      // Typewriter
+      {
+        type: "group",
+        heading: "Typewriter",
+        items: [
+          {
+            name: 'Not available if "keep lines above and below" is activated',
+            visible: () =>
+              this.tm.settings.keepLinesAboveAndBelow
+                .isKeepLinesAboveAndBelowEnabled,
+          },
+          ...this.featureDefs(this.tm.features.typewriter, refresh),
+        ],
+      },
+
+      // Keep lines above and below
+      {
+        type: "group",
+        heading: "Keep lines above and below",
+        items: [
+          {
+            name: "Not available if typewriter scrolling is activated",
+            visible: () =>
+              this.tm.settings.typewriter.isTypewriterScrollEnabled,
+          },
+          ...this.featureDefs(this.tm.features.keepAboveAndBelow, refresh),
+        ],
+      },
+
+      // Highlight current line
+      {
+        type: "group",
+        heading: "Highlight current line",
+        items: this.featureDefs(this.tm.features.currentLine, refresh),
+      },
+
+      // Limit line width
+      {
+        type: "group",
+        heading: "Limit line width",
+        items: this.featureDefs(this.tm.features.maxChar, refresh),
+      },
+
+      // Dimming
+      {
+        type: "group",
+        heading: "Dimming",
+        items: this.featureDefs(this.tm.features.dimming, refresh),
+      },
+
+      // Writing focus
+      {
+        type: "group",
+        heading: "Writing focus",
+        items: this.featureDefs(this.tm.features.writingFocus, refresh),
+      },
+
+      // Hemingway mode
+      {
+        type: "group",
+        heading: "Hemingway mode",
+        items: this.featureDefs(this.tm.features.hemingwayMode, refresh),
+      },
+
+      // Restore cursor position
+      {
+        type: "group",
+        heading: "Restore cursor position",
+        items: this.featureDefs(
+          this.tm.features.restoreCursorPosition,
+          refresh
+        ),
+      },
+
+      // Update notice and funding
+      {
+        type: "group",
+        heading: "Update notice and funding",
+        items: [
+          ...this.featureDefs(this.tm.features.updates, refresh),
+          {
+            name: "",
+            render: (setting) => {
+              setting.settingEl.empty();
+              const div = setting.settingEl.createDiv();
+              MarkdownRenderer.render(
+                this.app,
+                fundingText,
+                div,
+                this.app.vault.getRoot().path,
+                new Component()
+              );
+            },
+          },
+        ],
+      },
+    ];
   }
 
   override display(): void {

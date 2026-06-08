@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 
 export default class FadeLinesIntensity extends Feature {
@@ -20,6 +20,25 @@ export default class FadeLinesIntensity extends Feature {
             })
         )
     );
+  }
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Intensity of the fade lines gradient",
+      desc: "How soon lines shall be faded out",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addSlider((slider) =>
+          slider
+            .setLimits(0, 100, 5)
+            .setDynamicTooltip()
+            .setValue((this.getSettingValue() as number) * 100)
+            .onChange((newValue) => {
+              this.changeFadeLinesIntensity(newValue / 100);
+              onChanged?.();
+            })
+        );
+      },
+    };
   }
 
   override load() {

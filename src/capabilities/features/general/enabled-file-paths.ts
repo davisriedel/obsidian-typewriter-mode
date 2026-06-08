@@ -1,4 +1,4 @@
-import type { App, SettingGroup } from "obsidian";
+import type { App, SettingDefinition, SettingGroup } from "obsidian";
 import { AbstractInputSuggest, Modal, TFolder } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import { setSettingByPath } from "@/capabilities/settings";
@@ -165,9 +165,52 @@ class FilePathsModal extends Modal {
 export default class EnabledFilePaths extends Feature {
   readonly settingKey = "general.enabledFilePaths" as const;
 
-  registerSetting(settingGroup: SettingGroup): void {
-    const app = this.tm.plugin.app;
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "File paths",
+      desc: "Configure which files or folders the plugin is enabled or disabled in.",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addButton((button) =>
+          button.setButtonText("Configure").onClick(() => {
+            this.openModal();
+            onChanged?.();
+          })
+        );
+      },
+    };
+  }
 
+  private openModal() {
+    const app = this.tm.plugin.app;
+    const vaultPaths = getVaultPaths(app);
+
+    const getEnabled = () => this.tm.settings.general.enabledFilePaths ?? [];
+    const setEnabled = (paths: string[]) => {
+      this.setSettingValue(paths);
+      this.tm.saveSettings().catch((error) => {
+        console.error("Failed to save settings:", error);
+      });
+    };
+
+    const getDisabled = () => this.tm.settings.general.disabledFilePaths ?? [];
+    const setDisabled = (paths: string[]) => {
+      setSettingByPath(this.tm.settings, "general.disabledFilePaths", paths);
+      this.tm.saveSettings().catch((error) => {
+        console.error("Failed to save settings:", error);
+      });
+    };
+
+    new FilePathsModal(
+      app,
+      vaultPaths,
+      getEnabled,
+      setEnabled,
+      getDisabled,
+      setDisabled
+    ).open();
+  }
+
+  registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) =>
       setting
         .setName("File paths")
@@ -177,38 +220,7 @@ export default class EnabledFilePaths extends Feature {
         .setClass("typewriter-mode-setting")
         .addButton((button) =>
           button.setButtonText("Configure").onClick(() => {
-            const vaultPaths = getVaultPaths(app);
-
-            const getEnabled = () =>
-              this.tm.settings.general.enabledFilePaths ?? [];
-            const setEnabled = (paths: string[]) => {
-              this.setSettingValue(paths);
-              this.tm.saveSettings().catch((error) => {
-                console.error("Failed to save settings:", error);
-              });
-            };
-
-            const getDisabled = () =>
-              this.tm.settings.general.disabledFilePaths ?? [];
-            const setDisabled = (paths: string[]) => {
-              setSettingByPath(
-                this.tm.settings,
-                "general.disabledFilePaths",
-                paths
-              );
-              this.tm.saveSettings().catch((error) => {
-                console.error("Failed to save settings:", error);
-              });
-            };
-
-            new FilePathsModal(
-              app,
-              vaultPaths,
-              getEnabled,
-              setEnabled,
-              getDisabled,
-              setDisabled
-            ).open();
+            this.openModal();
           })
         )
     );

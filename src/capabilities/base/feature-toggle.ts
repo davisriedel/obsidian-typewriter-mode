@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "./feature";
 
 export abstract class FeatureToggle extends Feature {
@@ -38,6 +38,26 @@ export abstract class FeatureToggle extends Feature {
         )
         .setDisabled(!this.isSettingEnabled())
     );
+  }
+
+  override getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: this.settingTitle,
+      desc: this.settingDesc,
+      render: (setting) => {
+        setting
+          .setClass("typewriter-mode-setting")
+          .addToggle((toggle) =>
+            toggle
+              .setValue(this.getSettingValue() as boolean)
+              .onChange((newValue) => {
+                this.toggle(newValue);
+                onChanged?.();
+              })
+          )
+          .setDisabled(!this.isSettingEnabled());
+      },
+    };
   }
 
   override load() {

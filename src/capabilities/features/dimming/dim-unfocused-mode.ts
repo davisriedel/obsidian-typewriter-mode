@@ -1,4 +1,4 @@
-import type { SettingGroup } from "obsidian";
+import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
 import {
   DIM_UNFOCUSED_MODE,
@@ -24,6 +24,25 @@ export default class DimUnfocusedMode extends Feature {
             })
         )
     );
+  }
+
+  getDefinition(onChanged?: () => void): SettingDefinition {
+    return {
+      name: "Dim unfocused mode",
+      desc: "Choose to dim unfocused paragraphs or sentences",
+      render: (setting) => {
+        setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
+          dropdown
+            .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, "Paragraphs")
+            .addOption(DIM_UNFOCUSED_MODE.SENTENCES, "Sentences")
+            .setValue(this.getSettingValue() as DimUnfocusedModeType)
+            .onChange((newValue) => {
+              this.change(newValue as DimUnfocusedModeType);
+              onChanged?.();
+            })
+        );
+      },
+    };
   }
 
   override load() {
