@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+
+- You can now limit typewriter mode to specific files or folders — or exclude certain files/folders from it entirely.
+- Several features (such as text dimming and current-line highlighting) can now be set to activate only when writing focus mode is active.
+- Platform targeting is now more flexible: you can enable the plugin for desktop and tablet, tablet only, or phone only — in addition to the existing desktop only and mobile only options.
+- A command palette entry now lets you quickly toggle the maximum characters per line limit without opening settings.
+- Sentence highlighting is now smarter — it correctly handles abbreviations (e.g. "Dr.", "etc.") and text in parentheses.
+- Fixed: typewriter mode now activates correctly when you open a link in a new tab or window.
+- Fixed: the cursor in Vim mode is now visible again.
+
 ## 1.4.0-beta.3
 
 - Improve sentence detection around abbreviations and parenthesis
