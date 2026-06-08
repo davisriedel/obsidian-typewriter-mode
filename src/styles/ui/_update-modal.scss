@@ -1,4 +1,4 @@
-.ptm-update-modal-container {
+.ptm-update-modal {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -25,11 +25,5 @@
       margin-left: 1em;
     }
   }
-}
-
-.ptm-update-modal {
-	min-width: 35%;
-	max-height: 70%;
-  overflow-y: scroll;
 }
 

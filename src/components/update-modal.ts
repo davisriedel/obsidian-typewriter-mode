@@ -109,8 +109,8 @@ export class UpdateModal extends Modal {
   private displayReleaseNotes(releases: Release[]): void {
     const { contentEl } = this;
     contentEl.empty();
-    contentEl.classList.add("ptm-update-modal-container");
-    const contentDiv = contentEl.createDiv("ptm-update-modal");
+    contentEl.classList.add("ptm-update-modal");
+    const contentDiv = contentEl.createDiv();
 
     const releaseNotes = releases
       .map((release) => `### ${release.tag_name}\n\n${release.body}`)
@@ -133,8 +133,8 @@ export class UpdateModal extends Modal {
   private displayError(error: Error): void {
     const { contentEl } = this;
     contentEl.empty();
-    contentEl.classList.add("ptm-update-modal-container");
-    const contentDiv = contentEl.createDiv("ptm-update-modal");
+    contentEl.classList.add("ptm-update-modal");
+    const contentDiv = contentEl.createDiv();
 
     contentDiv.createEl("h2", { text: error.message });
   }

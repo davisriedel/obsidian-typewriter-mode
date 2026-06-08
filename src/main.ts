@@ -30,6 +30,16 @@ export default class TypewriterModePlugin extends Plugin {
     this.tm.unload();
   }
 
+  openUpdateModal(previousVersion?: string) {
+    const currentVersion = this.manifest.version;
+    const modal = new UpdateModal(
+      this.app,
+      currentVersion,
+      previousVersion ?? null
+    );
+    modal.open();
+  }
+
   private announceUpdate() {
     const currentVersion = this.manifest.version;
     const knownVersion = this.tm.settings.general.version ?? null;
