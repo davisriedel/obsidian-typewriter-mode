@@ -1,6 +1,6 @@
 {
   "name": "obsidian-typewriter-mode",
-  "version": "1.5.0-beta.1",
+  "version": "1.5.0-beta.2",
   "obsidianMinAppVersion": "1.11.0",
   "author": "Davis Riedel",
   "repository": {
@@ -15,7 +15,6 @@
     "@types/codemirror": "^5.60.17",
     "@types/node": "^25.9.2",
     "@typescript/native-preview": "^7.0.0-dev.20260608.1",
-    "builtin-modules": "^5.2.0",
     "electron": "^42.3.3",
     "lefthook": "^2.1.9",
     "obsidian": "^1.13.0",

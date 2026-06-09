@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0-beta.2
+
+- Fixes all warnings raised during Obsidian's new automatic plugin review process.
+
 ## 1.5.0-beta.1
 
 - Plugin settings are now searchable via Obsidian's settings search on Obsidian version

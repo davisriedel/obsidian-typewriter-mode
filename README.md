@@ -38,6 +38,10 @@ You can install this plugin within Obsidian by doing the following:
 
 Follow the instructions in the repository of the [BRAT plugin](https://github.com/TfTHacker/obsidian42-brat#Quick-Guide-for-using-BRAT) and use this repository's URL: `https://github.com/davisriedel/obsidian-typewriter-mode` to install **beta versions** of the plugin.
 
+## Disclosures
+
+This plugin makes a single network request to `github.com` in order to fetch release notes when a new version of the plugin is installed. You can disable this, by disabling the update notice in the plugin's settings. No other network requests are made.
+
 ## Acknowledgements
 
 This plugin started as a fork of the incredible [Typewriter Scroll](https://github.com/deathau/cm-typewriter-scroll-obsidian) plugin by [deathau](https://github.com/deathau). It was turned into a separate plugin because many new features were added, breaking changes were introduced, and the code was completely restructured to make it more extensible.
