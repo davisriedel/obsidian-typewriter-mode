@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
           submodules: 'true'
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v4
 
       - name: Check
         run: |
