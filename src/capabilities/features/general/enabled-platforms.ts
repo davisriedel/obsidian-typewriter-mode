@@ -44,7 +44,7 @@ export default class EnabledPlatforms extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName(this.settingTitle)
         .setDesc(this.settingDesc)
@@ -70,7 +70,7 @@ export default class EnabledPlatforms extends Feature {
                 console.error("Failed to save settings:", error);
               });
             })
-        )
-    );
+        );
+    });
   }
 }

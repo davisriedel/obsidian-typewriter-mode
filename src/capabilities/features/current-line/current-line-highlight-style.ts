@@ -16,7 +16,7 @@ export default class CurrentLineHighlightStyle extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Current line highlight style")
         .setDesc("The style of the current line highlight")
@@ -31,8 +31,8 @@ export default class CurrentLineHighlightStyle extends Feature {
                 newValue as CurrentLineHighlightStyleType
               );
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

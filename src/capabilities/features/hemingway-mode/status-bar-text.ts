@@ -30,7 +30,7 @@ export default class HemingwayModeStatusBarText extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup) {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName(this.settingTitle)
         .setDesc(this.settingDesc)
@@ -45,8 +45,8 @@ export default class HemingwayModeStatusBarText extends Feature {
               });
               this.updateHemingwayModeStatusBar();
             })
-        )
-    );
+        );
+    });
   }
 
   private updateHemingwayModeStatusBar() {

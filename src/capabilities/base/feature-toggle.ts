@@ -24,7 +24,7 @@ export abstract class FeatureToggle extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup) {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName(this.settingTitle)
         .setDesc(this.settingDesc)
@@ -36,8 +36,8 @@ export abstract class FeatureToggle extends Feature {
               this.toggle(newValue);
             })
         )
-        .setDisabled(!this.isSettingEnabled())
-    );
+        .setDisabled(!this.isSettingEnabled());
+    });
   }
 
   override getDefinition(onChanged?: () => void): SettingDefinition {

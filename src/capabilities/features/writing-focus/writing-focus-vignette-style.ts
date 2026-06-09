@@ -30,7 +30,7 @@ export default class WritingFocusVignetteStyle extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Writing focus vignette style")
         .setDesc("The style of the vignette in writing focus mode")
@@ -45,8 +45,8 @@ export default class WritingFocusVignetteStyle extends Feature {
                 newValue as WritingFocusVignetteStyleType
               );
             })
-        )
-    );
+        );
+    });
   }
 
   private changeVignetteStyle(newValue: WritingFocusVignetteStyleType) {

@@ -2,7 +2,13 @@
 
 /// <reference types="bun-types" />
 
-import { type App, Component, MarkdownRenderer, Modal } from "obsidian";
+import {
+  type App,
+  Component,
+  MarkdownRenderer,
+  Modal,
+  requestUrl,
+} from "obsidian";
 import fundingText from "@/texts/Funding.md" with { type: "text" };
 import updateNotice from "@/texts/UpdateNotice.md" with { type: "text" };
 
@@ -30,15 +36,14 @@ async function getReleaseNotesAfter(
   releaseTagName: string | null,
   includePreReleases: boolean
 ): Promise<Release[]> {
-  const response = await fetch(
+  const response = await requestUrl(
     `https://api.github.com/repos/${repoOwner}/${repoName}/releases`
   );
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const releases: Release[] | { message: string } = await response.json();
+  const releases = response.json as Release[] | { message: string };
 
-  if ((!response.ok && "message" in releases) || !Array.isArray(releases)) {
+  if (!Array.isArray(releases)) {
     throw new Error(
-      `Failed to fetch releases: ${releases.message ?? "Unknown error"}`
+      `Failed to fetch releases: ${"message" in releases ? releases.message : "Unknown error"}`
     );
   }
 
@@ -121,13 +126,17 @@ export class UpdateModal extends Modal {
       .replace("{{funding}}", fundingText)
       .replace("{{release-notes}}", releaseNotes);
 
+    const component = new Component();
+    component.load();
     MarkdownRenderer.render(
       this.app,
       markdownStr,
       contentDiv,
       this.app.vault.getRoot().path,
-      new Component()
-    );
+      component
+    ).catch((error) => {
+      console.error("Failed to render markdown:", error);
+    });
   }
 
   private displayError(error: Error): void {

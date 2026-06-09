@@ -5,7 +5,7 @@ export default class MaxCharsPerLine extends Feature {
   readonly settingKey = "maxChars.maxCharsPerLine" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Maximum number of characters per line")
         .setDesc("The maximum number of characters per line")
@@ -16,8 +16,8 @@ export default class MaxCharsPerLine extends Feature {
             .onChange((newValue) => {
               this.changeMaxCharsPerLine(Number.parseInt(newValue, 10));
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

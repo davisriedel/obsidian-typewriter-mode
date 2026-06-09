@@ -6,7 +6,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
     "currentLine.currentLineHighlightUnderlineThickness" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Current line underline thickness")
         .setDesc(
@@ -21,8 +21,8 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
             .onChange((newValue) => {
               this.changeCurrentLineHighlightUnderlineThickness(newValue);
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

@@ -9,7 +9,7 @@ export default class DimUnfocusedMode extends Feature {
   readonly settingKey = "dimming.dimUnfocusedMode" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Dim unfocused mode")
         .setDesc("Choose to dim unfocused paragraphs or sentences")
@@ -22,8 +22,8 @@ export default class DimUnfocusedMode extends Feature {
             .onChange((newValue) => {
               this.change(newValue as DimUnfocusedModeType);
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

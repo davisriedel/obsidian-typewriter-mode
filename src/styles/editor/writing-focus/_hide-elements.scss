@@ -1,5 +1,9 @@
 // ADAPTED FROM https://github.com/ryanpcmcquen/obsidian-focus-mode
 
+.ptm-wf-split-hidden {
+  display: none !important;
+}
+
 @mixin writing-focus-hide-elements {
   &:not(.ptm-writing-focus-shows-status-bar) .status-bar,
   &:not(.ptm-writing-focus-shows-header) .view-header,

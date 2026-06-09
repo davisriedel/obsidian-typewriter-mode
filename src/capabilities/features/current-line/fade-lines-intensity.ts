@@ -5,7 +5,7 @@ export default class FadeLinesIntensity extends Feature {
   readonly settingKey = "currentLine.fadeLinesIntensity" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Intensity of the fade lines gradient")
         .setDesc("How soon lines shall be faded out")
@@ -18,8 +18,8 @@ export default class FadeLinesIntensity extends Feature {
             .onChange((newValue) => {
               this.changeFadeLinesIntensity(newValue / 100);
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

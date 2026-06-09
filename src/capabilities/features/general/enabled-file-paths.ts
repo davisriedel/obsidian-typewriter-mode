@@ -211,7 +211,7 @@ export default class EnabledFilePaths extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("File paths")
         .setDesc(
@@ -222,7 +222,7 @@ export default class EnabledFilePaths extends Feature {
           button.setButtonText("Configure").onClick(() => {
             this.openModal();
           })
-        )
-    );
+        );
+    });
   }
 }

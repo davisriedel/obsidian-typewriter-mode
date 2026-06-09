@@ -42,7 +42,7 @@ export default class HemingwayMode extends FeatureToggle {
     const onlyInFocusMode =
       this.tm.settings.hemingwayMode
         .isHemingwayModeOnlyInWritingFocusModeEnabled;
-    const focusModeActive = document.body.hasClass("ptm-focus-mode");
+    const focusModeActive = activeDocument.body.hasClass("ptm-focus-mode");
 
     if (isEnabled && showStatusBar && (!onlyInFocusMode || focusModeActive)) {
       this.statusBarItem.setText(statusBarText);
@@ -56,7 +56,7 @@ export default class HemingwayMode extends FeatureToggle {
     const observer = new MutationObserver(() => {
       this.updateStatusBar();
     });
-    observer.observe(document.body, {
+    observer.observe(activeDocument.body, {
       attributes: true,
       attributeFilter: ["class"],
     });
@@ -75,7 +75,7 @@ export default class HemingwayMode extends FeatureToggle {
     const onlyInFocusMode =
       this.tm.settings.hemingwayMode
         .isHemingwayModeOnlyInWritingFocusModeEnabled;
-    if (onlyInFocusMode && !document.body.hasClass("ptm-focus-mode")) {
+    if (onlyInFocusMode && !activeDocument.body.hasClass("ptm-focus-mode")) {
       return;
     }
 
@@ -108,13 +108,13 @@ export default class HemingwayMode extends FeatureToggle {
   };
 
   private registerKeyboardHandler() {
-    document.addEventListener("keydown", this.keyboardHandler, {
+    activeDocument.addEventListener("keydown", this.keyboardHandler, {
       capture: true,
     });
   }
 
   private unregisterKeyboardHandler() {
-    document.removeEventListener("keydown", this.keyboardHandler, {
+    activeDocument.removeEventListener("keydown", this.keyboardHandler, {
       capture: true,
     });
   }

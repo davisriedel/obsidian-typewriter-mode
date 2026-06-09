@@ -9,7 +9,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
   readonly settingKey = "dimming.dimUnfocusedEditorsBehavior" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Dimming behavior in unfocused notes")
         .setDesc(
@@ -33,8 +33,8 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
                 newValue as DimUnfocusedEditorsBehaviorType
               );
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

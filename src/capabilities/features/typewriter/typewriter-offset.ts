@@ -24,7 +24,7 @@ export default class TypewriterOffset extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Typewriter offset")
         .setDesc(
@@ -39,8 +39,8 @@ export default class TypewriterOffset extends Feature {
             .onChange((newValue) => {
               this.changeTypewriterOffset(newValue / 100);
             })
-        )
-    );
+        );
+    });
   }
 
   private changeTypewriterOffset(newValue: number) {

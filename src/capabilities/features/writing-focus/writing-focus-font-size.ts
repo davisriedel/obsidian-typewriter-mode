@@ -24,7 +24,7 @@ export default class WritingFocusFontSize extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Writing focus font size")
         .setDesc(
@@ -39,8 +39,8 @@ export default class WritingFocusFontSize extends Feature {
             .onChange((newValue) => {
               this.changeFontSize(newValue);
             })
-        )
-    );
+        );
+    });
   }
 
   override load() {

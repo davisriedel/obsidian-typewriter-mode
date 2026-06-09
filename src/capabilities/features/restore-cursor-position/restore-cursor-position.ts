@@ -43,7 +43,9 @@ export default class RestoreCursorPosition extends FeatureToggle {
   }
 
   override disable(): void {
-    this.saveState();
+    this.saveState().catch((error) => {
+      console.error("Failed to save cursor state:", error);
+    });
     this.tm.plugin.app.workspace.off("quit", this.saveState);
     // @ts-expect-error
     this.tm.plugin.app.workspace.off("rename", this.onRenameFile);
@@ -53,22 +55,22 @@ export default class RestoreCursorPosition extends FeatureToggle {
     this.tm.plugin.app.workspace.off("file-open", this.onFileOpen);
   }
 
-  async saveState() {
+  readonly saveState = async () => {
     console.debug("Save cursor state");
     await this.tm.saveSettings();
-  }
+  };
 
-  private onRenameFile(file: TAbstractFile, oldPath: string) {
+  private readonly onRenameFile = (file: TAbstractFile, oldPath: string) => {
     const newName = file.path;
     const oldName = oldPath;
     this.state[newName] = this.state[oldName];
     delete this.state[oldName];
-  }
+  };
 
-  private onDeleteFile(file: TAbstractFile) {
+  private readonly onDeleteFile = (file: TAbstractFile) => {
     const fileName = file.path;
     delete this.state[fileName];
-  }
+  };
 
   setCursorState(st: SelectionRange) {
     const fileName = this.tm.plugin.app.workspace.getActiveFile()?.path;

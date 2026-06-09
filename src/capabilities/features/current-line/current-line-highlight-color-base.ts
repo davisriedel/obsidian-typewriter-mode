@@ -23,7 +23,7 @@ export default abstract class CurrentLineHighlightColor extends Feature {
     const currentValue = this.getSettingValue() as string;
     const { color, opacity } = this.parseColor(currentValue);
 
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName(`Current line highlight color in ${this.themeMode} themes`)
         .setDesc(
@@ -49,8 +49,8 @@ export default abstract class CurrentLineHighlightColor extends Feature {
               ).color;
               this.changeCurrentLineHighlightColor(currentColor, newOpacity);
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

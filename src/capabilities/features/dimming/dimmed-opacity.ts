@@ -5,7 +5,7 @@ export default class DimmedOpacity extends Feature {
   readonly settingKey = "dimming.dimmedOpacity" as const;
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Opacity of dimmed elements")
         .setDesc("The opacity of dimmed elements")
@@ -18,8 +18,8 @@ export default class DimmedOpacity extends Feature {
             .onChange((newValue) => {
               this.changeDimmedOpacity(newValue / 100);
             })
-        )
-    );
+        );
+    });
   }
 
   getDefinition(onChanged?: () => void): SettingDefinition {

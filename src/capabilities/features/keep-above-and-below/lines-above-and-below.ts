@@ -24,7 +24,7 @@ export default class LinesAboveAndBelow extends Feature {
   }
 
   registerSetting(settingGroup: SettingGroup): void {
-    settingGroup.addSetting((setting) =>
+    settingGroup.addSetting((setting) => {
       setting
         .setName("Amount of lines above and below the current line")
         .setDesc(
@@ -39,8 +39,8 @@ export default class LinesAboveAndBelow extends Feature {
                 Number.parseInt(newValue, 10)
               );
             })
-        )
-    );
+        );
+    });
   }
 
   private changeAmountOfLinesAboveAndBelow(newValue: number) {

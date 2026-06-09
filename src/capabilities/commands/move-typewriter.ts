@@ -10,12 +10,6 @@ function registerMoveTypewriterCommand(
   tm.plugin.addCommand({
     id: `move-typewriter-${direction}`,
     name: `Move typewriter ${direction}`,
-    hotkeys: [
-      {
-        modifiers: ["Mod"],
-        key: direction === "up" ? "ArrowUp" : "ArrowDown",
-      },
-    ],
     editorCallback: (editor, _view) => {
       editor.exec(editorCommand);
       window.dispatchEvent(new Event("moveByCommand"));

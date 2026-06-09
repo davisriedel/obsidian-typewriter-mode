@@ -129,13 +129,17 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
             render: (setting) => {
               setting.settingEl.empty();
               const div = setting.settingEl.createDiv();
+              const component = new Component();
+              component.load();
               MarkdownRenderer.render(
                 this.app,
                 fundingText,
                 div,
                 this.app.vault.getRoot().path,
-                new Component()
-              );
+                component
+              ).catch((error) => {
+                console.error("Failed to render markdown:", error);
+              });
             },
           },
         ],
@@ -157,11 +161,11 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
     if (
       this.tm.settings.keepLinesAboveAndBelow.isKeepLinesAboveAndBelowEnabled
     ) {
-      typewriterGroup.addSetting((setting) =>
+      typewriterGroup.addSetting((setting) => {
         setting.setName(
           'Not available if "keep lines above and below" is activated'
-        )
-      );
+        );
+      });
     }
     this.registerFeaturesInGroup(typewriterGroup, this.tm.features.typewriter);
 
@@ -170,9 +174,9 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       "Keep lines above and below"
     );
     if (this.tm.settings.typewriter.isTypewriterScrollEnabled) {
-      keepLinesGroup.addSetting((setting) =>
-        setting.setName("Not available if typewriter scrolling is activated")
-      );
+      keepLinesGroup.addSetting((setting) => {
+        setting.setName("Not available if typewriter scrolling is activated");
+      });
     }
     this.registerFeaturesInGroup(
       keepLinesGroup,
@@ -235,12 +239,16 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     const updateNoticeDiv = this.containerEl.createDiv();
     this.containerEl.appendChild(updateNoticeDiv);
+    const fundingComponent = new Component();
+    fundingComponent.load();
     MarkdownRenderer.render(
       this.app,
       fundingText,
       updateNoticeDiv,
       this.app.vault.getRoot().path,
-      new Component()
-    );
+      fundingComponent
+    ).catch((error) => {
+      console.error("Failed to render markdown:", error);
+    });
   }
 }

@@ -5,7 +5,7 @@
     "includes": ["./src/**/*", "./scripts/**/*"]
   },
   "javascript": {
-    "globals": ["Bun"]
+    "globals": ["Bun", "activeDocument"]
   },
   "linter": {
     "rules": {
