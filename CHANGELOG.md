@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0
+
+- Plugin settings are now searchable via Obsidian's settings search on Obsidian version
+  `1.13.0` and newer.
+- Fixed: current line highlight color picker in settings did not display default colors
+  correctly.
+- Fixed: plugin icon was not displayed in settings.
+- Fixed: the update notice dialog not scrolling properly on long content.
+- Fixed all warnings raised during Obsidian's new automatic plugin review process.
+
 ## 1.5.0-beta.2
 
 - Fixes all warnings raised during Obsidian's new automatic plugin review process.
