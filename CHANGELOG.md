@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1-beta.1
+
+- Fix plugin settings loading issues
+
 ## 1.5.0
 
 - Plugin settings are now searchable via Obsidian's settings search on Obsidian version
