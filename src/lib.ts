@@ -53,8 +53,10 @@ export default class TypewriterModeLib {
   }
 
   async load() {
-    await this.loadSettings();
-    await this.saveSettings(); // if default settings were loaded
+    const requiresSave = await this.loadSettings();
+    if (requiresSave) {
+      await this.saveSettings();
+    }
 
     this.loadPerWindowProps();
     this.loadEditorExtension();
@@ -100,21 +102,24 @@ export default class TypewriterModeLib {
     }
   }
 
-  async loadSettings() {
+  /** Loads settings from disk. Returns whether the result needs to be persisted (e.g. fresh install or legacy migration). */
+  async loadSettings(): Promise<boolean> {
     const manifestDir = this.plugin.manifest.dir;
     if (!manifestDir) {
       console.error(
         "Typewriter Mode: Unable to determine plugin manifest directory."
       );
-      return;
+      return false;
     }
 
     const rawData = await this.loadData();
-    this.settings = await applyStartupMigrations(
+    const { settings, requiresSave } = await applyStartupMigrations(
       rawData ?? {},
       this.plugin.app.vault,
       manifestDir
     );
+    this.settings = settings;
+    return requiresSave;
   }
 
   async saveSettings() {

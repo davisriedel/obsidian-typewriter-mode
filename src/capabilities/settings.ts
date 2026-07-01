@@ -438,13 +438,18 @@ async function migrateCursorPositions(
 // Apply all startup migrations in a single pass, version-gated via the general.version key.
 // Cursor position migration (from cursor-positions.json) is only needed for pre-v1.2.0 data
 // which is identified by the absence of the top-level "general" key.
+export interface StartupMigrationResult {
+  requiresSave: boolean;
+  settings: TypewriterModeSettings;
+}
+
 export async function applyStartupMigrations(
   rawData:
     | Partial<LegacyTypewriterModeSettings>
     | Partial<TypewriterModeSettings>,
   vault: Vault,
   manifestDir: string
-): Promise<TypewriterModeSettings> {
+): Promise<StartupMigrationResult> {
   const isLegacyFormat = !("general" in rawData);
 
   // Cursor positions migration only needed when coming from pre-v1.2.0 (legacy flat format).
@@ -453,8 +458,11 @@ export async function applyStartupMigrations(
     const settings = migrateSettings(
       rawData as Partial<LegacyTypewriterModeSettings>
     );
-    return await migrateCursorPositions(settings, vault, manifestDir);
+    return {
+      requiresSave: true,
+      settings: await migrateCursorPositions(settings, vault, manifestDir),
+    };
   }
 
-  return rawData as TypewriterModeSettings;
+  return { requiresSave: false, settings: rawData as TypewriterModeSettings };
 }
