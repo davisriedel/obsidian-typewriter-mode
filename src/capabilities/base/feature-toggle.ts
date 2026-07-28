@@ -1,4 +1,5 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
+import { t } from "@/i18n";
 import { Feature } from "./feature";
 
 export abstract class FeatureToggle extends Feature {
@@ -26,8 +27,8 @@ export abstract class FeatureToggle extends Feature {
   registerSetting(settingGroup: SettingGroup) {
     settingGroup.addSetting((setting) => {
       setting
-        .setName(this.settingTitle)
-        .setDesc(this.settingDesc)
+        .setName(t(this.settingTitle))
+        .setDesc(t(this.settingDesc))
         .setClass("typewriter-mode-setting")
         .addToggle((toggle) =>
           toggle
@@ -42,8 +43,8 @@ export abstract class FeatureToggle extends Feature {
 
   override getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: this.settingTitle,
-      desc: this.settingDesc,
+      name: t(this.settingTitle),
+      desc: t(this.settingDesc),
       render: (setting) => {
         setting
           .setClass("typewriter-mode-setting")

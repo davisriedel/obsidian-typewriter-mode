@@ -1,5 +1,6 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
+import { t } from "@/i18n";
 
 export default class FadeLinesIntensity extends Feature {
   readonly settingKey = "currentLine.fadeLinesIntensity" as const;
@@ -7,8 +8,8 @@ export default class FadeLinesIntensity extends Feature {
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) => {
       setting
-        .setName("Intensity of the fade lines gradient")
-        .setDesc("How soon lines shall be faded out")
+        .setName(t("Intensity of the fade lines gradient"))
+        .setDesc(t("How soon lines shall be faded out"))
         .setClass("typewriter-mode-setting")
         .addSlider((slider) =>
           slider
@@ -24,8 +25,8 @@ export default class FadeLinesIntensity extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: "Intensity of the fade lines gradient",
-      desc: "How soon lines shall be faded out",
+      name: t("Intensity of the fade lines gradient"),
+      desc: t("How soon lines shall be faded out"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

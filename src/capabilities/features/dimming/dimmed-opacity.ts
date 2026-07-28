@@ -1,5 +1,6 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
+import { t } from "@/i18n";
 
 export default class DimmedOpacity extends Feature {
   readonly settingKey = "dimming.dimmedOpacity" as const;
@@ -7,8 +8,8 @@ export default class DimmedOpacity extends Feature {
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) => {
       setting
-        .setName("Opacity of dimmed elements")
-        .setDesc("The opacity of dimmed elements")
+        .setName(t("Opacity of dimmed elements"))
+        .setDesc(t("The opacity of dimmed elements"))
         .setClass("typewriter-mode-setting")
         .addSlider((slider) =>
           slider
@@ -24,8 +25,8 @@ export default class DimmedOpacity extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: "Opacity of dimmed elements",
-      desc: "The opacity of dimmed elements",
+      name: t("Opacity of dimmed elements"),
+      desc: t("The opacity of dimmed elements"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

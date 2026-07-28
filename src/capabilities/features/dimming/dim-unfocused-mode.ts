@@ -4,6 +4,7 @@ import {
   DIM_UNFOCUSED_MODE,
   type DimUnfocusedMode as DimUnfocusedModeType,
 } from "@/capabilities/constants";
+import { t } from "@/i18n";
 
 export default class DimUnfocusedMode extends Feature {
   readonly settingKey = "dimming.dimUnfocusedMode" as const;
@@ -11,13 +12,13 @@ export default class DimUnfocusedMode extends Feature {
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) => {
       setting
-        .setName("Dim unfocused mode")
-        .setDesc("Choose to dim unfocused paragraphs or sentences")
+        .setName(t("Dim unfocused mode"))
+        .setDesc(t("Choose to dim unfocused paragraphs or sentences"))
         .setClass("typewriter-mode-setting")
         .addDropdown((dropdown) =>
           dropdown
-            .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, "Paragraphs")
-            .addOption(DIM_UNFOCUSED_MODE.SENTENCES, "Sentences")
+            .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, t("Paragraphs"))
+            .addOption(DIM_UNFOCUSED_MODE.SENTENCES, t("Sentences"))
             .setValue(this.getSettingValue() as DimUnfocusedModeType)
             .onChange((newValue) => {
               this.change(newValue as DimUnfocusedModeType);
@@ -28,13 +29,13 @@ export default class DimUnfocusedMode extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: "Dim unfocused mode",
-      desc: "Choose to dim unfocused paragraphs or sentences",
+      name: t("Dim unfocused mode"),
+      desc: t("Choose to dim unfocused paragraphs or sentences"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown
-            .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, "Paragraphs")
-            .addOption(DIM_UNFOCUSED_MODE.SENTENCES, "Sentences")
+            .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, t("Paragraphs"))
+            .addOption(DIM_UNFOCUSED_MODE.SENTENCES, t("Sentences"))
             .setValue(this.getSettingValue() as DimUnfocusedModeType)
             .onChange((newValue) => {
               this.change(newValue as DimUnfocusedModeType);

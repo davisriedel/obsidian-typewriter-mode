@@ -1,11 +1,12 @@
 import type { Editor, MarkdownFileInfo, MarkdownView } from "obsidian";
+import { t } from "@/i18n";
 import { AbstractCommand } from "./abstract-command";
 
 export abstract class EditorCommand extends AbstractCommand {
   protected override registerCommand() {
     this.tm.plugin.addCommand({
       id: this.commandKey,
-      name: this.commandTitle,
+      name: t(this.commandTitle),
       editorCallback: this.onCommand.bind(this),
     });
   }

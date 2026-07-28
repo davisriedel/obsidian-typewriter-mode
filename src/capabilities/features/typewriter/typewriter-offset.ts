@@ -1,13 +1,16 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
+import { t } from "@/i18n";
 
 export default class TypewriterOffset extends Feature {
   readonly settingKey = "typewriter.typewriterOffset" as const;
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: "Typewriter offset",
-      desc: "Positions the typewriter line at the specified percentage of the screen",
+      name: t("Typewriter offset"),
+      desc: t(
+        "Positions the typewriter line at the specified percentage of the screen"
+      ),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider
@@ -26,9 +29,11 @@ export default class TypewriterOffset extends Feature {
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) => {
       setting
-        .setName("Typewriter offset")
+        .setName(t("Typewriter offset"))
         .setDesc(
-          "Positions the typewriter line at the specified percentage of the screen"
+          t(
+            "Positions the typewriter line at the specified percentage of the screen"
+          )
         )
         .setClass("typewriter-mode-setting")
         .addSlider((slider) =>

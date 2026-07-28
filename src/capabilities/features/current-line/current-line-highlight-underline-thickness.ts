@@ -1,5 +1,6 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
+import { t } from "@/i18n";
 
 export default class CurrentLineHighlightUnderlineThickness extends Feature {
   readonly settingKey =
@@ -8,9 +9,9 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) => {
       setting
-        .setName("Current line underline thickness")
+        .setName(t("Current line underline thickness"))
         .setDesc(
-          "The thickness of the underline that highlights the current line"
+          t("The thickness of the underline that highlights the current line")
         )
         .setClass("typewriter-mode-setting")
         .addSlider((slider) =>
@@ -27,8 +28,10 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: "Current line underline thickness",
-      desc: "The thickness of the underline that highlights the current line",
+      name: t("Current line underline thickness"),
+      desc: t(
+        "The thickness of the underline that highlights the current line"
+      ),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

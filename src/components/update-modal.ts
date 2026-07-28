@@ -9,8 +9,13 @@ import {
   Modal,
   requestUrl,
 } from "obsidian";
+import { localizedMarkdown, t } from "@/i18n";
 import fundingText from "@/texts/Funding.md" with { type: "text" };
+import fundingTextZhCN from "@/texts/Funding.zh-CN.md" with { type: "text" };
 import updateNotice from "@/texts/UpdateNotice.md" with { type: "text" };
+import updateNoticeZhCN from "@/texts/UpdateNotice.zh-CN.md" with {
+  type: "text",
+};
 
 interface Release {
   body: string;
@@ -43,7 +48,9 @@ async function getReleaseNotesAfter(
 
   if (!Array.isArray(releases)) {
     throw new Error(
-      `Failed to fetch releases: ${"message" in releases ? releases.message : "Unknown error"}`
+      t("Failed to fetch releases: {{message}}", {
+        message: "message" in releases ? releases.message : t("Unknown error"),
+      })
     );
   }
 
@@ -57,7 +64,9 @@ async function getReleaseNotesAfter(
   );
 
   if (startReleaseIdx === -1) {
-    throw new Error(`Could not find release with tag ${releaseTagName}`);
+    throw new Error(
+      t("Could not find release with tag {{tag}}", { tag: releaseTagName })
+    );
   }
 
   return releases
@@ -91,7 +100,7 @@ export class UpdateModal extends Modal {
     )
       .then((releases) => {
         if (releases.length === 0) {
-          this.displayError(new Error("No new releases found"));
+          this.displayError(new Error(t("No new releases found")));
         } else {
           this.displayReleaseNotes(releases);
         }
@@ -105,7 +114,7 @@ export class UpdateModal extends Modal {
     const { contentEl } = this;
     contentEl.empty();
     contentEl.createEl("h2", {
-      text: "Fetching release notes...",
+      text: t("Fetching release notes..."),
     });
 
     this.fetchAndDisplayReleaseNotes();
@@ -121,9 +130,9 @@ export class UpdateModal extends Modal {
       .map((release) => `### ${release.tag_name}\n\n${release.body}`)
       .join("\n---\n");
 
-    const markdownStr = updateNotice
+    const markdownStr = localizedMarkdown(updateNotice, updateNoticeZhCN)
       .replace("{{tag-name}}", releases[0].tag_name)
-      .replace("{{funding}}", fundingText)
+      .replace("{{funding}}", localizedMarkdown(fundingText, fundingTextZhCN))
       .replace("{{release-notes}}", releaseNotes);
 
     const component = new Component();
