@@ -198,10 +198,11 @@ const ZH_CN: Record<string, string> = {
 };
 
 // Obsidian does not expose a separate translation bundle for plugins. Keep a
-// small character map here so the same complete source dictionary can serve
-// both Simplified Chinese and Traditional Chinese without drifting apart.
+// small character and vocabulary map here so the same complete source
+// dictionary can serve both Simplified Chinese and Traditional Chinese.
 const ZH_TW_CHARACTER_MAP: Record<string, string> = {
   与: "與",
+  业: "業",
   专: "專",
   个: "個",
   为: "為",
@@ -210,6 +211,7 @@ const ZH_TW_CHARACTER_MAP: Record<string, string> = {
   从: "從",
   仓: "倉",
   体: "體",
+  余: "餘",
   关: "關",
   内: "內",
   写: "寫",
@@ -218,6 +220,7 @@ const ZH_TW_CHARACTER_MAP: Record<string, string> = {
   删: "刪",
   动: "動",
   单: "單",
+  学: "學",
   发: "發",
   变: "變",
   后: "後",
@@ -226,6 +229,8 @@ const ZH_TW_CHARACTER_MAP: Record<string, string> = {
   复: "復",
   夹: "夾",
   宽: "寬",
+  宾: "賓",
+  帮: "幫",
   将: "將",
   并: "並",
   库: "庫",
@@ -234,10 +239,13 @@ const ZH_TW_CHARACTER_MAP: Record<string, string> = {
   当: "當",
   径: "徑",
   态: "態",
+  护: "護",
   择: "擇",
   换: "換",
   数: "數",
   时: "時",
+  欢: "歡",
+  现: "現",
   显: "顯",
   暂: "暫",
   机: "機",
@@ -259,6 +267,7 @@ const ZH_TW_CHARACTER_MAP: Record<string, string> = {
   编: "編",
   缘: "緣",
   获: "獲",
+  献: "獻",
   装: "裝",
   视: "視",
   认: "認",
@@ -289,12 +298,42 @@ const ZH_TW_CHARACTER_MAP: Record<string, string> = {
   题: "題",
   颜: "顏",
   额: "額",
+  码: "碼",
+  续: "續",
+  维: "維",
+  议: "議",
+  请: "請",
+  谢: "謝",
+  贡: "貢",
+  间: "間",
+};
+
+const ZH_TW_WORD_MAP: Record<string, string> = {
+  文件: "檔案",
+  設置: "設定",
+  配置: "設定",
+  插件: "外掛程式",
+  全屏: "全螢幕",
+  屏幕: "螢幕",
+  頁眉: "頁首",
+  光標: "游標",
+  快捷鍵: "快速鍵",
+  發行說明: "版本資訊",
+  更新提示: "更新通知",
+  當前: "目前",
+  移動端: "行動裝置",
+  桌面端: "桌面版",
+  字體: "字型",
 };
 
 const toTraditionalChinese = (value: string): string =>
-  [...value]
-    .map((character) => ZH_TW_CHARACTER_MAP[character] ?? character)
-    .join("");
+  Object.entries(ZH_TW_WORD_MAP).reduce(
+    (result, [simplifiedWord, traditionalWord]) =>
+      result.replaceAll(simplifiedWord, traditionalWord),
+    [...value]
+      .map((character) => ZH_TW_CHARACTER_MAP[character] ?? character)
+      .join("")
+  );
 
 const getLanguageCode = () => getObsidianLanguage().toLowerCase();
 
