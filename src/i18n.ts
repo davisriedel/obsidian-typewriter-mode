@@ -1,4 +1,4 @@
-import { getLanguage } from "obsidian";
+import { getLanguage as getObsidianLanguage } from "obsidian";
 
 type Replacement = Record<string, string | number>;
 
@@ -197,13 +197,131 @@ const ZH_CN: Record<string, string> = {
   "Failed to fetch releases: {{message}}": "获取发行版本失败：{{message}}",
 };
 
-const isChinese = () => {
-  const language = getLanguage().toLowerCase();
-  return language === "zh" || language.startsWith("zh-cn");
+// Obsidian does not expose a separate translation bundle for plugins. Keep a
+// small character map here so the same complete source dictionary can serve
+// both Simplified Chinese and Traditional Chinese without drifting apart.
+const ZH_TW_CHARACTER_MAP: Record<string, string> = {
+  与: "與",
+  专: "專",
+  个: "個",
+  为: "為",
+  义: "義",
+  仅: "僅",
+  从: "從",
+  仓: "倉",
+  体: "體",
+  关: "關",
+  内: "內",
+  写: "寫",
+  划: "劃",
+  则: "則",
+  删: "刪",
+  动: "動",
+  单: "單",
+  发: "發",
+  变: "變",
+  后: "後",
+  启: "啟",
+  图: "圖",
+  复: "復",
+  夹: "夾",
+  宽: "寬",
+  将: "將",
+  并: "並",
+  库: "庫",
+  开: "開",
+  强: "強",
+  当: "當",
+  径: "徑",
+  态: "態",
+  择: "擇",
+  换: "換",
+  数: "數",
+  时: "時",
+  显: "顯",
+  暂: "暫",
+  机: "機",
+  标: "標",
+  栏: "欄",
+  样: "樣",
+  没: "沒",
+  浅: "淺",
+  渐: "漸",
+  滚: "滾",
+  状: "狀",
+  盖: "蓋",
+  笔: "筆",
+  签: "簽",
+  线: "線",
+  细: "細",
+  终: "終",
+  经: "經",
+  编: "編",
+  缘: "緣",
+  获: "獲",
+  装: "裝",
+  视: "視",
+  认: "認",
+  让: "讓",
+  记: "記",
+  许: "許",
+  设: "設",
+  误: "誤",
+  说: "說",
+  败: "敗",
+  赞: "讚",
+  辑: "輯",
+  输: "輸",
+  边: "邊",
+  达: "達",
+  过: "過",
+  进: "進",
+  适: "適",
+  选: "選",
+  销: "銷",
+  错: "錯",
+  键: "鍵",
+  闭: "閉",
+  隐: "隱",
+  页: "頁",
+  顶: "頂",
+  项: "項",
+  题: "題",
+  颜: "顏",
+  额: "額",
+};
+
+const toTraditionalChinese = (value: string): string =>
+  [...value]
+    .map((character) => ZH_TW_CHARACTER_MAP[character] ?? character)
+    .join("");
+
+const getLanguageCode = () => getObsidianLanguage().toLowerCase();
+
+const isSimplifiedChinese = () => {
+  const language = getLanguageCode();
+  return (
+    language === "zh" || language === "zh-hans" || language.startsWith("zh-cn")
+  );
+};
+
+const isTraditionalChinese = () => {
+  const language = getLanguageCode();
+  return (
+    language === "zh-tw" ||
+    language === "zh-hant" ||
+    language.startsWith("zh-hk") ||
+    language.startsWith("zh-mo")
+  );
 };
 
 export function t(source: string, replacements: Replacement = {}): string {
-  let result = isChinese() ? (ZH_CN[source] ?? source) : source;
+  const isTraditional = isTraditionalChinese();
+  let result =
+    isSimplifiedChinese() || isTraditional ? (ZH_CN[source] ?? source) : source;
+  if (isTraditional) {
+    result = toTraditionalChinese(result);
+  }
   for (const [key, value] of Object.entries(replacements)) {
     result = result.replaceAll(`{{${key}}}`, String(value));
   }
@@ -214,5 +332,8 @@ export function localizedMarkdown(
   english: string,
   simplifiedChinese: string
 ): string {
-  return isChinese() ? simplifiedChinese : english;
+  if (isTraditionalChinese()) {
+    return toTraditionalChinese(simplifiedChinese);
+  }
+  return isSimplifiedChinese() ? simplifiedChinese : english;
 }
