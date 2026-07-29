@@ -14,6 +14,11 @@ function getBounds(text: string, cursorText: string) {
   return getActiveSentenceBounds(DEFAULT_SENTENCE_BOUNDARY_SETTINGS, line, pos);
 }
 
+function getSentence(text: string, cursorText: string) {
+  const bounds = getBounds(text, cursorText);
+  return text.slice(bounds.start, bounds.end ?? text.length);
+}
+
 describe("Chinese sentence boundaries", () => {
   test("recognizes ideographic full stops and full-width question and exclamation marks", () => {
     const text = "第一句。第二句！第三句？";
@@ -50,5 +55,21 @@ describe("Chinese sentence boundaries", () => {
     expect(getBounds(text, "Hello")).toEqual({ start: 0, end: 6 });
     expect(getBounds(text, "你好")).toEqual({ start: 7, end: 10 });
     expect(getBounds(text, "Next")).toEqual({ start: 10, end: 15 });
+  });
+});
+
+describe("existing English sentence boundaries", () => {
+  test("continues to ignore configured abbreviations", () => {
+    const text = "Mr. Smith left. Next sentence.";
+
+    expect(getSentence(text, "Smith")).toBe("Mr. Smith left.");
+    expect(getSentence(text, "Next")).toBe("Next sentence.");
+  });
+
+  test("continues to recognize initialisms", () => {
+    const text = "Use e.g. this example. Next sentence.";
+
+    expect(getSentence(text, "this")).toBe("Use e.g. this example.");
+    expect(getSentence(text, "Next")).toBe("Next sentence.");
   });
 });
