@@ -1,5 +1,4 @@
 import type { Vault } from "obsidian";
-import { t } from "@/i18n";
 import {
   CURRENT_LINE_HIGHLIGHT_STYLE,
   type CurrentLineHighlightStyle,
@@ -82,7 +81,7 @@ export interface RestoreCursorPositionSettings {
 }
 
 export interface HemingwayModeSettings {
-  hemingwayModeStatusBarText: string;
+  hemingwayModeStatusBarText: string | null;
   isAllowBackspaceInHemingwayModeEnabled: boolean;
   isHemingwayModeEnabled: boolean;
   isHemingwayModeOnlyInWritingFocusModeEnabled: boolean;
@@ -204,7 +203,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isHemingwayModeOnlyInWritingFocusModeEnabled: false,
     isAllowBackspaceInHemingwayModeEnabled: false,
     isShowHemingwayModeStatusBarEnabled: true,
-    hemingwayModeStatusBarText: t("Hemingway"),
+    hemingwayModeStatusBarText: null,
   },
 };
 
@@ -405,8 +404,10 @@ function migrateSettings(
         legacy.isShowHemingwayModeStatusBarEnabled ??
         DEFAULT_SETTINGS.hemingwayMode.isShowHemingwayModeStatusBarEnabled,
       hemingwayModeStatusBarText:
-        legacy.hemingwayModeStatusBarText ??
-        DEFAULT_SETTINGS.hemingwayMode.hemingwayModeStatusBarText,
+        legacy.hemingwayModeStatusBarText &&
+        legacy.hemingwayModeStatusBarText !== "Hemingway"
+          ? legacy.hemingwayModeStatusBarText
+          : DEFAULT_SETTINGS.hemingwayMode.hemingwayModeStatusBarText,
     },
   };
 }

@@ -47,7 +47,7 @@ export default class HemingwayMode extends FeatureToggle {
 
     if (isEnabled && showStatusBar && (!onlyInFocusMode || focusModeActive)) {
       this.statusBarItem.setText(
-        configuredStatusBarText === "Hemingway"
+        configuredStatusBarText === null
           ? t("Hemingway")
           : configuredStatusBarText
       );

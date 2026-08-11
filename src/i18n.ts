@@ -155,8 +155,9 @@ const ZH_CN: Record<string, string> = {
   "Shows an indicator in the status bar when Hemingway mode is active.":
     "海明威模式启用时在状态栏显示指示器。",
   "Status bar text": "状态栏文本",
-  "Text to display in the status bar when Hemingway mode is active.":
-    "海明威模式启用时在状态栏显示的文本。",
+  "Text to display in the status bar when Hemingway mode is active. Turn the toggle on to use a custom text or off to use the default text for your locale.":
+    "海明威模式启用时在状态栏显示的文本。开启该开关以使用自定义文本，关闭则使用适用于你所在语言环境的默认文本。",
+  "Use custom text": "使用自定义文本",
   "Announce updates": "通知更新",
   "If enabled you will get a notice with release notes whenever you install a new version of Typewriter Mode":
     "启用后，每次安装新版本的打字机模式时都会收到包含发行说明的通知",
