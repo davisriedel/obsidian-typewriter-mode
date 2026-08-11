@@ -4,6 +4,7 @@ import {
   ENABLED_PLATFORMS,
   type EnabledPlatforms as EnabledPlatformsType,
 } from "@/capabilities/constants";
+import { t } from "@/i18n";
 
 export default class EnabledPlatforms extends Feature {
   readonly settingKey = "general.enabledPlatforms" as const;
@@ -13,22 +14,22 @@ export default class EnabledPlatforms extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: this.settingTitle,
-      desc: this.settingDesc,
+      name: t(this.settingTitle),
+      desc: t(this.settingDesc),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown
-            .addOption(ENABLED_PLATFORMS.BOTH, "All platforms")
-            .addOption(ENABLED_PLATFORMS.DESKTOP, "Desktop only")
+            .addOption(ENABLED_PLATFORMS.BOTH, t("All platforms"))
+            .addOption(ENABLED_PLATFORMS.DESKTOP, t("Desktop only"))
             .addOption(
               ENABLED_PLATFORMS.MOBILE,
-              "Mobile only (tablet and phone)"
+              t("Mobile only (tablet and phone)")
             )
-            .addOption(ENABLED_PLATFORMS.TABLET, "Tablet only")
-            .addOption(ENABLED_PLATFORMS.PHONE, "Phone only")
+            .addOption(ENABLED_PLATFORMS.TABLET, t("Tablet only"))
+            .addOption(ENABLED_PLATFORMS.PHONE, t("Phone only"))
             .addOption(
               ENABLED_PLATFORMS.DESKTOP_AND_TABLET,
-              "Desktop and tablet"
+              t("Desktop and tablet")
             )
             .setValue(this.getSettingValue() as EnabledPlatformsType)
             .onChange((newValue) => {
@@ -46,22 +47,22 @@ export default class EnabledPlatforms extends Feature {
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) => {
       setting
-        .setName(this.settingTitle)
-        .setDesc(this.settingDesc)
+        .setName(t(this.settingTitle))
+        .setDesc(t(this.settingDesc))
         .setClass("typewriter-mode-setting")
         .addDropdown((dropdown) =>
           dropdown
-            .addOption(ENABLED_PLATFORMS.BOTH, "All platforms")
-            .addOption(ENABLED_PLATFORMS.DESKTOP, "Desktop only")
+            .addOption(ENABLED_PLATFORMS.BOTH, t("All platforms"))
+            .addOption(ENABLED_PLATFORMS.DESKTOP, t("Desktop only"))
             .addOption(
               ENABLED_PLATFORMS.MOBILE,
-              "Mobile only (tablet and phone)"
+              t("Mobile only (tablet and phone)")
             )
-            .addOption(ENABLED_PLATFORMS.TABLET, "Tablet only")
-            .addOption(ENABLED_PLATFORMS.PHONE, "Phone only")
+            .addOption(ENABLED_PLATFORMS.TABLET, t("Tablet only"))
+            .addOption(ENABLED_PLATFORMS.PHONE, t("Phone only"))
             .addOption(
               ENABLED_PLATFORMS.DESKTOP_AND_TABLET,
-              "Desktop and tablet"
+              t("Desktop and tablet")
             )
             .setValue(this.getSettingValue() as EnabledPlatformsType)
             .onChange((newValue) => {

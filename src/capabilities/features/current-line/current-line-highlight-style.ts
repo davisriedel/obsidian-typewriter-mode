@@ -4,6 +4,7 @@ import {
   CURRENT_LINE_HIGHLIGHT_STYLE,
   type CurrentLineHighlightStyle as CurrentLineHighlightStyleType,
 } from "@/capabilities/constants";
+import { t } from "@/i18n";
 
 export default class CurrentLineHighlightStyle extends Feature {
   readonly settingKey = "currentLine.currentLineHighlightStyle" as const;
@@ -18,13 +19,13 @@ export default class CurrentLineHighlightStyle extends Feature {
   registerSetting(settingGroup: SettingGroup): void {
     settingGroup.addSetting((setting) => {
       setting
-        .setName("Current line highlight style")
-        .setDesc("The style of the current line highlight")
+        .setName(t("Current line highlight style"))
+        .setDesc(t("The style of the current line highlight"))
         .setClass("typewriter-mode-setting")
         .addDropdown((dropdown) =>
           dropdown
-            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, "Box")
-            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, "Underline")
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, t("Box"))
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, t("Underline"))
             .setValue(this.getSettingValue() as CurrentLineHighlightStyleType)
             .onChange((newValue) => {
               this.changeCurrentLineHighlightStyle(
@@ -37,13 +38,13 @@ export default class CurrentLineHighlightStyle extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: "Current line highlight style",
-      desc: "The style of the current line highlight",
+      name: t("Current line highlight style"),
+      desc: t("The style of the current line highlight"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown
-            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, "Box")
-            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, "Underline")
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, t("Box"))
+            .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, t("Underline"))
             .setValue(this.getSettingValue() as CurrentLineHighlightStyleType)
             .onChange((newValue) => {
               this.changeCurrentLineHighlightStyle(

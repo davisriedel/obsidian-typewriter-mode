@@ -1,5 +1,6 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
+import { t } from "@/i18n";
 import type TypewriterModeLib from "@/lib";
 
 type ThemeMode = "light" | "dark";
@@ -25,9 +26,16 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 
     settingGroup.addSetting((setting) => {
       setting
-        .setName(`Current line highlight color in ${this.themeMode} themes`)
+        .setName(
+          t("Current line highlight color in {{theme}} themes", {
+            theme: t(this.themeMode),
+          })
+        )
         .setDesc(
-          `The color and opacity of the current line highlight in ${this.themeMode} themes`
+          t(
+            "The color and opacity of the current line highlight in {{theme}} themes",
+            { theme: t(this.themeMode) }
+          )
         )
         .setClass("typewriter-mode-setting")
         .addColorPicker((colorPicker) =>
@@ -58,8 +66,13 @@ export default abstract class CurrentLineHighlightColor extends Feature {
     const { color, opacity } = this.parseColor(currentValue);
 
     return {
-      name: `Current line highlight color in ${this.themeMode} themes`,
-      desc: `The color and opacity of the current line highlight in ${this.themeMode} themes`,
+      name: t("Current line highlight color in {{theme}} themes", {
+        theme: t(this.themeMode),
+      }),
+      desc: t(
+        "The color and opacity of the current line highlight in {{theme}} themes",
+        { theme: t(this.themeMode) }
+      ),
       render: (setting) => {
         setting
           .setClass("typewriter-mode-setting")

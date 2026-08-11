@@ -5,8 +5,10 @@ import {
   PluginSettingTab,
   SettingGroup,
 } from "obsidian";
+import { localizedMarkdown, t } from "@/i18n";
 import type TypewriterModeLib from "@/lib";
 import fundingText from "@/texts/Funding.md" with { type: "text" };
+import fundingTextZhCN from "@/texts/Funding.zh-CN.md" with { type: "text" };
 
 export default class TypewriterModeSettingTab extends PluginSettingTab {
   override icon = "type-outline";
@@ -47,10 +49,12 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       // Typewriter
       {
         type: "group",
-        heading: "Typewriter",
+        heading: t("Typewriter"),
         items: [
           {
-            name: 'Not available if "keep lines above and below" is activated',
+            name: t(
+              'Not available if "keep lines above and below" is activated'
+            ),
             visible: () =>
               this.tm.settings.keepLinesAboveAndBelow
                 .isKeepLinesAboveAndBelowEnabled,
@@ -62,10 +66,10 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       // Keep lines above and below
       {
         type: "group",
-        heading: "Keep lines above and below",
+        heading: t("Keep lines above and below"),
         items: [
           {
-            name: "Not available if typewriter scrolling is activated",
+            name: t("Not available if typewriter scrolling is activated"),
             visible: () =>
               this.tm.settings.typewriter.isTypewriterScrollEnabled,
           },
@@ -76,42 +80,42 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       // Highlight current line
       {
         type: "group",
-        heading: "Highlight current line",
+        heading: t("Highlight current line"),
         items: this.featureDefs(this.tm.features.currentLine, refresh),
       },
 
       // Limit line width
       {
         type: "group",
-        heading: "Limit line width",
+        heading: t("Limit line width"),
         items: this.featureDefs(this.tm.features.maxChar, refresh),
       },
 
       // Dimming
       {
         type: "group",
-        heading: "Dimming",
+        heading: t("Dimming"),
         items: this.featureDefs(this.tm.features.dimming, refresh),
       },
 
       // Writing focus
       {
         type: "group",
-        heading: "Writing focus",
+        heading: t("Writing focus"),
         items: this.featureDefs(this.tm.features.writingFocus, refresh),
       },
 
       // Hemingway mode
       {
         type: "group",
-        heading: "Hemingway mode",
+        heading: t("Hemingway mode"),
         items: this.featureDefs(this.tm.features.hemingwayMode, refresh),
       },
 
       // Restore cursor position
       {
         type: "group",
-        heading: "Restore cursor position",
+        heading: t("Restore cursor position"),
         items: this.featureDefs(
           this.tm.features.restoreCursorPosition,
           refresh
@@ -121,7 +125,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
       // Update notice and funding
       {
         type: "group",
-        heading: "Update notice and funding",
+        heading: t("Update notice and funding"),
         items: [
           ...this.featureDefs(this.tm.features.updates, refresh),
           {
@@ -133,7 +137,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
               component.load();
               MarkdownRenderer.render(
                 this.app,
-                fundingText,
+                localizedMarkdown(fundingText, fundingTextZhCN),
                 div,
                 this.app.vault.getRoot().path,
                 component
@@ -156,14 +160,14 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     // Typewriter group
     const typewriterGroup = new SettingGroup(this.containerEl).setHeading(
-      "Typewriter"
+      t("Typewriter")
     );
     if (
       this.tm.settings.keepLinesAboveAndBelow.isKeepLinesAboveAndBelowEnabled
     ) {
       typewriterGroup.addSetting((setting) => {
         setting.setName(
-          'Not available if "keep lines above and below" is activated'
+          t('Not available if "keep lines above and below" is activated')
         );
       });
     }
@@ -171,11 +175,13 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     // Keep lines above and below group
     const keepLinesGroup = new SettingGroup(this.containerEl).setHeading(
-      "Keep lines above and below"
+      t("Keep lines above and below")
     );
     if (this.tm.settings.typewriter.isTypewriterScrollEnabled) {
       keepLinesGroup.addSetting((setting) => {
-        setting.setName("Not available if typewriter scrolling is activated");
+        setting.setName(
+          t("Not available if typewriter scrolling is activated")
+        );
       });
     }
     this.registerFeaturesInGroup(
@@ -185,7 +191,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     // Highlight current line group
     const currentLineGroup = new SettingGroup(this.containerEl).setHeading(
-      "Highlight current line"
+      t("Highlight current line")
     );
     this.registerFeaturesInGroup(
       currentLineGroup,
@@ -194,19 +200,19 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     // Limit line width group
     const maxCharGroup = new SettingGroup(this.containerEl).setHeading(
-      "Limit line width"
+      t("Limit line width")
     );
     this.registerFeaturesInGroup(maxCharGroup, this.tm.features.maxChar);
 
     // Dimming group
     const dimmingGroup = new SettingGroup(this.containerEl).setHeading(
-      "Dimming"
+      t("Dimming")
     );
     this.registerFeaturesInGroup(dimmingGroup, this.tm.features.dimming);
 
     // Writing focus group
     const writingFocusGroup = new SettingGroup(this.containerEl).setHeading(
-      "Writing focus"
+      t("Writing focus")
     );
     this.registerFeaturesInGroup(
       writingFocusGroup,
@@ -215,7 +221,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     // Hemingway mode group
     const hemingwayGroup = new SettingGroup(this.containerEl).setHeading(
-      "Hemingway mode"
+      t("Hemingway mode")
     );
     this.registerFeaturesInGroup(
       hemingwayGroup,
@@ -224,7 +230,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     // Restore cursor position group
     const restoreCursorGroup = new SettingGroup(this.containerEl).setHeading(
-      "Restore cursor position"
+      t("Restore cursor position")
     );
     this.registerFeaturesInGroup(
       restoreCursorGroup,
@@ -233,7 +239,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
     // Update notice and funding group
     const updatesGroup = new SettingGroup(this.containerEl).setHeading(
-      "Update notice and funding"
+      t("Update notice and funding")
     );
     this.registerFeaturesInGroup(updatesGroup, this.tm.features.updates);
 
@@ -243,7 +249,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
     fundingComponent.load();
     MarkdownRenderer.render(
       this.app,
-      fundingText,
+      localizedMarkdown(fundingText, fundingTextZhCN),
       updateNoticeDiv,
       this.app.vault.getRoot().path,
       fundingComponent

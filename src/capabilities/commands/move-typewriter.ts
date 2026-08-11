@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import type TypewriterModeLib from "@/lib";
 import { AbstractCommand } from "../base/abstract-command";
 
@@ -9,7 +10,7 @@ function registerMoveTypewriterCommand(
 
   tm.plugin.addCommand({
     id: `move-typewriter-${direction}`,
-    name: `Move typewriter ${direction}`,
+    name: t("Move typewriter {{direction}}", { direction: t(direction) }),
     editorCallback: (editor, _view) => {
       editor.exec(editorCommand);
       window.dispatchEvent(new Event("moveByCommand"));

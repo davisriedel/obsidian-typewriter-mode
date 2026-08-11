@@ -1,4 +1,5 @@
 import type { Vault } from "obsidian";
+import { t } from "@/i18n";
 import {
   CURRENT_LINE_HIGHLIGHT_STYLE,
   type CurrentLineHighlightStyle,
@@ -203,7 +204,7 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isHemingwayModeOnlyInWritingFocusModeEnabled: false,
     isAllowBackspaceInHemingwayModeEnabled: false,
     isShowHemingwayModeStatusBarEnabled: true,
-    hemingwayModeStatusBarText: "Hemingway",
+    hemingwayModeStatusBarText: t("Hemingway"),
   },
 };
 

@@ -1,5 +1,6 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
+import { t } from "@/i18n";
 import type HemingwayMode from "./hemingway-mode";
 
 export default class HemingwayModeStatusBarText extends Feature {
@@ -10,8 +11,8 @@ export default class HemingwayModeStatusBarText extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: this.settingTitle,
-      desc: this.settingDesc,
+      name: t(this.settingTitle),
+      desc: t(this.settingDesc),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addText((text) =>
           text
@@ -32,8 +33,8 @@ export default class HemingwayModeStatusBarText extends Feature {
   registerSetting(settingGroup: SettingGroup) {
     settingGroup.addSetting((setting) => {
       setting
-        .setName(this.settingTitle)
-        .setDesc(this.settingDesc)
+        .setName(t(this.settingTitle))
+        .setDesc(t(this.settingDesc))
         .setClass("typewriter-mode-setting")
         .addText((text) =>
           text

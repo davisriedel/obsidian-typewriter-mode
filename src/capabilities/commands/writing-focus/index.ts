@@ -1,6 +1,7 @@
 // ADAPTED FROM https://github.com/ryanpcmcquen/obsidian-focus-mode
 
 import { ToggleCommand } from "@/capabilities/base/toggle-command";
+import { t } from "@/i18n";
 import { WritingFocus } from "./writing-focus";
 
 export class WritingFocusCommand extends ToggleCommand {
@@ -26,7 +27,7 @@ export class WritingFocusCommand extends ToggleCommand {
   onload() {
     this.tm.plugin.addRibbonIcon(
       "enter",
-      "Toggle Writing Focus",
+      t("Toggle Writing Focus"),
       (_event): void => {
         this.writingFocus.toggleFocusMode();
       }

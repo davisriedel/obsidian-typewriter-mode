@@ -1,4 +1,5 @@
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
+import { t } from "@/i18n";
 
 export default class HemingwayMode extends FeatureToggle {
   readonly settingKey = "hemingwayMode.isHemingwayModeEnabled" as const;
@@ -37,7 +38,7 @@ export default class HemingwayMode extends FeatureToggle {
     const isEnabled = this.getSettingValue() as boolean;
     const showStatusBar =
       this.tm.settings.hemingwayMode.isShowHemingwayModeStatusBarEnabled;
-    const statusBarText =
+    const configuredStatusBarText =
       this.tm.settings.hemingwayMode.hemingwayModeStatusBarText;
     const onlyInFocusMode =
       this.tm.settings.hemingwayMode
@@ -45,7 +46,11 @@ export default class HemingwayMode extends FeatureToggle {
     const focusModeActive = activeDocument.body.hasClass("ptm-focus-mode");
 
     if (isEnabled && showStatusBar && (!onlyInFocusMode || focusModeActive)) {
-      this.statusBarItem.setText(statusBarText);
+      this.statusBarItem.setText(
+        configuredStatusBarText === "Hemingway"
+          ? t("Hemingway")
+          : configuredStatusBarText
+      );
       this.statusBarItem.show();
     } else {
       this.statusBarItem.hide();

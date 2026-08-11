@@ -1,10 +1,11 @@
+import { t } from "@/i18n";
 import { AbstractCommand } from "./abstract-command";
 
 export abstract class Command extends AbstractCommand {
   protected override registerCommand() {
     this.tm.plugin.addCommand({
       id: this.commandKey,
-      name: this.commandTitle,
+      name: t(this.commandTitle),
       callback: this.onCommand.bind(this),
     });
   }

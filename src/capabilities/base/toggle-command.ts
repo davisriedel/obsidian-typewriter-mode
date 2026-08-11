@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { Command } from "./command";
 import type { FeatureToggle } from "./feature-toggle";
 
@@ -7,17 +8,17 @@ export abstract class ToggleCommand extends Command {
   protected override registerCommand(): void {
     this.tm.plugin.addCommand({
       id: `${this.commandKey}-toggle`,
-      name: `Toggle ${this.commandTitle}`,
+      name: t("Toggle {{command}}", { command: t(this.commandTitle) }),
       callback: this.onCommand.bind(this),
     });
     this.tm.plugin.addCommand({
       id: `${this.commandKey}-enable`,
-      name: `Enable ${this.commandTitle}`,
+      name: t("Enable {{command}}", { command: t(this.commandTitle) }),
       callback: this.onEnable.bind(this),
     });
     this.tm.plugin.addCommand({
       id: `${this.commandKey}-disable`,
-      name: `Disable ${this.commandTitle}`,
+      name: t("Disable {{command}}", { command: t(this.commandTitle) }),
       callback: this.onDisable.bind(this),
     });
   }
