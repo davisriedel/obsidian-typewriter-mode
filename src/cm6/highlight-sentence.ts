@@ -46,16 +46,26 @@ function isRealSentenceBoundary(
   return true;
 }
 
-interface Settings {
+export interface SentenceBoundarySettings {
   extraCharacters: string;
   ignoredPatterns: string;
   sentenceDelimiters: string;
 }
 
+export const DEFAULT_SENTENCE_BOUNDARY_SETTINGS: SentenceBoundarySettings = {
+  sentenceDelimiters: ".!?。！？…",
+  extraCharacters: "*”’」』】）》",
+  ignoredPatterns: "Mr.",
+};
+
 // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: sentence boundary detection requires branching logic
-function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
-  const sentenceDelimiters = settings.sentenceDelimiters.split("");
-  const extraCharacters = settings.extraCharacters.split("");
+export function getActiveSentenceBounds(
+  settings: SentenceBoundarySettings,
+  line: Line,
+  pos: number
+) {
+  const sentenceDelimiters = new Set(settings.sentenceDelimiters);
+  const extraCharacters = new Set(settings.extraCharacters);
   const ignoredPatterns = settings.ignoredPatterns.split("\n");
 
   const lineStart = line.from;
@@ -64,7 +74,7 @@ function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
   let start = -1;
 
   for (let i = pos - lineStart - 1; i >= 0; i--) {
-    if (!sentenceDelimiters.contains(lineText[i])) {
+    if (!sentenceDelimiters.has(lineText[i])) {
       continue;
     }
     if (!isRealSentenceBoundary(lineText, ignoredPatterns, i)) {
@@ -80,8 +90,7 @@ function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
 
     // Account for markdown syntax at the end of sentences (*)
     while (
-      extraCharacters.contains(lineText[i + offset]) &&
-      sentenceDelimiters.contains(lineText[i + offset - 1]) &&
+      extraCharacters.has(lineText[i + offset]) &&
       offset < pos - lineStart - 1
     ) {
       offset += 1;
@@ -98,7 +107,7 @@ function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
   let end = -1;
 
   for (let i = pos - lineStart; i < line.length; i++) {
-    if (!sentenceDelimiters.contains(lineText[i])) {
+    if (!sentenceDelimiters.has(lineText[i])) {
       continue;
     }
     if (!isRealSentenceBoundary(lineText, ignoredPatterns, i)) {
@@ -109,17 +118,14 @@ function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
 
     // Account for ellipses, "!?", etc.
     while (
-      sentenceDelimiters.contains(lineText[i + offset]) &&
+      sentenceDelimiters.has(lineText[i + offset]) &&
       offset < line.length
     ) {
       offset += 1;
     }
 
     // Account for markdown syntax at the end of sentences (*)
-    while (
-      extraCharacters.contains(lineText[i + offset]) &&
-      offset < line.length
-    ) {
+    while (extraCharacters.has(lineText[i + offset]) && offset < line.length) {
       offset += 1;
     }
 
@@ -133,7 +139,10 @@ function getActiveSentenceBounds(settings: Settings, line: Line, pos: number) {
   return { start: start + lineStart, end: null };
 }
 
-export function getActiveSentenceDecos(view: EditorView, settings: Settings) {
+export function getActiveSentenceDecos(
+  view: EditorView,
+  settings: SentenceBoundarySettings
+) {
   const widgets: Range<Decoration>[] = [];
   const selection = view.state.selection.main;
   const pos = selection.from;

@@ -10,7 +10,10 @@ import type { PerWindowProps } from "@/cm6/per-window-props";
 import type { TypewriterPositionData } from "@/cm6/typewriter-offset-calculator";
 import { TypewriterOffsetCalculator } from "@/cm6/typewriter-offset-calculator";
 import type TypewriterModeLib from "@/lib";
-import { getActiveSentenceDecos } from "./highlight-sentence";
+import {
+  DEFAULT_SENTENCE_BOUNDARY_SETTINGS,
+  getActiveSentenceDecos,
+} from "./highlight-sentence";
 import { getEditorDom, getScrollDom, getSizerDom } from "./selectors";
 
 const currentLineClass = "ptm-current-line";
@@ -608,11 +611,10 @@ class TypewriterModeCM6Plugin {
       return;
     }
 
-    this.decorations = getActiveSentenceDecos(this.view, {
-      sentenceDelimiters: ".!?",
-      extraCharacters: "*”’",
-      ignoredPatterns: "Mr.",
-    });
+    this.decorations = getActiveSentenceDecos(
+      this.view,
+      DEFAULT_SENTENCE_BOUNDARY_SETTINGS
+    );
   }
 
   private updateAfterExternalEvent() {
