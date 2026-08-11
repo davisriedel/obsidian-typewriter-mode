@@ -74,6 +74,13 @@ See the [`CHANGELOG.md`](CHANGELOG.md) file.
 
 See the [`DEVELOPMENT.md`](DEVELOPMENT.md) file for instructions.
 
+## Contributors
+
+Many thanks to the contributors of this plugin.
+
+- @wang-yzh implemented Chinese localization and support for Chinese/Japanese sentence
+delimiters in sentence detection
+
 ## License
 
 The plugin is licensed under the MIT license. See [`LICENSE`](LICENSE).

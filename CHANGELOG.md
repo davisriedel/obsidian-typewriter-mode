@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.0-beta.1
+
+- Add Chinese/Japanese sentence delimiters
+- Support Chinese/Japanese sentence delimiters in sentence detection
+
+_Thank you @wang-yzh for these two contributions._
+
 ## 1.5.1-beta.1
 
 - Fix plugin settings loading issues
