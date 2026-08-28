@@ -1,7 +1,7 @@
 export const DIM_UNFOCUSED_EDITORS_BEHAVIOR = {
-  NONE: "dim-none",
-  DIM: "dim",
   ALL: "dim-all",
+  DIM: "dim",
+  NONE: "dim-none",
 } as const;
 
 export type DimUnfocusedEditorsBehavior =
@@ -34,10 +34,10 @@ export type WritingFocusVignetteStyle =
 export const ENABLED_PLATFORMS = {
   BOTH: "both",
   DESKTOP: "desktop",
-  MOBILE: "mobile",
-  TABLET: "tablet",
-  PHONE: "phone",
   DESKTOP_AND_TABLET: "desktop-and-tablet",
+  MOBILE: "mobile",
+  PHONE: "phone",
+  TABLET: "tablet",
 } as const;
 
 export type EnabledPlatforms =

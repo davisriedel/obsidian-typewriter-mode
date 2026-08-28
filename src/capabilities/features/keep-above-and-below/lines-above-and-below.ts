@@ -7,10 +7,10 @@ export default class LinesAboveAndBelow extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Amount of lines above and below the current line"),
       desc: t(
         "The amount of lines to always keep above and below the current line"
       ),
+      name: t("Amount of lines above and below the current line"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addText((text) =>
           text

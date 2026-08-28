@@ -66,13 +66,13 @@ export default abstract class CurrentLineHighlightColor extends Feature {
     const { color, opacity } = this.parseColor(currentValue);
 
     return {
-      name: t("Current line highlight color in {{theme}} themes", {
-        theme: t(this.themeMode),
-      }),
       desc: t(
         "The color and opacity of the current line highlight in {{theme}} themes",
         { theme: t(this.themeMode) }
       ),
+      name: t("Current line highlight color in {{theme}} themes", {
+        theme: t(this.themeMode),
+      }),
       render: (setting) => {
         setting
           .setClass("typewriter-mode-setting")

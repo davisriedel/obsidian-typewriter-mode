@@ -23,8 +23,8 @@ export default class MaxCharsPerLine extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Maximum number of characters per line"),
       desc: t("The maximum number of characters per line"),
+      name: t("Maximum number of characters per line"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addText((text) =>
           text

@@ -9,12 +9,12 @@ function registerMoveTypewriterCommand(
   const editorCommand = direction === "up" ? "goUp" : "goDown";
 
   tm.plugin.addCommand({
-    id: `move-typewriter-${direction}`,
-    name: t("Move typewriter {{direction}}", { direction: t(direction) }),
     editorCallback: (editor, _view) => {
       editor.exec(editorCommand);
       window.dispatchEvent(new Event("moveByCommand"));
     },
+    id: `move-typewriter-${direction}`,
+    name: t("Move typewriter {{direction}}", { direction: t(direction) }),
   });
 }
 

@@ -24,10 +24,10 @@ export default class TypewriterModeLib {
   settings: TypewriterModeSettings = DEFAULT_SETTINGS;
 
   perWindowProps: PerWindowProps = {
-    cssVariables: {},
-    bodyClasses: [],
-    bodyAttrs: {},
     allBodyClasses: [],
+    bodyAttrs: {},
+    bodyClasses: [],
+    cssVariables: {},
     persistentBodyClasses: [],
   };
 

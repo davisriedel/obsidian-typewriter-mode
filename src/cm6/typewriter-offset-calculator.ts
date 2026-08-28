@@ -121,11 +121,11 @@ export class TypewriterOffsetCalculator {
     }
 
     return {
-      typewriterOffset,
-      scrollOffset,
       activeLineOffset,
       lineHeight,
       lineOffset,
+      scrollOffset,
+      typewriterOffset,
     };
   }
 }

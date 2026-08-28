@@ -21,9 +21,9 @@ export function getFeatures(
     hemingwayMode: hemingwayMode(tm),
     keepAboveAndBelow: keepAboveAndBelow(tm),
     maxChar: maxChar(tm),
+    restoreCursorPosition: restoreCursorPosition(tm),
     typewriter: typewriter(tm),
     updates: updates(tm),
     writingFocus: writingFocus(tm),
-    restoreCursorPosition: restoreCursorPosition(tm),
   };
 }

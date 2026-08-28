@@ -38,8 +38,8 @@ export default class CurrentLineHighlightStyle extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Current line highlight style"),
       desc: t("The style of the current line highlight"),
+      name: t("Current line highlight style"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown

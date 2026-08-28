@@ -53,9 +53,9 @@ export interface SentenceBoundarySettings {
 }
 
 export const DEFAULT_SENTENCE_BOUNDARY_SETTINGS: SentenceBoundarySettings = {
-  sentenceDelimiters: ".!?。！？…",
   extraCharacters: "*”’」』】）》",
   ignoredPatterns: "Mr.",
+  sentenceDelimiters: ".!?。！？…",
 };
 
 // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: sentence boundary detection requires branching logic
@@ -134,9 +134,9 @@ export function getActiveSentenceBounds(
   }
 
   if (end !== -1) {
-    return { start: start + lineStart, end: end + lineStart };
+    return { end: end + lineStart, start: start + lineStart };
   }
-  return { start: start + lineStart, end: null };
+  return { end: null, start: start + lineStart };
 }
 
 export function getActiveSentenceDecos(
@@ -150,22 +150,22 @@ export function getActiveSentenceDecos(
 
   let activeSentenceBounds = getActiveSentenceBounds(settings, line, pos);
 
-  if (activeSentenceBounds.end == null && pos > line.from) {
+  if (activeSentenceBounds.end === null && pos > line.from) {
     activeSentenceBounds = getActiveSentenceBounds(settings, line, pos - 1);
   }
 
   const start = activeSentenceBounds.start;
   let end = activeSentenceBounds.end;
-  if (end == null) {
+  if (end === null) {
     end = line.to;
   }
 
   function addWidget(from: number, to: number, className: string) {
     widgets.push(
       Decoration.mark({
-        inclusive: true,
         attributes: {},
         class: className,
+        inclusive: true,
       }).range(from, to)
     );
   }

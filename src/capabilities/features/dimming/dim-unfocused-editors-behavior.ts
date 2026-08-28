@@ -42,10 +42,10 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Dimming behavior in unfocused notes"),
       desc: t(
         "How to dim paragraphs / sentences in notes / editors that your cursor is not on (e.g. if you have multiple notes open in split panes)"
       ),
+      name: t("Dimming behavior in unfocused notes"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown

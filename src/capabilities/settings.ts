@@ -138,20 +138,46 @@ export function setSettingByPath<P extends SettingsPath>(
 }
 
 export const DEFAULT_SETTINGS: TypewriterModeSettings = {
-  general: {
-    version: null,
-    isAnnounceUpdatesEnabled: true,
-    isPluginActivated: true,
-    isOnlyActivateAfterFirstInteractionEnabled: false,
-    enabledPlatforms: ENABLED_PLATFORMS.BOTH,
-    enabledFilePaths: [],
-    disabledFilePaths: [],
+  currentLine: {
+    "currentLineHighlightColor-dark": "#444444",
+    "currentLineHighlightColor-light": "#dddddd",
+    currentLineHighlightStyle: CURRENT_LINE_HIGHLIGHT_STYLE.BOX,
+    currentLineHighlightUnderlineThickness: 1,
+    fadeLinesIntensity: 0.5,
+    isFadeLinesEnabled: false,
+    isFadeLinesOnlyInWritingFocusModeEnabled: false,
+    isHighlightCurrentLineEnabled: true,
+    isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
+    isHighlightCurrentLineOnlyInWritingFocusModeEnabled: false,
+    isPauseCurrentLineHighlightWhileScrollingEnabled: false,
+    isPauseCurrentLineHighlightWhileSelectingEnabled: false,
   },
-  typewriter: {
-    isTypewriterScrollEnabled: true,
-    isOnlyMaintainTypewriterOffsetWhenReachedEnabled: false,
-    isTypewriterOnlyUseCommandsEnabled: false,
-    typewriterOffset: 0.5,
+  dimming: {
+    dimmedOpacity: 0.25,
+    dimUnfocusedEditorsBehavior: DIM_UNFOCUSED_EDITORS_BEHAVIOR.DIM,
+    dimUnfocusedMode: DIM_UNFOCUSED_MODE.PARAGRAPHS,
+    isDimHighlightListParentEnabled: false,
+    isDimTableAsOneEnabled: true,
+    isDimUnfocusedEnabled: false,
+    isDimUnfocusedOnlyInWritingFocusModeEnabled: false,
+    isPauseDimUnfocusedWhileScrollingEnabled: true,
+    isPauseDimUnfocusedWhileSelectingEnabled: true,
+  },
+  general: {
+    disabledFilePaths: [],
+    enabledFilePaths: [],
+    enabledPlatforms: ENABLED_PLATFORMS.BOTH,
+    isAnnounceUpdatesEnabled: true,
+    isOnlyActivateAfterFirstInteractionEnabled: false,
+    isPluginActivated: true,
+    version: null,
+  },
+  hemingwayMode: {
+    hemingwayModeStatusBarText: null,
+    isAllowBackspaceInHemingwayModeEnabled: false,
+    isHemingwayModeEnabled: false,
+    isHemingwayModeOnlyInWritingFocusModeEnabled: false,
+    isShowHemingwayModeStatusBarEnabled: true,
   },
   keepLinesAboveAndBelow: {
     isKeepLinesAboveAndBelowEnabled: false,
@@ -161,49 +187,23 @@ export const DEFAULT_SETTINGS: TypewriterModeSettings = {
     isMaxCharsPerLineEnabled: false,
     maxCharsPerLine: 64,
   },
-  dimming: {
-    isDimUnfocusedEnabled: false,
-    isDimUnfocusedOnlyInWritingFocusModeEnabled: false,
-    isDimHighlightListParentEnabled: false,
-    isDimTableAsOneEnabled: true,
-    dimUnfocusedMode: DIM_UNFOCUSED_MODE.PARAGRAPHS,
-    dimUnfocusedEditorsBehavior: DIM_UNFOCUSED_EDITORS_BEHAVIOR.DIM,
-    dimmedOpacity: 0.25,
-    isPauseDimUnfocusedWhileScrollingEnabled: true,
-    isPauseDimUnfocusedWhileSelectingEnabled: true,
+  restoreCursorPosition: {
+    cursorPositions: {},
+    isRestoreCursorPositionEnabled: false,
   },
-  currentLine: {
-    isHighlightCurrentLineEnabled: true,
-    isHighlightCurrentLineOnlyInWritingFocusModeEnabled: false,
-    isFadeLinesEnabled: false,
-    isFadeLinesOnlyInWritingFocusModeEnabled: false,
-    fadeLinesIntensity: 0.5,
-    isHighlightCurrentLineOnlyInFocusedEditorEnabled: false,
-    isPauseCurrentLineHighlightWhileScrollingEnabled: false,
-    isPauseCurrentLineHighlightWhileSelectingEnabled: false,
-    currentLineHighlightStyle: CURRENT_LINE_HIGHLIGHT_STYLE.BOX,
-    currentLineHighlightUnderlineThickness: 1,
-    "currentLineHighlightColor-dark": "#444444",
-    "currentLineHighlightColor-light": "#dddddd",
+  typewriter: {
+    isOnlyMaintainTypewriterOffsetWhenReachedEnabled: false,
+    isTypewriterOnlyUseCommandsEnabled: false,
+    isTypewriterScrollEnabled: true,
+    typewriterOffset: 0.5,
   },
   writingFocus: {
     doesWritingFocusShowHeader: false,
     doesWritingFocusShowStatusBar: false,
     doesWritingFocusShowVignette: true,
     isWritingFocusFullscreen: true,
-    writingFocusVignetteStyle: WRITING_FOCUS_VIGNETTE_STYLE.BOX,
     writingFocusFontSize: 0,
-  },
-  restoreCursorPosition: {
-    isRestoreCursorPositionEnabled: false,
-    cursorPositions: {},
-  },
-  hemingwayMode: {
-    isHemingwayModeEnabled: false,
-    isHemingwayModeOnlyInWritingFocusModeEnabled: false,
-    isAllowBackspaceInHemingwayModeEnabled: false,
-    isShowHemingwayModeStatusBarEnabled: true,
-    hemingwayModeStatusBarText: null,
+    writingFocusVignetteStyle: WRITING_FOCUS_VIGNETTE_STYLE.BOX,
   },
 };
 
@@ -257,33 +257,102 @@ function migrateSettings(
 ): TypewriterModeSettings {
   // Migrate from legacy flat format
   return {
+    currentLine: {
+      "currentLineHighlightColor-dark":
+        legacy["currentLineHighlightColor-dark"] ??
+        DEFAULT_SETTINGS.currentLine["currentLineHighlightColor-dark"],
+      "currentLineHighlightColor-light":
+        legacy["currentLineHighlightColor-light"] ??
+        DEFAULT_SETTINGS.currentLine["currentLineHighlightColor-light"],
+      currentLineHighlightStyle:
+        legacy.currentLineHighlightStyle ??
+        DEFAULT_SETTINGS.currentLine.currentLineHighlightStyle,
+      currentLineHighlightUnderlineThickness:
+        legacy.currentLineHighlightUnderlineThickness ??
+        DEFAULT_SETTINGS.currentLine.currentLineHighlightUnderlineThickness,
+      fadeLinesIntensity:
+        legacy.fadeLinesIntensity ??
+        DEFAULT_SETTINGS.currentLine.fadeLinesIntensity,
+      isFadeLinesEnabled:
+        legacy.isFadeLinesEnabled ??
+        DEFAULT_SETTINGS.currentLine.isFadeLinesEnabled,
+      isFadeLinesOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.currentLine.isFadeLinesOnlyInWritingFocusModeEnabled,
+      isHighlightCurrentLineEnabled:
+        legacy.isHighlightCurrentLineEnabled ??
+        DEFAULT_SETTINGS.currentLine.isHighlightCurrentLineEnabled,
+      isHighlightCurrentLineOnlyInFocusedEditorEnabled:
+        legacy.isHighlightCurrentLineOnlyInFocusedEditorEnabled ??
+        DEFAULT_SETTINGS.currentLine
+          .isHighlightCurrentLineOnlyInFocusedEditorEnabled,
+      isHighlightCurrentLineOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.currentLine
+          .isHighlightCurrentLineOnlyInWritingFocusModeEnabled,
+      isPauseCurrentLineHighlightWhileScrollingEnabled:
+        DEFAULT_SETTINGS.currentLine
+          .isPauseCurrentLineHighlightWhileScrollingEnabled,
+      isPauseCurrentLineHighlightWhileSelectingEnabled:
+        DEFAULT_SETTINGS.currentLine
+          .isPauseCurrentLineHighlightWhileSelectingEnabled,
+    },
+    dimming: {
+      dimmedOpacity:
+        legacy.dimmedOpacity ?? DEFAULT_SETTINGS.dimming.dimmedOpacity,
+      dimUnfocusedEditorsBehavior:
+        legacy.dimUnfocusedEditorsBehavior ??
+        DEFAULT_SETTINGS.dimming.dimUnfocusedEditorsBehavior,
+      dimUnfocusedMode:
+        legacy.dimUnfocusedMode ?? DEFAULT_SETTINGS.dimming.dimUnfocusedMode,
+      isDimHighlightListParentEnabled:
+        legacy.isDimHighlightListParentEnabled ??
+        DEFAULT_SETTINGS.dimming.isDimHighlightListParentEnabled,
+      isDimTableAsOneEnabled:
+        legacy.isDimTableAsOneEnabled ??
+        DEFAULT_SETTINGS.dimming.isDimTableAsOneEnabled,
+      isDimUnfocusedEnabled:
+        legacy.isDimUnfocusedEnabled ??
+        DEFAULT_SETTINGS.dimming.isDimUnfocusedEnabled,
+      isDimUnfocusedOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.dimming.isDimUnfocusedOnlyInWritingFocusModeEnabled,
+      isPauseDimUnfocusedWhileScrollingEnabled:
+        legacy.isPauseDimUnfocusedWhileScrollingEnabled ??
+        DEFAULT_SETTINGS.dimming.isPauseDimUnfocusedWhileScrollingEnabled,
+      isPauseDimUnfocusedWhileSelectingEnabled:
+        legacy.isPauseDimUnfocusedWhileSelectingEnabled ??
+        DEFAULT_SETTINGS.dimming.isPauseDimUnfocusedWhileSelectingEnabled,
+    },
     general: {
-      version: legacy.version ?? DEFAULT_SETTINGS.general.version,
+      disabledFilePaths: DEFAULT_SETTINGS.general.disabledFilePaths,
+      enabledFilePaths: DEFAULT_SETTINGS.general.enabledFilePaths,
+      enabledPlatforms: DEFAULT_SETTINGS.general.enabledPlatforms,
       isAnnounceUpdatesEnabled:
         legacy.isAnnounceUpdatesEnabled ??
         DEFAULT_SETTINGS.general.isAnnounceUpdatesEnabled,
-      isPluginActivated:
-        legacy.isPluginActivated ?? DEFAULT_SETTINGS.general.isPluginActivated,
       isOnlyActivateAfterFirstInteractionEnabled:
         legacy.isOnlyActivateAfterFirstInteractionEnabled ??
         DEFAULT_SETTINGS.general.isOnlyActivateAfterFirstInteractionEnabled,
-      enabledPlatforms: DEFAULT_SETTINGS.general.enabledPlatforms,
-      enabledFilePaths: DEFAULT_SETTINGS.general.enabledFilePaths,
-      disabledFilePaths: DEFAULT_SETTINGS.general.disabledFilePaths,
+      isPluginActivated:
+        legacy.isPluginActivated ?? DEFAULT_SETTINGS.general.isPluginActivated,
+      version: legacy.version ?? DEFAULT_SETTINGS.general.version,
     },
-    typewriter: {
-      isTypewriterScrollEnabled:
-        legacy.isTypewriterScrollEnabled ??
-        DEFAULT_SETTINGS.typewriter.isTypewriterScrollEnabled,
-      isOnlyMaintainTypewriterOffsetWhenReachedEnabled:
-        legacy.isOnlyMaintainTypewriterOffsetWhenReachedEnabled ??
-        DEFAULT_SETTINGS.typewriter
-          .isOnlyMaintainTypewriterOffsetWhenReachedEnabled,
-      isTypewriterOnlyUseCommandsEnabled:
-        legacy.isTypewriterOnlyUseCommandsEnabled ??
-        DEFAULT_SETTINGS.typewriter.isTypewriterOnlyUseCommandsEnabled,
-      typewriterOffset:
-        legacy.typewriterOffset ?? DEFAULT_SETTINGS.typewriter.typewriterOffset,
+    hemingwayMode: {
+      hemingwayModeStatusBarText:
+        legacy.hemingwayModeStatusBarText &&
+        legacy.hemingwayModeStatusBarText !== "Hemingway"
+          ? legacy.hemingwayModeStatusBarText
+          : DEFAULT_SETTINGS.hemingwayMode.hemingwayModeStatusBarText,
+      isAllowBackspaceInHemingwayModeEnabled:
+        legacy.isAllowBackspaceInHemingwayModeEnabled ??
+        DEFAULT_SETTINGS.hemingwayMode.isAllowBackspaceInHemingwayModeEnabled,
+      isHemingwayModeEnabled:
+        legacy.isHemingwayModeEnabled ??
+        DEFAULT_SETTINGS.hemingwayMode.isHemingwayModeEnabled,
+      isHemingwayModeOnlyInWritingFocusModeEnabled:
+        DEFAULT_SETTINGS.hemingwayMode
+          .isHemingwayModeOnlyInWritingFocusModeEnabled,
+      isShowHemingwayModeStatusBarEnabled:
+        legacy.isShowHemingwayModeStatusBarEnabled ??
+        DEFAULT_SETTINGS.hemingwayMode.isShowHemingwayModeStatusBarEnabled,
     },
     keepLinesAboveAndBelow: {
       isKeepLinesAboveAndBelowEnabled:
@@ -300,114 +369,45 @@ function migrateSettings(
       maxCharsPerLine:
         legacy.maxCharsPerLine ?? DEFAULT_SETTINGS.maxChars.maxCharsPerLine,
     },
-    dimming: {
-      isDimUnfocusedEnabled:
-        legacy.isDimUnfocusedEnabled ??
-        DEFAULT_SETTINGS.dimming.isDimUnfocusedEnabled,
-      isDimUnfocusedOnlyInWritingFocusModeEnabled:
-        DEFAULT_SETTINGS.dimming.isDimUnfocusedOnlyInWritingFocusModeEnabled,
-      isDimHighlightListParentEnabled:
-        legacy.isDimHighlightListParentEnabled ??
-        DEFAULT_SETTINGS.dimming.isDimHighlightListParentEnabled,
-      isDimTableAsOneEnabled:
-        legacy.isDimTableAsOneEnabled ??
-        DEFAULT_SETTINGS.dimming.isDimTableAsOneEnabled,
-      dimUnfocusedMode:
-        legacy.dimUnfocusedMode ?? DEFAULT_SETTINGS.dimming.dimUnfocusedMode,
-      dimUnfocusedEditorsBehavior:
-        legacy.dimUnfocusedEditorsBehavior ??
-        DEFAULT_SETTINGS.dimming.dimUnfocusedEditorsBehavior,
-      dimmedOpacity:
-        legacy.dimmedOpacity ?? DEFAULT_SETTINGS.dimming.dimmedOpacity,
-      isPauseDimUnfocusedWhileScrollingEnabled:
-        legacy.isPauseDimUnfocusedWhileScrollingEnabled ??
-        DEFAULT_SETTINGS.dimming.isPauseDimUnfocusedWhileScrollingEnabled,
-      isPauseDimUnfocusedWhileSelectingEnabled:
-        legacy.isPauseDimUnfocusedWhileSelectingEnabled ??
-        DEFAULT_SETTINGS.dimming.isPauseDimUnfocusedWhileSelectingEnabled,
+    restoreCursorPosition: {
+      cursorPositions: {},
+      isRestoreCursorPositionEnabled:
+        legacy.isRestoreCursorPositionEnabled ??
+        DEFAULT_SETTINGS.restoreCursorPosition.isRestoreCursorPositionEnabled,
     },
-    currentLine: {
-      isHighlightCurrentLineEnabled:
-        legacy.isHighlightCurrentLineEnabled ??
-        DEFAULT_SETTINGS.currentLine.isHighlightCurrentLineEnabled,
-      isHighlightCurrentLineOnlyInWritingFocusModeEnabled:
-        DEFAULT_SETTINGS.currentLine
-          .isHighlightCurrentLineOnlyInWritingFocusModeEnabled,
-      isFadeLinesEnabled:
-        legacy.isFadeLinesEnabled ??
-        DEFAULT_SETTINGS.currentLine.isFadeLinesEnabled,
-      isFadeLinesOnlyInWritingFocusModeEnabled:
-        DEFAULT_SETTINGS.currentLine.isFadeLinesOnlyInWritingFocusModeEnabled,
-      fadeLinesIntensity:
-        legacy.fadeLinesIntensity ??
-        DEFAULT_SETTINGS.currentLine.fadeLinesIntensity,
-      isHighlightCurrentLineOnlyInFocusedEditorEnabled:
-        legacy.isHighlightCurrentLineOnlyInFocusedEditorEnabled ??
-        DEFAULT_SETTINGS.currentLine
-          .isHighlightCurrentLineOnlyInFocusedEditorEnabled,
-      isPauseCurrentLineHighlightWhileScrollingEnabled:
-        DEFAULT_SETTINGS.currentLine
-          .isPauseCurrentLineHighlightWhileScrollingEnabled,
-      isPauseCurrentLineHighlightWhileSelectingEnabled:
-        DEFAULT_SETTINGS.currentLine
-          .isPauseCurrentLineHighlightWhileSelectingEnabled,
-      currentLineHighlightStyle:
-        legacy.currentLineHighlightStyle ??
-        DEFAULT_SETTINGS.currentLine.currentLineHighlightStyle,
-      currentLineHighlightUnderlineThickness:
-        legacy.currentLineHighlightUnderlineThickness ??
-        DEFAULT_SETTINGS.currentLine.currentLineHighlightUnderlineThickness,
-      "currentLineHighlightColor-dark":
-        legacy["currentLineHighlightColor-dark"] ??
-        DEFAULT_SETTINGS.currentLine["currentLineHighlightColor-dark"],
-      "currentLineHighlightColor-light":
-        legacy["currentLineHighlightColor-light"] ??
-        DEFAULT_SETTINGS.currentLine["currentLineHighlightColor-light"],
+    typewriter: {
+      isOnlyMaintainTypewriterOffsetWhenReachedEnabled:
+        legacy.isOnlyMaintainTypewriterOffsetWhenReachedEnabled ??
+        DEFAULT_SETTINGS.typewriter
+          .isOnlyMaintainTypewriterOffsetWhenReachedEnabled,
+      isTypewriterOnlyUseCommandsEnabled:
+        legacy.isTypewriterOnlyUseCommandsEnabled ??
+        DEFAULT_SETTINGS.typewriter.isTypewriterOnlyUseCommandsEnabled,
+      isTypewriterScrollEnabled:
+        legacy.isTypewriterScrollEnabled ??
+        DEFAULT_SETTINGS.typewriter.isTypewriterScrollEnabled,
+      typewriterOffset:
+        legacy.typewriterOffset ?? DEFAULT_SETTINGS.typewriter.typewriterOffset,
     },
     writingFocus: {
       doesWritingFocusShowHeader:
         legacy.doesWritingFocusShowHeader ??
         DEFAULT_SETTINGS.writingFocus.doesWritingFocusShowHeader,
-      doesWritingFocusShowVignette:
-        legacy.doesWritingFocusShowVignette ??
-        DEFAULT_SETTINGS.writingFocus.doesWritingFocusShowVignette,
       doesWritingFocusShowStatusBar:
         legacy.doesWritingFocusShowStatusBar ??
         DEFAULT_SETTINGS.writingFocus.doesWritingFocusShowStatusBar,
+      doesWritingFocusShowVignette:
+        legacy.doesWritingFocusShowVignette ??
+        DEFAULT_SETTINGS.writingFocus.doesWritingFocusShowVignette,
       isWritingFocusFullscreen:
         legacy.isWritingFocusFullscreen ??
         DEFAULT_SETTINGS.writingFocus.isWritingFocusFullscreen,
-      writingFocusVignetteStyle:
-        legacy.writingFocusVignetteStyle ??
-        DEFAULT_SETTINGS.writingFocus.writingFocusVignetteStyle,
       writingFocusFontSize:
         legacy.writingFocusFontSize ??
         DEFAULT_SETTINGS.writingFocus.writingFocusFontSize,
-    },
-    restoreCursorPosition: {
-      isRestoreCursorPositionEnabled:
-        legacy.isRestoreCursorPositionEnabled ??
-        DEFAULT_SETTINGS.restoreCursorPosition.isRestoreCursorPositionEnabled,
-      cursorPositions: {},
-    },
-    hemingwayMode: {
-      isHemingwayModeEnabled:
-        legacy.isHemingwayModeEnabled ??
-        DEFAULT_SETTINGS.hemingwayMode.isHemingwayModeEnabled,
-      isHemingwayModeOnlyInWritingFocusModeEnabled:
-        DEFAULT_SETTINGS.hemingwayMode
-          .isHemingwayModeOnlyInWritingFocusModeEnabled,
-      isAllowBackspaceInHemingwayModeEnabled:
-        legacy.isAllowBackspaceInHemingwayModeEnabled ??
-        DEFAULT_SETTINGS.hemingwayMode.isAllowBackspaceInHemingwayModeEnabled,
-      isShowHemingwayModeStatusBarEnabled:
-        legacy.isShowHemingwayModeStatusBarEnabled ??
-        DEFAULT_SETTINGS.hemingwayMode.isShowHemingwayModeStatusBarEnabled,
-      hemingwayModeStatusBarText:
-        legacy.hemingwayModeStatusBarText &&
-        legacy.hemingwayModeStatusBarText !== "Hemingway"
-          ? legacy.hemingwayModeStatusBarText
-          : DEFAULT_SETTINGS.hemingwayMode.hemingwayModeStatusBarText,
+      writingFocusVignetteStyle:
+        legacy.writingFocusVignetteStyle ??
+        DEFAULT_SETTINGS.writingFocus.writingFocusVignetteStyle,
     },
   };
 }

@@ -11,8 +11,8 @@ export default class WritingFocusVignetteStyle extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Writing focus vignette style"),
       desc: t("The style of the vignette in writing focus mode"),
+      name: t("Writing focus vignette style"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown

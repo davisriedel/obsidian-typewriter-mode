@@ -113,14 +113,14 @@ class FilePathsModal extends Modal {
 
     columnEl.createEl("h3", { text: title });
     columnEl.createEl("p", {
-      text: description,
       cls: "setting-item-description",
+      text: description,
     });
 
     const inputEl = columnEl.createEl("input", {
-      type: "text",
-      placeholder: t("Type to search vault paths…"),
       cls: "typewriter-mode-file-paths-input",
+      placeholder: t("Type to search vault paths…"),
+      type: "text",
     });
 
     const listEl = columnEl.createDiv({
@@ -132,16 +132,16 @@ class FilePathsModal extends Modal {
       const paths = getPaths();
       if (paths.length === 0) {
         listEl.createEl("p", {
-          text: t("No paths configured."),
           cls: "setting-item-description",
+          text: t("No paths configured."),
         });
         return;
       }
       for (const [index, path] of paths.entries()) {
         const row = listEl.createDiv({ cls: "typewriter-mode-file-paths-row" });
         row.createEl("code", {
-          text: path,
           cls: "typewriter-mode-file-paths-row-name",
+          text: path,
         });
         const removeBtn = row.createEl("button", { text: t("Remove") });
         removeBtn.addEventListener("click", () => {
@@ -172,10 +172,10 @@ export default class EnabledFilePaths extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("File paths"),
       desc: t(
         "Configure which files or folders the plugin is enabled or disabled in."
       ),
+      name: t("File paths"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addButton((button) =>
           button.setButtonText(t("Configure")).onClick(() => {

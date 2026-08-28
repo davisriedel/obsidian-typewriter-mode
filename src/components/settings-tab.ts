@@ -48,7 +48,6 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
 
       // Typewriter
       {
-        type: "group",
         heading: t("Typewriter"),
         items: [
           {
@@ -61,11 +60,11 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
           },
           ...this.featureDefs(this.tm.features.typewriter, refresh),
         ],
+        type: "group",
       },
 
       // Keep lines above and below
       {
-        type: "group",
         heading: t("Keep lines above and below"),
         items: [
           {
@@ -75,56 +74,56 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
           },
           ...this.featureDefs(this.tm.features.keepAboveAndBelow, refresh),
         ],
+        type: "group",
       },
 
       // Highlight current line
       {
-        type: "group",
         heading: t("Highlight current line"),
         items: this.featureDefs(this.tm.features.currentLine, refresh),
+        type: "group",
       },
 
       // Limit line width
       {
-        type: "group",
         heading: t("Limit line width"),
         items: this.featureDefs(this.tm.features.maxChar, refresh),
+        type: "group",
       },
 
       // Dimming
       {
-        type: "group",
         heading: t("Dimming"),
         items: this.featureDefs(this.tm.features.dimming, refresh),
+        type: "group",
       },
 
       // Writing focus
       {
-        type: "group",
         heading: t("Writing focus"),
         items: this.featureDefs(this.tm.features.writingFocus, refresh),
+        type: "group",
       },
 
       // Hemingway mode
       {
-        type: "group",
         heading: t("Hemingway mode"),
         items: this.featureDefs(this.tm.features.hemingwayMode, refresh),
+        type: "group",
       },
 
       // Restore cursor position
       {
-        type: "group",
         heading: t("Restore cursor position"),
         items: this.featureDefs(
           this.tm.features.restoreCursorPosition,
           refresh
         ),
+        type: "group",
       },
 
       // Update notice and funding
       {
-        type: "group",
         heading: t("Update notice and funding"),
         items: [
           ...this.featureDefs(this.tm.features.updates, refresh),
@@ -147,6 +146,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
             },
           },
         ],
+        type: "group",
       },
     ];
   }

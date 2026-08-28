@@ -5,6 +5,7 @@ import { build } from "./common/scripts/build";
 import { setupTestVault } from "./common/scripts/setup-test-vault";
 
 const { values: args } = parseArgs({
+  allowPositionals: true,
   args: Bun.argv,
   options: {
     debug: {
@@ -12,7 +13,6 @@ const { values: args } = parseArgs({
     },
   },
   strict: true,
-  allowPositionals: true,
 });
 
 await build({ stripDebug: args.debug });

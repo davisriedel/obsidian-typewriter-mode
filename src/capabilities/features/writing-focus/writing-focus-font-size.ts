@@ -7,10 +7,10 @@ export default class WritingFocusFontSize extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Writing focus font size"),
       desc: t(
         "Custom font size in points for writing focus mode (0 = use default font size)"
       ),
+      name: t("Writing focus font size"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

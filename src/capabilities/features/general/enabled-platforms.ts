@@ -14,8 +14,8 @@ export default class EnabledPlatforms extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t(this.settingTitle),
       desc: t(this.settingDesc),
+      name: t(this.settingTitle),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown

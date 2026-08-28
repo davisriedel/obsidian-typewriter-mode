@@ -12,6 +12,13 @@
       "complexity": {
         "noForEach": "off",
         "noExcessiveCognitiveComplexity": "warn"
+      },
+      "style": {
+        "useDestructuring": "off",
+        "noIncrementDecrement": "off"
+      },
+      "suspicious": {
+        "noUnnecessaryConditions": "off"
       }
     }
   }

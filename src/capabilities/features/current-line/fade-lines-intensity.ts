@@ -25,8 +25,8 @@ export default class FadeLinesIntensity extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Intensity of the fade lines gradient"),
       desc: t("How soon lines shall be faded out"),
+      name: t("Intensity of the fade lines gradient"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

@@ -28,10 +28,10 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Current line underline thickness"),
       desc: t(
         "The thickness of the underline that highlights the current line"
       ),
+      name: t("Current line underline thickness"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

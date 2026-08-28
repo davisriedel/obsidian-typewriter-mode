@@ -25,8 +25,8 @@ export default class DimmedOpacity extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Opacity of dimmed elements"),
       desc: t("The opacity of dimmed elements"),
+      name: t("Opacity of dimmed elements"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

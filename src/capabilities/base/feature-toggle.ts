@@ -43,8 +43,8 @@ export abstract class FeatureToggle extends Feature {
 
   override getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t(this.settingTitle),
       desc: t(this.settingDesc),
+      name: t(this.settingTitle),
       render: (setting) => {
         setting
           .setClass("typewriter-mode-setting")

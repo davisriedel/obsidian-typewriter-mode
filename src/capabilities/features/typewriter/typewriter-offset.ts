@@ -7,10 +7,10 @@ export default class TypewriterOffset extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Typewriter offset"),
       desc: t(
         "Positions the typewriter line at the specified percentage of the screen"
       ),
+      name: t("Typewriter offset"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider

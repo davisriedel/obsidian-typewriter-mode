@@ -12,7 +12,7 @@ lint-md:
   bun rumdl check --fix .
 
 typecheck:
-  bun tsgo --noEmit
+  bun tsc --noEmit
 
 check: typecheck lint lint-styles lint-md
 

@@ -62,8 +62,8 @@ export default class HemingwayMode extends FeatureToggle {
       this.updateStatusBar();
     });
     observer.observe(activeDocument.body, {
-      attributes: true,
       attributeFilter: ["class"],
+      attributes: true,
     });
     this.tm.plugin.register(() => observer.disconnect());
   }

@@ -112,9 +112,9 @@ class TypewriterModeCM6Plugin {
 
     if (userEvents.length === 0) {
       return {
+        allowedUserEvents: null,
         isReconfigured,
         isUserEvent: false,
-        allowedUserEvents: null,
       };
     }
 
@@ -123,9 +123,9 @@ class TypewriterModeCM6Plugin {
       userEvents.length > 0
     );
     return {
+      allowedUserEvents,
       isReconfigured: false,
       isUserEvent: true,
-      allowedUserEvents,
     };
   }
 
@@ -398,7 +398,7 @@ class TypewriterModeCM6Plugin {
         editorDom.appendChild(fadeAfter);
       }
 
-      return { currentLine, fadeBefore, fadeAfter };
+      return { currentLine, fadeAfter, fadeBefore };
     }
 
     return { currentLine };

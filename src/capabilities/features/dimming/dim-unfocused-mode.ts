@@ -29,8 +29,8 @@ export default class DimUnfocusedMode extends Feature {
 
   getDefinition(onChanged?: () => void): SettingDefinition {
     return {
-      name: t("Dim unfocused mode"),
       desc: t("Choose to dim unfocused paragraphs or sentences"),
+      name: t("Dim unfocused mode"),
       render: (setting) => {
         setting.setClass("typewriter-mode-setting").addDropdown((dropdown) =>
           dropdown

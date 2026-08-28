@@ -55,7 +55,7 @@ async function getReleaseNotesAfter(
   }
 
   // If releaseTagName is null show all release notes
-  if (releaseTagName == null) {
+  if (releaseTagName === null) {
     return releases.filter((release) => !(release.draft || release.prerelease));
   }
 

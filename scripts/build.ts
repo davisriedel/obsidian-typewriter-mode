@@ -4,6 +4,7 @@ import { parseArgs } from "node:util";
 import { build } from "./common/scripts/build";
 
 const { values: args } = parseArgs({
+  allowPositionals: true,
   args: Bun.argv,
   options: {
     lib: {
@@ -11,13 +12,12 @@ const { values: args } = parseArgs({
     },
   },
   strict: true,
-  allowPositionals: true,
 });
 
 await build({
   entrypoints: { main: args.lib ? "lib.ts" : "main.ts" },
-  outDir: args.lib ? "lib-dist" : "dist",
   format: args.lib ? "esm" : "cjs",
-  stripDebug: true,
   generateTypes: !!args.lib,
+  outDir: args.lib ? "lib-dist" : "dist",
+  stripDebug: true,
 });
