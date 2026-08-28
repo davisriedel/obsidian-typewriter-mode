@@ -21,16 +21,16 @@ jobs:
     needs: check
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: 'true'
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: latest
-      - uses: extractions/setup-just@v4
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
 
       - name: Install grass from crates.io
-        uses: baptiste0928/cargo-install@v3
+        uses: baptiste0928/cargo-install@0f9287ef7fc8a8d572ce269250936ded8fbc5323 # v3
         with:
           crate: grass
 
@@ -43,7 +43,7 @@ jobs:
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
 
       - name: Create Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@c12583777ecdfd3be55c69cf75464299dc01057e # v3
         with:
           prerelease: ${{ contains(github.ref, '-') }}
           body_path: ./dist/release-notes.md
@@ -52,4 +52,3 @@ jobs:
             dist/main.js
             dist/manifest.json
             dist/styles.css
-
