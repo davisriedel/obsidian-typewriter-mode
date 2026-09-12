@@ -745,12 +745,13 @@ class TypewriterModeCM6Plugin {
   private restoreCursorPosition(view: EditorView) {
     console.debug("Start restoreCursorPosition");
 
-    const rcp = this.tm.getRestoreCursorPositionFeature();
+    if (
+      !this.tm.settings.restoreCursorPosition.isRestoreCursorPositionEnabled
+    ) {
+      return;
+    }
 
-    // Persite the previous state everytime a new file is opened
-    rcp.saveState().catch((error) => {
-      console.error("Failed to save cursor state:", error);
-    });
+    const rcp = this.tm.getRestoreCursorPositionFeature();
 
     const fileName = this.tm.plugin.app.workspace.getActiveFile()?.path;
 

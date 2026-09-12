@@ -2,10 +2,19 @@
 
 import type { SelectionRange } from "@codemirror/state";
 import type { EditorView } from "@codemirror/view";
-import type { TAbstractFile, TFile } from "obsidian";
+import type { EventRef, TAbstractFile, TFile } from "obsidian";
 import { FeatureToggle } from "@/capabilities/base/feature-toggle";
 
+const CURSOR_SAVE_DEBOUNCE_MS = 1000;
+
 export default class RestoreCursorPosition extends FeatureToggle {
+  private isEnabled = false;
+  private deleteEvent: EventRef | null = null;
+  private fileOpenEvent: EventRef | null = null;
+  private quitEvent: EventRef | null = null;
+  private renameEvent: EventRef | null = null;
+  private saveTimer: ReturnType<typeof setTimeout> | null = null;
+
   readonly settingKey =
     "restoreCursorPosition.isRestoreCursorPositionEnabled" as const;
   protected settingTitle = "Restore cursor position";
@@ -23,41 +32,64 @@ export default class RestoreCursorPosition extends FeatureToggle {
   }
 
   override enable(): void {
+    if (this.isEnabled) {
+      return;
+    }
+
     super.enable();
+    this.isEnabled = true;
 
-    this.tm.plugin.registerEvent(
-      this.tm.plugin.app.workspace.on("quit", this.saveState)
+    this.quitEvent = this.tm.plugin.app.workspace.on("quit", this.saveState);
+    this.renameEvent = this.tm.plugin.app.vault.on("rename", this.onRenameFile);
+    this.deleteEvent = this.tm.plugin.app.vault.on("delete", this.onDeleteFile);
+    this.fileOpenEvent = this.tm.plugin.app.workspace.on(
+      "file-open",
+      this.onFileOpen
     );
 
-    this.tm.plugin.registerEvent(
-      this.tm.plugin.app.vault.on("rename", this.onRenameFile)
-    );
-
-    this.tm.plugin.registerEvent(
-      this.tm.plugin.app.vault.on("delete", this.onDeleteFile)
-    );
-
-    this.tm.plugin.registerEvent(
-      this.tm.plugin.app.workspace.on("file-open", this.onFileOpen)
-    );
+    this.tm.plugin.registerEvent(this.quitEvent);
+    this.tm.plugin.registerEvent(this.renameEvent);
+    this.tm.plugin.registerEvent(this.deleteEvent);
+    this.tm.plugin.registerEvent(this.fileOpenEvent);
   }
 
   override disable(): void {
-    this.saveState().catch((error) => {
-      console.error("Failed to save cursor state:", error);
-    });
-    this.tm.plugin.app.workspace.off("quit", this.saveState);
-    // @ts-expect-error
-    this.tm.plugin.app.workspace.off("rename", this.onRenameFile);
-    // @ts-expect-error
-    this.tm.plugin.app.workspace.off("delete", this.onDeleteFile);
-    // @ts-expect-error
-    this.tm.plugin.app.workspace.off("file-open", this.onFileOpen);
+    if (!this.isEnabled) {
+      return;
+    }
+
+    this.isEnabled = false;
+    if (this.saveTimer !== null) {
+      clearTimeout(this.saveTimer);
+      this.saveTimer = null;
+    }
+
+    if (this.quitEvent) {
+      this.tm.plugin.app.workspace.offref(this.quitEvent);
+      this.quitEvent = null;
+    }
+    if (this.renameEvent) {
+      this.tm.plugin.app.vault.offref(this.renameEvent);
+      this.renameEvent = null;
+    }
+    if (this.deleteEvent) {
+      this.tm.plugin.app.vault.offref(this.deleteEvent);
+      this.deleteEvent = null;
+    }
+    if (this.fileOpenEvent) {
+      this.tm.plugin.app.workspace.offref(this.fileOpenEvent);
+      this.fileOpenEvent = null;
+    }
+    super.disable();
   }
 
   readonly saveState = async () => {
+    if (!this.getSettingValue()) {
+      return;
+    }
+
     console.debug("Save cursor state");
-    await this.tm.saveSettings();
+    await this.tm.saveCursorPositions(this.state);
   };
 
   private readonly onRenameFile = (file: TAbstractFile, oldPath: string) => {
@@ -65,11 +97,13 @@ export default class RestoreCursorPosition extends FeatureToggle {
     const oldName = oldPath;
     this.state[newName] = this.state[oldName];
     delete this.state[oldName];
+    this.scheduleSave();
   };
 
   private readonly onDeleteFile = (file: TAbstractFile) => {
     const fileName = file.path;
     delete this.state[fileName];
+    this.scheduleSave();
   };
 
   setCursorState(st: SelectionRange) {
@@ -78,7 +112,24 @@ export default class RestoreCursorPosition extends FeatureToggle {
       return;
     }
     this.state[fileName] = st;
+    this.scheduleSave();
     console.debug("setCursorState", fileName, st);
+  }
+
+  private scheduleSave(): void {
+    if (!this.isEnabled) {
+      return;
+    }
+
+    if (this.saveTimer !== null) {
+      clearTimeout(this.saveTimer);
+    }
+    this.saveTimer = setTimeout(() => {
+      this.saveTimer = null;
+      this.saveState().catch((error) => {
+        console.error("Failed to save cursor state:", error);
+      });
+    }, CURSOR_SAVE_DEBOUNCE_MS);
   }
 
   private readonly onFileOpen = (file: TFile | null): void => {

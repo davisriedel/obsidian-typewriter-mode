@@ -13,13 +13,12 @@ import {
   DEFAULT_SETTINGS,
   type TypewriterModeSettings,
 } from "./capabilities/settings";
+import SettingsPersistence from "./capabilities/settings-persistence";
 
 export default class TypewriterModeLib {
   readonly plugin: Plugin;
   private readonly loadData: () => Promise<TypewriterModeSettings>;
-  private readonly saveData: (
-    settings: TypewriterModeSettings
-  ) => Promise<void>;
+  private readonly settingsPersistence: SettingsPersistence;
 
   settings: TypewriterModeSettings = DEFAULT_SETTINGS;
 
@@ -43,7 +42,7 @@ export default class TypewriterModeLib {
   ) {
     this.plugin = plugin;
     this.loadData = loadData;
-    this.saveData = saveData;
+    this.settingsPersistence = new SettingsPersistence(loadData, saveData);
 
     // Features must be loaded first!
     this.features = getFeatures(this);
@@ -123,8 +122,18 @@ export default class TypewriterModeLib {
   }
 
   async saveSettings() {
-    await this.saveData(this.settings);
+    await this.settingsPersistence.save(this.settings);
     this.plugin.app.workspace.updateOptions();
+  }
+
+  async saveCursorPositions(cursorPositions: Record<string, unknown>) {
+    const saved =
+      await this.settingsPersistence.saveCursorPositions(cursorPositions);
+    if (!saved) {
+      console.warn(
+        "Typewriter Mode: Skipped saving cursor positions because the current settings file is missing or invalid."
+      );
+    }
   }
 
   setCSSVariable(property: string, value: string) {
