@@ -32,7 +32,6 @@
     "lefthook": "^2.1.10",
     "obsidian": "^1.13.1",
     "resolve-tspaths": "^0.8.23",
-    "rumdl": "^0.2.62",
     "stylelint": "^17.14.1",
     "stylelint-config-standard-scss": "^17.0.0",
     "typescript": "^7.0.2",

@@ -1,6 +1,6 @@
 pre-commit:
   jobs:
-    - run: just check
+    - run: mise run check
       glob:
         - "*.js"
         - "*.jsx"

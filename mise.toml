@@ -1,0 +1,54 @@
+[tools]
+rust = "1.98.1"
+"cargo:grass" = "0.13.4"
+rumdl = "0.2.62"
+
+[tasks.default]
+description = "List available tasks"
+run = "mise tasks"
+
+[tasks.lint]
+description = "Lint and format source files"
+run = "bun biome check --write"
+
+[tasks.lint-styles]
+description = "Lint and format styles"
+run = 'bun stylelint --fix "src/**/*.scss"'
+
+[tasks.lint-md]
+description = "Lint and format Markdown"
+run = "rumdl check --fix ."
+
+[tasks.typecheck]
+description = "Type-check the project"
+run = "bun tsc --noEmit"
+
+[tasks.check]
+description = "Run all checks"
+depends = ["typecheck", "lint", "lint-styles", "lint-md"]
+
+[tasks.build]
+description = "Build the plugin"
+run = "bun ./scripts/build.ts"
+
+[tasks.build-lib]
+description = "Build the plugin library"
+run = "bun ./scripts/build.ts --lib"
+
+[tasks.dev]
+description = "Build the plugin in development mode"
+run = "bun ./scripts/dev.ts"
+
+[tasks.debug]
+description = "Build the plugin with debug logging"
+run = "bun ./scripts/dev.ts --debug"
+
+[tasks.release]
+description = "Check and release the plugin"
+depends = ["check"]
+run = "bun ./scripts/release.ts"
+
+[tasks.ci]
+description = "Generate CI artifacts"
+depends = ["build"]
+run = "bun ./scripts/generate-ci-artefacts.ts"
