@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0-beta.2
+
+- Fix root-level vault folders not appearing in file path suggestions
+- Fix cursor position persistence overwriting newer synced settings
+
 ## 1.6.0-beta.1
 
 - Add Chinese/Japanese sentence delimiters
