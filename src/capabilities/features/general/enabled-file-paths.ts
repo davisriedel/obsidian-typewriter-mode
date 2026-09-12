@@ -35,6 +35,11 @@ class VaultPathSuggest extends AbstractInputSuggest<string> {
     const lower = query.toLowerCase();
     return this.vaultPaths
       .filter((p) => p.toLowerCase().includes(lower))
+      .sort((a, b) => {
+        const matchPosition =
+          a.toLowerCase().indexOf(lower) - b.toLowerCase().indexOf(lower);
+        return matchPosition || a.length - b.length || a.localeCompare(b);
+      })
       .slice(0, 20);
   }
 

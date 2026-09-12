@@ -35,12 +35,25 @@ run = "bun ./scripts/build.ts"
 description = "Build the plugin library"
 run = "bun ./scripts/build.ts --lib"
 
+[tasks.create-test-vault]
+description = "Create an empty Obsidian test vault"
+run = "mkdir -p test-vault/.obsidian"
+
+[tasks.open-test-vault]
+description = "Open the test vault in Obsidian"
+depends = ["create-test-vault"]
+run = '''
+obsidian eval "code=window.electron.ipcRenderer.sendSync('vault-open', '$(pwd)/test-vault', false)"
+'''
+
 [tasks.dev]
 description = "Build the plugin in development mode"
+depends = ["create-test-vault"]
 run = "bun ./scripts/dev.ts"
 
 [tasks.debug]
 description = "Build the plugin with debug logging"
+depends = ["create-test-vault"]
 run = "bun ./scripts/dev.ts --debug"
 
 [tasks.release]
