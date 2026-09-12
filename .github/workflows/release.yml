@@ -27,17 +27,12 @@ jobs:
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: latest
-      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
-
-      - name: Install grass from crates.io
-        uses: baptiste0928/cargo-install@0f9287ef7fc8a8d572ce269250936ded8fbc5323 # v3
-        with:
-          crate: grass
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
       - name: Build
         run: |
           bun install
-          just ci
+          mise run ci
           mkdir ${{ env.PLUGIN_NAME }}
           cp -r dist/* ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
