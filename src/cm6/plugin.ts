@@ -28,12 +28,17 @@ const USER_EVENT_ALLOWED_DEFAULT = /^(select|input|delete|undo|redo)(\..+)?$/;
 const USER_EVENT_DISALLOWED_DEFAULT = /^(select.pointer)$/;
 const USER_EVENT_ALLOWED_COMMANDS_ONLY = /^(input|delete|undo|redo)(\..+)?$/;
 const USER_EVENT_DISALLOWED_COMMANDS_ONLY = /^(select)(\..+)?$/;
+const markdownTableRowPattern = /^\|.*\|$/;
+const markdownTableSeparatorPattern =
+  /^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$/;
 
 class TypewriterModeCM6Plugin {
   protected tm: TypewriterModeLib;
   protected view: EditorView;
 
   private domResizeObserver: ResizeObserver | null = null;
+  private tableWidgetObserver: MutationObserver | null = null;
+  private tableOverlayCheckFrame: number | null = null;
 
   private readonly onScrollEventKey: "wheel" | "touchmove";
   private isListeningToOnScroll = false;
@@ -41,6 +46,7 @@ class TypewriterModeCM6Plugin {
 
   private isInitialInteraction = true;
   private isRenderingAllowedUserEvent = false;
+  private isNestedEditorFocused = false;
   decorations: RangeSet<Decoration> = RangeSet.empty;
 
   private isPerWindowPropsReloadRequired = false;
@@ -48,6 +54,8 @@ class TypewriterModeCM6Plugin {
   private readonly moveByCommandBound = this.moveByCommand.bind(this);
   private readonly onScrollBound = this.onScroll.bind(this);
   private readonly onResizeBound = this.onResize.bind(this);
+  private readonly onFocusInBound = this.onFocusIn.bind(this);
+  private readonly onTableDomMutationBound = this.onTableDomMutation.bind(this);
 
   constructor(tm: TypewriterModeLib, view: EditorView) {
     this.tm = tm;
@@ -60,10 +68,21 @@ class TypewriterModeCM6Plugin {
 
   destroy() {
     this.domResizeObserver?.disconnect();
+    this.tableWidgetObserver?.disconnect();
+    if (this.tableOverlayCheckFrame !== null) {
+      window.cancelAnimationFrame(this.tableOverlayCheckFrame);
+      this.tableOverlayCheckFrame = null;
+    }
 
     this.destroyCurrentLine();
 
     this.removeScrollListener();
+
+    this.view.dom.ownerDocument.removeEventListener(
+      "focusin",
+      this.onFocusInBound,
+      true
+    );
 
     window.removeEventListener("moveByCommand", this.moveByCommandBound);
   }
@@ -77,6 +96,19 @@ class TypewriterModeCM6Plugin {
     window.addEventListener("moveByCommand", this.moveByCommandBound);
 
     this.watchEmbeddedMarkdown();
+    this.tableWidgetObserver = new MutationObserver(
+      this.onTableDomMutationBound
+    );
+    this.tableWidgetObserver.observe(this.view.dom, {
+      childList: true,
+      subtree: true,
+    });
+    this.scheduleTableOverlayCheck(8);
+    this.view.dom.ownerDocument.addEventListener(
+      "focusin",
+      this.onFocusInBound,
+      true
+    );
     this.onReconfigured();
 
     window.requestAnimationFrame(() => {
@@ -134,6 +166,7 @@ class TypewriterModeCM6Plugin {
       this.inspectTransactions(update);
 
     if (this.isTableCell()) {
+      this.destroyCurrentLine();
       return;
     }
 
@@ -163,11 +196,156 @@ class TypewriterModeCM6Plugin {
   }
 
   private isTableCell() {
+    // A nested-editor focus event can remain stale after focus returns to the
+    // outer editor. Only treat the editor as a table cell when the current DOM
+    // or document position still proves that it is inside a table.
+    if (this.isActiveTableEditor()) {
+      return true;
+    }
+
+    if (this.isInMarkdownTableBlock()) {
+      return true;
+    }
+
+    const activeLine = this.view.contentDOM.querySelector(".cm-active.cm-line");
+    if (activeLine?.closest(".HyperMD-table-row")) {
+      return true;
+    }
+
     return (
       this.view.dom.parentElement?.parentElement?.className.contains(
         "table-cell-wrapper"
       ) ?? false
     );
+  }
+
+  private isActiveTableEditor() {
+    const activeElement = this.view.dom.ownerDocument.activeElement;
+    const tableEditor =
+      this.view.dom.querySelector<HTMLElement>(".table-editor");
+    return Boolean(
+      activeElement instanceof Element && tableEditor?.contains(activeElement)
+    );
+  }
+
+  private onTableDomMutation() {
+    this.scheduleTableOverlayCheck();
+  }
+
+  private scheduleTableOverlayCheck(remainingFrames = 4) {
+    if (this.tableOverlayCheckFrame !== null) {
+      return;
+    }
+
+    this.tableOverlayCheckFrame = window.requestAnimationFrame(() => {
+      this.tableOverlayCheckFrame = null;
+      if (this.removeCurrentLineIfOverTable()) {
+        return;
+      }
+
+      if (
+        remainingFrames > 0 &&
+        this.view.dom.querySelector(`.${currentLineClass}`)
+      ) {
+        this.scheduleTableOverlayCheck(remainingFrames - 1);
+      }
+    });
+  }
+
+  private isCurrentLineOverTable(view: EditorView, currentLine: HTMLElement) {
+    const currentLineRect = currentLine.getBoundingClientRect();
+    if (!(currentLineRect.width && currentLineRect.height)) {
+      return false;
+    }
+
+    const tableEditors =
+      view.dom.querySelectorAll<HTMLElement>(".table-editor");
+    const tableWidgets = tableEditors.length
+      ? tableEditors
+      : view.dom.querySelectorAll<HTMLElement>("table");
+
+    return Array.from(tableWidgets).some((tableWidget) => {
+      const tableRect = tableWidget.getBoundingClientRect();
+      return (
+        currentLineRect.left < tableRect.right &&
+        currentLineRect.right > tableRect.left &&
+        currentLineRect.top < tableRect.bottom &&
+        currentLineRect.bottom > tableRect.top
+      );
+    });
+  }
+
+  private removeCurrentLineIfOverTable(view: EditorView = this.view) {
+    const editorDom = getEditorDom(view);
+    const currentLine = editorDom?.querySelector<HTMLElement>(
+      `.${currentLineClass}`
+    );
+    if (!(currentLine && this.isCurrentLineOverTable(view, currentLine))) {
+      return false;
+    }
+
+    this.destroyCurrentLine(view);
+    return true;
+  }
+
+  private isInMarkdownTableBlock() {
+    const { doc } = this.view.state;
+    const activeLineNumber = doc.lineAt(
+      this.view.state.selection.main.head
+    ).number;
+    const getLineText = (lineNumber: number) =>
+      lineNumber >= 1 && lineNumber <= doc.lines
+        ? doc.line(lineNumber).text.trim()
+        : "";
+    const isTableRow = (text: string) => markdownTableRowPattern.test(text);
+    const isTableSeparator = (text: string) =>
+      markdownTableSeparatorPattern.test(text);
+
+    const activeLineText = getLineText(activeLineNumber);
+    if (isTableRow(activeLineText) || isTableSeparator(activeLineText)) {
+      return true;
+    }
+
+    // Live Preview may keep the caret on the blank line immediately before
+    // the table while rendering the whole table as one oversized widget.
+    const nextLineText = getLineText(activeLineNumber + 1);
+    const lineAfterNextText = getLineText(activeLineNumber + 2);
+    if (
+      activeLineText === "" &&
+      isTableRow(nextLineText) &&
+      isTableSeparator(lineAfterNextText)
+    ) {
+      return true;
+    }
+
+    const previousLineText = getLineText(activeLineNumber - 1);
+    const lineBeforePreviousText = getLineText(activeLineNumber - 2);
+    return (
+      activeLineText === "" &&
+      isTableRow(previousLineText) &&
+      (isTableRow(lineBeforePreviousText) ||
+        isTableSeparator(lineBeforePreviousText))
+    );
+  }
+
+  private onFocusIn(event: FocusEvent) {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const focusedEditor = target.closest(".cm-editor");
+    const isTextInput = target.matches(
+      "input, textarea, [contenteditable='true'], [role='textbox']"
+    );
+    this.isNestedEditorFocused = Boolean(
+      target !== this.view.contentDOM &&
+        (isTextInput || (focusedEditor && focusedEditor !== this.view.dom))
+    );
+
+    if (this.isNestedEditorFocused) {
+      this.destroyCurrentLine();
+    }
   }
 
   private isMarkdownFile() {
@@ -288,6 +466,7 @@ class TypewriterModeCM6Plugin {
     } else {
       this.updateAfterExternalEvent();
     }
+    this.scheduleTableOverlayCheck(8);
   }
 
   private watchEmbeddedMarkdown() {
@@ -438,6 +617,9 @@ class TypewriterModeCM6Plugin {
       scrollDom.addEventListener(this.onScrollEventKey, this.onScrollBound, {
         passive: true,
       });
+      scrollDom.addEventListener("scroll", this.onScrollBound, {
+        passive: true,
+      });
       this.isListeningToOnScroll = true;
     }
   }
@@ -451,6 +633,7 @@ class TypewriterModeCM6Plugin {
     const scrollDom = getScrollDom(this.view);
     if (scrollDom) {
       scrollDom.removeEventListener(this.onScrollEventKey, this.onScrollBound);
+      scrollDom.removeEventListener("scroll", this.onScrollBound);
       this.isListeningToOnScroll = false;
     }
   }
@@ -575,6 +758,7 @@ class TypewriterModeCM6Plugin {
   }
 
   private onResize() {
+    this.scheduleTableOverlayCheck();
     if (this.isDisabled()) {
       return;
     }
@@ -582,6 +766,7 @@ class TypewriterModeCM6Plugin {
   }
 
   private onScroll() {
+    this.scheduleTableOverlayCheck(2);
     this.measureTypewriterPosition(
       "TypewriterModeOnScroll",
       (measure, view) => {
@@ -620,6 +805,8 @@ class TypewriterModeCM6Plugin {
   private updateAfterExternalEvent() {
     console.debug("updateAfterExternalEvent");
 
+    this.scheduleTableOverlayCheck(8);
+
     if (this.isTableCell()) {
       this.destroyCurrentLine();
       return;
@@ -654,6 +841,20 @@ class TypewriterModeCM6Plugin {
   ) {
     console.debug("moveCurrentLine", offset, lineOffset, lineHeight);
 
+    // Obsidian renders a Live Preview Markdown table as one oversized
+    // CodeMirror line. Never paint that widget as a normal current line.
+    const activeBlockHeight = view.lineBlockAt(
+      view.state.selection.main.head
+    ).height;
+    if (
+      lineHeight > view.defaultLineHeight * 2 ||
+      activeBlockHeight > view.defaultLineHeight * 2 ||
+      this.isTableCell()
+    ) {
+      this.destroyCurrentLine(view);
+      return;
+    }
+
     const result = this.loadCurrentLine(view);
     if (!result) {
       return;
@@ -661,6 +862,10 @@ class TypewriterModeCM6Plugin {
 
     result.currentLine.style.height = `${lineHeight}px`;
     result.currentLine.style.top = `${offset - lineOffset}px`;
+
+    if (this.removeCurrentLineIfOverTable(view)) {
+      return;
+    }
 
     // this is a workaround, because fadeBefore.style.bottom does not work somehow...
     if (result.fadeBefore) {
