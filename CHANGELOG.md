@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.6.0
+
+- The plugin is now available in Simplified and Traditional Chinese.
+- Sentence detection now supports Chinese/Japanese sentence delimiters.
+- Fixed: plugin settings sometimes not loading correctly.
+- Fixed: root-level vault folders not appearing in file path suggestions.
+- Fixed: cursor position persistence overwriting newer synced settings.
+
+_Thank you @wang-yzh for the Chinese localization and the Chinese/Japanese sentence
+detection support._
+
 ## 1.6.0-beta.2
 
 - Fix root-level vault folders not appearing in file path suggestions
