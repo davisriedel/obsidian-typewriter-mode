@@ -17,8 +17,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
         .addSlider((slider) =>
           slider
             .setLimits(1, 5, 1)
-            .setDynamicTooltip()
-            .setValue(this.getSettingValue() as number)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeCurrentLineHighlightUnderlineThickness(newValue);
             })
@@ -36,8 +35,7 @@ export default class CurrentLineHighlightUnderlineThickness extends Feature {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider
             .setLimits(1, 5, 1)
-            .setDynamicTooltip()
-            .setValue(this.getSettingValue() as number)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeCurrentLineHighlightUnderlineThickness(newValue);
               onChanged?.();

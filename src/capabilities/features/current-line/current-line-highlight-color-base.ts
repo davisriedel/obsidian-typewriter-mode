@@ -8,7 +8,7 @@ type ColorSettingKey<T extends ThemeMode> =
   `currentLine.currentLineHighlightColor-${T}`;
 
 const RGBA_REGEX =
-  /rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([0-9.]+))?\s*\)/;
+  /rgba?\s*\(\s*(?<r>\d+)\s*,\s*(?<g>\d+)\s*,\s*(?<b>\d+)\s*(?:,\s*(?<alpha>[0-9.]+))?\s*\)/u;
 
 export default abstract class CurrentLineHighlightColor extends Feature {
   readonly settingKey: ColorSettingKey<ThemeMode>;
@@ -41,7 +41,7 @@ export default abstract class CurrentLineHighlightColor extends Feature {
         .addColorPicker((colorPicker) =>
           colorPicker.setValue(color).onChange((newColor) => {
             const currentOpacity = this.parseColor(
-              this.getSettingValue() as string
+              this.getSettingValue()
             ).opacity;
             this.changeCurrentLineHighlightColor(newColor, currentOpacity);
           })
@@ -50,10 +50,9 @@ export default abstract class CurrentLineHighlightColor extends Feature {
           slider
             .setLimits(0, 1, 0.01)
             .setValue(opacity)
-            .setDynamicTooltip()
             .onChange((newOpacity) => {
               const currentColor = this.parseColor(
-                this.getSettingValue() as string
+                this.getSettingValue()
               ).color;
               this.changeCurrentLineHighlightColor(currentColor, newOpacity);
             })
@@ -79,7 +78,7 @@ export default abstract class CurrentLineHighlightColor extends Feature {
           .addColorPicker((colorPicker) =>
             colorPicker.setValue(color).onChange((newColor) => {
               const currentOpacity = this.parseColor(
-                this.getSettingValue() as string
+                this.getSettingValue()
               ).opacity;
               this.changeCurrentLineHighlightColor(newColor, currentOpacity);
               onChanged?.();
@@ -89,10 +88,9 @@ export default abstract class CurrentLineHighlightColor extends Feature {
             slider
               .setLimits(0, 1, 0.01)
               .setValue(opacity)
-              .setDynamicTooltip()
               .onChange((newOpacity) => {
                 const currentColor = this.parseColor(
-                  this.getSettingValue() as string
+                  this.getSettingValue()
                 ).color;
                 this.changeCurrentLineHighlightColor(currentColor, newOpacity);
                 onChanged?.();
@@ -111,12 +109,12 @@ export default abstract class CurrentLineHighlightColor extends Feature {
 
   private parseColor(colorString: string): { color: string; opacity: number } {
     // Try to parse rgba format
-    const rgbaMatch = colorString.match(RGBA_REGEX);
-    if (rgbaMatch) {
-      const r = Number.parseInt(rgbaMatch[1], 10);
-      const g = Number.parseInt(rgbaMatch[2], 10);
-      const b = Number.parseInt(rgbaMatch[3], 10);
-      const alpha = rgbaMatch[4] ? Number.parseFloat(rgbaMatch[4]) : 1;
+    const rgbaGroups = colorString.match(RGBA_REGEX)?.groups;
+    if (rgbaGroups) {
+      const r = Number.parseInt(rgbaGroups.r, 10);
+      const g = Number.parseInt(rgbaGroups.g, 10);
+      const b = Number.parseInt(rgbaGroups.b, 10);
+      const alpha = rgbaGroups.alpha ? Number.parseFloat(rgbaGroups.alpha) : 1;
 
       // biome-ignore lint/suspicious/noBitwiseOperators: Use bitwise operators for color conversion
       const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;

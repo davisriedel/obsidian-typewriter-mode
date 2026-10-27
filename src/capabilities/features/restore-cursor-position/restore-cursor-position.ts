@@ -13,7 +13,7 @@ export default class RestoreCursorPosition extends FeatureToggle {
   private fileOpenEvent: EventRef | null = null;
   private quitEvent: EventRef | null = null;
   private renameEvent: EventRef | null = null;
-  private saveTimer: ReturnType<typeof setTimeout> | null = null;
+  private saveTimer: number | null = null;
 
   readonly settingKey =
     "restoreCursorPosition.isRestoreCursorPositionEnabled" as const;
@@ -60,7 +60,7 @@ export default class RestoreCursorPosition extends FeatureToggle {
 
     this.isEnabled = false;
     if (this.saveTimer !== null) {
-      clearTimeout(this.saveTimer);
+      window.clearTimeout(this.saveTimer);
       this.saveTimer = null;
     }
 
@@ -122,9 +122,9 @@ export default class RestoreCursorPosition extends FeatureToggle {
     }
 
     if (this.saveTimer !== null) {
-      clearTimeout(this.saveTimer);
+      window.clearTimeout(this.saveTimer);
     }
-    this.saveTimer = setTimeout(() => {
+    this.saveTimer = window.setTimeout(() => {
       this.saveTimer = null;
       this.saveState().catch((error) => {
         console.error("Failed to save cursor state:", error);

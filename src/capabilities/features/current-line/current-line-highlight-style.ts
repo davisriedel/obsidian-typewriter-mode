@@ -26,7 +26,7 @@ export default class CurrentLineHighlightStyle extends Feature {
           dropdown
             .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, t("Box"))
             .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, t("Underline"))
-            .setValue(this.getSettingValue() as CurrentLineHighlightStyleType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeCurrentLineHighlightStyle(
                 newValue as CurrentLineHighlightStyleType
@@ -45,7 +45,7 @@ export default class CurrentLineHighlightStyle extends Feature {
           dropdown
             .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.BOX, t("Box"))
             .addOption(CURRENT_LINE_HIGHLIGHT_STYLE.UNDERLINE, t("Underline"))
-            .setValue(this.getSettingValue() as CurrentLineHighlightStyleType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeCurrentLineHighlightStyle(
                 newValue as CurrentLineHighlightStyleType

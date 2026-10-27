@@ -30,7 +30,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
               t("Dim all but the previously focused paragraph / sentence")
             )
             .addOption(DIM_UNFOCUSED_EDITORS_BEHAVIOR.ALL, t("Dim everything"))
-            .setValue(this.getSettingValue() as DimUnfocusedEditorsBehaviorType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeDimUnfocusedEditorsBehavior(
                 newValue as DimUnfocusedEditorsBehaviorType
@@ -58,7 +58,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
               t("Dim all but the previously focused paragraph / sentence")
             )
             .addOption(DIM_UNFOCUSED_EDITORS_BEHAVIOR.ALL, t("Dim everything"))
-            .setValue(this.getSettingValue() as DimUnfocusedEditorsBehaviorType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeDimUnfocusedEditorsBehavior(
                 newValue as DimUnfocusedEditorsBehaviorType
@@ -74,7 +74,7 @@ export default class DimUnfocusedEditorsBehavior extends Feature {
     super.load();
     this.tm.perWindowProps.bodyAttrs[
       "data-ptm-dim-unfocused-editors-behavior"
-    ] = this.getSettingValue() as DimUnfocusedEditorsBehaviorType;
+    ] = this.getSettingValue();
   }
 
   private changeDimUnfocusedEditorsBehavior(

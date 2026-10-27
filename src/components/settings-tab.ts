@@ -39,6 +39,7 @@ export default class TypewriterModeSettingTab extends PluginSettingTab {
     return Object.values(features).map((f) => f.getDefinition(onChanged));
   }
 
+  // Only invoked by Obsidian >= 1.13.0; older versions fall back to display()
   override getSettingDefinitions(): SettingDefinitionItem[] {
     const refresh = () => this.refreshDomState();
 

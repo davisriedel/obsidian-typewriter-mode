@@ -15,7 +15,6 @@ export default class TypewriterOffset extends Feature {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider
             .setLimits(0, 100, 5)
-            .setDynamicTooltip()
             .setValue((this.getSettingValue() as number) * 100)
             .onChange((newValue) => {
               this.changeTypewriterOffset(newValue / 100);
@@ -39,7 +38,6 @@ export default class TypewriterOffset extends Feature {
         .addSlider((slider) =>
           slider
             .setLimits(0, 100, 5)
-            .setDynamicTooltip()
             .setValue((this.getSettingValue() as number) * 100)
             .onChange((newValue) => {
               this.changeTypewriterOffset(newValue / 100);

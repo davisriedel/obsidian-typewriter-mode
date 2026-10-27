@@ -1,9 +1,6 @@
 import type { SettingDefinition, SettingGroup } from "obsidian";
 import { Feature } from "@/capabilities/base/feature";
-import {
-  ENABLED_PLATFORMS,
-  type EnabledPlatforms as EnabledPlatformsType,
-} from "@/capabilities/constants";
+import { ENABLED_PLATFORMS } from "@/capabilities/constants";
 import { t } from "@/i18n";
 
 export default class EnabledPlatforms extends Feature {
@@ -31,9 +28,9 @@ export default class EnabledPlatforms extends Feature {
               ENABLED_PLATFORMS.DESKTOP_AND_TABLET,
               t("Desktop and tablet")
             )
-            .setValue(this.getSettingValue() as EnabledPlatformsType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
-              this.setSettingValue(newValue as EnabledPlatformsType);
+              this.setSettingValue(newValue);
               this.tm.saveSettings().catch((error) => {
                 console.error("Failed to save settings:", error);
               });
@@ -64,9 +61,9 @@ export default class EnabledPlatforms extends Feature {
               ENABLED_PLATFORMS.DESKTOP_AND_TABLET,
               t("Desktop and tablet")
             )
-            .setValue(this.getSettingValue() as EnabledPlatformsType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
-              this.setSettingValue(newValue as EnabledPlatformsType);
+              this.setSettingValue(newValue);
               this.tm.saveSettings().catch((error) => {
                 console.error("Failed to save settings:", error);
               });

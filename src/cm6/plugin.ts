@@ -24,10 +24,12 @@ const fadeBeforeClass = "ptm-current-line-fade-before";
 const fadeAfterClass = "ptm-current-line-fade-after";
 
 // Regex patterns for user event validation
-const USER_EVENT_ALLOWED_DEFAULT = /^(select|input|delete|undo|redo)(\..+)?$/;
-const USER_EVENT_DISALLOWED_DEFAULT = /^(select.pointer)$/;
-const USER_EVENT_ALLOWED_COMMANDS_ONLY = /^(input|delete|undo|redo)(\..+)?$/;
-const USER_EVENT_DISALLOWED_COMMANDS_ONLY = /^(select)(\..+)?$/;
+const USER_EVENT_ALLOWED_DEFAULT =
+  /^(?:select|input|delete|undo|redo)(?:\..+)?$/u;
+const USER_EVENT_DISALLOWED_DEFAULT = /^select\.pointer$/u;
+const USER_EVENT_ALLOWED_COMMANDS_ONLY =
+  /^(?:input|delete|undo|redo)(?:\..+)?$/u;
+const USER_EVENT_DISALLOWED_COMMANDS_ONLY = /^select(?:\..+)?$/u;
 
 class TypewriterModeCM6Plugin {
   protected tm: TypewriterModeLib;
@@ -373,9 +375,7 @@ class TypewriterModeCM6Plugin {
     ) as HTMLElement;
 
     if (!currentLine) {
-      currentLine = editorDom.ownerDocument.createElement("div");
-      currentLine.className = currentLineClass;
-      editorDom.appendChild(currentLine);
+      currentLine = editorDom.createDiv({ cls: currentLineClass });
     }
 
     if (this.tm.settings.currentLine.isFadeLinesEnabled) {
@@ -387,15 +387,11 @@ class TypewriterModeCM6Plugin {
       ) as HTMLElement;
 
       if (!fadeBefore) {
-        fadeBefore = editorDom.ownerDocument.createElement("div");
-        fadeBefore.className = fadeBeforeClass;
-        editorDom.appendChild(fadeBefore);
+        fadeBefore = editorDom.createDiv({ cls: fadeBeforeClass });
       }
 
       if (!fadeAfter) {
-        fadeAfter = editorDom.ownerDocument.createElement("div");
-        fadeAfter.className = fadeAfterClass;
-        editorDom.appendChild(fadeAfter);
+        fadeAfter = editorDom.createDiv({ cls: fadeAfterClass });
       }
 
       return { currentLine, fadeAfter, fadeBefore };

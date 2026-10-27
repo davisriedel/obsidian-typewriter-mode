@@ -122,7 +122,7 @@ export function getSettingByPath<P extends SettingsPath>(
   const dot = path.indexOf(".");
   const category = path.slice(0, dot) as keyof TypewriterModeSettings;
   const key = path.slice(dot + 1);
-  return settings[category][key as never] as SettingValueAtPath<P>;
+  return settings[category][key as never];
 }
 
 export function setSettingByPath<P extends SettingsPath>(

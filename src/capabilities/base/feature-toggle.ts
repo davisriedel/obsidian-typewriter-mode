@@ -31,11 +31,9 @@ export abstract class FeatureToggle extends Feature {
         .setDesc(t(this.settingDesc))
         .setClass("typewriter-mode-setting")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.getSettingValue() as boolean)
-            .onChange((newValue) => {
-              this.toggle(newValue);
-            })
+          toggle.setValue(this.getSettingValue()).onChange((newValue) => {
+            this.toggle(newValue);
+          })
         )
         .setDisabled(!this.isSettingEnabled());
     });
@@ -49,12 +47,10 @@ export abstract class FeatureToggle extends Feature {
         setting
           .setClass("typewriter-mode-setting")
           .addToggle((toggle) =>
-            toggle
-              .setValue(this.getSettingValue() as boolean)
-              .onChange((newValue) => {
-                this.toggle(newValue);
-                onChanged?.();
-              })
+            toggle.setValue(this.getSettingValue()).onChange((newValue) => {
+              this.toggle(newValue);
+              onChanged?.();
+            })
           )
           .setDisabled(!this.isSettingEnabled());
       },

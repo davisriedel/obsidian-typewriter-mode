@@ -12,7 +12,7 @@
   }
 
   $max-level: 10;
-   
+
   @for $l from 1 through $max-level {
     @for $n from $l + 1 through $max-level {
       /* stylelint-disable-next-line selector-class-pattern */
@@ -21,7 +21,9 @@
       }
 
       /* stylelint-disable-next-line selector-class-pattern */
-      .HyperMD-list-line-#{$l}:has(~ .HyperMD-list-line-#{$l} ~ .HyperMD-list-line-#{$n}.cm-active) {
+      .HyperMD-list-line-#{$l}:has(
+          ~ .HyperMD-list-line-#{$l} ~ .HyperMD-list-line-#{$n}.cm-active
+        ) {
         @include dimmed.dimmed(true);
       }
     }

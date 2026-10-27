@@ -1,11 +1,11 @@
 @mixin writing-focus-vignette {
   .ptm-writing-focus-vignette-element {
     &::before {
+      position: absolute;
+      inset: 0;
       z-index: 1000;
       pointer-events: none;
       content: "";
-      position: absolute;
-      inset: 0;
     }
 
     &[data-ptm-writing-focus-vignette-style="box"] {

@@ -14,8 +14,7 @@ export default class DimmedOpacity extends Feature {
         .addSlider((slider) =>
           slider
             .setLimits(0, 100, 5)
-            .setDynamicTooltip()
-            .setValue((this.getSettingValue() as number) * 100)
+            .setValue(this.getSettingValue() * 100)
             .onChange((newValue) => {
               this.changeDimmedOpacity(newValue / 100);
             })
@@ -31,8 +30,7 @@ export default class DimmedOpacity extends Feature {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider
             .setLimits(0, 100, 5)
-            .setDynamicTooltip()
-            .setValue((this.getSettingValue() as number) * 100)
+            .setValue(this.getSettingValue() * 100)
             .onChange((newValue) => {
               this.changeDimmedOpacity(newValue / 100);
               onChanged?.();

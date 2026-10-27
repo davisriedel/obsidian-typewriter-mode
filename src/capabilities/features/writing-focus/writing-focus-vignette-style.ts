@@ -18,7 +18,7 @@ export default class WritingFocusVignetteStyle extends Feature {
           dropdown
             .addOption(WRITING_FOCUS_VIGNETTE_STYLE.BOX, t("Box"))
             .addOption(WRITING_FOCUS_VIGNETTE_STYLE.COLUMN, t("Column"))
-            .setValue(this.getSettingValue() as WritingFocusVignetteStyleType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeVignetteStyle(
                 newValue as WritingFocusVignetteStyleType
@@ -40,7 +40,7 @@ export default class WritingFocusVignetteStyle extends Feature {
           dropdown
             .addOption(WRITING_FOCUS_VIGNETTE_STYLE.BOX, t("Box"))
             .addOption(WRITING_FOCUS_VIGNETTE_STYLE.COLUMN, t("Column"))
-            .setValue(this.getSettingValue() as WritingFocusVignetteStyleType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeVignetteStyle(
                 newValue as WritingFocusVignetteStyleType

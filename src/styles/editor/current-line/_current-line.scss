@@ -1,13 +1,14 @@
 .ptm-current-line {
-  display: block;
   position: absolute;
   left: 0;
+  z-index: 1;
+  display: block;
   width: 100%;
   pointer-events: none;
-  z-index: 1;
 }
 
-.cm-editor .cm-cursorLayer { /* stylelint-disable-line selector-class-pattern */
+/* stylelint-disable-next-line selector-class-pattern */
+.cm-editor .cm-cursorLayer {
   z-index: 200;
 }
 
@@ -25,9 +26,10 @@ body.ptm-highlight-current-line-only-in-active-editor {
   }
 }
 
-body.ptm-highlight-current-line-only-in-writing-focus-mode:not(.ptm-focus-mode) {
+body.ptm-highlight-current-line-only-in-writing-focus-mode:not(
+  .ptm-focus-mode
+) {
   .ptm-current-line {
     display: none;
   }
 }
-

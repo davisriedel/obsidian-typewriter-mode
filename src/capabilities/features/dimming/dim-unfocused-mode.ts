@@ -19,7 +19,7 @@ export default class DimUnfocusedMode extends Feature {
           dropdown
             .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, t("Paragraphs"))
             .addOption(DIM_UNFOCUSED_MODE.SENTENCES, t("Sentences"))
-            .setValue(this.getSettingValue() as DimUnfocusedModeType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.change(newValue as DimUnfocusedModeType);
             })
@@ -36,7 +36,7 @@ export default class DimUnfocusedMode extends Feature {
           dropdown
             .addOption(DIM_UNFOCUSED_MODE.PARAGRAPHS, t("Paragraphs"))
             .addOption(DIM_UNFOCUSED_MODE.SENTENCES, t("Sentences"))
-            .setValue(this.getSettingValue() as DimUnfocusedModeType)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.change(newValue as DimUnfocusedModeType);
               onChanged?.();
@@ -49,7 +49,7 @@ export default class DimUnfocusedMode extends Feature {
   override load() {
     super.load();
     this.tm.perWindowProps.bodyAttrs["data-ptm-dim-unfocused-mode"] =
-      this.getSettingValue() as DimUnfocusedModeType;
+      this.getSettingValue();
   }
 
   private change(newValue: DimUnfocusedModeType) {

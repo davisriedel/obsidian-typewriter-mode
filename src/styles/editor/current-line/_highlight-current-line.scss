@@ -10,7 +10,8 @@
       @if $style == "box" {
         background-color: var(--current-line-highlight-color-#{$theme});
       } @else if $style == "underline" {
-        border-bottom: var(--current-line-highlight-underline-thickness) solid var(--current-line-highlight-color-#{$theme});
+        border-bottom: var(--current-line-highlight-underline-thickness) solid
+          var(--current-line-highlight-color-#{$theme});
       }
     }
   }

@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["ultracite/biome/core"],
   "files": {
-    "includes": ["./src/**/*", "./scripts/**/*"]
+    // SCSS is handled by stylelint; biome's property sorting reorders $variables below their usage
+    "includes": ["./src/**/*", "./scripts/**/*", "!**/*.scss"]
   },
   "javascript": {
     "globals": ["Bun", "activeDocument"]
@@ -15,6 +16,7 @@
       },
       "style": {
         "useDestructuring": "off",
+        "useThisInClassMethods": "off",
         "noIncrementDecrement": "off"
       },
       "suspicious": {

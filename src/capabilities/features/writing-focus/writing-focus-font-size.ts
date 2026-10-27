@@ -15,8 +15,7 @@ export default class WritingFocusFontSize extends Feature {
         setting.setClass("typewriter-mode-setting").addSlider((slider) =>
           slider
             .setLimits(0, 36, 1)
-            .setDynamicTooltip()
-            .setValue(this.getSettingValue() as number)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeFontSize(newValue);
               onChanged?.();
@@ -39,8 +38,7 @@ export default class WritingFocusFontSize extends Feature {
         .addSlider((slider) =>
           slider
             .setLimits(0, 36, 1)
-            .setDynamicTooltip()
-            .setValue(this.getSettingValue() as number)
+            .setValue(this.getSettingValue())
             .onChange((newValue) => {
               this.changeFontSize(newValue);
             })
