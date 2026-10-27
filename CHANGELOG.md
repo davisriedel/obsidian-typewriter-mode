@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.1-beta.1
+## 1.6.1
 
 - Fix cursor position saving in popout windows
 - Remove deprecated slider tooltips (values are shown inline since Obsidian 1.13)
